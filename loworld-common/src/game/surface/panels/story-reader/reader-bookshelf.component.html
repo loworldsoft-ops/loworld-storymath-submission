@@ -1,0 +1,64 @@
+<div class="bookshelf">
+  <header class="bookshelf__header">
+    <p class="bookshelf__label">서고 · 書庫</p>
+    <h1 class="bookshelf__title">책장</h1>
+    <p class="bookshelf__subtitle">
+      읽을 소설을 고른다. 독자의 속성과 선택에 따라 본문이 다르게 엮인다.
+    </p>
+  </header>
+
+  <main class="bookshelf__list" role="list" aria-label="소설 목록">
+    @for (book of books(); track book.id) {
+      <article
+        class="bookshelf__card"
+        role="listitem"
+        [class.bookshelf__card--available]="book.isAvailable"
+        [class.bookshelf__card--locked]="!book.isAvailable">
+        
+        <div class="bookshelf__card-spine" aria-hidden="true"></div>
+
+        <div class="bookshelf__card-body">
+          <div class="bookshelf__card-meta">
+            <span class="bookshelf__tag">{{ book.genre }}</span>
+            <span class="bookshelf__status">
+              @if (book.isAvailable) {
+                {{ book.isCompleted ? '전 ' + book.episodeCount + '화 완결' : book.episodeCount + '화 연재' }}
+              } @else {
+                준비 중
+              }
+            </span>
+          </div>
+
+          @if (book.subtitle) {
+            <p class="bookshelf__book-subtitle">{{ book.subtitle }}</p>
+          }
+          <h2 class="bookshelf__book-title">{{ book.title }}</h2>
+
+          <p class="bookshelf__book-summary">{{ book.summary }}</p>
+
+          <footer class="bookshelf__card-footer">
+            @if (book.isAvailable) {
+              <div class="bookshelf__slot-info">
+                @if (book.slotSummary) {
+                  <span class="bookshelf__slot-badge">기록: {{ book.slotSummary }}</span>
+                } @else {
+                  <span class="bookshelf__slot-badge">새로 시작 가능</span>
+                }
+              </div>
+              <button
+                lw-button
+                type="button"
+                variant="secondary"
+                class="bookshelf__action-btn"
+                (click)="onOpenBook(book)">
+                책 펼치기
+              </button>
+            } @else {
+              <span class="bookshelf__locked-text">다음 작품 집필 중입니다</span>
+            }
+          </footer>
+        </div>
+      </article>
+    }
+  </main>
+</div>

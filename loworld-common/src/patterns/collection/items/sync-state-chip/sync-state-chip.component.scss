@@ -1,0 +1,42 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: #{lw.$lw-progress-radius-pill};
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--lw-sl-sync-border, #{lw.$lw-sl-sync-border});
+  background: var(--lw-sl-sync-bg, #{lw.$lw-chip-bg});
+  color: var(--lw-sl-sync-fg, #{lw.$lw-sl-sync-fg});
+  white-space: nowrap;
+}
+
+.chip[data-state='synced'] {
+  --lw-sl-sync-border: #86efac;
+  --lw-sl-sync-bg: #f0fdf4;
+  --lw-sl-sync-fg: #166534;
+}
+
+.chip[data-state='syncing'] {
+  --lw-sl-sync-border: #fde68a;
+  --lw-sl-sync-bg: #fffbeb;
+  --lw-sl-sync-fg: #92400e;
+}
+
+.chip[data-state='offline'] {
+  --lw-sl-sync-border: #c4b5fd;
+  --lw-sl-sync-bg: #f5f3ff;
+  --lw-sl-sync-fg: #6d28d9;
+}
+
+.chip[data-state='error'] {
+  --lw-sl-sync-border: #fecaca;
+  --lw-sl-sync-bg: #fef2f2;
+  --lw-sl-sync-fg: var(--lw-color-danger-dark);
+}

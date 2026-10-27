@@ -1,0 +1,10 @@
+<div class="lw-diff-container">
+  <div class="lw-diff-header">
+    <span class="lw-diff-label">{{ label() }}</span>
+    <div class="lw-diff-stats">
+      <span class="lw-diff-stat lw-diff-stat--added">+{{ addedCount() }}</span>
+      <span class="lw-diff-stat lw-diff-stat--removed">-{{ removedCount() }}</span>
+    </div>
+  </div>
+  <div class="lw-diff-body">@for (seg of diffSegments(); track $index) {@switch (seg.type) {@case ('added') {<ins class="lw-diff-token lw-diff-token--added">{{ seg.text }}</ins>} @case ('removed') {<del class="lw-diff-token lw-diff-token--removed">{{ seg.text }}</del>} @default {<span class="lw-diff-token">{{ seg.text }}</span>}}}</div>
+</div>

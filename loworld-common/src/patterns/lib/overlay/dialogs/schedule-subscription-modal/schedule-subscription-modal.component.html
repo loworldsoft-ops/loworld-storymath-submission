@@ -1,0 +1,96 @@
+<lw-modal [isOpen]="isOpen()" size="md" variant="custom" [title]="stepTitle()" (closeClick)="cancel.emit()">
+  <div class="subscription-body">
+        @switch (step()) {
+          @case ('select') {
+            <p class="step-desc" >구독할 캘린더 서비스를 선택하세요.</p>
+            <div class="provider-list">
+              @for (p of allProviders(); track p.key) {
+                <lw-card variant="outlined" [interactive]="true" class="provider-card" (click)="selectProvider(p)">
+                  <span class="provider-dot" [style.backgroundColor]="p.color"></span>
+                  <span class="provider-name">{{ p.label }}</span>
+                  <span class="icon-glyph icon-chevron-right" aria-hidden="true">›</span>
+                </lw-card>
+              }
+            </div>
+            <lw-button class="url-direct-btn" (click)="selectDirect()">
+              <span class="icon-calendar" aria-hidden="true"></span>
+              URL로 직접 구독
+            </lw-button>
+          }
+
+          @case ('form') {
+            <lw-form-field label="캘린더 URL" [error]="urlError() ? '올바른 URL을 입력해 주세요.' : ''">
+              <lw-input class="form-input" [class.error]="urlError()"
+                     placeholder="https://example.com/calendar.ics"
+                     [value]="urlValue()"
+                     (valueChange)="urlValue.set(''+$event); urlError.set(false)" />
+              @if (selectedProvider()) {
+                <lw-button class="guide-link" (click)="step.set('guide')">
+                  {{ selectedProvider()!.label }} URL 얻는 방법 보기
+                </lw-button>
+              }
+            </lw-form-field>
+            <lw-form-field label="캘린더 이름">
+              <lw-input class="form-input" [placeholder]="selectedProvider()?.label ?? '새 구독 캘린더'"
+                     [value]="nameValue()"
+                     (valueChange)="nameValue.set(''+$event)" />
+            </lw-form-field>
+            <div class="form-group">
+              <label class="form-label" >색상</label>
+              <div class="color-grid">
+                @for (c of colorPalette; track c) {
+                  <lw-button
+                    type="button"
+                    class="color-btn"
+                    [style.backgroundColor]="c"
+                    [class.selected]="selectedColor() === c"
+                    (click)="selectedColor.set(c)">
+                  </lw-button>
+                }
+
+              </div>
+            </div>
+            <div class="form-actions">
+              <lw-button variant="secondary" label="이전" (click)="step.set('select')"></lw-button>
+              <lw-button variant="primary" label="구독하기" (click)="onSubmit()"></lw-button>
+            </div>
+          }
+
+          @case ('guide') {
+            <div class="guide-content">
+              @for (s of selectedProvider()!.guideSteps; track s) {
+                <div class="guide-step" >
+                  <span class="guide-num">{{ $index + 1 }}</span>
+                  <span>{{ s }}</span>
+                </div>
+              }
+              <div class="guide-sample" >
+                <div class="guide-sample-header">
+                  <span class="guide-sample-label">예시 URL</span>
+                  <lw-button variant="ghost" size="xs" [label]="guideSampleCopied() ? '복사됨' : '복사'" (click)="copyGuideSampleUrl()">
+                  </lw-button>
+                </div>
+                <code class="guide-sample-url">{{ selectedProvider()!.sampleUrl }}</code>
+              </div>
+            </div>
+            <div class="form-actions">
+              <lw-button variant="secondary" label="돌아가기" (click)="step.set('form')"></lw-button>
+            </div>
+          }
+
+          @case ('success') {
+            <div class="success-content">
+              <div class="success-icon">✓</div>
+              <p class="success-title" >구독이 완료되었습니다!</p>
+              <div class="success-summary" >
+                <span class="color-dot" [style.backgroundColor]="selectedColor()"></span>
+                <span>{{ nameValue() || selectedProvider()?.label || '새 구독 캘린더' }}</span>
+              </div>
+            </div>
+            <div class="form-actions">
+              <lw-button variant="primary" label="확인" (click)="cancel.emit()"></lw-button>
+            </div>
+          }
+        }
+  </div>
+</lw-modal>

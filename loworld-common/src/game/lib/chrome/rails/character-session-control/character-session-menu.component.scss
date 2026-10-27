@@ -1,0 +1,307 @@
+@use 'index' as lw;
+:host {
+  display: block;
+  width: 100%;
+  padding: 4px 0 16px;
+  box-sizing: border-box;
+}
+
+.char-session-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── 1. 드롭다운/바텀시트 헤더 카드 ── */
+.dropdown-hero-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--lw-surface-alt);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.hero-avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--lw-accent-primary);
+  color: var(--lw-surface);
+  border: 1.5px solid color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .hero-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      border-radius: 50%;
+    }
+  }
+}
+
+.hero-level {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 800;
+  padding: 1px 4px;
+  background: var(--lw-surface);
+  color: var(--lw-color-warning);
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--lw-color-warning) 50%, transparent);
+  line-height: 1;
+}
+
+.hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.hero-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lw-text-primary, inherit);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hero-class-tag {
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--lw-control-active-bg);
+  color: var(--lw-accent-primary);
+  white-space: nowrap;
+}
+
+.hero-cp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+}
+
+.cp-label {
+  color: var(--lw-text-secondary);
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 500;
+}
+
+.cp-value {
+  color: var(--lw-color-warning);
+  font-weight: 700;
+}
+
+/* ── 2. 바이탈 바 컨테이너 ── */
+.vitals-container {
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--lw-surface-alt);
+  border: 1px solid var(--lw-border-color);
+  border-radius: 8px;
+}
+
+.vital-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vital-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 700;
+}
+
+.hp-bar .vital-label { color: var(--lw-color-danger); }
+.mp-bar .vital-label { color: var(--lw-color-primary); }
+.vital-numbers { color: var(--lw-text-secondary); font-size: var(--lw-font-size-2xs, 0.6875rem); font-weight: 600; }
+
+.vital-track {
+  height: 5px;
+  background: var(--lw-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  background: var(--lw-color-danger);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.mp-fill {
+  height: 100%;
+  background: var(--lw-color-primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.dropdown-divider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--lw-border-color);
+}
+
+/* ── 3. 주요 액션 버튼 목록 ── */
+.dropdown-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  min-height: 38px;
+  border-radius: 8px;
+  color: var(--lw-text-primary, inherit);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease, color 0.12s ease;
+
+  svg {
+    color: var(--lw-accent-primary);
+    transition: color 0.12s ease;
+    flex-shrink: 0;
+  }
+
+  @include lw.lw-hover {
+    background: var(--lw-card-hover-bg);
+    color: var(--lw-accent-primary);
+  }
+
+  &--logout {
+    color: var(--lw-color-danger);
+
+    svg {
+      color: var(--lw-color-danger);
+    }
+
+    @include lw.lw-hover {
+      background: color-mix(in srgb, var(--lw-color-danger) 12%, transparent);
+      color: var(--lw-color-danger-strong);
+
+      svg {
+        color: var(--lw-color-danger-strong);
+      }
+    }
+  }
+}
+
+/* ── 4. 동행 파티원 / 로스터 리스트 ── */
+.roster-section {
+  padding-top: 2px;
+}
+
+.roster-section-title {
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--lw-text-secondary);
+  letter-spacing: 0.05em;
+  padding: 0 4px 6px;
+}
+
+.roster-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.roster-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 12.5px;
+  color: var(--lw-text-primary, inherit);
+  transition: all 0.15s ease;
+
+  @include lw.lw-hover {
+    background: var(--lw-card-hover-bg);
+    border-color: var(--lw-accent-primary);
+  }
+}
+
+.roster-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--lw-control-active-bg);
+  color: var(--lw-accent-primary);
+  flex-shrink: 0;
+
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .roster-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      border-radius: 50%;
+    }
+  }
+}
+
+.roster-name {
+  flex: 1;
+  font-weight: 600;
+  color: var(--lw-text-primary, inherit);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

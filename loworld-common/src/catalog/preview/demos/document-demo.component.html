@@ -1,0 +1,258 @@
+@switch (comp().id) {
+
+  <!-- ══════ lw-titlebar ══════ -->
+  @case ('lw-app-titlebar') {
+    <div class="demo-grid-col">
+      <div class="demo-variant-label">Light (PC)</div>
+      <div class="demo-frame light-frame">
+        <lw-app-titlebar appTitle="ezNote" appIconSrc="assets/images/eznote-icon.png" [points]="42" [showPoints]="true" />
+      </div>
+      <div class="demo-variant-label" style="margin-top:16px">Dark (PC)</div>
+      <div class="demo-frame dark-frame">
+        <lw-app-titlebar appTitle="ezNote" appIconSrc="assets/images/eznote-icon.png" [points]="42" [showPoints]="true" />
+      </div>
+      <div class="demo-variant-label" style="margin-top:16px">Mobile</div>
+      <div class="demo-frame light-frame" style="max-width:420px">
+        <lw-app-titlebar appTitle="ezNote" appIconSrc="assets/images/eznote-icon.png" [isMobile]="true" profileInitial="A" />
+      </div>
+    </div>
+  }
+
+
+
+  <!-- ══════ lw-document-workspace ══════ -->
+  @case ('lw-document-workspace') {
+    <div class="demo-controls">
+      <lw-button class="demo-toggle-btn" (click)="isEditing.set(!isEditing())">
+        {{ isEditing() ? '✔ 뷰어 보기' : '✏️ 에디터 열기' }}
+      </lw-button>
+    </div>
+    <div class="demo-frame" style="height:520px; overflow:hidden">
+      <lw-document-workspace
+        [note]="firstNote()"
+        [folders]="folders()"
+        [isEditing]="isEditing()"
+        (editingChange)="isEditing.set($event)"
+        (createNote)="noop()"
+        (deleteNote)="noop()"
+        (saveNote)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-card ══════ -->
+  @case ('lw-document-card') {
+    <div class="demo-controls">
+      <lw-button class="demo-toggle-btn" (click)="cardSelected.set(!cardSelected())">
+        {{ cardSelected() ? '선택됨 ✓' : '선택 안됨' }}
+      </lw-button>
+    </div>
+    <div class="demo-frame demo-frame-sm">
+      <lw-document-card [note]="firstNote()" [selected]="cardSelected()" (select)="cardSelected.set(true)" />
+    </div>
+  }
+
+  <!-- ══════ lw-document-trash-card ══════ -->
+  @case ('lw-document-trash-card') {
+    @if (firstTrash(); as item) {
+      <div class="demo-frame demo-frame-sm">
+        <lw-document-trash-card [item]="item" (restore)="noop()" (permanentDelete)="noop()" />
+      </div>
+    }
+  }
+
+  <!-- ══════ lw-document-viewer ══════ -->
+  @case ('lw-document-viewer') {
+    <div class="demo-frame" style="height:480px; overflow:hidden">
+      <lw-document-viewer
+        [note]="firstNote()"
+        [folderName]="folders()[0].name"
+        (back)="noop()" (edit)="noop()" (share)="noop()"
+        (togglePin)="noop()" (deleteNote)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-editor ══════ -->
+  @case ('lw-document-editor') {
+    @if (!editorOpen()) {
+      <div class="demo-modal-trigger">
+        <lw-button class="demo-open-btn" (click)="editorOpen.set(true)">✏️ 에디터 열기</lw-button>
+        <p class="demo-modal-hint">에디터는 전체 화면 모드로 동작합니다.</p>
+      </div>
+    } @else {
+      <div class="demo-overlay">
+        <lw-document-editor
+          [note]="firstNote()"
+          [folders]="folders()"
+          (cancel)="editorOpen.set(false)"
+          (saveNote)="editorOpen.set(false)"
+        />
+      </div>
+    }
+  }
+
+  <!-- ══════ Mobile ══════ -->
+  @case ('lw-document-grid-card') {
+    <div class="demo-frame demo-frame-sm" style="max-width:380px">
+      <lw-document-grid-card [note]="firstNote()" [colors]="{bg:'#d1fae5',border:'#86efac',text:'#166534'}" label="업무" (select)="noop()" />
+    </div>
+  }
+
+  @case ('lw-document-category-filter') {
+    <div class="demo-frame demo-frame-sm" style="max-width:420px">
+      <lw-document-category-filter
+        [folders]="folders()"
+        [selectedFolderId]="selectedFolderId()"
+        (selectFolder)="selectedFolderId.set($event)"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-move-dialog ══════ -->
+  @case ('lw-document-move-dialog') {
+    <div class="demo-frame demo-frame-sm">
+      <lw-document-move-dialog
+        [noteId]="firstNote().id"
+        [folders]="folders()"
+        [currentFolderId]="folders()[0].id"
+        (close)="noop()"
+        (folderSelected)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-share-dialog ══════ -->
+  @case ('lw-document-share-dialog') {
+    <div class="demo-frame demo-frame-sm">
+      <lw-document-share-dialog
+        [noteId]="firstNote().id"
+        shareUrl="https://loworld.app/note/demo"
+        (close)="noop()"
+        (save)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-password-dialog ══════ -->
+  @case ('lw-document-password-dialog') {
+    <div class="demo-frame demo-frame-sm">
+      <lw-document-password-dialog
+        currentPassword=""
+        (close)="noop()"
+        (save)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-reminder-dialog ══════ -->
+  @case ('lw-document-reminder-dialog') {
+    <div class="demo-frame demo-frame-sm">
+      <lw-document-reminder-dialog
+        [value]="firstNote().createdAt"
+        (close)="noop()"
+        (save)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-drum ══════ -->
+  @case ('lw-drum') {
+    <div class="demo-frame demo-frame-xs" style="display:flex; justify-content:center; padding:16px;">
+      <lw-drum
+        [items]="['오전', '오후']"
+        selected="오전"
+        (select)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-document-drawing-panel ══════ -->
+  @case ('lw-document-drawing-panel') {
+    <div class="demo-frame" style="height:420px; overflow:hidden; position:relative;">
+      <lw-document-drawing-panel (cancel)="noop()" (insert)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ lw-document-recording-bar ══════ -->
+  @case ('lw-document-recording-bar') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-document-recording-bar (close)="noop()" (recorded)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ lw-drawing-pad ══════ -->
+  @case ('lw-drawing-pad') {
+    <div class="demo-frame" style="height:420px; overflow:hidden; position:relative;">
+      <lw-drawing-pad (close)="noop()" (inserted)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ lw-audio-recorder ══════ -->
+  @case ('lw-audio-recorder') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px; position:relative; min-height:260px;">
+      <lw-audio-recorder (close)="noop()" (recorded)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ lw-appearance-settings ══════ -->
+  @case ('lw-appearance-settings') {
+    <div class="demo-frame" style="max-height:450px; overflow-y:auto; padding:16px;">
+      <lw-appearance-settings (appearanceChange)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ lw-frame-settings ══════ -->
+  @case ('lw-frame-settings') {
+    <div class="demo-frame" style="max-height:450px; overflow-y:auto; padding:16px;">
+      <lw-frame-settings />
+    </div>
+  }
+
+  <!-- ══════ lw-folder-list-item ══════ -->
+  @case ('lw-folder-list-item') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-folder-list-item
+        [folder]="folders()[0]"
+        [current]="true"
+        (select)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-account-login-dialog ══════ -->
+  @case ('lw-account-login-dialog') {
+    <div class="demo-modal-trigger">
+      <lw-button class="demo-open-btn" (click)="loginDialogOpen.set(true)">🔐 계정 로그인 모달 열기</lw-button>
+    </div>
+    @if (loginDialogOpen()) {
+      <lw-account-login-dialog
+        [isOpen]="loginDialogOpen()"
+        (isOpenChange)="loginDialogOpen.set($event)"
+      />
+    }
+  }
+
+  <!-- ══════ lw-auth-login-form ══════ -->
+  @case ('lw-auth-login-form') {
+    <div class="demo-frame demo-frame-sm" style="max-width:420px; padding:16px;">
+      <lw-auth-login-form (submitted)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ lw-auth-signup-form ══════ -->
+  @case ('lw-auth-signup-form') {
+    <div class="demo-frame demo-frame-sm" style="max-width:420px; padding:16px;">
+      <lw-auth-signup-form (submitted)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ 기본 fallback ══════ -->
+  @default {
+    <div class="demo-unavailable">
+      <span>🧩</span>
+      <p>이 컴포넌트의 독립 데모는 준비 중입니다.</p>
+    </div>
+  }
+
+}

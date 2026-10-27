@@ -1,0 +1,355 @@
+<header class="os-appbar" role="toolbar" aria-label="앱 제어 막대">
+  <div class="os-appbar__title">
+    <span class="os-appbar__icon" aria-hidden="true"><lw-os-icon [icon]="icon()" [size]="14" /></span>
+    <span class="os-appbar__name">{{ title() }}</span>
+  </div>
+
+  <div class="os-appbar__actions">
+    @if (executionMode.isNativeApp()) {
+      <button
+        lwPressable
+        class="os-appbar__btn os-appbar__btn--mode"
+        [attr.aria-label]="executionMode.modeLabel()"
+        [lwTooltip]="executionMode.modeTooltip()"
+        (press)="executionMode.openModeSelector()">
+        <span class="mode-action-icon-wrap" [class.is-local]="executionMode.isLocalMode()" [class.is-remote]="!executionMode.isLocalMode()">
+          <lw-icon [name]="executionMode.modeIcon()" [size]="14" />
+          <span class="mode-status-dot" aria-hidden="true"></span>
+        </span>
+      </button>
+    }
+    <button
+      lwPressable
+      class="os-appbar__btn"
+      aria-label="앱 설정·높이 분석"
+      lwTooltip="앱 설정·높이 분석"
+      [pressed]="isDebugOpen()"
+      (press)="toggleDebugger()">
+      <lw-os-icon icon="chart" [size]="14" />
+    </button>
+
+    @if (showSessionControl()) {
+      <lw-os-window-session-button
+        [session]="memberSession()"
+        variant="titlebar"
+        (loginRequested)="loginRequested.emit()"
+        (accountRequested)="accountRequested.emit()" />
+    }
+
+    <button lwPressable class="os-appbar__btn" aria-label="홈으로 내려두기" lwTooltip="홈으로 내려두기" (press)="minimizeRequested.emit()">
+      <lw-icon name="minus" [size]="14" />
+    </button>
+    <button lwPressable class="os-appbar__btn os-appbar__btn--close" aria-label="창 닫기" lwTooltip="창 닫기 (Esc)" (press)="onClose()">
+      <lw-icon name="close" [size]="14" />
+    </button>
+  </div>
+
+  <!-- 5. 캡슐 직속 드롭다운 실시간 높이 & 앱 설정 통합 디버그 패널 (상/하단 및 좌/우 자동 플립) -->
+  @if (isDebugOpen()) {
+    <div
+      class="height-debugger-panel"
+      (pointerdown)="$event.stopPropagation()">
+      <div class="height-debugger-panel__header">
+        <div class="height-debugger-panel__title-container">
+          <lw-os-icon icon="chart" [size]="14" />
+          <h4>앱 싱글톤 서비스 분석</h4>
+        </div>
+        <div class="height-debugger-panel__actions">
+          <lw-button
+            variant="ghost"
+            size="xs"
+            type="button"
+            class="copy-snapshot-btn"
+            [class.is-copied]="copySuccess()"
+            (click)="copyJsonSnapshot()"
+            title="전체 설정 및 측정 스냅샷 JSON 복사">
+            @if (copySuccess()) {
+              <span>복사됨! ✓</span>
+            } @else {
+              <span>JSON 복사</span>
+            }
+          </lw-button>
+          <lw-button
+            type="button"
+            variant="secondary"
+            shape="circle"
+            size="sm"
+            class="height-debugger-panel__close-btn"
+            (click)="toggleDebugger($event)"
+            aria-label="디버거 닫기">
+            <lw-os-icon icon="close" [size]="10" />
+          </lw-button>
+        </div>
+      </div>
+
+      <!-- 4대 탭 내비게이션 바 -->
+      <div class="height-debugger-panel__tabs">
+        <lw-button
+          variant="ghost"
+          size="xs"
+          type="button"
+          class="debugger-tab-btn"
+          [class.is-active]="activeTab() === 'height'"
+          (click)="activeTab.set('height')">
+          <lw-os-icon icon="chart" [size]="12" />
+          <span>높이 분석</span>
+        </lw-button>
+        <lw-button
+          variant="ghost"
+          size="xs"
+          type="button"
+          class="debugger-tab-btn"
+          [class.is-active]="activeTab() === 'theme'"
+          (click)="activeTab.set('theme')">
+          <lw-os-icon icon="sun" [size]="12" />
+          <span>테마/화면</span>
+        </lw-button>
+        <lw-button
+          variant="ghost"
+          size="xs"
+          type="button"
+          class="debugger-tab-btn"
+          [class.is-active]="activeTab() === 'window'"
+          (click)="activeTab.set('window')">
+          <lw-os-icon icon="windows" [size]="12" />
+          <span>윈도우/세션</span>
+        </lw-button>
+        <lw-button
+          variant="ghost"
+          size="xs"
+          type="button"
+          class="debugger-tab-btn"
+          [class.is-active]="activeTab() === 'storage'"
+          (click)="activeTab.set('storage')">
+          <lw-os-icon icon="settings" [size]="12" />
+          <span>스토리지</span>
+        </lw-button>
+      </div>
+      
+      <div class="height-debugger-panel__body">
+        <!-- 탭 1: 높이 분석 -->
+        @if (activeTab() === 'height') {
+          <div class="debugger-summary-bar">
+            <span class="summary-chip">활성 그룹 <strong>{{ debugSnapshot().length }}</strong></span>
+            <span class="summary-chip">추적 요소 <strong>{{ totalElementsCount() }}</strong></span>
+          </div>
+
+          @if (debugSnapshot().length === 0) {
+            <lw-empty-state message="등록된 활성 레이아웃 그룹이 없습니다." />
+          }
+          
+          @for (group of debugSnapshot(); track group.groupId) {
+            <div class="debug-section-card">
+              <h5 class="debug-section-card__title">
+                <lw-os-icon icon="folder" [size]="12" />
+                <span>{{ group.groupId }}</span>
+              </h5>
+              <ul class="debug-section-card__element-list">
+                @for (el of group.elements; track el.id) {
+                  <li class="debug-element-row" [class.debug-element-row--content]="el.role === 'content'">
+                    <span class="role-badge" [attr.data-role]="el.role">{{ el.role }}</span>
+                    <span class="tag-name">&lt;{{ el.tagName }}&gt;</span>
+                    <span class="measured-px">{{ el.measuredHeight }}px</span>
+                    @if (el.useWindowHeight) {
+                      <span class="window-badge">Viewport</span>
+                    }
+                    @if (el.role === 'content') {
+                      <span class="arrow">➔</span>
+                      <strong class="computed-px">{{ group.computedHeight }}px</strong>
+                    }
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        }
+
+        <!-- 탭 2: 테마 & 디스플레이 -->
+        @if (activeTab() === 'theme') {
+          <div class="debug-section-card">
+            <h5 class="debug-section-card__title">
+              <lw-os-icon icon="sun" [size]="12" />
+              <span>테마 & 스킨 (LwThemeStore)</span>
+            </h5>
+            <div class="debug-kv-grid">
+              <div class="debug-kv-item">
+                <span class="label">테마 모드</span>
+                <span class="value badge-chip badge--primary">{{ appConfigInspector.themeSnapshot().mode }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">적용 스킨</span>
+                <span class="value font-mono">{{ appConfigInspector.themeSnapshot().skin }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">유효 스킨 (Effective)</span>
+                <span class="value font-mono">{{ appConfigInspector.themeSnapshot().effectiveSkin }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">플레이 테마</span>
+                <span class="value font-mono">{{ appConfigInspector.themeSnapshot().playTheme }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">해석 모드 (Resolved)</span>
+                <span class="value badge-chip" [class.badge--dark]="appConfigInspector.themeSnapshot().resolvedMode === 'dark'" [class.badge--light]="appConfigInspector.themeSnapshot().resolvedMode === 'light'">
+                  {{ appConfigInspector.themeSnapshot().resolvedMode }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="debug-section-card">
+            <h5 class="debug-section-card__title">
+              <lw-os-icon icon="monitor" [size]="12" />
+              <span>뷰포트 & 반응형 규격 (LwScreenRatioService)</span>
+            </h5>
+            <div class="debug-kv-grid">
+              <div class="debug-kv-item">
+                <span class="label">해상도 (W × H)</span>
+                <span class="value font-bold">{{ appConfigInspector.viewportSnapshot().width }} × {{ appConfigInspector.viewportSnapshot().height }} px</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">화면 카테고리</span>
+                <span class="value badge-chip badge--info">{{ appConfigInspector.viewportSnapshot().screenCategory }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">종횡비 (Aspect)</span>
+                <span class="value">{{ appConfigInspector.viewportSnapshot().aspectRatio }} ({{ appConfigInspector.viewportSnapshot().isPortrait ? '세로' : '가로' }})</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">디바이스 픽셀 비율</span>
+                <span class="value font-mono">{{ appConfigInspector.viewportSnapshot().devicePixelRatio }}x DPR</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">터치 인터페이스</span>
+                <span class="value">{{ appConfigInspector.viewportSnapshot().isTouchSupported ? '지원 ✓' : '미지원' }}</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- 탭 3: 윈도우 & 세션 -->
+        @if (activeTab() === 'window') {
+          <div class="debug-section-card">
+            <h5 class="debug-section-card__title">
+              <lw-os-icon icon="windows" [size]="12" />
+              <span>윈도우 매니저 (OverviewWindowStore)</span>
+            </h5>
+            <div class="debug-kv-grid">
+              <div class="debug-kv-item">
+                <span class="label">활성 창 (Active Window)</span>
+                <span class="value font-bold badge-chip badge--primary">{{ windowStore.activeWindowTab() ?? '없음' }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">열린 창 개수</span>
+                <span class="value font-bold">{{ windowStore.openWindowCount() }}개</span>
+              </div>
+              <div class="debug-kv-item full-width">
+                <span class="label">실행 중인 탭 목록</span>
+                <span class="value font-mono">{{ windowStore.runningTabs().join(', ') || '(실행 중인 창 없음)' }}</span>
+              </div>
+              <div class="debug-kv-item full-width">
+                <span class="label">최소화된 탭</span>
+                <span class="value font-mono">{{ windowStore.minimizedTabs().join(', ') || '(없음)' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="debug-section-card">
+            <h5 class="debug-section-card__title">
+              <lw-os-icon icon="member" [size]="12" />
+              <span>사용자 계정 & 세션 (OverviewSessionFacade)</span>
+            </h5>
+            <div class="debug-kv-grid">
+              <div class="debug-kv-item">
+                <span class="label">로그인 상태</span>
+                <span class="value badge-chip" [class.badge--success]="memberSession()" [class.badge--neutral]="!memberSession()">
+                  {{ sessionFacade.loginStateLabel() }}
+                </span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">인가 역할 (Role)</span>
+                <span class="value badge-chip badge--warning">{{ memberSession()?.directoryRole ?? 'VIEWER' }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">표시 이름</span>
+                <span class="value">{{ memberSession()?.displayName ?? '게스트' }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">사용자 ID</span>
+                <span class="value font-mono">{{ memberSession()?.userId ?? '-' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="debug-section-card">
+            <h5 class="debug-section-card__title">
+              <lw-os-icon icon="settings" [size]="12" />
+              <span>배경화면 (WallpaperStore)</span>
+            </h5>
+            <div class="debug-kv-grid">
+              <div class="debug-kv-item">
+                <span class="label">배경 ID</span>
+                <span class="value font-mono">{{ wallpaperStore.wallpaperId() }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">블러</span>
+                <span class="value">{{ wallpaperStore.wallpaperBlur() }}px</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- 탭 4: 스토리지 & 시스템 -->
+        @if (activeTab() === 'storage') {
+          <div class="debug-section-card">
+            <h5 class="debug-section-card__title">
+              <lw-os-icon icon="database" [size]="12" />
+              <span>스토리지 엔진 (LW_STORAGE_PORT)</span>
+            </h5>
+            <div class="debug-kv-grid">
+              <div class="debug-kv-item">
+                <span class="label">스토리지 유형</span>
+                <span class="value font-mono">{{ appConfigInspector.storageSnapshot().storageType }}</span>
+              </div>
+              <div class="debug-kv-item">
+                <span class="label">저장된 키 수</span>
+                <span class="value font-bold">{{ appConfigInspector.storageSnapshot().storedKeysCount }}개</span>
+              </div>
+              <div class="debug-kv-item full-width">
+                <span class="label">로컬스토리지 주요 키 샘플</span>
+                <div class="sample-keys-list">
+                  @for (key of appConfigInspector.storageSnapshot().sampleKeys; track key) {
+                    <span class="key-pill font-mono">{{ key }}</span>
+                  }
+                  @if (appConfigInspector.storageSnapshot().sampleKeys.length === 0) {
+                    <span class="value text-muted">(저장된 키 없음)</span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 커스텀 등록 섹션들 -->
+          @for (section of appConfigInspector.customSections(); track section.id) {
+            <div class="debug-section-card">
+              <h5 class="debug-section-card__title">
+                <lw-os-icon icon="settings" [size]="12" />
+                <span>{{ section.title }}</span>
+              </h5>
+              <div class="debug-kv-grid">
+                @for (field of section.fields; track field.label) {
+                  <div class="debug-kv-item">
+                    <span class="label">{{ field.label }}</span>
+                    <span class="value" [class.badge-chip]="field.badgeTone" [class.badge--primary]="field.badgeTone === 'primary'" [class.badge--success]="field.badgeTone === 'success'" [class.badge--warning]="field.badgeTone === 'warning'" [class.badge--info]="field.badgeTone === 'info'">
+                      {{ field.value }}
+                    </span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+</header>

@@ -1,0 +1,9 @@
+    @if (title()) {
+      <div class="nav-section-header-row">
+        <h4 class="nav-section-title">{{ title() }}</h4>
+        <div class="nav-section-action-slot">
+          <ng-content select="[sectionAction]" />
+        </div>
+      </div>
+    }
+    <ng-content />

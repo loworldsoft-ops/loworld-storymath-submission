@@ -1,0 +1,229 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.lw-close-button-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 메인 닫기 버튼 ────────────────────────────── */
+.lw-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  z-index: 1;
+  color: var(--lw-ink);
+  background: transparent;
+  transition:
+    background-color 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--lw-surface), 0 0 0 4px var(--lw-color-primary);
+  }
+
+  &:active:not(.is-disabled) {
+    transform: scale(0.92);
+  }
+
+  &.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* 아이콘 미세 인터랙션 (호버 시 회전) */
+  .lw-close-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.18s ease;
+  }
+
+  &:hover:not(.is-disabled) .lw-close-icon {
+    transform: rotate(90deg);
+  }
+}
+
+/* ── 크기별 규격 (Sizes) ────────────────────────── */
+.lw-close-btn[data-size='xs'] {
+  width: 22px;
+  height: 22px;
+}
+
+.lw-close-btn[data-size='sm'] {
+  width: 28px;
+  height: 28px;
+}
+
+.lw-close-btn[data-size='md'] {
+  width: 34px;
+  height: 34px;
+}
+
+.lw-close-btn[data-size='lg'] {
+  width: 40px;
+  height: 40px;
+}
+
+/* ── 스타일 변형 (Variants) ─────────────────────── */
+
+/* 1. Default: 글래스모피즘 반투명 원형 닫기 */
+.lw-close-btn[data-variant='default'] {
+  background: color-mix(in srgb, var(--lw-color-black) 5%, transparent);
+  border-color: color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--lw-ink);
+
+  &:hover:not(.is-disabled) {
+    background: color-mix(in srgb, var(--lw-color-black) 12%, transparent);
+    border-color: color-mix(in srgb, var(--lw-color-black) 15%, transparent);
+    color: var(--lw-ink);
+    transform: scale(1.05);
+  }
+}
+
+/* 2. Subtle: 평소에는 투명, 호버 시 배경 노출 */
+.lw-close-btn[data-variant='subtle'] {
+  background: transparent;
+  color: color-mix(in srgb, var(--lw-color-black) 60%, transparent);
+
+  &:hover:not(.is-disabled) {
+    background: color-mix(in srgb, var(--lw-color-black) 7%, transparent);
+    color: var(--lw-ink);
+    transform: scale(1.04);
+  }
+}
+
+/* 3. Ghost: 완전 미니멀 */
+.lw-close-btn[data-variant='ghost'] {
+  background: transparent;
+  color: color-mix(in srgb, var(--lw-color-black) 55%, transparent);
+
+  &:hover:not(.is-disabled) {
+    color: var(--lw-ink);
+  }
+}
+
+/* 4. Filled: 솔리드 서피스 + 소프트 섀도우 */
+.lw-close-btn[data-variant='filled'] {
+  background: var(--lw-surface);
+  border-color: color-mix(in srgb, var(--lw-color-black) 10%, transparent);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+  color: var(--lw-ink);
+
+  &:hover:not(.is-disabled) {
+    background: var(--lw-color-white);
+    border-color: color-mix(in srgb, var(--lw-color-black) 18%, transparent);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 14%, transparent);
+    transform: translateY(-1px) scale(1.04);
+  }
+}
+
+/* 5. Floating: 플로팅 강조형 원형 닫기 */
+.lw-close-btn[data-variant='floating'] {
+  background: var(--lw-surface);
+  border-color: color-mix(in srgb, var(--lw-color-danger) 35%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--lw-hue-slate-900) 16%, transparent), 0 1px 3px color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+  color: var(--lw-color-danger);
+
+  &:hover:not(.is-disabled) {
+    background: var(--lw-color-danger);
+    color: var(--lw-color-white);
+    border-color: var(--lw-color-danger);
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--lw-color-danger) 40%, transparent);
+    transform: translateY(-1px) scale(1.06);
+  }
+}
+
+/* ── 주의 집중 비콘 펄스 링 (Beacon Ping) ─────────── */
+.lw-close-beacon-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 2px solid color-mix(in srgb, var(--lw-color-danger) 65%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--lw-color-danger) 35%, transparent);
+  animation: closeBeaconRingPing 2s cubic-bezier(0, 0, 0.2, 1) 3 forwards;
+}
+
+.lw-close-beacon-ring--second {
+  animation-delay: 0.4s;
+}
+
+@keyframes closeBeaconRingPing {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.95;
+  }
+  60% {
+    transform: scale(1.4);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+/* ── 다크 테마 적응 ────────────────────────────── */
+:host-context([data-theme='dark']),
+:host-context(.is-dark),
+:host-context([data-lw-theme='dark']) {
+  .lw-close-btn[data-variant='default'] {
+    background: color-mix(in srgb, var(--lw-color-white) 10%, transparent);
+    border-color: color-mix(in srgb, var(--lw-color-white) 14%, transparent);
+    color: var(--lw-hue-slate-50);
+
+    &:hover:not(.is-disabled) {
+      background: color-mix(in srgb, var(--lw-color-white) 18%, transparent);
+      border-color: color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+      color: var(--lw-color-white);
+    }
+  }
+
+  .lw-close-btn[data-variant='subtle'] {
+    color: color-mix(in srgb, var(--lw-color-white) 65%, transparent);
+
+    &:hover:not(.is-disabled) {
+      background: color-mix(in srgb, var(--lw-color-white) 12%, transparent);
+      color: var(--lw-color-white);
+    }
+  }
+
+  .lw-close-btn[data-variant='ghost'] {
+    color: color-mix(in srgb, var(--lw-color-white) 65%, transparent);
+
+    &:hover:not(.is-disabled) {
+      color: var(--lw-color-white);
+    }
+  }
+
+  .lw-close-btn[data-variant='filled'] {
+    background: var(--lw-hue-slate-800);
+    border-color: color-mix(in srgb, var(--lw-color-white) 12%, transparent);
+    color: var(--lw-hue-slate-50);
+
+    &:hover:not(.is-disabled) {
+      background: var(--lw-hue-slate-700);
+      color: var(--lw-color-white);
+    }
+  }
+}

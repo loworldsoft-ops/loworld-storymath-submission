@@ -1,0 +1,118 @@
+<div class="day-view" [class.compact]="useListLayout()">
+  <div class="day-header" [class.compact]="useListLayout()">
+    <div class="day-info">
+      @if (isTodaySelected()) {
+        <div class="today-badge" [class.compact]="useListLayout()">{{ selectedDate().getDate() }}</div>
+      } @else {
+        <span class="day-num" [class.compact]="useListLayout()"
+              [class.sunday]="selectedDate().getDay() === 0"
+              [class.saturday]="selectedDate().getDay() === 6">{{ selectedDate().getDate() }}</span>
+      }
+      <div class="day-meta">
+        <div class="dow" [class.sunday]="selectedDate().getDay() === 0"
+             [class.saturday]="selectedDate().getDay() === 6">{{ dayName() }}</div>
+        <div class="month-year">{{ monthYear() }}</div>
+      </div>
+    </div>
+    @if (!useListLayout()) {
+      <div class="nav-btns">
+        <lw-button type="button" class="nav-btn" (click)="prevDay.emit()" aria-label="이전 날">
+          <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+        </lw-button>
+        <lw-button type="button" class="nav-btn" (click)="nextDay.emit()" aria-label="다음 날">
+          <span class="icon-chevron-left" aria-hidden="true"></span>
+        </lw-button>
+      </div>
+    }
+  </div>
+
+  @if (allDayEvents().length > 0) {
+    <div class="allday-section" [class.compact]="useListLayout()">
+      <span class="allday-label">종일 · {{ allDayEvents().length }}</span>
+      <div class="allday-chips">
+        @for (ev of allDayEvents(); track ev.id) {
+          <lw-button
+            type="button"
+            variant="ghost"
+            class="allday-chip"
+            [style.--ev-color]="getColor(ev)"
+            (click)="selectEvent.emit(ev.id)"
+            [tooltip]="ev.title">
+            {{ ev.title }}
+          </lw-button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (useListLayout()) {
+    <div class="day-list">
+      @if (!hasDayEvents()) {
+        <div class="day-list-empty">
+          <span class="day-list-empty-icon" aria-hidden="true">📅</span>
+          <p>이 날짜에 일정이 없습니다</p>
+        </div>
+      } @else {
+        @for (ev of timedEventsForDay(); track ev.id) {
+          <lw-card class="event-card event-card--list"
+               variant="outlined"
+               [interactive]="true"
+               role="button"
+               tabindex="0"
+               [style.--ev-color]="getColor(ev)"
+               (click)="selectEvent.emit(ev.id)"
+               (keydown.enter)="selectEvent.emit(ev.id)">
+            <span class="event-card__time">{{ formatEventStart(ev) }}</span>
+            <span class="event-card__body">
+              <span class="event-card__title">{{ ev.title }}</span>
+              <span class="event-card__meta">{{ formatEventTime(ev) }}</span>
+            </span>
+          </lw-card>
+        }
+      }
+    </div>
+  } @else {
+    <div class="time-grid">
+      <div class="time-grid__hours">
+        @for (hour of hours; track hour) {
+          <div class="hour-row" [style.height.px]="effectiveHourHeight()">
+            <div class="time-label">{{ formatHour(hour) }}</div>
+            <div class="hour-line">
+              <div class="half-line" [style.top.px]="effectiveHourHeight() / 2"></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="time-grid__events" [style.left.px]="timeGutterWidth()">
+        @for (ec of timedColumns(); track ec.event.id) {
+          <lw-button type="button"
+                  class="event-card event-card--timed"
+                  [class.event-card--micro]="eventDensity(ec.height) === 'micro'"
+                  [class.event-card--compact]="eventDensity(ec.height) === 'compact'"
+                  [style.top.px]="ec.top"
+                  [style.height.px]="ec.height"
+                  [style.left]="eventColumnLeft(ec)"
+                  [style.width]="eventColumnWidth(ec)"
+                  [style.--ev-color]="getColor(ec.event)"
+                  (click)="selectEvent.emit(ec.event.id)">
+            <span class="event-card__accent" aria-hidden="true"></span>
+            <span class="event-card__body">
+              <span class="event-card__title">{{ ec.event.title }}</span>
+              @if (showEventTime(ec.height)) {
+                <span class="event-card__meta">{{ formatEventTime(ec.event) }}</span>
+              }
+            </span>
+          </lw-button>
+        }
+
+        @if (isTodaySelected()) {
+          <div class="now-line" [style.top.px]="currentTimeTop()">
+            <span class="now-dot"></span>
+            <span class="now-bar"></span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

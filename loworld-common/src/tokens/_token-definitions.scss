@@ -1,0 +1,136 @@
+@use 'palette' as palette;
+@use 'space' as space;
+
+$lw-theme-tokens: (
+  // Spacing / Size tokens
+  "font-size-2xs": space.$lw-font-size-2xs,
+  "font-size-xs": space.$lw-font-size-xs,
+  "progress-gap": space.$lw-progress-gap,
+  "progress-font-size": space.$lw-progress-font-size,
+  "progress-height-md": space.$lw-progress-height-md,
+  "progress-height-sm": space.$lw-progress-height-sm,
+  "progress-height-lg": space.$lw-progress-height-lg,
+  "progress-radius-pill": space.$lw-progress-radius-pill,
+
+  "avatar-radius": space.$lw-avatar-radius,
+  "avatar-size-sm": space.$lw-avatar-size-sm,
+  "avatar-size-md": space.$lw-avatar-size-md,
+  "avatar-size-lg": space.$lw-avatar-size-lg,
+  "avatar-initial-font-sm": space.$lw-avatar-initial-font-sm,
+  "avatar-initial-font-md": space.$lw-avatar-initial-font-md,
+  "avatar-initial-font-lg": space.$lw-avatar-initial-font-lg,
+  "avatar-fallback-scale": space.$lw-avatar-fallback-scale,
+
+  "card-radius": space.$lw-card-radius,
+  "card-padding-sm": space.$lw-card-padding-sm,
+  "card-padding-md": space.$lw-card-padding-md,
+  "card-padding-lg": space.$lw-card-padding-lg,
+  "card-shadow": space.$lw-card-shadow,
+
+  "metric-gap": space.$lw-metric-gap,
+  "metric-padding-block": space.$lw-metric-padding-block,
+  "metric-font-size": space.$lw-metric-font-size,
+
+  "badge-font-sm": space.$lw-badge-font-sm,
+  "badge-font-md": space.$lw-badge-font-md,
+  "badge-font-lg": space.$lw-badge-font-lg,
+
+  "empty-gap": space.$lw-empty-gap,
+  "empty-padding-y": space.$lw-empty-padding-y,
+  "empty-padding-x": space.$lw-empty-padding-x,
+  "empty-icon-size": space.$lw-empty-icon-size,
+  "empty-font-size": space.$lw-empty-font-size,
+  "empty-padding-sm-y": space.$lw-empty-padding-sm-y,
+  "empty-padding-sm-x": space.$lw-empty-padding-sm-x,
+  "empty-font-sm": space.$lw-empty-font-sm,
+  "empty-icon-sm": space.$lw-empty-icon-sm,
+  "empty-padding-lg-y": space.$lw-empty-padding-lg-y,
+  "empty-padding-lg-x": space.$lw-empty-padding-lg-x,
+  "empty-font-lg": space.$lw-empty-font-lg,
+  "empty-icon-lg": space.$lw-empty-icon-lg,
+
+  "fab-menu-right": space.$lw-fab-menu-right,
+  "fab-menu-bottom": space.$lw-fab-menu-bottom,
+  "fab-menu-gap": space.$lw-fab-menu-gap,
+  "fab-menu-item-height": space.$lw-fab-menu-item-height,
+  "fab-menu-icon-size": space.$lw-fab-menu-icon-size,
+  "fab-anchor-right": space.$lw-fab-anchor-right,
+  "fab-anchor-bottom": space.$lw-fab-anchor-bottom,
+  "fab-size-default": space.$lw-fab-size-default,
+
+  "titlebar-px": space.$lw-titlebar-px,
+  "titlebar-gap": space.$lw-titlebar-gap,
+  "titlebar-height-sm": space.$lw-titlebar-height-sm,
+  "titlebar-height-md": space.$lw-titlebar-height-md,
+  "titlebar-height-lg": space.$lw-titlebar-height-lg,
+  "titlebar-menu-btn": space.$lw-titlebar-menu-btn,
+  "titlebar-menu-radius": space.$lw-titlebar-menu-radius,
+
+  "modal-radius": space.$lw-modal-radius,
+  "modal-width-sm": space.$lw-modal-width-sm,
+  "modal-width-md": space.$lw-modal-width-md,
+  "modal-width-lg": space.$lw-modal-width-lg,
+  "modal-header-py": space.$lw-modal-header-py,
+  "modal-header-px": space.$lw-modal-header-px,
+  "modal-body-padding": space.$lw-modal-body-padding,
+  "modal-footer-py": space.$lw-modal-footer-py,
+  "modal-footer-px": space.$lw-modal-footer-px,
+  "modal-title-font-size": space.$lw-modal-title-font-size,
+  "modal-close-size": space.$lw-modal-close-size,
+  "modal-close-radius": space.$lw-modal-close-radius,
+  "modal-inner-gap": space.$lw-modal-inner-gap,
+
+  "search-gap": space.$lw-search-gap,
+  "search-radius": space.$lw-search-radius,
+  "search-icon-sm": space.$lw-search-icon-sm,
+  "search-icon-md": space.$lw-search-icon-md,
+  "search-icon-lg": space.$lw-search-icon-lg,
+  "search-input-sm": space.$lw-search-input-sm,
+  "search-input-md": space.$lw-search-input-md,
+  "search-input-lg": space.$lw-search-input-lg,
+
+  // Palette tokens
+  "muted": palette.$lw-muted,
+  "progress-track": palette.$lw-progress-track,
+
+  "avatar-bg": palette.$lw-avatar-bg,
+  "avatar-icon-color": palette.$lw-avatar-icon-color,
+  "on-avatar-initial": palette.$lw-on-avatar-initial,
+
+  "card-bg": palette.$lw-card-bg,
+  "card-border": palette.$lw-card-border,
+  "card-hover-bg": palette.$lw-card-hover-bg,
+  "card-selected-bg": palette.$lw-card-selected-bg,
+  "color-primary": palette.$lw-color-primary,
+
+  "metric-label-color": palette.$lw-metric-label-color,
+  "metric-value-color": palette.$lw-metric-value-color,
+
+  "chip-border": palette.$lw-chip-border,
+  "chip-bg": palette.$lw-chip-bg,
+  "chip-text": palette.$lw-chip-text,
+  "chip-hover-border": palette.$lw-chip-hover-border,
+  "chip-hover-bg": palette.$lw-chip-hover-bg,
+  "on-primary-contrast": palette.$lw-on-primary-contrast,
+
+  "empty-color": palette.$lw-empty-color,
+
+  "fab-overlay-scrim": palette.$lw-fab-overlay-scrim,
+  "fab-menu-bg": palette.$lw-fab-menu-bg,
+  "fab-menu-text": palette.$lw-fab-menu-text,
+  "fab-menu-shadow": palette.$lw-fab-menu-shadow,
+
+  "surface": palette.$lw-surface,
+  "border-subtle": palette.$lw-border-subtle,
+  "titlebar-hover-bg": palette.$lw-titlebar-hover-bg,
+
+  "modal-overlay": palette.$lw-modal-overlay,
+  "modal-bg": palette.$lw-modal-bg,
+  "modal-shadow": palette.$lw-modal-shadow,
+  "modal-divider": palette.$lw-modal-divider,
+  "modal-title-color": palette.$lw-modal-title-color,
+
+  "search-focus-ring": palette.$lw-search-focus-ring,
+  "search-icon": palette.$lw-search-icon,
+  "ink": palette.$lw-ink
+);

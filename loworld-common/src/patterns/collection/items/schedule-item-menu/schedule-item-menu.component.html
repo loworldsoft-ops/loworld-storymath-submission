@@ -1,0 +1,25 @@
+<lw-menu >
+  @if (showRename()) {
+    <lw-menu-item (action)="rename.emit()">
+      <span class="icon-edit" aria-hidden="true"></span>
+      \uC774\uB984 \uBCC0\uACBD
+    </lw-menu-item>
+  }
+
+  @if (showCopy()) {
+    <lw-menu-item (action)="copyUrl.emit()">
+      <span class="icon-copy" aria-hidden="true"></span>
+      {{ isCopied() ? '\uC6B0\uB974 \uBCF5\uC0AC\uB428' : 'URL \uBCF5\uC0AC' }}
+    </lw-menu-item>
+  }
+
+  <lw-color-picker [currentColor]="currentColor()" 
+                   [palette]="palette()"
+                   (colorSelect)="changeColor.emit($event)">
+  </lw-color-picker>
+
+  <lw-menu-item [danger]="true" (action)="deleteItem.emit()">
+    <span class="icon-glyph icon-trash" aria-hidden="true">🗑️</span>
+    {{ deleteLabel() }}
+  </lw-menu-item>
+</lw-menu>

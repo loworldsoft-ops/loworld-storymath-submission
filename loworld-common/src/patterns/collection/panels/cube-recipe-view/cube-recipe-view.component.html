@@ -1,0 +1,10 @@
+    <div class="cube-recipe-guide-view">
+      <div class="header">
+        <span class="title">📜 호라드림 함 연성 조합 공식집</span>
+      </div>
+      <div class="recipe-list">
+        <div class="recipe-item" *ngFor="let r of recipes()" (click)="selectRecipe.emit(r)">
+          <span class="recipe-name">{{ r.name || r.title || '연성 공식' }}</span>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,10 @@
+{
+  "id": "dev",
+  "firebase": {
+    "apiKey": "…",
+    "authDomain": "<project>.firebaseapp.com",
+    "projectId": "<project>",
+    "appId": "…"
+  },
+  "contentBaseUrl": "https://loworld-content-{id}.pages.dev"
+}

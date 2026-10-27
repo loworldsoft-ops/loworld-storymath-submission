@@ -1,0 +1,253 @@
+<div class="component-detail" [class.component-detail--dark]="themeMode() === 'dark'">
+
+  <!-- ── Header (Premium Aurora Style) ── -->
+  <div class="detail-header">
+    <div class="header-glow" [attr.data-domain]="comp().domain"></div>
+    
+    <div class="detail-meta">
+      <lw-badge variant="subtle" [color]="comp().domain === 'novel' ? 'story' : (comp().domain === 'develop' ? 'purple' : 'primary')">
+        {{ getDomainLabel(comp().domain) }}
+      </lw-badge>
+      <lw-badge variant="outlined" color="neutral">
+        {{ comp().category }}
+      </lw-badge>
+    </div>
+
+    <h2 class="detail-name">{{ comp().name }}</h2>
+    
+    <div class="selector-wrapper">
+      <div
+        class="selector-container"
+        role="button"
+        tabindex="0"
+        aria-label="컴포넌트 셀렉터 복사"
+        (click)="copySelector(comp().selector)"
+        (keydown.enter)="copySelector(comp().selector)"
+        (keydown.space)="$event.preventDefault(); copySelector(comp().selector)">
+        <code class="selector-block">&lt;{{ comp().selector }}&gt;</code>
+        <lw-button variant="ghost" size="xs" class="copy-btn" [selected]="copied()" ariaLabel="셀렉터 복사">
+          @if (copied()) {
+            <span class="copy-icon">✓</span>
+            <span class="copy-text">Copied!</span>
+          } @else {
+            <span class="copy-icon">📋</span>
+            <span class="copy-text">Copy</span>
+          }
+        </lw-button>
+      </div>
+    </div>
+    
+    <p class="detail-desc">{{ comp().description }}</p>
+  </div>
+
+  <!-- ── Detail Tab Bar Switcher ── -->
+  <div class="detail-tabs">
+    <lw-button variant="ghost" class="tab-btn" [selected]="activeTab() === 'demo'" (click)="activeTab.set('demo')">
+      ⚡ Spec & Live Demo
+    </lw-button>
+    <lw-button variant="ghost" class="tab-btn" [selected]="activeTab() === 'blueprint'" (click)="activeTab.set('blueprint')">
+      ★ 조립 지도 (Assembly Blueprint)
+    </lw-button>
+  </div>
+
+  @if (activeTab() === 'demo') {
+    <!-- ── Live Demo (Cyber Glow Sandbox) ── -->
+    <section class="detail-section demo-section">
+    <h3 class="section-title">
+      <span class="title-icon">⚡</span>
+      Live Demo Sandbox
+    </h3>
+    <div class="demo-container">
+      <div class="sandbox-content">
+        <ng-container *ngComponentOutlet="previewComponent(); inputs: previewInputs()"></ng-container>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 사용 앱 (Glossy Used In) ── -->
+  @if (comp().usedIn && comp().usedIn!.length > 0) {
+    <section class="detail-section usage-section">
+      <h3 class="section-title">
+        <span class="title-icon">🔗</span>
+        사용 중인 애플리케이션
+      </h3>
+      <div class="usage-grid">
+        @for (usage of comp().usedIn!; track usage.app) {
+          <lw-card class="usage-card" variant="outlined" [attr.data-app]="usage.app">
+            <div class="usage-card-glow"></div>
+            <div class="usage-card-header">
+              <div class="app-brand">
+                <span class="app-brand-dot"></span>
+                <span class="usage-app-name">{{ APP_LABELS[usage.app] }}</span>
+              </div>
+              <span class="usage-type-badge" [class.direct]="usage.direct" [class.indirect]="!usage.direct">
+                {{ usage.direct ? 'Direct Import' : 'Sub-component' }}
+              </span>
+            </div>
+            <div class="usage-card-body">
+              <p class="usage-role">
+                <span class="bullet">▹</span> {{ usage.role }}
+              </p>
+              @if (usage.feature) {
+                <div class="usage-feature-wrap">
+                  <span class="feature-label">Feature</span>
+                  <p class="usage-feature">{{ usage.feature }}</p>
+                </div>
+              }
+            </div>
+          </lw-card>
+        }
+      </div>
+    </section>
+  }
+
+
+
+  <!-- ── Inputs (Technical Spec Cards) ── -->
+  @if (comp().inputs.length > 0) {
+    <section class="detail-section">
+      <h3 class="section-title">
+        <span class="title-icon">📥</span>
+        Inputs Spec
+        <span class="count-badge">{{ comp().inputs.length }}</span>
+      </h3>
+      <div class="prop-card-grid">
+        @for (inp of comp().inputs; track inp.name) {
+          <lw-card class="prop-card input-card" variant="outlined">
+            <div class="prop-card-decor"></div>
+            <div class="prop-card-body">
+              <div class="prop-header">
+                <span class="prop-badge input-badge">@Input()</span>
+                <code class="prop-name">{{ inp.name }}</code>
+              </div>
+              <div class="prop-type-wrap">
+                <span class="type-label">Type</span>
+                <code class="prop-type">{{ inp.type }}</code>
+              </div>
+            </div>
+          </lw-card>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- ── Outputs (Technical Spec Cards) ── -->
+  @if (comp().outputs.length > 0) {
+    <section class="detail-section">
+      <h3 class="section-title">
+        <span class="title-icon">📤</span>
+        Outputs Spec
+        <span class="count-badge">{{ comp().outputs.length }}</span>
+      </h3>
+      <div class="prop-card-grid">
+        @for (out of comp().outputs; track out.name) {
+          <lw-card class="prop-card output-card" variant="outlined">
+            <div class="prop-card-decor"></div>
+            <div class="prop-card-body">
+              <div class="prop-header">
+                <span class="prop-badge output-badge">@Output()</span>
+                <code class="prop-name">{{ out.name }}</code>
+              </div>
+              <div class="prop-type-wrap">
+                <span class="type-label">Emits</span>
+                <code class="prop-type">{{ out.type }}</code>
+              </div>
+            </div>
+          </lw-card>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- ── 입/출력 없음 ── -->
+  @if (comp().inputs.length === 0 && comp().outputs.length === 0) {
+    <section class="detail-section">
+      <div class="no-api-premium">
+        <div class="no-api-icon-wrap">
+          <span class="no-api-icon">🧩</span>
+          <div class="pulse-ring"></div>
+        </div>
+        <h4>No External API Properties</h4>
+        <p>이 컴포넌트는 단독 독립형으로 작동하며, 외부 입/출력 바인딩 스펙이 존재하지 않습니다.</p>
+      </div>
+    </section>
+  }
+}
+
+  <!-- ── Assembly Blueprint (조립 지도) ── -->
+  @if (activeTab() === 'blueprint') {
+    <section class="detail-section blueprint-section">
+      <h3 class="section-title">
+        <span class="title-icon">🎨</span>
+        Component Assembly Blueprint
+      </h3>
+      
+      @if (hasDuplicationRisk()) {
+        <div class="duplication-alert" [attr.data-risk]="comp().duplicationRisk">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-content">
+            <strong>중복 위험 경고 (Duplication Risk Detected)</strong>
+            <p>이 컴포넌트와 유사한 레이아웃 구조 또는 동작방식을 공유하는 컴포넌트가 감지되었습니다. 팩토리 빌드 시 병합 혹은 공통 템플릿 상속을 검토하십시오.</p>
+          </div>
+        </div>
+      }
+
+      <div class="blueprint-canvas">
+        <!-- Left Column: Dependencies (하위 의존 컴포넌트) -->
+        <div class="blueprint-column">
+          <h4 class="col-title">하위 의존성 (Dependencies)</h4>
+          <div class="node-list">
+            @if (compDependencies().length > 0) {
+              @for (dep of compDependencies(); track dep) {
+                <div class="blueprint-node dependency-node">
+                  <span class="node-icon">🧩</span>
+                  <code class="node-name">&lt;{{ dep }}&gt;</code>
+                </div>
+              }
+            } @else {
+              <div class="node-empty">하위 의존 컴포넌트 없음</div>
+            }
+          </div>
+        </div>
+
+        <!-- Flow Connector Left to Center -->
+        <div class="flow-connector">
+          <span class="arrow-line">➔</span>
+        </div>
+
+        <!-- Middle Column: Current Target Component -->
+        <div class="blueprint-column highlight-column">
+          <h4 class="col-title">현재 컴포넌트 (Target)</h4>
+          <div class="blueprint-node target-node" [attr.data-layer]="comp().layer ?? 'composite'">
+            <span class="node-layer">{{ comp().layer ?? 'composite' | uppercase }}</span>
+            <strong class="node-title">{{ comp().name }}</strong>
+            <code class="node-selector">&lt;{{ comp().selector }}&gt;</code>
+          </div>
+        </div>
+
+        <!-- Flow Connector Center to Right -->
+        <div class="flow-connector">
+          <span class="arrow-line">➔</span>
+        </div>
+
+        <!-- Right Column: Referenced By (상위 참조 앱 / 컴포넌트) -->
+        <div class="blueprint-column">
+          <h4 class="col-title">상위 사용처 (Referenced By)</h4>
+          <div class="node-list">
+            @if (compReferencedBy().length > 0) {
+              @for (ref of compReferencedBy(); track ref) {
+                <div class="blueprint-node reference-node">
+                  <span class="node-icon">🔗</span>
+                  <code class="node-name">&lt;{{ ref }}&gt;</code>
+                </div>
+              }
+            } @else {
+              <div class="node-empty">상위 참조 컴포넌트 없음</div>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+</div>

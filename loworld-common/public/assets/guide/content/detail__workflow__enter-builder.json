@@ -1,0 +1,7 @@
+{
+  "path": "/detail/workflow/enter-builder",
+  "title": "워크플로우 빌더 진입하기",
+  "desc": "",
+  "toc": [],
+  "html": "<div class=\"fd-steps\"><div class=\"fd-step\"><p>좌측 사이드바에서 워크스페이스를 선택합니다.</p></div><div class=\"fd-step\"><p>워크스페이스 상세 페이지에서 <strong>&quot;워크스페이스 열기&quot;</strong> 버튼을 클릭합니다.</p></div><div class=\"fd-step\"><p>워크플로우 편집기가 새 탭에서 열립니다.</p></div></div>\n<p>왼쪽 <strong>Workflows</strong> 영역에서 워크플로우 파일을 가져오거나 폴더와 새 워크플로우를 만들 수 있습니다.\n이 영역에는 워크플로우 목록과 각 항목의 하위 메뉴가 표시됩니다. 편집 화면은 블록을 배치하고 연결하는 <strong>캔버스(Canvas)</strong>, 블록을 고르는 <strong>도구 모음(Toolbar)</strong>, 선택한 블록의 설정을 바꾸는 <strong>편집 패널(Editor Panel)</strong> 영역으로 구성됩니다.</p>"
+}

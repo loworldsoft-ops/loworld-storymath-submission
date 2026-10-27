@@ -1,0 +1,37 @@
+@use '../console/console-ui' as ui;
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.lw-rbac {
+  @include ui.foundry-card;
+  @include ui.foundry-scroll;
+}
+
+.lw-rbac__table {
+  @include ui.foundry-table;
+}
+
+.lw-rbac__center {
+  text-align: center;
+}
+
+.lw-rbac__domain {
+  display: block;
+  color: var(--lw-text-primary);
+  font-weight: 600;
+}
+
+.lw-rbac__code {
+  color: var(--lw-text-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+
+.lw-rbac__locked {
+  color: var(--lw-color-success);
+}

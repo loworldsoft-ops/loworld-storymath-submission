@@ -1,0 +1,106 @@
+<div class="lw-vessel" 
+     [class.lw-vessel--menu-left]="config().menuPosition === 'left'"
+     [class.lw-vessel--menu-top]="config().menuPosition === 'top'"
+     [class.lw-vessel--disabled]="_disabled()">
+
+  <!-- ── 1. 최상단 타이틀 컨트롤 바 ── -->
+  <div class="lw-vessel__header">
+    <div class="lw-vessel__title-group">
+      <span class="lw-vessel__title-icon">🏺</span>
+      <h3 class="lw-vessel__title">{{ config().title }}</h3>
+    </div>
+    
+    <!-- 레이아웃 전환 퀵 컨트롤러 -->
+    <div class="lw-vessel__layout-controls">
+      <lw-button class="lw-vessel__ctrl-btn" 
+              [class.lw-vessel__ctrl-btn--active]="layoutMode() === 'single'"
+              (click)="updateLayoutMode('single')">Single</lw-button>
+      <lw-button class="lw-vessel__ctrl-btn" 
+              [class.lw-vessel__ctrl-btn--active]="layoutMode() === 'split'"
+              (click)="updateLayoutMode('split')">Split</lw-button>
+      <lw-button class="lw-vessel__ctrl-btn" 
+              [class.lw-vessel__ctrl-btn--active]="layoutMode() === 'grid'"
+              (click)="updateLayoutMode('grid')">Grid</lw-button>
+      <lw-button class="lw-vessel__ctrl-btn" 
+              [class.lw-vessel__ctrl-btn--active]="layoutMode() === 'overlay'"
+              (click)="updateLayoutMode('overlay')">Overlay</lw-button>
+    </div>
+  </div>
+
+  <div class="lw-vessel__body">
+    <!-- ── 2. 사이드/상단 메뉴 제어바 ── -->
+    @if (config().showMenu) {
+      <nav class="lw-vessel__navigation">
+        <ul class="lw-vessel__menu-list">
+          @for (item of menuItems(); track item.id) {
+            <li class="lw-vessel__menu-item"
+                [class.lw-vessel__menu-item--active]="activeMenuId() === item.id"
+                [class.lw-vessel__menu-item--disabled]="item.disabled"
+                role="button"
+                tabindex="0"
+                [attr.aria-pressed]="activeMenuId() === item.id"
+                (click)="onMenuSelect(item.id)"
+                (keydown.enter)="onMenuSelect(item.id)"
+                (keydown.space)="onMenuSelect(item.id)">
+              <span class="lw-vessel__menu-icon">{{ item.icon ?? '⚙️' }}</span>
+              <span class="lw-vessel__menu-label">{{ item.label }}</span>
+              @if (item.badgeCount && item.badgeCount > 0) {
+                <span class="lw-vessel__menu-badge">{{ item.badgeCount }}</span>
+              }
+            </li>
+          }
+        </ul>
+      </nav>
+    }
+
+    <!-- ── 3. 동적 가변 그리드 / 슬롯 프로젝션 본문 ── -->
+    <main class="lw-vessel__content-grid" 
+          [attr.data-layout]="layoutMode()">
+      
+      <!-- [A] 고정적인 메인 영역 (Single이 아닐 때 또는 메인 컴포넌트로 항상 노출) -->
+      @if (layoutMode() !== 'single' || activeMenuId() === 'main') {
+        <div class="lw-vessel__slot lw-vessel__slot--main" 
+             [class.lw-vessel__slot--fade]="layoutMode() === 'overlay' && isOverlayOpen()">
+          <ng-content select="[vessel-slot='main']"></ng-content>
+        </div>
+      }
+
+      <!-- [B] 메뉴 조작에 의해 선택/조합되는 서브 컴포넌트 영역 -->
+      
+      <!-- 1. 소설/장르 리더 슬롯 -->
+      <div class="lw-vessel__slot lw-vessel__slot--reader"
+           [class.lw-vessel__slot--hidden]="!isSlotVisible('reader')">
+        <ng-content select="[vessel-slot='reader']"></ng-content>
+      </div>
+
+      <!-- 2. 장비 상점 슬롯 -->
+      <div class="lw-vessel__slot lw-vessel__slot--shop"
+           [class.lw-vessel__slot--hidden]="!isSlotVisible('shop')">
+        <ng-content select="[vessel-slot='shop']"></ng-content>
+      </div>
+
+      <!-- 3. 전투 아레나 슬롯 -->
+      <div class="lw-vessel__slot lw-vessel__slot--arena"
+           [class.lw-vessel__slot--hidden]="!isSlotVisible('arena')">
+        <ng-content select="[vessel-slot='arena']"></ng-content>
+      </div>
+
+      <!-- [C] 오버레이 레이아웃 모드일 때 띄워줄 오버레이 카드 셸 -->
+      @if (layoutMode() === 'overlay' && isOverlayOpen()) {
+        <div class="lw-vessel__overlay-backdrop" role="dialog" aria-modal="true" tabindex="-1" (click)="closeOverlay()" (keydown.escape)="closeOverlay()">
+          <lw-card class="lw-vessel__overlay-card animate-slide-up" role="document" variant="outlined" (click)="$event.stopPropagation()">
+            <lw-button class="lw-vessel__overlay-close" (click)="closeOverlay()">✕</lw-button>
+            <div class="lw-vessel__overlay-content">
+              @switch (activeMenuId()) {
+                @case ('reader') { <ng-content select="[vessel-slot='reader']"></ng-content> }
+                @case ('shop') { <ng-content select="[vessel-slot='shop']"></ng-content> }
+                @case ('arena') { <ng-content select="[vessel-slot='arena']"></ng-content> }
+              }
+            </div>
+          </lw-card>
+        </div>
+      }
+
+    </main>
+  </div>
+</div>

@@ -1,0 +1,723 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-09-03T08:22:14.219Z",
+  "state": {
+    "blocks": {
+      "5eae334f-ecb1-4651-8124-67d825c7fe27": {
+        "id": "5eae334f-ecb1-4651-8124-67d825c7fe27",
+        "type": "schedule",
+        "name": "매일아침",
+        "position": {
+          "x": 150,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": true,
+        "height": 143,
+        "subBlocks": {
+          "timezone": {
+            "id": "timezone",
+            "type": "dropdown",
+            "value": "Asia/Seoul"
+          },
+          "dailyTime": {
+            "id": "dailyTime",
+            "type": "time-input",
+            "value": "09:00"
+          },
+          "weeklyDay": {
+            "id": "weeklyDay",
+            "type": "dropdown",
+            "value": null
+          },
+          "monthlyDay": {
+            "id": "monthlyDay",
+            "type": "short-input",
+            "value": null
+          },
+          "monthlyTime": {
+            "id": "monthlyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "hourlyMinute": {
+            "id": "hourlyMinute",
+            "type": "short-input",
+            "value": null
+          },
+          "scheduleInfo": {
+            "id": "scheduleInfo",
+            "type": "schedule-info",
+            "value": null
+          },
+          "scheduleType": {
+            "id": "scheduleType",
+            "type": "dropdown",
+            "value": "daily"
+          },
+          "weeklyDayTime": {
+            "id": "weeklyDayTime",
+            "type": "time-input",
+            "value": null
+          },
+          "cronExpression": {
+            "id": "cronExpression",
+            "type": "short-input",
+            "value": null
+          },
+          "minutesInterval": {
+            "id": "minutesInterval",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {},
+        "data": {}
+      },
+      "93266f38-f8ec-4807-990b-741352e54462": {
+        "id": "93266f38-f8ec-4807-990b-741352e54462",
+        "type": "note",
+        "name": "주의! 확인바람",
+        "position": {
+          "x": 1438.0927152317881,
+          "y": 41.46423841059617
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 0,
+        "subBlocks": {
+          "content": {
+            "id": "content",
+            "type": "long-input",
+            "value": "Gmail Account, To.\n이 두 부분을 자신의 이메일로 바꿔주세요."
+          }
+        },
+        "outputs": {},
+        "data": {}
+      },
+      "0600fd80-64b4-4ef1-a0a8-160d5b69118d": {
+        "id": "0600fd80-64b4-4ef1-a0a8-160d5b69118d",
+        "type": "table_v2",
+        "name": "미처리조회",
+        "position": {
+          "x": 580,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 230,
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": null
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": "50"
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": "insert"
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "query_rows_v2"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": {
+              "field": "col_3a817e11e75b4d9faf152eebec5e7101",
+              "direction": "desc"
+            }
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": [
+              {
+                "id": "3d3f594f-c4f8-4cad-ad9a-e70f5755e2b5",
+                "op": "eq",
+                "field": "col_50fd56f172884e2790a873596e8ec227",
+                "value": "접수"
+              }
+            ]
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": "tbl_ca469739d2fc4d1ca2bee5726469381f"
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": true
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": "<div class=\"mb-3\"><strong>1.</strong> Select the table to monitor</div><div class=\"mb-3\"><strong>2.</strong> Choose whether to trigger on row inserts or updates</div><div class=\"mb-3\"><strong>3.</strong> For updates, optionally select specific columns to watch</div><div class=\"mb-3\"><strong>4.</strong> The workflow will trigger automatically when the event occurs</div>"
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": ""
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Array of rows"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status"
+          }
+        },
+        "data": {}
+      },
+      "6dcf5425-1ea2-4c23-bb1d-8eaee0c5c4dc": {
+        "id": "6dcf5425-1ea2-4c23-bb1d-8eaee0c5c4dc",
+        "type": "agent",
+        "name": "브리핑작성",
+        "position": {
+          "x": 1010,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 346,
+        "subBlocks": {
+          "topK": {
+            "id": "topK",
+            "type": "slider",
+            "value": null
+          },
+          "topP": {
+            "id": "topP",
+            "type": "slider",
+            "value": null
+          },
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "model": {
+            "id": "model",
+            "type": "combobox",
+            "value": "gpt-5"
+          },
+          "tools": {
+            "id": "tools",
+            "type": "tool-input",
+            "value": []
+          },
+          "messages": {
+            "id": "messages",
+            "type": "messages-input",
+            "value": [
+              {
+                "role": "system",
+                "content": "  너는 고객지원 팀장이다. 접수 대장에서 아직 처리되지 않은 문의 목록을 받아\n  팀에게 메일로 보낼 브리핑을 작성한다.\n  목록에 없는 건은 절대 언급하지 마라. 목록이 비어 있으면 \"미처리 문의 없음\"만 쓴다.\n  메일 본문으로 바로 쓸 수 있게 인사말 없이 본문만 작성한다."
+              },
+              {
+                "role": "user",
+                "content": "  아래는 현재 '접수' 상태인 문의 전체다.\n  \n  <미처리조회.rows>\n\n  다음 형식으로 작성하라.\n\n  1) 총 건수와 분류별 건수를 한 줄로\n  2) 가장 먼저 처리해야 할 1건과 그 이유 (한 문장)\n  3) 담당자가 비어 있는 건수\n  4) 전체 목록을 \"요청자 / 분류 / 내용\" 한 줄씩\n  Response Format은 비워둡니다 — 사람이 읽을 글이라 content로 나오면 됩니다."
+              }
+            ]
+          },
+          "maxTokens": {
+            "id": "maxTokens",
+            "type": "short-input",
+            "value": null
+          },
+          "verbosity": {
+            "id": "verbosity",
+            "type": "dropdown",
+            "value": "medium"
+          },
+          "memoryType": {
+            "id": "memoryType",
+            "type": "dropdown",
+            "value": "none"
+          },
+          "temperature": {
+            "id": "temperature",
+            "type": "slider",
+            "value": 0.3
+          },
+          "azureEndpoint": {
+            "id": "azureEndpoint",
+            "type": "short-input",
+            "value": null
+          },
+          "thinkingLevel": {
+            "id": "thinkingLevel",
+            "type": "dropdown",
+            "value": ""
+          },
+          "vertexProject": {
+            "id": "vertexProject",
+            "type": "short-input",
+            "value": null
+          },
+          "conversationId": {
+            "id": "conversationId",
+            "type": "short-input",
+            "value": null
+          },
+          "responseFormat": {
+            "id": "responseFormat",
+            "type": "code",
+            "value": null
+          },
+          "vertexLocation": {
+            "id": "vertexLocation",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "azureApiVersion": {
+            "id": "azureApiVersion",
+            "type": "short-input",
+            "value": null
+          },
+          "reasoningEffort": {
+            "id": "reasoningEffort",
+            "type": "dropdown",
+            "value": "medium"
+          },
+          "vertexCredential": {
+            "id": "vertexCredential",
+            "type": "oauth-input",
+            "value": null
+          },
+          "slidingWindowSize": {
+            "id": "slidingWindowSize",
+            "type": "short-input",
+            "value": null
+          },
+          "slidingWindowTokens": {
+            "id": "slidingWindowTokens",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {
+          "model": {
+            "type": "string",
+            "description": "Model used for generation"
+          },
+          "tokens": {
+            "type": "any",
+            "description": "Token usage statistics"
+          },
+          "content": {
+            "type": "string",
+            "description": "Generated response content"
+          },
+          "toolCalls": {
+            "type": "any",
+            "description": "Tool calls made"
+          }
+        },
+        "data": {}
+      },
+      "527c2440-d21a-4303-bcab-920d2f3c0152": {
+        "id": "527c2440-d21a-4303-bcab-920d2f3c0152",
+        "type": "gmail_v2",
+        "name": "메일발송",
+        "position": {
+          "x": 1440,
+          "y": 150
+        },
+        "enabled": false,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 288,
+        "subBlocks": {
+          "cc": {
+            "id": "cc",
+            "type": "short-input",
+            "value": null
+          },
+          "to": {
+            "id": "to",
+            "type": "short-input",
+            "value": ""
+          },
+          "bcc": {
+            "id": "bcc",
+            "type": "short-input",
+            "value": null
+          },
+          "body": {
+            "id": "body",
+            "type": "long-input",
+            "value": "<브리핑작성.content>"
+          },
+          "query": {
+            "id": "query",
+            "type": "short-input",
+            "value": null
+          },
+          "folder": {
+            "id": "folder",
+            "type": "folder-selector",
+            "value": null
+          },
+          "subject": {
+            "id": "subject",
+            "type": "short-input",
+            "value": "[문의접수대장] 미처리 문의 일일 브리핑"
+          },
+          "labelIds": {
+            "id": "labelIds",
+            "type": "dropdown",
+            "value": null
+          },
+          "threadId": {
+            "id": "threadId",
+            "type": "short-input",
+            "value": null
+          },
+          "messageId": {
+            "id": "messageId",
+            "type": "short-input",
+            "value": null
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "send_gmail"
+          },
+          "credential": {
+            "id": "credential",
+            "type": "oauth-input",
+            "value": null
+          },
+          "markAsRead": {
+            "id": "markAsRead",
+            "type": "switch",
+            "value": false
+          },
+          "maxResults": {
+            "id": "maxResults",
+            "type": "short-input",
+            "value": null
+          },
+          "unreadOnly": {
+            "id": "unreadOnly",
+            "type": "switch",
+            "value": null
+          },
+          "attachments": {
+            "id": "attachments",
+            "type": "short-input",
+            "value": null
+          },
+          "contentType": {
+            "id": "contentType",
+            "type": "dropdown",
+            "value": "text"
+          },
+          "searchQuery": {
+            "id": "searchQuery",
+            "type": "short-input",
+            "value": null
+          },
+          "sourceLabel": {
+            "id": "sourceLabel",
+            "type": "folder-selector",
+            "value": null
+          },
+          "manualFolder": {
+            "id": "manualFolder",
+            "type": "short-input",
+            "value": null
+          },
+          "moveMessageId": {
+            "id": "moveMessageId",
+            "type": "short-input",
+            "value": null
+          },
+          "samplePayload": {
+            "id": "samplePayload",
+            "type": "code",
+            "value": "{\n  \"email\": {\n    \"id\": \"mock_id\",\n    \"threadId\": \"mock_threadId\",\n    \"subject\": \"mock_subject\",\n    \"from\": \"mock_from\",\n    \"to\": \"mock_to\",\n    \"cc\": \"mock_cc\",\n    \"date\": \"mock_date\",\n    \"bodyText\": \"mock_bodyText\",\n    \"bodyHtml\": \"mock_bodyHtml\",\n    \"labels\": \"mock_labels\",\n    \"hasAttachments\": true,\n    \"attachments\": null\n  },\n  \"timestamp\": \"mock_timestamp\"\n}"
+          },
+          "actionMessageId": {
+            "id": "actionMessageId",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "labelManagement": {
+            "id": "labelManagement",
+            "type": "folder-selector",
+            "value": null
+          },
+          "pollingTimezone": {
+            "id": "pollingTimezone",
+            "type": "dropdown",
+            "value": "Asia/Seoul"
+          },
+          "destinationLabel": {
+            "id": "destinationLabel",
+            "type": "folder-selector",
+            "value": null
+          },
+          "pollingDailyTime": {
+            "id": "pollingDailyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "pollingWeeklyDay": {
+            "id": "pollingWeeklyDay",
+            "type": "dropdown",
+            "value": null
+          },
+          "replyToMessageId": {
+            "id": "replyToMessageId",
+            "type": "short-input",
+            "value": null
+          },
+          "manualSourceLabel": {
+            "id": "manualSourceLabel",
+            "type": "short-input",
+            "value": null
+          },
+          "pollingWeeklyTime": {
+            "id": "pollingWeeklyTime",
+            "type": "time-input",
+            "value": null
+          },
+          "includeAttachments": {
+            "id": "includeAttachments",
+            "type": "switch",
+            "value": false
+          },
+          "triggerCredentials": {
+            "id": "triggerCredentials",
+            "type": "oauth-input",
+            "value": null
+          },
+          "labelFilterBehavior": {
+            "id": "labelFilterBehavior",
+            "type": "dropdown",
+            "value": "INCLUDE"
+          },
+          "pollingHourlyMinute": {
+            "id": "pollingHourlyMinute",
+            "type": "short-input",
+            "value": null
+          },
+          "pollingScheduleType": {
+            "id": "pollingScheduleType",
+            "type": "dropdown",
+            "value": "realtime"
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": "<div class=\"mb-3\"><strong>1.</strong> Connect your Gmail account using OAuth credentials</div><div class=\"mb-3\"><strong>2.</strong> Configure which Gmail labels to monitor (optional)</div><div class=\"mb-3\"><strong>3.</strong> The system will automatically check for new emails and trigger your workflow</div>"
+          },
+          "labelActionMessageId": {
+            "id": "labelActionMessageId",
+            "type": "short-input",
+            "value": null
+          },
+          "manualLabelManagement": {
+            "id": "manualLabelManagement",
+            "type": "short-input",
+            "value": null
+          },
+          "manualDestinationLabel": {
+            "id": "manualDestinationLabel",
+            "type": "short-input",
+            "value": null
+          },
+          "pollingMinutesInterval": {
+            "id": "pollingMinutesInterval",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {
+          "cc": {
+            "type": "string",
+            "description": "CC recipients (comma-separated)"
+          },
+          "id": {
+            "type": "string",
+            "description": "Gmail message ID"
+          },
+          "to": {
+            "type": "string",
+            "description": "To"
+          },
+          "body": {
+            "type": "string",
+            "description": "Email body text (best-effort)"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date"
+          },
+          "from": {
+            "type": "string",
+            "description": "Sender"
+          },
+          "labels": {
+            "type": "string",
+            "description": "Email labels (comma-separated)"
+          },
+          "results": {
+            "type": "json",
+            "description": "Search/read summary results"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject"
+          },
+          "email_id": {
+            "type": "string",
+            "description": "Gmail message ID"
+          },
+          "labelIds": {
+            "type": "array",
+            "description": "Email label IDs"
+          },
+          "threadId": {
+            "type": "string",
+            "description": "Gmail thread ID"
+          },
+          "body_html": {
+            "type": "string",
+            "description": "HTML email body"
+          },
+          "body_text": {
+            "type": "string",
+            "description": "Plain text email body"
+          },
+          "raw_email": {
+            "type": "json",
+            "description": "Complete raw email data from Gmail API (if enabled)"
+          },
+          "thread_id": {
+            "type": "string",
+            "description": "Gmail thread ID"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Event timestamp"
+          },
+          "attachments": {
+            "type": "json",
+            "description": "Downloaded attachments (if enabled)"
+          },
+          "has_attachments": {
+            "type": "boolean",
+            "description": "Whether email has attachments"
+          }
+        },
+        "data": {}
+      }
+    },
+    "edges": [
+      {
+        "id": "6e3b6c6f-2697-4a91-a2f6-32d0b8cbfbb3",
+        "source": "0600fd80-64b4-4ef1-a0a8-160d5b69118d",
+        "target": "6dcf5425-1ea2-4c23-bb1d-8eaee0c5c4dc",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "5a6b911b-287e-4e9f-9094-ab8076a62d5c",
+        "source": "6dcf5425-1ea2-4c23-bb1d-8eaee0c5c4dc",
+        "target": "527c2440-d21a-4303-bcab-920d2f3c0152",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "9822dde1-0867-42e7-906c-08e28826d8b0",
+        "source": "5eae334f-ecb1-4651-8124-67d825c7fe27",
+        "target": "0600fd80-64b4-4ef1-a0a8-160d5b69118d",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      }
+    ],
+    "loops": {},
+    "parallels": {},
+    "metadata": {
+      "name": "일일 미처리 리포트",
+      "description": "New workflow",
+      "color": "#1e9de8",
+      "exportedAt": "2026-09-03T08:22:14.218Z"
+    },
+    "variables": {}
+  }
+}

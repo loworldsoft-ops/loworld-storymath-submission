@@ -1,0 +1,6 @@
+    @if (feedback.active(); as toast) {
+      <lw-snackbar
+        [kind]="toast.kind"
+        [message]="toast.message"
+        (dismiss)="feedback.dismiss()" />
+    }

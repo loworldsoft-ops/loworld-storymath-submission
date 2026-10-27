@@ -1,0 +1,62 @@
+<div class="wbs-tree">
+  @if (showSearch()) {
+    <lw-search-input
+      class="wbs-tree__search"
+      [query]="filterQuery()"
+      placeholder="WBS 검색 (제목·명세 ID)"
+      size="sm"
+      (actionEvent)="$event.actionId === 'SEARCH_QUERY_CHANGE' && onFilterChange($event.payload)" />
+  }
+
+  @if (flatRows().length === 0) {
+    <p class="wbs-tree__empty">검색 결과가 없습니다.</p>
+  } @else {
+    <div class="wbs-tree__list" role="tree">
+      @for (row of flatRows(); track row.node.id) {
+        <lw-card
+          class="wbs-tree__row"
+          [class.wbs-tree__row--selected]="selectedId() === row.node.id"
+          [style.--wbs-depth]="row.depth"
+          variant="outlined"
+          size="sm"
+          [interactive]="true"
+          [selected]="selectedId() === row.node.id"
+          (actionEvent)="$event.actionId === 'CARD_CLICK' && onRowClick(row.node)">
+          <div class="wbs-tree__row-inner">
+            @if (row.hasChildren) {
+              <lw-button
+                type="button"
+                class="wbs-tree__expand"
+                [attr.aria-expanded]="row.expanded"
+                [attr.aria-label]="row.expanded ? '접기' : '펼치기'"
+                (click)="onToggleExpand(row.node.id, $event)">
+                {{ row.expanded ? '▾' : '▸' }}
+              </lw-button>
+            } @else {
+              <span class="wbs-tree__expand wbs-tree__expand--spacer" aria-hidden="true"></span>
+            }
+            <div class="wbs-tree__body">
+              <div class="wbs-tree__badges">
+                <lw-badge [label]="kindLabel(row.node.nodeKind)" [color]="kindColor(row.node.nodeKind)" variant="subtle" size="sm" />
+                @if (row.node.status) {
+                  <lw-badge
+                    [label]="statusLabel(row.node.status)"
+                    [color]="statusColor(row.node.status)"
+                    variant="subtle"
+                    size="sm" />
+                }
+                @if (row.node.spec; as spec) {
+                  <lw-badge [label]="spec.id" color="neutral" variant="outlined" size="sm" />
+                }
+              </div>
+              <div class="wbs-tree__title">{{ row.node.title }}</div>
+              @if (row.node.epicBrief) {
+                <p class="wbs-tree__brief">{{ row.node.epicBrief }}</p>
+              }
+            </div>
+          </div>
+        </lw-card>
+      }
+    </div>
+  }
+</div>

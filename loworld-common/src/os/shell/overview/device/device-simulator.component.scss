@@ -1,0 +1,823 @@
+@use 'sass:list';
+
+:host {
+  display: block;
+}
+
+/* ── 시뮬레이터 무대: 데스크톱 화면에서 스마트폰 모드를 볼 때만 만들어진다 ── */
+
+.overview-mobile-mode-stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--lw-hue-gray-950);
+  box-sizing: border-box;
+
+  .overview-mobile-stage-backdrop {
+    position: absolute;
+    inset: -36px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(16px) saturate(120%) brightness(0.7);
+    transform: scale(1.05) translateZ(0);
+    will-change: transform;
+    pointer-events: none;
+    z-index: 0;
+    transition: background-image 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  // Atmospheric dark glass blur ambient lighting
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--lw-hue-gray-950) 94%, transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+// 모바일 OS 우측 하단 플로팅 제어 버튼 (Floating FAB - Icon-only Circle)
+.overview-mode-floating-fab {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  top: auto;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: color-mix(in srgb, var(--lw-hue-gray-900) 95%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 22%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--lw-color-black) 45%, transparent), 0 2px 6px color-mix(in srgb, var(--lw-color-black) 25%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+  color: var(--lw-surface);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.2, 0.9, 0.3, 1);
+  animation: fadeInFab 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  .fab-icon {
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: color-mix(in srgb, var(--lw-hue-gray-800) 92%, transparent);
+    transform: translateY(-2px) scale(1.06);
+    border-color: color-mix(in srgb, var(--lw-color-primary) 40%, transparent);
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--lw-color-black) 55%, transparent), 0 0 14px color-mix(in srgb, var(--lw-color-primary) 40%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 50%, transparent);
+
+    .fab-icon {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.94);
+  }
+}
+
+@keyframes fadeInFab {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideUpMenu {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.overview-mode-floating-bar {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  top: auto;
+  left: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--lw-hue-gray-900) 98%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 22%, transparent);
+  border-radius: 20px;
+  box-shadow:
+    0 16px 40px color-mix(in srgb, var(--lw-color-black) 65%, transparent),
+    0 4px 14px color-mix(in srgb, var(--lw-color-black) 35%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+  animation: slideUpMenu 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  .floating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .floating-bar-row--presets {
+    gap: 6px;
+  }
+
+  .preset-icon-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 6px;
+    padding-right: 2px;
+    color: color-mix(in srgb, var(--lw-color-white) 75%, transparent);
+    user-select: none;
+
+    svg {
+      display: block;
+      stroke: currentColor;
+    }
+  }
+
+  .floating-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 22%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 30%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+    color: var(--lw-surface);
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+    outline: none;
+
+    svg {
+      display: block;
+      stroke: currentColor;
+    }
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-color-white) 24%, transparent);
+      color: var(--lw-surface);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px color-mix(in srgb, var(--lw-color-black) 40%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 40%, transparent);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.96);
+    }
+  }
+
+  .macos-device-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 2.5px;
+    background: color-mix(in srgb, var(--lw-color-black) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 16%, transparent);
+    border-radius: 999px;
+    box-shadow: inset 0 1px 2px color-mix(in srgb, var(--lw-color-black) 40%, transparent);
+  }
+
+  .macos-device-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 25px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: color-mix(in srgb, var(--lw-color-white) 75%, transparent);
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+    outline: none;
+
+    .toggle-svg {
+      stroke: currentColor;
+      transition: stroke 0.18s ease;
+    }
+
+    &:hover {
+      color: var(--lw-surface);
+      background: color-mix(in srgb, var(--lw-color-white) 18%, transparent);
+    }
+
+    &.is-active {
+      background: color-mix(in srgb, var(--lw-color-primary) 35%, transparent);
+      color: var(--lw-surface);
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-primary) 30%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 40%, transparent);
+
+      .toggle-svg {
+        stroke: var(--lw-color-info, var(--lw-color-primary));
+      }
+    }
+  }
+
+  .macos-device-toggle--presets {
+    gap: 3px;
+
+    .preset-cluster-divider {
+      display: inline-block;
+      width: 1px;
+      height: 14px;
+      margin: 0 3px;
+      background: color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+      border-radius: 1px;
+      align-self: center;
+    }
+
+    .macos-device-btn--preset {
+      width: auto;
+      min-width: 32px;
+      height: 25px;
+      padding: 0 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--lw-surface);
+
+      .preset-badge {
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        color: var(--lw-surface);
+        text-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 60%, transparent);
+      }
+
+      &.is-tablet {
+        color: color-mix(in srgb, var(--lw-color-white) 90%, transparent);
+        font-weight: 700;
+      }
+
+      &.is-active {
+        background: color-mix(in srgb, var(--lw-color-primary) 40%, transparent);
+        color: var(--lw-surface);
+        box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-primary) 35%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 50%, transparent);
+
+        &.is-tablet {
+          background: color-mix(in srgb, var(--lw-color-primary) 50%, transparent);
+          box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-primary) 40%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 50%, transparent);
+        }
+      }
+    }
+  }
+
+  .macos-status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 22%, transparent);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 30%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+    cursor: default;
+    transition: all 0.18s ease;
+
+    .macos-dot {
+      width: 7.5px;
+      height: 7.5px;
+      border-radius: 50%;
+      background: var(--lw-color-success);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--lw-color-success) 80%, transparent);
+      transition: all 0.18s ease;
+    }
+
+    &.is-idle {
+      .macos-dot {
+        background: color-mix(in srgb, var(--lw-color-white) 45%, transparent);
+        box-shadow: none;
+      }
+    }
+
+    &:hover {
+      transform: scale(1.08);
+      background: color-mix(in srgb, var(--lw-color-white) 22%, transparent);
+    }
+  }
+
+  .macos-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 22%, transparent);
+    background: color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 30%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+    color: var(--lw-surface);
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+    outline: none;
+
+    .menu-svg {
+      display: block;
+      stroke: currentColor;
+      transition: transform 0.14s ease;
+    }
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-color-white) 24%, transparent);
+      color: var(--lw-surface);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px color-mix(in srgb, var(--lw-color-black) 40%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 40%, transparent);
+
+      .menu-svg {
+        transform: scale(1.08);
+      }
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.96);
+    }
+  }
+
+  .frameless-toggle-btn.is-active {
+    background: color-mix(in srgb, var(--lw-color-primary) 35%, transparent);
+    color: var(--lw-color-info, var(--lw-color-primary));
+    border-color: color-mix(in srgb, var(--lw-color-primary) 50%, transparent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--lw-color-primary) 45%, transparent);
+  }
+}
+
+/* ── Smartphone Mockup Stage ────────────────────── */
+
+.overview-iphone-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.is-frameless {
+    padding: 0;
+  }
+}
+
+.overview-iphone-chassis {
+  position: relative;
+  // 안에 놓이는 화면(.overview-iphone-screen)의 모서리 반경. 화면은 앱 루트 템플릿에 있어 변수로 넘긴다.
+  --device-screen-radius: 46px;
+  // 시뮬레이터 화면을 이름 있는 컨테이너로 둔다. lw-below() 믹스인의 폭 조건이 창 대신 이 폭을 본다.
+  container-type: inline-size;
+  container-name: mobileStage lw-viewport;
+  // 실제 스마트폰 물리 규격 기준의 현실적인 너비 및 높이 적용 (높이 우선 계산 및 종횡비 보장)
+  height: calc(100% - 8px);
+  max-height: min(var(--phone-height, 812px), calc(100vh - 24px));
+  max-height: min(var(--phone-height, 812px), calc(100dvh - 24px));
+  aspect-ratio: var(--phone-aspect, 375 / 812);
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  flex-shrink: 0;
+  max-width: min(var(--phone-width, 375px), calc(100vw - 24px));
+  border-radius: 50px;
+  background: var(--lw-hue-zinc-900);
+  box-sizing: border-box;
+  padding: 10px;
+  border: 4px solid var(--lw-hue-zinc-700);
+  box-shadow:
+    0 26px 70px color-mix(in srgb, var(--lw-color-black) 72%, transparent),
+    0 10px 28px color-mix(in srgb, var(--lw-color-black) 45%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--lw-color-white) 20%, transparent),
+    inset 0 0 0 2px var(--lw-hue-zinc-900);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    aspect-ratio 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-radius 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  // Full Screen Responsive Preset (100% 가변 전체 화면)
+  &.is-preset-full {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
+    aspect-ratio: auto;
+  }
+
+  // Frameless Mode (시뮬레이터 목업 레이아웃 제거, 순수 화면만 표시)
+  &.is-frameless {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: 0 0 50px color-mix(in srgb, var(--lw-color-black) 50%, transparent);
+    height: 100%;
+    max-height: 100%;
+    aspect-ratio: auto;
+    width: min(var(--phone-width, 375px), 100vw);
+    max-width: 100%;
+
+    &.is-preset-full {
+      width: 100%;
+      box-shadow: none;
+    }
+
+    --device-screen-radius: 0;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // Outer Titanium Specular Ring
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 54px;
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 24%, transparent);
+    pointer-events: none;
+    transition: border-radius 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  // 1. Fold Cover Preset (344 × 882) - 초슬림 21:9
+  &.is-preset-fold-cover {
+    border-radius: 36px;
+
+    &::before {
+      border-radius: 40px;
+    }
+
+    --device-screen-radius: 26px;
+
+    .overview-iphone-btn {
+      &.btn-action {
+        display: none; }
+
+      &.btn-vol-up {
+        left: auto; right: -7px; top: 120px; }
+
+      &.btn-vol-down {
+        left: auto; right: -7px; top: 165px; }
+
+      &.btn-power  { right: -7px; top: 225px; }
+    }
+  }
+
+  // 2. Android Slim Preset (360 × 780) - Galaxy S 표준 슬림
+  &.is-preset-android-slim {
+    border-radius: 44px;
+
+    &::before {
+      border-radius: 48px;
+    }
+
+    --device-screen-radius: 34px;
+
+    .overview-iphone-btn {
+      &.btn-action {
+        display: none; }
+
+      &.btn-vol-up {
+        left: auto; right: -7px; top: 110px; }
+
+      &.btn-vol-down {
+        left: auto; right: -7px; top: 155px; }
+
+      &.btn-power  { right: -7px; top: 215px; }
+    }
+  }
+
+  // 3. iPhone Mini / SE Preset (375 × 812) - 컴팩트 클래식
+  &.is-preset-iphone-mini {
+    border-radius: 48px;
+
+    &::before {
+      border-radius: 52px;
+    }
+
+    --device-screen-radius: 38px;
+  }
+
+  // 4. iPhone 16 Pro Preset (393 × 852) - 표준 플래그십
+  &.is-preset-iphone-pro {
+    border-radius: 54px;
+
+    &::before {
+      border-radius: 58px;
+    }
+
+    --device-screen-radius: 44px;
+  }
+
+  // 5. Galaxy S24 Ultra Preset (412 × 915) - 대화면 앵귤러
+  &.is-preset-galaxy-ultra {
+    border-radius: 26px;
+    border-color: var(--lw-hue-gray-800);
+    background: var(--lw-hue-zinc-900);
+
+    &::before {
+      border-radius: 30px;
+      border-color: color-mix(in srgb, var(--lw-color-white) 18%, transparent);
+    }
+
+    --device-screen-radius: 18px;
+
+    .overview-iphone-btn {
+      &.btn-action {
+        display: none; }
+
+      &.btn-vol-up {
+        left: auto; right: -7px; top: 120px; }
+
+      &.btn-vol-down {
+        left: auto; right: -7px; top: 165px; }
+
+      &.btn-power  { right: -7px; top: 230px; }
+    }
+  }
+
+  // 6. iPhone 16 Pro Max Preset (430 × 932) - 대화면 플래그십
+  &.is-preset-iphone-max {
+    border-radius: 58px;
+
+    &::before {
+      border-radius: 62px;
+    }
+
+    --device-screen-radius: 48px;
+  }
+
+  // 7. Tablet Mini Preset (768 × 1024) - iPad Mini / 소형 태블릿
+  &.is-preset-tablet-mini {
+    border-radius: 34px;
+    padding: 12px;
+    border-width: 4px;
+    border-color: var(--lw-hue-gray-800);
+    background: var(--lw-hue-zinc-900);
+
+    &::before {
+      border-radius: 38px;
+      border-color: color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+    }
+
+    --device-screen-radius: 22px;
+
+    .overview-iphone-btn {
+      &.btn-action {
+        display: none; }
+
+      &.btn-power  { top: -7px; right: 42px; width: 38px; }
+
+      &.btn-vol-up  { left: auto; right: -7px; top: 48px; width: 3px; }
+
+      &.btn-vol-down  { left: auto; right: -7px; top: 88px; width: 3px; }
+    }
+  }
+
+  // 8. Tablet Pro Preset (834 × 1194) - iPad Air / Pro 11형 태블릿
+  &.is-preset-tablet-pro {
+    border-radius: 36px;
+    padding: 13px;
+    border-width: 4px;
+    border-color: var(--lw-hue-gray-800);
+    background: var(--lw-hue-zinc-900);
+
+    &::before {
+      border-radius: 40px;
+      border-color: color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+    }
+
+    --device-screen-radius: 24px;
+
+    .overview-iphone-btn {
+      &.btn-action {
+        display: none; }
+
+      &.btn-power  { top: -7px; right: 48px; width: 44px; }
+
+      &.btn-vol-up  { left: auto; right: -7px; top: 54px; width: 3px; }
+
+      &.btn-vol-down  { left: auto; right: -7px; top: 98px; width: 3px; }
+    }
+  }
+}
+
+// Hardware buttons on sides
+.overview-iphone-btn {
+  position: absolute;
+  background: var(--lw-hue-gray-800);
+  border-radius: 3px;
+  box-shadow: -1px 0 2px color-mix(in srgb, var(--lw-color-black) 50%, transparent);
+
+  &.btn-action  { left: -8px; top: 105px; width: 4px; }
+
+  &.btn-vol-up  { left: -8px; top: 145px; width: 4px; }
+
+  &.btn-vol-down  { left: -8px; top: 200px; width: 4px; }
+
+  &.btn-power  { right: -8px; top: 155px; width: 4px; }
+}
+
+// Apple Dynamic Island
+.overview-iphone-island {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 26px;
+  background: var(--lw-ink);
+  border-radius: 20px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--lw-color-black) 60%, transparent);
+  transition: width 0.2s ease;
+
+  &.is-max {
+    width: 118px;
+  }
+
+  .island-camera {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--lw-hue-slate-800), var(--lw-hue-gray-950) 65%);
+    box-shadow: inset 0 0 2px color-mix(in srgb, var(--lw-color-primary) 50%, transparent);
+    margin-right: 4px;
+  }
+
+  .island-sensor {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lw-hue-zinc-950);
+  }
+}
+
+// Galaxy Center Punch Hole Camera
+.overview-galaxy-camera {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--lw-ink);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 60%, transparent);
+
+  &.is-slim {
+    top: 12px;
+    width: 11px;
+    height: 11px;
+
+    .punchhole-lens {
+      width: 6px;
+      height: 6px;
+    }
+  }
+
+  .punchhole-lens {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--lw-hue-slate-800), var(--lw-hue-gray-950) 65%);
+    box-shadow: inset 0 0 1.5px color-mix(in srgb, var(--lw-color-primary) 60%, transparent);
+  }
+}
+
+// iPhone SE Minimal Speaker Grill
+.overview-compact-speaker {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--lw-ink);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .speaker-grill {
+    width: 42px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--lw-hue-gray-800);
+  }
+}
+
+// Tablet Front Bezel Camera (Minimal 7px front camera in top bezel)
+.overview-tablet-camera {
+  position: absolute;
+  top: 3.5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lw-ink);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 50%, transparent);
+
+  .tablet-cam-lens {
+    width: 3.5px;
+    height: 3.5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--lw-hue-slate-800), var(--lw-hue-gray-950) 65%);
+    box-shadow: inset 0 0 1px color-mix(in srgb, var(--lw-color-primary) 60%, transparent);
+  }
+}
+
+// Inner Screen
+
+// 기종별 화면 치수(폭, 높이). '화면 전체' 프리셋은 치수 없이 영역을 채운다.
+$device-preset-sizes: (
+  'fold-cover': (344, 882),
+  'android-slim': (360, 800),
+  'iphone-mini': (375, 812),
+  'iphone-pro': (393, 852),
+  'galaxy-ultra': (412, 915),
+  'iphone-max': (430, 932),
+  'tablet-mini': (744, 1133),
+  'tablet-pro': (834, 1194),
+);
+
+@each $id, $size in $device-preset-sizes {
+  .overview-iphone-chassis.is-preset-#{$id} {
+    --phone-width: #{list.nth($size, 1)}px;
+    --phone-height: #{list.nth($size, 2)}px;
+    --phone-aspect: #{list.nth($size, 1)} / #{list.nth($size, 2)};
+  }
+}
+
+// 폭이 좁은 기종(휴대폰)에서는 바깥 링을 그리지 않는다.
+// 가상 요소는 자기 요소를 컨테이너로 조회하므로 프레임의 폭이 기준이 된다.
+@container lw-viewport (max-width: 480px) {
+  .overview-iphone-chassis::before {
+    display: none;
+  }
+}
+
+// 제어 바의 그림 문자 크기
+.floating-btn-glyph,
+.menu-glyph {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.toggle-glyph {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.preset-icon-glyph {
+  font-size: 11px;
+  line-height: 1;
+}

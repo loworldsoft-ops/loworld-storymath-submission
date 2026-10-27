@@ -1,0 +1,62 @@
+<div class="week-view">
+  <div class="header-row" [style.gridTemplateColumns]="isMobile() ? '40px repeat(' + displayDays().length + ', 1fr)' : '60px repeat(7, 1fr)'">
+    <div class="corner" [class.mobile]="isMobile()"></div>
+    @for (day of displayDays(); track day.getTime(); let i = $index) {
+      <div class="day-col-header" [class.is-selected]="isSameDay(day, selectedDate())" [class.mobile]="isMobile()">
+        <div class="dow" [class.sunday]="day.getDay() === 0" [class.saturday]="day.getDay() === 6">{{ formatDow(day) }}</div>
+        <div class="dom" [class.today-badge]="isToday(day)" [class.mobile]="isMobile()">{{ day.getDate() }}</div>
+      </div>
+    }
+  </div>
+  @if (showAllDayRow()) {
+    <div class="allday-row" [style.gridTemplateColumns]="isMobile() ? '40px repeat(' + displayDays().length + ', 1fr)' : '60px repeat(7, 1fr)'" >
+      <div class="allday-label">종일</div>
+      @for (day of displayDays(); track day.getTime()) {
+        <div class="allday-cell" >
+          @for (ev of getAllDayEvents(day); track ev.id) {
+            <div class="allday-chip"
+                 role="button"
+                 tabindex="0"
+                 [style.backgroundColor]="getColor(ev) + '18'"
+                 [style.color]="getColor(ev)" [style.borderLeftColor]="getColor(ev)"
+                 (click)="selectEvent.emit(ev.id)"
+                 (keydown.enter)="selectEvent.emit(ev.id)">{{ isMobile() ? '' : ev.title }}@if (isMobile()) { <span class="allday-chip-dot" [style.backgroundColor]="getColor(ev)"></span> }</div>
+          }
+        </div>
+      }
+    </div>
+  }
+  <div class="time-grid">
+    <div class="grid-inner" [style.gridTemplateColumns]="isMobile() ? '40px repeat(' + displayDays().length + ', 1fr)' : '60px repeat(7, 1fr)'">
+      @for (hour of hours; track hour) {
+        <div class="time-label" [style.height.px]="effectiveHourHeight()" [class.mobile]="isMobile()">{{ formatHour(hour) }}</div>
+        @for (day of displayDays(); track day.getTime()) {
+          <div class="time-cell" [style.height.px]="effectiveHourHeight()" [class.is-today]="isToday(day)" [class.is-selected]="isSameDay(day, selectedDate())">
+            <div class="half-line" [style.top.px]="effectiveHourHeight() / 2" ></div>
+            @if (hour === 0) {
+              @for (ev of getTimedEvents(day); track ev.id) {
+                <div class="timed-event"
+                     role="button"
+                     tabindex="0"
+                     [class.mobile]="isMobile()" [style.top.px]="getTop(ev)" [style.height.px]="getHeight(ev)"
+                     [style.backgroundColor]="getColor(ev) + '18'" [style.color]="getColor(ev)"
+                     [style.borderLeftColor]="getColor(ev)"
+                     (click)="selectEvent.emit(ev.id)"
+                     (keydown.enter)="selectEvent.emit(ev.id)">
+                  <div class="ev-title">{{ ev.title }}</div>
+                  @if (!isMobile()) { <div class="ev-time">{{ formatTime(ev) }}</div> }
+                </div>
+              }
+            }
+          </div>
+        }
+      }
+    </div>
+    @if (hasCurrentWeek()) {
+      <div class="now-line" [style.top.px]="currentTimeTop()" [style.left]="isMobile() ? '40px' : '60px'">
+        <div class="now-dot"></div>
+        <div class="now-bar"></div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<ng-template #branch let-nodes let-depth="depth">
+  @for (node of nodes; track node.id) {
+    <button
+      type="button"
+      class="lw-tree__node"
+      role="treeitem"
+      [class.is-selected]="node.id === selectedId()"
+      [attr.aria-selected]="node.id === selectedId()"
+      [attr.aria-level]="depth + 1"
+      [style.--_depth]="depth"
+      (click)="nodeSelect.emit(node.id)">
+      @if (node.icon) {
+        <span class="lw-tree__icon" aria-hidden="true">{{ node.icon }}</span>
+      }
+      <span class="lw-tree__label">{{ node.label }}</span>
+      @if (node.badge !== undefined) {
+        <span class="lw-tree__badge">{{ node.badge }}</span>
+      }
+    </button>
+    @if (node.children?.length) {
+      <ng-container [ngTemplateOutlet]="branch" [ngTemplateOutletContext]="{ $implicit: node.children, depth: depth + 1 }" />
+    }
+  }
+</ng-template>
+
+<div class="lw-tree" role="tree" [attr.aria-label]="ariaLabel()">
+  <ng-container [ngTemplateOutlet]="branch" [ngTemplateOutletContext]="{ $implicit: nodes(), depth: 0 }" />
+</div>

@@ -1,0 +1,115 @@
+// 참조만 되고 정의가 없던 토큰. 쓰는 곳마다 예비 색이 한 가지로 같았던 이름만 모았다.
+// 값은 그 예비 색 그대로다. 그래서 정의해도 화면은 바뀌지 않는다.
+//
+// 아직 화면 모드에 따라 바뀌지 않는다. 다크 값을 정할 때 `_semantic-core.scss`의 라이트·다크 맵으로 옮긴다.
+// 만든 방법: docs/10/2026-10-07/03-…progress.md 참고.
+
+$lw-legacy-fixed-tokens: (
+  lw-accent-bg: #3b82f6, // 1곳
+  lw-app-icon-minimal-bg: transparent, // 2곳
+  lw-app-icon-minimal-border: none, // 1곳
+  lw-app-icon-minimal-shadow: none, // 1곳
+  lw-bg-secondary: #f8fafc, // 1곳
+  lw-border-hover: #94a3b8, // 3곳
+  lw-btn-danger-hover-bg: #b91c1c, // 1곳
+  lw-btn-ghost-bg: transparent, // 1곳
+  lw-btn-ghost-border: transparent, // 1곳
+  lw-btn-outline-bg: transparent, // 1곳
+  lw-card-empty-min-height: 380px, // 1곳
+  lw-color-accent-light: #818cf8, // 42곳
+  lw-color-accent-strong: #4f46e5, // 54곳
+  lw-color-danger-bg: #fee2e2, // 3곳
+  lw-color-danger-border: #fca5a5, // 6곳
+  lw-color-danger-dark: #b91c1c, // 45곳
+  lw-color-danger-light: #f87171, // 52곳
+  lw-color-danger-strong: #dc2626, // 101곳
+  lw-color-danger-subtle: (rgba(239,68,68,0.10)), // 1곳
+  lw-color-info-bg: #eff6ff, // 2곳
+  lw-color-info-border: #bfdbfe, // 2곳
+  lw-color-info-subtle: (rgba(14,165,233,0.10)), // 1곳
+  lw-color-neutral: #64748b, // 1곳
+  lw-color-neutral-border: (rgba(203, 213, 225, 0.85)), // 1곳
+  lw-color-neutral-subtle: (rgba(241, 245, 249, 0.95)), // 1곳
+  lw-color-amber: #d97706, // 107곳
+  lw-color-amber-dark: #b45309, // 96곳
+  lw-color-amber-subtle: (rgba(217,119,6,0.10)), // 1곳
+  lw-color-on-danger: #ffffff, // 1곳
+  lw-color-on-info: #ffffff, // 1곳
+  lw-color-on-neutral: #0f172a, // 1곳
+  lw-color-on-novel: #ffffff, // 1곳
+  lw-color-on-primary: #ffffff, // 1곳
+  lw-color-on-purple: #ffffff, // 1곳
+  lw-color-on-success: #ffffff, // 1곳
+  lw-color-on-warning: #ffffff, // 1곳
+  lw-color-orange: #ea580c, // 21곳
+  lw-color-pink: #ec4899, // 1곳
+  lw-color-primary-strong: #2563eb, // 67곳
+  lw-color-primary-subtle: (rgba(59,130,246,0.10)), // 1곳
+  lw-color-purple: #8b5cf6, // 23곳
+  lw-color-purple-strong: #7c3aed, // 38곳
+  lw-color-purple-subtle: (rgba(139,92,246,0.10)), // 1곳
+  lw-color-success-bg: #dcfce7, // 4곳
+  lw-color-success-strong: #059669, // 68곳
+  lw-color-success-subtle: (rgba(34,197,94,0.10)), // 1곳
+  lw-color-success-text: #15803d, // 7곳
+  lw-color-warning-bg: #fef3c7, // 5곳
+  lw-color-warning-border: #fde68a, // 9곳
+  lw-color-warning-dark: #92400e, // 6곳
+  lw-color-warning-subtle: (rgba(245,158,11,0.10)), // 1곳
+  lw-color-warning-text: #b45309, // 3곳
+  lw-danger: #ef4444, // 1곳
+  lw-dock-clearance: 0px, // 1곳
+  lw-enemy-avatar-size: 36px, // 1곳
+  lw-enemy-frame-size: 80px, // 2곳
+  lw-foundry-sidebar-collapsed-w: 56px, // 1곳
+  lw-foundry-sidebar-w: 220px, // 1곳
+  lw-input-bg: #ffffff, // 1곳
+  lw-list-active-indicator: #6366f1, // 1곳
+  lw-list-bg: transparent, // 1곳
+  lw-list-border: (rgba(255, 255, 255, 0.08)), // 1곳
+  lw-list-card-bg: (rgba(255, 255, 255, 0.02)), // 1곳
+  lw-list-divider: (rgba(255, 255, 255, 0.06)), // 1곳
+  lw-list-focus-ring: #6366f1, // 1곳
+  lw-list-header-bg: (rgba(255, 255, 255, 0.03)), // 1곳
+  lw-list-header-border: (rgba(255, 255, 255, 0.08)), // 1곳
+  lw-list-header-color: #94a3b8, // 1곳
+  lw-list-item-active-bg: (rgba(99, 102, 241, 0.12)), // 1곳
+  lw-list-item-bg: transparent, // 1곳
+  lw-list-item-hover-bg: (rgba(255, 255, 255, 0.04)), // 1곳
+  lw-list-radius: 8px, // 1곳
+  lw-modal-color: #0f172a, // 1곳
+  lw-game-battle-fab-z: 30, // 1곳
+  lw-game-bg-surface-elevated: #ffffff, // 1곳
+  lw-game-border-hover: #cbd5e1, // 1곳
+  lw-game-play-active-bg: (rgba(2, 132, 199, 0.06)), // 1곳
+  lw-game-play-battle-width: 100%, // 1곳
+  lw-game-play-canvas-bg: #0b0f19, // 2곳
+  lw-game-play-card-surface: #f1f5f9, // 1곳
+  lw-game-play-content-max-width: 720px, // 1곳
+  lw-game-text-main: #f8fafc, // 1곳
+  lw-primary: #6366f1, // 1곳
+  lw-rarity-crafted: #ff8800, // 1곳
+  lw-rarity-magic: #6ea8ff, // 1곳
+  lw-rarity-rare: #f2d94e, // 1곳
+  lw-rarity-runeword: #d7b46a, // 1곳
+  lw-rarity-set: #64bf76, // 1곳
+  lw-rarity-unique: #d7b46a, // 1곳
+  lw-row-bg: transparent, // 1곳
+  lw-row-hover: (rgba(255, 255, 255, 0.05)), // 1곳
+  lw-section-subtitle-color: #8b5cf6, // 1곳
+  lw-side-menu-dark-text: #cbd5e1, // 1곳
+  lw-side-menu-dark-title-color: #94a3b8, // 1곳
+  lw-side-menu-text: #1e293b, // 1곳
+  lw-side-menu-tree-parent-bg: (rgba(0, 0, 0, 0.025)), // 1곳
+  lw-side-menu-tree-parent-border: (rgba(0, 0, 0, 0.045)), // 1곳
+  lw-side-menu-tree-parent-exp-bg: (rgba(79, 70, 229, 0.04)), // 1곳
+  lw-side-menu-tree-parent-exp-border: (rgba(79, 70, 229, 0.14)), // 1곳
+  lw-side-menu-tree-parent-hover-bg: (rgba(0, 0, 0, 0.05)), // 1곳
+  lw-side-menu-tree-parent-hover-border: (rgba(0, 0, 0, 0.08)), // 1곳
+  lw-skill-desc-min-height: 34px, // 1곳
+  lw-status-error: #ef4444, // 19곳
+  lw-status-success: #16a34a, // 6곳
+  lw-surface-container: (rgba(0, 0, 0, 0.04)), // 1곳
+  lw-text-tertiary: #94a3b8, // 2곳
+  lw-titlebar-btn-bg: transparent, // 6곳
+);

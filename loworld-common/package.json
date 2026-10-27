@@ -1,0 +1,28 @@
+{
+  "name": "@loworld/common",
+  "version": "0.1.0",
+  "description": "공통. 모든 컴포넌트, 틀, 설정, 멤버십, 공통 서비스, 스타일, 도감, 검사기.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loworldsoft-ops/loworld-common.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./tokens/*": "./src/tokens/*",
+    "./*": "./src/*/index.ts"
+  },
+  "scripts": {
+    "typecheck": "ngc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@angular/router": "^22.0.0",
+    "rxjs": "~7.8.0"
+  }
+}

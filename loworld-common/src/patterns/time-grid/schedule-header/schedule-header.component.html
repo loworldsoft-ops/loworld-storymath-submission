@@ -1,0 +1,82 @@
+@if (isMobile()) {
+  <!-- ═══ Mobile Header ═══ -->
+  <div class="m-header">
+    <div class="m-top">
+      <div class="m-left">
+        <lw-button class="m-nav-btn" (click)="navigatePrev.emit()">
+          <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+        </lw-button>
+        <span class="m-title">{{ headerTitle() }}</span>
+        <lw-button class="m-nav-btn" (click)="navigateNext.emit()">
+          <span class="icon-calendar" aria-hidden="true"></span>
+        </lw-button>
+        <lw-button class="m-today-btn" (click)="goToToday.emit()">오늘</lw-button>
+      </div>
+      <div class="m-right">
+        <div class="m-dropdown-wrap">
+          <lw-button class="m-dropdown-btn" (click)="mobileViewOpen.set(!mobileViewOpen())">
+            {{ currentViewLabel() }}
+            <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+          </lw-button>
+          @if (mobileViewOpen()) {
+            <div class="m-dropdown-backdrop" role="presentation" (click)="mobileViewOpen.set(false)"></div>
+            <div class="m-dropdown-menu">
+              @for (v of viewOptions(); track v.value) {
+                <lw-button class="m-dropdown-item" [class.active]="currentView() === v.value" (click)="selectMobileView(v.value)">{{ v.labelFull }}</lw-button>
+              }
+            </div>
+          }
+        </div>
+        <lw-button class="m-nav-btn" (click)="mobileSearchOpen.set(!mobileSearchOpen())">
+          <span class="icon-glyph icon-search" aria-hidden="true">🔍</span>
+        </lw-button>
+      </div>
+    </div>
+    @if (mobileSearchOpen()) {
+      <div class="m-search-bar">
+        <div class="search-wrap m-search-wrap">
+          <span class="icon-glyph icon-search" aria-hidden="true">🔍</span>
+          <lw-input placeholder="일정 검색" class="search-input m-search-input"
+                 [value]="searchQuery()" (valueChange)="searchQueryChange.emit(''+$event)" />
+          @if (searchQuery().trim().length > 0) {
+            <lw-button class="clear-btn m-clear" (click)="clearSearch()">
+              <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+            </lw-button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <!-- ═══ Desktop Header ═══ -->
+  <div class="header">
+    <div class="title">{{ headerTitle() }}</div>
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="icon-glyph icon-search" aria-hidden="true">🔍</span>
+        <lw-input [placeholder]="searchPlaceholder()" class="search-input"
+               [value]="searchQuery()" (valueChange)="searchQueryChange.emit(''+$event)" />
+        @if (searchQuery().trim().length > 0) {
+          <span class="result-count">{{ filteredEventCount() }}건</span>
+          <lw-button class="clear-btn" (click)="clearSearch()">
+            <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+          </lw-button>
+        }
+      </div>
+      <div class="pills">
+        @for (v of viewOptions(); track v.value) {
+          <lw-button class="pill" [class.active]="currentView() === v.value" [tooltip]="v.labelFull" (click)="changeView.emit(v.value)">{{ v.label }}</lw-button>
+        }
+      </div>
+      <div class="nav-group">
+        <lw-button class="nav-btn" (click)="navigatePrev.emit()">
+          <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+        </lw-button>
+        <lw-button class="today-btn" (click)="goToToday.emit()">오늘</lw-button>
+        <lw-button class="nav-btn" (click)="navigateNext.emit()">
+          <span class="icon-calendar" aria-hidden="true"></span>
+        </lw-button>
+      </div>
+    </div>
+  </div>
+}

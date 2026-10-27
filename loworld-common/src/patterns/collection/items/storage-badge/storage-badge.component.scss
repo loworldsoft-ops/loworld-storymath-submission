@@ -1,0 +1,38 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: #{lw.$lw-progress-radius-pill};
+  border: 1px solid var(--lw-sl-badge-border, #{lw.$lw-sl-badge-border});
+  background: var(--lw-sl-badge-bg, #{lw.$lw-chip-bg});
+  color: var(--lw-sl-badge-fg, #{lw.$lw-chip-text});
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge[data-kind='firebase'] {
+  --lw-sl-badge-border: var(--lw-color-warning);
+  --lw-sl-badge-bg: #fff7ed;
+  --lw-sl-badge-fg: #9a3412;
+}
+
+.badge[data-kind='indexeddb'],
+.badge[data-kind='sqlite'] {
+  --lw-sl-badge-border: #93c5fd;
+  --lw-sl-badge-bg: #eff6ff;
+  --lw-sl-badge-fg: var(--lw-color-primary-dark, #1d4ed8);
+}
+
+.badge[data-kind='mysql'] {
+  --lw-sl-badge-border: #86efac;
+  --lw-sl-badge-bg: #f0fdf4;
+  --lw-sl-badge-fg: #166534;
+}

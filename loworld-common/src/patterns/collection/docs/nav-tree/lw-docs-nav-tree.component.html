@@ -1,0 +1,54 @@
+@for (node of nodes(); track node.type + ':' + node.name + ':' + (node.url ?? '')) {
+  @if (node.type === 'page') {
+    <button
+      type="button"
+      class="lw-docs-nav__item"
+      [class.is-active]="node.url === activePath()"
+      [attr.aria-current]="node.url === activePath() ? 'page' : null"
+      (click)="selectDoc.emit(node.url ?? '')">
+      {{ node.name }}
+    </button>
+  } @else {
+    @let id = folderId(node);
+    @let open = openIds().has(id);
+    <div class="lw-docs-nav__group">
+      @if (node.index; as index) {
+        <div class="lw-docs-nav__folder-row">
+          <button
+            type="button"
+            class="lw-docs-nav__item lw-docs-nav__item--folder"
+            [class.is-active]="index.url === activePath()"
+            [attr.aria-current]="index.url === activePath() ? 'page' : null"
+            (click)="selectDoc.emit(index.url)">
+            {{ node.name }}
+          </button>
+          <button
+            type="button"
+            class="lw-docs-nav__toggle"
+            [attr.aria-expanded]="open"
+            [attr.aria-label]="node.name + (open ? ' 접기' : ' 펼치기')"
+            (click)="toggleFolder.emit(id)">
+            <lw-icon [name]="open ? 'chevron-down' : 'chevron-right'" [size]="14" />
+          </button>
+        </div>
+      } @else {
+        <button type="button" class="lw-docs-nav__item lw-docs-nav__item--folder" [attr.aria-expanded]="open" (click)="toggleFolder.emit(id)">
+          <span>{{ node.name }}</span>
+          <lw-icon [name]="open ? 'chevron-down' : 'chevron-right'" [size]="14" />
+        </button>
+      }
+
+      @if (open) {
+        <lw-docs-nav-tree
+          class="lw-docs-nav__nest"
+          [nodes]="node.children ?? []"
+          [activePath]="activePath()"
+          [openIds]="openIds()"
+          [level]="level() + 1"
+          [chain]="id"
+          (selectDoc)="selectDoc.emit($event)"
+          (toggleFolder)="toggleFolder.emit($event)" />
+      }
+    </div>
+  }
+}

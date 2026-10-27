@@ -1,0 +1,23 @@
+@if (open()) {
+  <lw-modal
+    [isOpen]="true"
+    [size]="size()"
+    variant="custom"
+    [closeOnBackdropClick]="closeOnOverlay()"
+    (closeClick)="close.emit()"
+  >
+    <div lwModalHeader style="display: flex; align-items: center; gap: 8px;">
+      <ng-content select="[lwModalIcon]" />
+      <ng-content select="[lwModalTitle]" />
+    </div>
+
+    <div class="inspector-detail-modal">
+      <ng-content select="[lwInspectorDetailHero]" />
+      <ng-content />
+    </div>
+
+    <div lwModalFooter>
+      <ng-content select="[lwModalFooter]" />
+    </div>
+  </lw-modal>
+}

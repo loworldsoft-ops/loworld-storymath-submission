@@ -1,0 +1,32 @@
+# 모든 앱 저장소에서 같다. 고치지 않는다. 고치려면 loworld-common/conventions/app-template을 고친다.
+name: check
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: app
+      # 공통 저장소를 옆에 받는다. 비공개 저장소라서 읽을 수 있는 토큰이 필요하다(저장소 비밀값 LOWORLD_COMMON_TOKEN).
+      - uses: actions/checkout@v4
+        with:
+          repository: loworldsoft-ops/loworld-common
+          token: ${{ secrets.LOWORLD_COMMON_TOKEN }}
+          path: loworld-common
+          sparse-checkout: |
+            src
+            conventions
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+        working-directory: app
+      - run: npm run verify
+        working-directory: app
+      - run: npm run typecheck
+        working-directory: app

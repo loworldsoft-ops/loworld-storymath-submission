@@ -1,0 +1,44 @@
+@use 'index' as lw;
+:host { display: block; }
+    .cert-panel {
+      border: 1px solid var(--lw-border-color, #{lw.$hw-border});
+      border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px;
+      background: var(--lw-bg-input, #{lw.$hw-cert-bg});
+    }
+
+    .cert-issued, .cert-pending, .cert-ready, .cert-locked {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .cert-icon { font-size: 24px; flex-shrink: 0; }
+    .cert-info, .cert-issued > div, .cert-pending, .cert-ready, .cert-locked {
+      flex: 1;
+    }
+    .cert-title { font-size: 13px; font-weight: 600; color: var(--lw-text-primary-primary, #{lw.$hw-text-primary}); }
+    .cert-number { font-size: 11px; color: var(--lw-accent, #{lw.$hw-accent}); font-weight: 600; margin-top: 2px; }
+    .cert-date { font-size: 11px; color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary}); margin-top: 1px; }
+    .cert-desc { font-size: 12px; color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary}); margin-top: 3px; }
+
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;
+      font-size: 12px; font-weight: 600;
+      background: var(--lw-accent, #{lw.$hw-accent}); color: var(--lw-surface);
+      flex-shrink: 0;
+    }
+    .dl-btn:hover { opacity: 0.88; }
+
+    .request-btn {
+      margin-top: 8px; padding: 8px 16px; border-radius: 8px;
+      background: var(--lw-accent, #{lw.$hw-accent}); color: var(--lw-surface);
+      border: none; cursor: pointer; font-size: 13px; font-weight: 600;
+      width: 100%;
+    }
+    .request-btn:hover { opacity: 0.88; }
+
+    .admin-actions { border-top: 1px solid var(--lw-border-color, #{lw.$hw-border}); padding-top: 10px; }
+    .approve-btn {
+      width: 100%; padding: 8px; border-radius: 8px;
+      background: var(--lw-color-success); color: var(--lw-surface); border: none;
+      cursor: pointer; font-size: 13px; font-weight: 600;
+    }
+    .approve-btn:hover { opacity: 0.88; }

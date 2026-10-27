@@ -1,0 +1,169 @@
+<div class="viewer">
+  <!-- Header toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <lw-button class="tool-btn" (click)="back.emit()">
+        <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+      </lw-button>
+      <span class="type-badge" [style.backgroundColor]="badge().bg" [style.color]="badge().text"
+            [style.borderColor]="badge().border">{{ note().type }}</span>
+    </div>
+    <div class="toolbar-right">
+      <lw-button class="tool-btn" (click)="edit.emit()" tooltip="편집">
+        <span class="icon-edit" aria-hidden="true"></span>
+      </lw-button>
+      <lw-button class="tool-btn" (click)="togglePin.emit(note().id)" [tooltip]="note().isPinned ? '해제' : '고정'">
+        <span class="icon-glyph icon-pin" aria-hidden="true">📌</span>
+      </lw-button>
+      <lw-button class="tool-btn" (click)="share.emit()" tooltip="공유">
+        <span class="icon-lightbulb" aria-hidden="true"></span>
+      </lw-button>
+      <lw-button class="tool-btn" (click)="move.emit()" tooltip="이동">
+        <span class="icon-lightbulb" aria-hidden="true"></span>
+      </lw-button>
+      <!-- Export dropdown -->
+      <div class="relative">
+        <lw-button class="tool-btn" (click)="exportOpen.set(!exportOpen())" tooltip="내보내기">
+          <span class="icon-glyph icon-download" aria-hidden="true">📥</span>
+        </lw-button>
+        @if (exportOpen()) {
+          <div class="export-dropdown">
+            @for (fmt of ['txt','md','html']; track fmt) {
+              <lw-button class="export-item" (click)="exportNote(fmt); exportOpen.set(false)">.{{ fmt }}</lw-button>
+            }
+          </div>
+        }
+      </div>
+      <lw-button class="tool-btn" (click)="importFile.emit()" tooltip="가져오기">
+        <span class="icon-glyph icon-upload" aria-hidden="true">📤</span>
+      </lw-button>
+      <lw-button class="tool-btn" (click)="printNote()" tooltip="인쇄">
+        <span class="icon-trash" aria-hidden="true"></span>
+      </lw-button>
+      <div class="divider"></div>
+      <lw-button class="tool-btn" (click)="deleteNote.emit(note().id)" tooltip="삭제">
+        <span class="icon-glyph icon-trash" aria-hidden="true">🗑️</span>
+      </lw-button>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="content-scroll">
+    <div class="content-inner">
+      <!-- Badges -->
+      <div class="badge-row">
+        @if (note().isPinned) {
+          <span class="status-badge pinned">📌 고정됨</span>
+        }
+        @if (note().isPublic) {
+          <span class="status-badge public">공개</span>
+        }
+        @if (note().notePassword) {
+          <span class="status-badge locked">
+            <span class="icon-star" aria-hidden="true"></span>
+            암호 보호
+          </span>
+        }
+        @if (note().reminder && !note().reminderDismissed) {
+          <span class="status-badge reminder">
+            <span class="icon-star" aria-hidden="true"></span>
+            {{ formatReminder(note().reminder!) }}
+          </span>
+        }
+      </div>
+      <!-- Title -->
+      <h1 class="note-title">
+        @if (note().emoji) { <span class="emoji">{{ note().emoji }}</span> }
+        {{ note().title || '제목 없음' }}
+      </h1>
+      <!-- Meta -->
+      <div class="note-meta">
+        <span>생성 {{ formatKoDate(note().createdAt) }}</span>
+        <span>·</span>
+        <span>수정 {{ formatKoDate(note().updatedAt) }}</span>
+        <span>·</span>
+        <span>{{ folderName() }}</span>
+      </div>
+      <!-- Content body -->
+      @if (isPlainText(note().content)) {
+        <div class="note-content plain">{{ note().content || '내용이 없습니다.' }}</div>
+      } @else {
+        <div class="note-content" [innerHTML]="note().content || '내용이 없습니다.'"></div>
+      }
+      <!-- Attachments -->
+      @if ((note().attachments || []).length > 0) {
+        <div class="attachments">
+          <div class="attachment-header">
+            <span class="icon-paperclip" aria-hidden="true"></span>
+            <span>첨부 ({{ note().attachments!.length }})</span>
+          </div>
+          @for (att of note().attachments; track att.id) {
+            <lw-card class="attachment-card" variant="outlined">
+              @if (att.type === 'audio') {
+                <div class="att-file-row">
+                  <span class="icon-paperclip" aria-hidden="true"></span>
+                  <span class="att-name">{{ att.fileName }}</span>
+                </div>
+                @if (att.meta?.sttResult?.speakers?.length) {
+                  <div class="stt-speakers">
+                    @for (sp of att.meta!.sttResult!.speakers; track (sp.speaker + '-' + $index)) {
+                      <div class="speaker-row">
+                        <span class="speaker-name" [style.color]="getSpeakerColor($index)">{{ sp.speaker }}:</span>
+                        <span class="speaker-text">{{ sp.text }}</span>
+                      </div>
+                    }
+                  </div>
+                }
+                @if (att.meta?.aiSummary) {
+                  <div class="ai-summary">
+                    <div class="ai-header">
+                      <span class="icon-memo" aria-hidden="true"></span>
+                      <span>AI 요약</span>
+                    </div>
+                    <p class="ai-text">{{ att.meta!.aiSummary!.summary }}</p>
+                    @if (att.meta!.aiSummary!.keywords?.length) {
+                      <div class="keyword-row">
+                        @for (kw of att.meta!.aiSummary!.keywords; track kw) {
+                          <span class="keyword">{{ kw }}</span>
+                        }
+                      </div>
+                    }
+                    @if (att.meta!.aiSummary!.actionItems.length) {
+                      <div class="action-items">
+                        @for (ai of att.meta!.aiSummary!.actionItems; track ai) {
+                          <div class="action-item"><span>•</span><span>{{ ai }}</span></div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              } @else if (att.type === 'drawing') {
+                <div class="att-file-row">
+                  <span class="icon-pen-tool" aria-hidden="true"></span>
+                  <span class="att-name">{{ att.fileName }}</span>
+                </div>
+                @if (att.dataUrl) {
+                  <img [src]="att.dataUrl" class="att-image" alt="Drawing"/>
+                }
+              } @else if (att.type === 'image') {
+                <img [src]="att.dataUrl" class="att-image" [alt]="att.fileName"/>
+              } @else {
+                <div class="att-file-row">
+                  <span class="icon-memo" aria-hidden="true"></span>
+                  <span class="att-name">{{ att.fileName }}</span>
+                </div>
+              }
+            </lw-card>
+          }
+        </div>
+      }
+      <!-- Tags -->
+      @if (note().tags.length > 0) {
+        <div class="tag-row">
+          @for (tag of note().tags; track tag) {
+            <lw-chip variant="status" [clickable]="false">#{{ tag }}</lw-chip>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

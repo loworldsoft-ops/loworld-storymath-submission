@@ -1,0 +1,100 @@
+<section
+  class="overview-mobile-scene"
+  data-lw-overlay-container
+  [class.overview-mobile-scene--fullscreen]="fullscreen()"
+  [class.overview-mobile-scene--frameless]="frameless()"
+  aria-label="실행 중인 모바일 앱">
+
+  <!-- 앱 본문 영역 -->
+  <div class="overview-mobile-scene__body" [class.overview-mobile-scene__body--fullscreen]="fullscreen()">
+    <ng-content />
+  </div>
+
+  <!-- 📱 하단 모바일 앱 제어 메뉴 바 (Mobile Bottom Menu Bar Component) -->
+  @if (!fullscreen()) {
+    <lw-os-mobile-bottom-bar
+      [class.is-hidden]="isBottomBarHidden()"
+      [attr.aria-hidden]="isBottomBarHidden()"
+      [actions]="effectiveActions()"
+      [activeTab]="activeTab()"
+      [showSessionControl]="showSessionControl()"
+      [memberSession]="memberSessionInfo()"
+      [runningCount]="runningTabs().length"
+      [isAppSwitcherOpen]="isAppSwitcherOpen()"
+      [isSettingsOpen]="isSettingsOpen()"
+      (actionClick)="onCustomActionClick($event)"
+      (homeClick)="onHome()"
+      (settingsClick)="onSettings()"
+      (switcherClick)="toggleAppSwitcher()"
+      (closeClick)="onClose()"
+      (characterClick)="openCharacterSheet($event)"
+      (memberClick)="openMemberSheet($event)" />
+  }
+
+  <!-- 🌟 통합 단일 바텀시트 호스트 (SOLID SRP / DRY 준수: DOM에 인라인 마크업 0줄, 단일 호스트 + 전용 컴포넌트 투영) -->
+  <lw-bottom-sheet
+    [open]="isBottomSheetOpen()"
+    [fullWidth]="true"
+    [edgeToEdge]="true"
+    [backdropBlur]="true"
+    [closeOnOverlay]="true"
+    [scrollable]="true"
+    [kicker]="sheetKicker()"
+    (close)="closeActiveSheet()">
+
+    <!-- 헤더 타이틀 영역: 전용 타이틀 컴포넌트 투영 -->
+    <ng-container lwSheetTitle>
+      @switch (activeSheet()) {
+        @case ('switcher') {
+          <lw-sheet-title title="실행 중인 앱" [details]="[runningTabs().length + '개']" />
+        }
+        @case ('character') {
+          @if (characterSummary(); as s) {
+            <lw-sheet-title [title]="s.name" [details]="characterDetails(s)" />
+          }
+        }
+        @case ('member') {
+          @if (memberSessionInfo(); as m) {
+            <lw-sheet-title [title]="m.displayName">
+              @if (m.directoryRole; as role) {
+                <lw-account-role-badge [role]="role" />
+              }
+            </lw-sheet-title>
+          }
+        }
+      }
+    </ng-container>
+
+    <!-- 바디 컨텐츠 영역: 인라인 마크업/래퍼 없이 순수 컴포넌트 투영 -->
+    @switch (activeSheet()) {
+      @case ('switcher') {
+        <lw-os-app-switcher-sheet-content
+          [windows]="windows()"
+          [activeTab]="activeTab()"
+          (tabSelect)="onSelectTab($event)" />
+      }
+
+      @case ('character') {
+        @if (characterSummary(); as s) {
+          <lw-character-session-menu
+            [summary]="s"
+            [otherCharacters]="otherCharacters()"
+            logoutLabel="캐릭터 세션 해지 (로그아웃)"
+            (detailClick)="onCharacterDetailAction()"
+            (selectClick)="onCharacterSelectAction()"
+            (switchClick)="onCharacterSwitchAction($event)"
+            (logoutClick)="onCharacterLogoutAction()" />
+        }
+      }
+
+      @case ('member') {
+        @if (memberSessionInfo(); as m) {
+          <lw-member-session-menu
+            [session]="m"
+            (accountClick)="onMemberAccountAction()"
+            (logoutClick)="onMemberLogoutAction()" />
+        }
+      }
+    }
+  </lw-bottom-sheet>
+</section>

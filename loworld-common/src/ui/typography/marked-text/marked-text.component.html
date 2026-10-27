@@ -1,0 +1,5 @@
+@if (look() === 'reading') {
+  <div class="lw-marked-text__reading" [attr.data-align]="align()">@for (segment of segments(); track $index) {<span class="lw-marked-text__segment" [attr.data-state]="segment.state ?? null">{{ segment.text }}</span>}</div>
+} @else {
+  <pre class="lw-marked-text__body">@for (segment of segments(); track $index) {@if (segment.mark) {<mark class="lw-marked-text__mark" [title]="segment.mark">{{ segment.text }}</mark>} @else {<span>{{ segment.text }}</span>}}</pre>
+}

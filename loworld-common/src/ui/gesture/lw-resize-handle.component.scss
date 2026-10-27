@@ -1,0 +1,32 @@
+    :host {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      z-index: 5;
+      cursor: col-resize;
+      touch-action: none;
+      outline: none;
+    }
+    :host(.lw-resize-handle--end) { right: 0; }
+    :host(.lw-resize-handle--start) { left: 0; }
+    :host::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 3px;
+      width: 2px;
+      background: var(--lw-resize-handle-color, var(--lw-accent));
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    :host(:focus-visible)::after,
+    :host(.lw-resize-handle--dragging)::after { opacity: 1; }
+    @media (hover: hover) {
+      :host(:hover)::after { opacity: 0.6; }
+    }
+    /* 터치 기기에서는 끌어서 조절하지 않는다(패널이 시트로 뜬다). */
+    @media (pointer: coarse) {
+      :host { display: none; }
+    }

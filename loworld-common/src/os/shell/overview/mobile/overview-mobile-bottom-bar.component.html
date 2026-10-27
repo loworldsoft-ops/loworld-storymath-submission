@@ -1,0 +1,71 @@
+<nav class="mobile-bar" data-lw-dock aria-label="모바일 앱 제어 메뉴">
+  <div class="mobile-bar__row">
+    @if (hasSessionArea()) {
+      <div class="mobile-bar__session">
+        @if (showCharacterControl()) {
+          <lw-character-session-control
+            [character]="character()"
+            [characterSummaries]="characterSummaries()"
+            [isMobile]="true"
+            [compact]="true"
+            (characterSelectClick)="onCharacterSelectClick()"
+            (characterDetailClick)="onCharacterDetailClick($event)"
+            (characterSwitch)="onCharacterSwitchClick($event)"
+            (characterLogoutClick)="onCharacterLogoutClick()" />
+        }
+        @if (effectiveMemberSession()) {
+          <lw-session-control
+            [session]="effectiveMemberSession()"
+            [isMobile]="true"
+            (loginClick)="onLoginClick()"
+            (logoutClick)="onLogoutClick()"
+            (accountClick)="onAccountClick()"
+            (triggerClick)="onMemberTriggerClick($event)" />
+        }
+      </div>
+    }
+
+    <div
+      #actionsSwipe="lwSwipe"
+      lwSwipeTrack
+      [scrollSnapMode]="'none'"
+      [enableWheel]="true"
+      class="mobile-bar__track">
+      @for (item of items(); track item.id) {
+        <button
+          type="button"
+          class="mobile-bar__item"
+          [class.is-active]="item.active"
+          [class.is-danger]="item.danger"
+          [disabled]="item.disabled"
+          [attr.aria-current]="item.active ? 'page' : null"
+          [attr.aria-label]="item.hint || item.label"
+          (click)="onItemClick(item)">
+          <span class="mobile-bar__icon">
+            @if (item.imageUrl) {
+              <img class="mobile-bar__image" [src]="item.imageUrl" alt="" draggable="false" />
+            } @else {
+              <svg
+                class="mobile-bar__glyph"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                [innerHTML]="item.glyph"></svg>
+            }
+            @if (item.badge !== null) {
+              <span class="mobile-bar__badge">{{ item.badge }}</span>
+            }
+          </span>
+          <span class="mobile-bar__label">{{ item.label }}</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <button type="button" class="mobile-bar__home" aria-label="홈 화면으로 이동" (click)="onHomeIndicator()">
+    <span class="mobile-bar__home-pill"></span>
+  </button>
+</nav>

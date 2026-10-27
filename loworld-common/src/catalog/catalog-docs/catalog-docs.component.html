@@ -1,0 +1,61 @@
+<lw-docs-shell
+  brand="LoworldUI 컴포넌트 도감"
+  brandIcon="components"
+  [sections]="sectionTabs"
+  [section]="store.section()"
+  [tree]="store.visibleTree()"
+  [treeChain]="store.sectionFolder()"
+  [activePath]="store.path()"
+  [anchor]="store.anchor()"
+  [openIds]="store.openFolderIds()"
+  [toc]="store.article()?.toc ?? []"
+  [activeAnchor]="store.activeAnchor()"
+  [wide]="store.wide()"
+  [dark]="isDark()"
+  (sectionChange)="onSection($event)"
+  (selectDoc)="store.open($event)"
+  (toggleFolder)="store.toggleFolder($event)"
+  (anchorSelect)="store.goToAnchor($event)"
+  (searchRequest)="store.toggleSearch()"
+  (themeToggle)="toggleTheme()"
+  (home)="store.open('/overview')">
+  @if (store.section() === 'components') {
+    <ng-template #shellFilters>
+      <p class="catalog-docs__filter-label">계층</p>
+      <lw-tabs variant="segment" size="sm" [stretch]="true" ariaLabel="계층 필터" [tabs]="layerTabs" [value]="store.filter().layer" (tabChange)="onLayer($event)" />
+      <lw-select size="sm" ariaLabel="플랫폼 필터" [options]="platformOptions" [value]="store.filter().platform" (valueChange)="onPlatform($event)" />
+      <lw-select size="sm" ariaLabel="도메인 필터" [options]="domainOptions" [value]="store.filter().domain" (valueChange)="onDomain($event)" />
+    </ng-template>
+  }
+
+  @if (store.article(); as article) {
+    <lw-docs-page
+      [article]="article"
+      [pager]="store.pager()"
+      [anchor]="store.anchor()"
+      [dark]="isDark()"
+      [basicProse]="true"
+      (navigate)="onNavigate($event)"
+      (anchorSelect)="store.goToAnchor($event)"
+      (activeAnchorChange)="store.setActiveAnchor($event)"
+      (copyPage)="onCopyPage($event)">
+      @if (store.widget(); as widget) {
+        <ng-container [ngComponentOutlet]="widget" />
+      }
+    </lw-docs-page>
+  } @else {
+    <lw-empty-state [message]="missingMessage()">
+      <lw-button variant="primary" size="sm" (click)="store.open('/overview')">처음으로</lw-button>
+    </lw-empty-state>
+  }
+</lw-docs-shell>
+
+<lw-docs-search-modal
+  [open]="store.searchOpen()"
+  [query]="store.searchQuery()"
+  [results]="store.searchResults()"
+  [loading]="store.searchLoading()"
+  [minLength]="store.searchMinLength"
+  (queryChange)="store.setSearchQuery($event)"
+  (selectResult)="store.pickSearchResult($event)"
+  (close)="store.closeSearch()" />

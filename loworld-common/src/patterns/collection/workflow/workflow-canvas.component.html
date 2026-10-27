@@ -1,0 +1,69 @@
+<div
+  #canvasRoot
+  class="lw-wf-canvas"
+  tabindex="0"
+  role="application"
+  aria-label="워크플로우 캔버스. 빈 곳을 끌어 이동, 휠로 확대, 출력 포트와 입력 포트를 차례로 눌러 연결"
+  [class.lw-wf-canvas--panning]="isPanning()"
+  [class.lw-wf-canvas--connecting]="!!pendingPort()"
+  (mousedown)="onCanvasMouseDown($event)"
+  (mousemove)="onCanvasMouseMove($event)"
+  (mouseup)="endInteraction()"
+  (mouseleave)="endInteraction()"
+  (wheel)="onCanvasWheel($event)"
+  (keydown)="onKeydown($event)">
+  <svg class="lw-wf-canvas__svg-layer" aria-hidden="true">
+    <defs>
+      <pattern [attr.id]="patternId" width="24" height="24" patternUnits="userSpaceOnUse" [attr.patternTransform]="patternTransform()">
+        <circle class="lw-wf-canvas__dot" cx="2" cy="2" r="1" />
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" [attr.fill]="'url(#' + patternId + ')'" />
+
+    <g [attr.transform]="svgViewportTransform()">
+      @for (view of edgeViews(); track view.edge.id) {
+        <g
+          lw-bezier-edge
+          [x1]="view.x1"
+          [y1]="view.y1"
+          [x2]="view.x2"
+          [y2]="view.y2"
+          [animated]="view.edge.animated ?? false"
+          [selected]="view.edge.id === selectedEdgeId()"
+          [label]="view.edge.label ?? ''"
+          (click)="onEdgeClick($event, view.edge)"></g>
+      }
+    </g>
+  </svg>
+
+  <div class="lw-wf-canvas__nodes-layer" [style.transform]="viewportTransform()">
+    @for (node of nodes(); track node.id) {
+      <div class="lw-wf-node-wrapper" [style.left.px]="node.position.x" [style.top.px]="node.position.y" (mousedown)="onNodeMouseDown($event, node)">
+        <lw-workflow-node
+          [node]="node"
+          [selected]="node.id === selectedNodeId()"
+          [pendingPortId]="pendingPort()?.nodeId === node.id ? pendingPort()!.portId : null"
+          [connectable]="!!pendingPort() && pendingPort()!.nodeId !== node.id"
+          (select)="onSelectNode(node)"
+          (portSelect)="onPortSelected($event)" />
+      </div>
+    }
+  </div>
+
+  @if (pendingPort()) {
+    <p class="lw-wf-canvas__hint" role="status">연결할 블록의 입력 포트를 누르세요. Esc로 취소</p>
+  }
+
+  <div class="lw-wf-canvas__controls">
+    <lw-button variant="ghost" size="xs" [iconOnly]="true" ariaLabel="확대" tooltip="확대" (click)="zoomBy(1.2)">
+      <lw-icon name="plus" [size]="14" />
+    </lw-button>
+    <span class="lw-wf-zoom-text">{{ zoomLabel() }}</span>
+    <lw-button variant="ghost" size="xs" [iconOnly]="true" ariaLabel="축소" tooltip="축소" (click)="zoomBy(0.8)">
+      <lw-icon name="minus" [size]="14" />
+    </lw-button>
+    <lw-button variant="ghost" size="xs" [iconOnly]="true" ariaLabel="화면 맞춤" tooltip="화면 맞춤" (click)="fitView()">
+      <lw-icon name="maximize-2" [size]="14" />
+    </lw-button>
+  </div>
+</div>

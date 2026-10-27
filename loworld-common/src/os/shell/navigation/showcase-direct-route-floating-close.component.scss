@@ -1,0 +1,7 @@
+    :host {
+      position: fixed;
+      right: calc(16px + env(safe-area-inset-right));
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 400;
+      pointer-events: auto;
+    }

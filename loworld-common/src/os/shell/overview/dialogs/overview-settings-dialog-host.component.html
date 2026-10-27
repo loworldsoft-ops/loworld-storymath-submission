@@ -1,0 +1,14 @@
+    <lw-document-settings-dialog
+      [presentation]="presentation()"
+      [mode]="mode()"
+      [brandName]="brandName()"
+      [windowLaunchMode]="windowLaunchMode()"
+      [hideWindowMode]="hideWindowMode()"
+      [showWallpaperSetting]="showWallpaperSetting()"
+      [windowControls]="windowControls()"
+      [windowStyle]="windowStyle()"
+      [draggable]="draggable()"
+      (windowLaunchModeChange)="windowLaunchModeChange.emit($event)"
+      (wallpaperRequest)="wallpaperRequested.emit()"
+      (close)="close.emit()"
+    />

@@ -1,0 +1,204 @@
+@use 'index' as lw;
+:host {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 640px;
+    }
+    .shell {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+      background: var(--lw-container-bg);
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .shell__topbar {
+      min-width: 0;
+      min-height: 0;
+      overflow: visible;
+      position: relative;
+      z-index: 100;
+      border-radius: 0;
+      border-bottom: 1px solid var(--lw-workspace-pane-divider);
+      background: var(--lw-titlebar-bg);
+    }
+    .shell__content {
+      display: grid;
+      grid-template-columns:
+        minmax(0, var(--lw-workspace-sidebar-width, #{lw.$lw-workspace-sidebar-width}))
+        minmax(0, var(--lw-workspace-collection-width, #{lw.$lw-workspace-collection-width}))
+        minmax(0, 1fr);
+      min-height: 0;
+      padding: 0;
+      gap: 0;
+      background: var(--lw-content-area-bg);
+      overflow: hidden;
+      box-sizing: border-box;
+      transition: grid-template-columns 320ms cubic-bezier(0.16, 1, 0.3, 1), gap 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* 끄는 동안에는 폭 전환 애니메이션을 끈다(손잡이가 포인터를 바로 따라오게). */
+    .shell--resizing .shell__content {
+      transition: none;
+      user-select: none;
+    }
+    .shell--no-sidebar .shell__content {
+      grid-template-columns: minmax(0, var(--lw-workspace-collection-width, #{lw.$lw-workspace-collection-width})) minmax(0, 1fr);
+    }
+    /* sidebar + detail only (Plan 등 collection 슬롯 없음) — 자식이 2개일 때 detail이 가운데 0px 열에 들어가는 문제 방지 */
+    .shell--no-collection:not(.shell--no-sidebar) .shell__content {
+      grid-template-columns:
+        minmax(0, var(--lw-workspace-sidebar-width, #{lw.$lw-workspace-sidebar-width}))
+        minmax(0, 1fr);
+    }
+    /* detail 슬롯만 존재(sidebar/collection 둘 다 없음, 예: 소설 카탈로그 오버라이드 모드 및 게이트 모드) */
+    .shell--no-sidebar.shell--no-collection .shell__content {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0;
+      gap: 0;
+    }
+    .shell__sidebar,
+    .shell__detail {
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .shell__collection {
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms ease, margin-right 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .shell--collection-closed .shell__collection {
+      transform: translateX(-100%);
+      opacity: 0;
+      margin-right: -12px;
+    }
+    .shell--compact.shell--collection-closed .shell__collection {
+      margin-right: -10px;
+    }
+    .shell__overlay {
+      position: absolute;
+      inset: 24px;
+      z-index: 3;
+      overflow: hidden;
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--lw-color-white) 94%, transparent);
+      box-shadow: 0 20px 40px color-mix(in srgb, var(--lw-hue-slate-900) 14%, transparent);
+    }
+    .slot {
+      position: relative;
+      box-sizing: border-box;
+    }
+    .slot--selected::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid color-mix(in srgb, var(--lw-color-danger-hover) 24%, transparent);
+      border-radius: 16px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .shell__topbar.slot--selected::after {
+      border-radius: 0;
+    }
+    .shell--compact .shell__content {
+      gap: 0;
+      padding: 0;
+    }
+    .shell--compact .shell__overlay {
+      inset: 20px;
+      border-radius: 14px;
+    }
+
+    :host-context([data-lw-skin='glassmorphism']) &,
+    :host-context([data-lw-play-theme='glassmorphism']) & {
+      .shell {
+        background: transparent;
+      }
+      .shell__topbar {
+        background: var(--lw-titlebar-bg);
+      }
+      .shell__content {
+        background: transparent;
+      }
+    }
+
+
+/* ── 틀의 설정(LwFrameSettings). 앱의 코드를 고치지 않고 헤더와 사이드 메뉴를 바꾼다. ── */
+:host([data-frame-header='hidden']) .shell { grid-template-rows: minmax(0, 1fr); }
+:host([data-frame-header='hidden']) .shell__topbar { display: none; }
+
+:host([data-frame-nav='hidden']) .shell__sidebar { display: none; }
+:host([data-frame-nav='hidden']) .shell .shell__content {
+  grid-template-columns: minmax(0, var(--lw-workspace-collection-width, #{lw.$lw-workspace-collection-width})) minmax(0, 1fr);
+}
+:host([data-frame-nav='hidden']) .shell--no-collection .shell__content,
+:host([data-frame-nav='hidden']) .shell--collection-closed .shell__content { grid-template-columns: minmax(0, 1fr); }
+
+/* 사이드 메뉴를 오른쪽에. 칸의 순서를 뒤집고 메뉴를 마지막 칸에 놓는다. */
+:host([data-frame-nav-side='end']:not([data-frame-nav='hidden'])) .shell:not(.shell--no-sidebar) .shell__content {
+  grid-template-columns:
+    minmax(0, var(--lw-workspace-collection-width, #{lw.$lw-workspace-collection-width}))
+    minmax(0, 1fr)
+    minmax(0, var(--lw-workspace-sidebar-width, #{lw.$lw-workspace-sidebar-width}));
+}
+:host([data-frame-nav-side='end']:not([data-frame-nav='hidden'])) .shell--no-collection:not(.shell--no-sidebar) .shell__content {
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--lw-workspace-sidebar-width, #{lw.$lw-workspace-sidebar-width}));
+}
+:host([data-frame-nav-side='end']) .shell__sidebar { order: 3; }
+
+
+/* 본문 옆의 상세(aside). 칸을 따로 선언하지 않고 넘치는 칸으로 받는다. 있을 때만 자리를 차지한다. */
+.shell__content {
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, var(--lw-workspace-aside-width, 340px));
+}
+.shell__aside {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  border-left: 1px solid var(--lw-workspace-pane-divider, var(--lw-border-color));
+  background: var(--lw-surface);
+}
+
+/* 사이드 메뉴의 너비. 틀이 계산한 너비(인라인)를 설정이 덮는다. */
+:host([data-frame-nav-width='narrow']) .shell { --lw-workspace-sidebar-width: 200px !important; }
+:host([data-frame-nav-width='wide']) .shell { --lw-workspace-sidebar-width: 340px !important; }
+
+/* 화면의 밀도. 촘촘하게 하면 틀 안을 통째로 조금 줄여 더 많이 보이게 한다. */
+:host([data-frame-density='compact']) .shell { zoom: 0.9; }
+
+/* 헤더 스타일(headerVariant). */
+:host([data-frame-header-variant='minimal']) .shell__topbar {
+  border-bottom: 1px dashed var(--lw-workspace-pane-divider, var(--lw-border-color));
+  background: var(--lw-surface);
+  box-shadow: none;
+}
+:host([data-frame-header-variant='floating']) .shell__topbar {
+  margin: 8px 12px 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--lw-workspace-pane-divider, var(--lw-border-color));
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--lw-hue-slate-900) 6%, transparent);
+}
+
+/* 사이드 메뉴 스타일(navVariant). */
+:host([data-frame-nav-variant='minimal']) .shell__sidebar {
+  border-right: 1px dashed var(--lw-workspace-pane-divider, var(--lw-border-color));
+  background: var(--lw-surface);
+}
+:host([data-frame-nav-side='end'][data-frame-nav-variant='minimal']) .shell__sidebar {
+  border-right: none;
+  border-left: 1px dashed var(--lw-workspace-pane-divider, var(--lw-border-color));
+}
+:host([data-frame-nav-variant='floating']) .shell__sidebar {
+  margin: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--lw-workspace-pane-divider, var(--lw-border-color));
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--lw-hue-slate-900) 5%, transparent);
+  background: var(--lw-surface);
+}

@@ -1,0 +1,66 @@
+@keyframes loadout-complete-blink {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--lw-game-status-success) 55%, transparent);
+  }
+
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--lw-game-status-success) 35%, transparent);
+  }
+}
+
+.card__loadout-status {
+  margin-top: 0.25rem;
+  line-height: 0;
+}
+
+.loadout-status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 1px;
+  line-height: 0;
+  border-radius: 50%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  lw-item-icon {
+    display: block;
+    pointer-events: none;
+  }
+
+  &--complete {
+    background: color-mix(in srgb, var(--lw-game-status-success) 22%, var(--lw-card-bg));
+    border: 1px solid color-mix(in srgb, var(--lw-game-status-success) 55%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lw-card-bg) 65%, transparent);
+    animation: loadout-complete-blink 1.25s ease-in-out infinite;
+  }
+}
+
+.loadout-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+
+  &--incomplete {
+    color: var(--lw-game-text-muted-strong);
+    background: color-mix(in srgb, var(--lw-game-status-warning) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--lw-game-status-warning) 28%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadout-status-icon--complete {
+    animation: none;
+  }
+}

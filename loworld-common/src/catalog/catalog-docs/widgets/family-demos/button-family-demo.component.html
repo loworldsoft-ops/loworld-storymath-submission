@@ -1,0 +1,10 @@
+@for (group of groups; track group.id) {
+  <section class="family-demo__group">
+    <h4 class="family-demo__title">{{ group.title }}</h4>
+    <div class="family-demo__row">
+      @for (item of group.items; track item.id) {
+        <lw-button [variant]="item.variant ?? 'secondary'" [size]="item.size ?? 'md'" [shape]="item.shape ?? 'default'" [tooltip]="item.useCase">{{ item.content }}</lw-button>
+      }
+    </div>
+  </section>
+}

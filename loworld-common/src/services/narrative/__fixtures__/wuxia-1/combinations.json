@@ -1,0 +1,16 @@
+[
+  {
+    "id": "combo.cheongun-three",
+    "name": "청운삼식",
+    "requires": ["art.cheongun-1", "art.cheongun-2", "art.cheongun-3"],
+    "ordered": true,
+    "grants": { "multiplier": { "might": 1.3 }, "flags": ["cheongun-complete"] }
+  },
+  {
+    "id": "combo.sword-and-mind",
+    "name": "검과 수",
+    "requires": ["mem.sword-path", "mem.reading-eye"],
+    "ordered": false,
+    "grants": { "multiplier": { "might": 1.15, "wit": 1.15 }, "flags": ["whole-again"] }
+  }
+]

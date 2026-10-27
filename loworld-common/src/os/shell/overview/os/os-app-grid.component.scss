@@ -1,0 +1,197 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.os-grid__track {
+  flex: 1;
+  min-height: 0;
+  outline: none;
+}
+
+.os-grid__page {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--lw-space-4) var(--lw-space-6) var(--lw-space-4);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+// 페이지 분류 이름. 페이지와 함께 넘어간다.
+.os-grid__title {
+  margin: 0 0 var(--lw-space-4);
+  font-size: var(--lw-text-md);
+  font-weight: var(--lw-weight-semibold);
+  line-height: 1.3;
+  text-align: center;
+  color: var(--os-on-wallpaper);
+  text-shadow: var(--os-on-wallpaper-shadow);
+}
+
+// 가운데에 놓고 왼쪽에서 오른쪽으로 먼저 채운다.
+.os-grid__apps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--os-app-tile));
+  justify-content: center;
+  gap: var(--lw-space-4) var(--lw-space-5);
+  max-width: calc(var(--os-app-tile) * 8 + var(--lw-space-5) * 7);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.os-grid__cell {
+  display: flex;
+  justify-content: center;
+}
+
+.os-grid__app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lw-space-2);
+  width: var(--os-app-tile);
+  padding: var(--lw-space-2) var(--lw-space-1);
+  border: 0;
+  border-radius: var(--lw-radius-lg);
+  background: transparent;
+  color: var(--os-on-wallpaper);
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--lw-duration-fast) var(--lw-ease);
+
+  &:hover {
+    background: color-mix(in srgb, var(--os-on-wallpaper) 10%, transparent);
+  }
+
+  &:active .os-grid__icon {
+    transform: scale(0.94);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--lw-focus-ring);
+    outline-offset: 2px;
+  }
+
+  &.is-locked .os-grid__img {
+    opacity: 0.45;
+  }
+}
+
+.os-grid__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--os-app-icon);
+  height: var(--os-app-icon);
+  transition: transform var(--lw-duration-fast) var(--lw-ease);
+}
+
+.os-grid__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 22%;
+  user-select: none;
+}
+
+.os-grid__lock {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--lw-radius-full);
+  background: var(--os-panel-bg);
+  color: var(--os-panel-fg-muted);
+  border: 1px solid var(--os-panel-border);
+}
+
+.os-grid__label {
+  max-width: 100%;
+  font-size: var(--lw-text-sm);
+  font-weight: var(--lw-weight-medium);
+  line-height: 1.3;
+  text-align: center;
+  text-shadow: var(--os-on-wallpaper-shadow);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.os-grid__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lw-space-2);
+  width: min(360px, 100%);
+  margin: 12vh auto 0;
+  padding: var(--lw-space-6);
+  box-sizing: border-box;
+  border: 1px solid var(--os-panel-border);
+  border-radius: var(--lw-radius-lg);
+  background: var(--os-panel-bg);
+  text-align: center;
+}
+
+.os-grid__empty-title {
+  margin: 0;
+  font-size: var(--lw-text-lg);
+  font-weight: var(--lw-weight-semibold);
+  color: var(--os-panel-fg);
+}
+
+.os-grid__empty-hint {
+  margin: 0 0 var(--lw-space-2);
+  font-size: var(--lw-text-md);
+  color: var(--os-panel-fg-muted);
+}
+
+.os-grid__dots {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  gap: var(--lw-space-1);
+  padding: var(--lw-space-1) 0 var(--lw-space-2);
+}
+
+// 점은 6px이지만 누르는 영역은 24px이다.
+.os-grid__dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: var(--lw-radius-full);
+    background: var(--os-on-wallpaper-dot);
+    opacity: 0.45;
+    transition: opacity var(--lw-duration-fast) var(--lw-ease), transform var(--lw-duration-fast) var(--lw-ease);
+  }
+
+  &.is-current::before {
+    opacity: 1;
+    transform: scale(1.3);
+    background: var(--os-on-wallpaper);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--lw-focus-ring);
+    border-radius: var(--lw-radius-full);
+  }
+}

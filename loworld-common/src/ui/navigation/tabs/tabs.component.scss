@@ -1,0 +1,126 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.lw-tabs__list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.lw-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--lw-text-secondary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    color: var(--lw-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--lw-color-primary);
+    outline-offset: -2px;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.lw-tabs__tab--active {
+  color: var(--lw-text-primary);
+  font-weight: 600;
+}
+
+.lw-tabs__badge {
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--lw-surface-active);
+  color: var(--lw-text-secondary);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+// ── line ──
+:host(.lw-tabs--line) {
+  .lw-tabs__list {
+    gap: 0;
+    border-bottom: 1px solid var(--lw-border-subtle);
+  }
+
+  .lw-tabs__tab {
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+  }
+
+  .lw-tabs__tab--active {
+    border-bottom-color: var(--lw-color-primary);
+  }
+}
+
+// ── segment ──
+:host(.lw-tabs--segment) {
+  width: auto;
+
+  .lw-tabs__list {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--lw-border-subtle);
+    border-radius: 8px;
+    background: var(--lw-surface-alt);
+  }
+
+  .lw-tabs__tab {
+    padding: 4px 14px;
+    border-radius: 6px;
+  }
+
+  .lw-tabs__tab--active {
+    background: var(--lw-surface-card);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+  }
+}
+
+// ── pill ──
+:host(.lw-tabs--pill) {
+  .lw-tabs__tab {
+    padding: 4px 12px;
+    border: 1px solid var(--lw-border-subtle);
+    border-radius: 999px;
+  }
+
+  .lw-tabs__tab--active {
+    border-color: var(--lw-color-primary);
+    background: color-mix(in srgb, var(--lw-color-primary) 12%, transparent);
+    color: var(--lw-color-primary);
+  }
+}
+
+:host(.lw-tabs--sm) .lw-tabs__tab {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+:host(.lw-tabs--stretch) .lw-tabs__tab {
+  flex: 1 1 0;
+  justify-content: center;
+}

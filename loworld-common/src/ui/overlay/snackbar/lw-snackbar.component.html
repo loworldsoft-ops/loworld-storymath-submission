@@ -1,0 +1,9 @@
+<div class="lw-snackbar" [class]="'lw-snackbar--' + kind()" role="status" aria-live="polite">
+  @if (kind() === 'saving') {
+    <span class="lw-snackbar__spinner" aria-hidden="true"></span>
+  }
+  <span class="lw-snackbar__message">{{ message() }}</span>
+  <lw-button type="button" class="lw-snackbar__close" aria-label="닫기" (click)="dismiss.emit()">
+    ×
+  </lw-button>
+</div>

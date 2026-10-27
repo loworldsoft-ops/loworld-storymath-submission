@@ -1,0 +1,23 @@
+{
+  "path": "/detail/announcements/manage-announcements",
+  "title": "공지사항 관리하기",
+  "desc": "",
+  "toc": [
+    {
+      "id": "공지-작성하기",
+      "depth": 2,
+      "text": "공지 작성하기"
+    },
+    {
+      "id": "공지-수정하기",
+      "depth": 2,
+      "text": "공지 수정하기"
+    },
+    {
+      "id": "공지-삭제하기",
+      "depth": 2,
+      "text": "공지 삭제하기"
+    }
+  ],
+  "html": "<p>공지를 만들거나 수정할 때 제목은 최대 <strong>80자</strong>, 내용은 최대 <strong>10,000자</strong>까지 입력할 수 있습니다.\n더 이상 필요하지 않은 공지는 삭제하세요.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공지-작성하기\"><a data-card=\"\" href=\"#공지-작성하기\" class=\"peer\">공지 작성하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p><strong>신규등록</strong>을 클릭하고 제목과 내용을 입력한 뒤 <strong>등록</strong>을 클릭합니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공지-수정하기\"><a data-card=\"\" href=\"#공지-수정하기\" class=\"peer\">공지 수정하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>수정할 공지를 열고 연필 모양 버튼을 클릭한 뒤 제목이나 내용을 변경하고 <strong>수정</strong>을 클릭합니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공지-삭제하기\"><a data-card=\"\" href=\"#공지-삭제하기\" class=\"peer\">공지 삭제하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>목록에서 한 건을 삭제하거나 여러 공지를 선택해 한꺼번에 삭제할 수 있습니다. 공지 상세 화면의 휴지통 버튼으로도 삭제할 수 있습니다.\n확인 창에서 <strong>삭제</strong>를 선택하면 공지가 삭제되며 복구할 수 없습니다.</p>"
+}

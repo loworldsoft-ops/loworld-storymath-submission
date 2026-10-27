@@ -1,0 +1,36 @@
+{
+  "name": "@loworld/app-story-math",
+  "version": "0.0.0",
+  "private": true,
+  "description": "스토리매스 앱. 공통 컴포넌트를 조합한 화면과 로직만 있다. 스타일과 자체 컴포넌트는 없다.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "prepare": "node scripts/prepare.mjs",
+    "build": "node scripts/prepare.mjs && ng build app",
+    "serve": "node scripts/prepare.mjs && ng serve app",
+    "typecheck": "node scripts/prepare.mjs && ngc -p tsconfig.json --noEmit",
+    "verify": "node scripts/prepare.mjs && node .common/conventions/verify-app.mjs ."
+  },
+  "devDependencies": {
+    "@angular/build": "22.0.7",
+    "@angular/cli": "22.0.7",
+    "@angular/common": "22.0.7",
+    "@angular/compiler": "22.0.7",
+    "@angular/compiler-cli": "22.0.7",
+    "@angular/core": "22.0.7",
+    "@angular/elements": "22.0.7",
+    "@angular/forms": "22.0.7",
+    "@angular/platform-browser": "22.0.7",
+    "@angular/router": "22.0.7",
+    "firebase": "^11.7.1",
+    "leaflet": "^1.9.4",
+    "@types/leaflet": "^1.9.21",
+    "lucide-angular": "^1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "typescript": "~6.0.3"
+  }
+}

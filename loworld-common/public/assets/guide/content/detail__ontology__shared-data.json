@@ -1,0 +1,28 @@
+{
+  "path": "/detail/ontology/shared-data",
+  "title": "공용 데이터",
+  "desc": "",
+  "toc": [
+    {
+      "id": "공용-데이터-관리하기",
+      "depth": 2,
+      "text": "공용 데이터 관리하기"
+    },
+    {
+      "id": "공용-데이터-활용하기",
+      "depth": 2,
+      "text": "공용 데이터 활용하기"
+    },
+    {
+      "id": "온톨로지-설계-시-채택",
+      "depth": 3,
+      "text": "온톨로지 설계 시 채택"
+    },
+    {
+      "id": "데이터-추출-시-참조",
+      "depth": 3,
+      "text": "데이터 추출 시 참조"
+    }
+  ],
+  "html": "<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공용-데이터-관리하기\"><a data-card=\"\" href=\"#공용-데이터-관리하기\" class=\"peer\">공용 데이터 관리하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>좌측 사이드바 하단의 <strong>Shared Nodes and Edges</strong> 메뉴를 누르면 공용 노드 및 엣지 데이터를 관리하는 화면이 표시됩니다.\n공용 데이터를 관리하려면 노드 또는 엣지 데이터에 대한 <strong>설계를 먼저 정의한 후</strong>, 그 설계에 따라 작성된 <strong>CSV 데이터 파일을 업로드</strong>합니다.</p>\n<div class=\"fd-steps\"><div class=\"fd-step\"><p>공용으로 쓸 <strong>노드 및 엣지의 설계</strong>를 정의합니다.</p></div><div class=\"fd-step\"><p><strong>Upload CSVs</strong> 버튼을 눌러 CSV 데이터를 업로드합니다.</p></div></div>\n<p>CSV 업로드 화면은 개별 프로젝트의 CSV 업로드 화면을 그대로 차용한 것이며, 기능도 동일하게 구현되어 있습니다.\n개별 프로젝트에서 CSV 데이터를 업로드하듯 이 화면에서도 동일하게 사용하면 됩니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공용-데이터-활용하기\"><a data-card=\"\" href=\"#공용-데이터-활용하기\" class=\"peer\">공용 데이터 활용하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<h3 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"온톨로지-설계-시-채택\"><a data-card=\"\" href=\"#온톨로지-설계-시-채택\" class=\"peer\">온톨로지 설계 시 채택</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h3>\n<p><strong>Design</strong> 탭에서 <strong>+ Add from Shared</strong> 버튼을 누르면 채택 가능한 노드 및 엣지 목록이 활성화됩니다.\n엣지의 경우 <strong>양끝점이 설계에 반영되어 있을 때만</strong> 채택 가능하도록 활성화됩니다.</p>\n<div class=\"flex gap-2 my-4 rounded-xl border bg-fd-card p-3 ps-1 text-sm text-fd-card-foreground shadow-md\" style=\"--callout-color:var(--color-fd-warning, var(--color-fd-muted))\"><div role=\"none\" class=\"w-0.5 bg-(--callout-color)/50 rounded-sm\"></div><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-5 -me-0.5 fill-(--callout-color) text-fd-card\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"></path><path d=\"M12 9v4\"></path><path d=\"M12 17h.01\"></path></svg><div class=\"flex flex-col gap-2 min-w-0 flex-1\"><div class=\"text-fd-muted-foreground prose-no-margin empty:hidden\"><ul>\n<li>채택은 <strong>불가역적인 작업</strong>입니다. 공용 설계를 채택할 때 개별 프로젝트에 정의된 설계를 삭제하기 때문에, 공용으로 채택된 노드/엣지를 개별로 다시 전환하려면 개별 프로젝트에서 해당 설계를 다시 정의해야 합니다.</li>\n<li>데이터 추출이 충분히 진행된 상태에서 설계를 바꾸는 것은 어느 경우에나 사이드이펙트를 감수해야 합니다. 공용 설계를 채택하거나 채택 해제하는 것도 같은 맥락에서 신중해야 합니다.</li>\n</ul></div></div></div>\n<h3 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"데이터-추출-시-참조\"><a data-card=\"\" href=\"#데이터-추출-시-참조\" class=\"peer\">데이터 추출 시 참조</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h3>\n<p>설계를 마치고 <strong>Data &gt; Sync</strong> 메뉴에서 테이블 설계 싱크를 진행하면 설계에 따라 노드/엣지 테이블이 생성되며,\n공용 설계를 채택한 테이블에는 <strong>Shared 마커</strong>가 표시됩니다.</p>\n<p>Shared 테이블을 눌러보면 공용 데이터 관리 화면에서 미리 넣어둔 데이터를 확인할 수 있습니다.\n데이터 추출 시에는 이 데이터를 참조하여 추출을 진행하게 됩니다.</p>"
+}

@@ -1,0 +1,116 @@
+<div class="lw-chatbot-panel">
+  <!-- 🤖 챗봇 헤더 영역 -->
+  <div class="chatbot-header">
+    <div class="bot-profile">
+      <div class="avatar-wrapper">
+        <lw-avatar [src]="data().botAvatarUrl" [alt]="data().botName" initial="🤖" size="md" />
+        <span class="status-indicator" [class.status-indicator--online]="data().isOnline"></span>
+      </div>
+      
+      <div class="bot-info">
+        <h3 class="bot-name">{{ data().botName }}</h3>
+        <p class="bot-status-text">
+          {{ data().isOnline ? 'Online' : 'Offline' }}
+          @if (data().isTyping) {
+            <span class="typing-text-dot">... typing</span>
+          }
+        </p>
+      </div>
+    </div>
+    
+    <lw-button class="reset-btn" (click)="resetChat()" tooltip="Clear Conversation">
+      <span class="reset-icon">🔄</span> Reset
+    </lw-button>
+  </div>
+
+  <!-- 💬 메시지 영역 -->
+  <div class="chatbot-body" #scrollContainer>
+    <div class="message-list">
+      @if (data().messages.length === 0) {
+        <div class="empty-conversation">
+          <div class="empty-icon">💬</div>
+          <p>대화가 없습니다. 아래 추천 질문을 누르거나 메시지를 입력하세요.</p>
+        </div>
+      }
+
+      @for (msg of data().messages; track msg.id) {
+        <div class="message-wrapper" [class.message-wrapper--user]="msg.sender === 'user'" [class.message-wrapper--system]="msg.sender === 'system'">
+          @if (msg.sender === 'bot') {
+            <div class="avatar-wrapper avatar-wrapper--small">
+              <lw-avatar [src]="data().botAvatarUrl" [alt]="data().botName" initial="🤖" size="sm" />
+            </div>
+          }
+          
+          <div class="message-bubble-group">
+            @if (msg.sender === 'bot') {
+              <span class="message-sender-name">{{ data().botName }}</span>
+            }
+            <div class="message-bubble">
+              <p class="message-content">{{ msg.content }}</p>
+            </div>
+            <span class="message-time">
+              {{ msg.timeLabel ?? (msg.timestamp | date:'a h:mm') }}
+              @if (msg.status === 'sending') {
+                <span class="sending-status">⏳</span>
+              }
+            </span>
+          </div>
+        </div>
+      }
+
+      <!-- ⏳ 타이핑 인디케이터 -->
+      @if (data().isTyping) {
+        <div class="message-wrapper">
+          <div class="avatar-wrapper avatar-wrapper--small">
+            <lw-avatar [src]="data().botAvatarUrl" [alt]="data().botName" initial="🤖" size="sm" />
+          </div>
+          <div class="message-bubble-group">
+            <span class="message-sender-name">{{ data().botName }}</span>
+            <div class="message-bubble typing-bubble">
+              <div class="typing-indicator">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- 💡 추천 질문 및 칩 영역 -->
+  @if (data().suggestions.length > 0 && !data().isTyping) {
+    <div class="chatbot-suggestions">
+      <div class="suggestions-container">
+        @for (sug of data().suggestions; track sug) {
+          <lw-button class="suggestion-chip" (click)="onSuggestionClick(sug)">
+            {{ sug }}
+          </lw-button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ⌨️ 입력창 영역 -->
+  <div class="chatbot-footer">
+    <div class="input-wrapper">
+      <lw-textarea
+        [value]="inputText()"
+        (valueChange)="inputText.set($event)"
+        (keydown)="onKeyDown($event)"
+        [placeholder]="data().placeholder || '메시지를 입력하세요...'"
+        [disabled]="data().isTyping"
+        class="message-input"
+        [rows]="1" />
+      
+      <lw-button
+        [disabled]="!inputText().trim() || data().isTyping"
+        (click)="sendMessage()"
+        class="send-btn"
+        tooltip="Send Message">
+        <span class="icon-lightbulb" aria-hidden="true"></span>
+      </lw-button>
+    </div>
+  </div>
+</div>

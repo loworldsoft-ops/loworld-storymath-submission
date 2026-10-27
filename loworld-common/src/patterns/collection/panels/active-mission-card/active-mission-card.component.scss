@@ -1,0 +1,90 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.lw-active-mission-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lw-active-mission-card__empty {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 0.72rem;
+  color: var(--lw-text-muted);
+  border-radius: 10px;
+  border: 1px dashed var(--lw-border);
+}
+
+.lw-active-mission-card__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--lw-border);
+  border-radius: 10px;
+  background: var(--lw-surface-alt);
+  color: var(--lw-text-primary, inherit);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: var(--lw-accent);
+    background: var(--lw-accent-soft, color-mix(in srgb, var(--lw-color-white) 6%, transparent));
+  }
+}
+
+.lw-active-mission-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.lw-active-mission-card__kind {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--lw-accent);
+}
+
+.lw-active-mission-card__progress {
+  font-size: 0.65rem;
+  color: var(--lw-text-secondary);
+}
+
+.lw-active-mission-card__title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--lw-text-primary, inherit);
+}
+
+.lw-active-mission-card__objectives {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lw-active-mission-card__objective {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.68rem;
+  color: var(--lw-text-secondary);
+}
+
+.lw-active-mission-card__count {
+  flex-shrink: 0;
+  color: var(--lw-text-muted);
+}

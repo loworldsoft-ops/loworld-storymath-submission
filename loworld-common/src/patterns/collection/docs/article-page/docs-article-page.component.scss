@@ -1,0 +1,50 @@
+// 캡슐화를 끈 스타일시트다. 아래 세 범위 밖의 선택자를 추가하지 않는다.
+//   1) .guide-article        이 컴포넌트의 호스트
+//   2) .lw-docs-prose        본문 (생성 파일)
+//   3) #lw-docs-print        인쇄 전용 영역
+@import './docs-prose.generated.css';
+
+.guide-article {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+// ── 인쇄(PDF 내보내기) ──
+#lw-docs-print {
+  display: none;
+}
+
+@media print {
+  // 인쇄 중에는 인쇄 전용 영역만 남긴다. 다른 화면의 display 규칙을 이겨야 하므로 !important가 필요하다.
+  html.lw-docs-printing body > :not(#lw-docs-print) {
+    display: none !important;
+  }
+
+  html.lw-docs-printing #lw-docs-print {
+    display: block;
+    color: var(--lw-text-primary);
+  }
+
+  #lw-docs-print .lw-docs-print__page {
+    break-after: page;
+    padding: 0 8px;
+
+    > h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+
+  #lw-docs-print .lw-docs-print__cover {
+    padding-top: 30vh;
+    text-align: center;
+  }
+
+  #lw-docs-print .lw-docs-print__desc {
+    margin: 0 0 16px;
+    color: var(--lw-text-muted);
+  }
+}

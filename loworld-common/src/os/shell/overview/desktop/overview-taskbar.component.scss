@@ -1,0 +1,7 @@
+:host {
+  display: block;
+  position: relative;
+  z-index: var(--lw-z-sticky);
+  padding: 0 var(--lw-space-4) var(--lw-space-3);
+  pointer-events: none;
+}

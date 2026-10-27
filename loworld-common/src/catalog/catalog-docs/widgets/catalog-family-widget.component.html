@@ -1,0 +1,6 @@
+@if (demo(); as type) {
+  <lw-card variant="outlined">
+    <h3 class="catalog-family__title">실물 견본</h3>
+    <ng-container [ngComponentOutlet]="type" />
+  </lw-card>
+}

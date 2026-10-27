@@ -1,0 +1,41 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lw-empty-gap, #{lw.$lw-empty-gap});
+  padding: var(--lw-empty-padding, #{lw.$lw-empty-padding-y} #{lw.$lw-empty-padding-x});
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: var(--lw-empty-icon-size, #{lw.$lw-empty-icon-size});
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.empty-message {
+  margin: 0;
+  font-size: var(--lw-empty-font, #{lw.$lw-empty-font-size});
+  color: var(--lw-empty-color, #{lw.$lw-empty-color});
+  line-height: 1.5;
+}
+
+/* ── Sizes ── */
+.empty[data-size='sm'] {
+  padding: #{lw.$lw-empty-padding-sm-y} #{lw.$lw-empty-padding-sm-x};
+  --lw-empty-font: #{lw.$lw-empty-font-sm};
+  --lw-empty-icon-size: #{lw.$lw-empty-icon-sm};
+}
+
+.empty[data-size='lg'] {
+  padding: #{lw.$lw-empty-padding-lg-y} #{lw.$lw-empty-padding-lg-x};
+  --lw-empty-font: #{lw.$lw-empty-font-lg};
+  --lw-empty-icon-size: #{lw.$lw-empty-icon-lg};
+}

@@ -1,0 +1,63 @@
+<div class="recording-bar" [class.paused]="status() === 'paused'">
+  <div class="header-row">
+    <div class="left-info">
+      <div class="mic-icon-wrapper" [class.recording]="status() === 'recording'">
+        <div class="mic-circle" [style.backgroundColor]="status() === 'recording' ? 'rgba(251,50,32,0.15)' : 'rgba(251,50,32,0.08)'">
+          <span class="icon-chevron-left" aria-hidden="true"></span>
+        </div>
+        @if (status() === 'recording') {
+          <div class="pulse-dot"></div>
+        }
+      </div>
+      <div class="status-texts">
+        <div class="status-label" [style.color]="status() === 'recording' ? '#fb3220' : 'var(--lw-main-meta-text, #6b7280)'">
+          {{ status() === 'recording' ? '녹음 중' : (status() === 'error' ? '오류' : '일시정지') }}
+        </div>
+        <div class="status-time" style="color: var(--lw-main-meta-text, #6b7280)">
+          {{ formattedDuration() }} / 05:00
+          @if (currentSizeKB() > 0) {
+            <span class="size-text" style="color: var(--lw-main-meta-text, #6b7280)">· ~{{ currentSizeKB() | number:'1.1-1' }} KB</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="right-actions">
+      @if (status() === 'recording') {
+        <lw-button (click)="togglePause()" class="action-btn circle-btn" style="background-color: rgba(251,50,32,0.1)" tooltip="일시정지">
+          <span class="icon-glyph icon-pause" aria-hidden="true">⏸</span>
+        </lw-button>
+      } @else {
+        <lw-button (click)="togglePause()" class="action-btn circle-btn" style="background-color: rgba(251,50,32,0.1)" tooltip="재개">
+          <span class="icon-glyph icon-play" aria-hidden="true">▶</span>
+        </lw-button>
+      }
+      <lw-button (click)="stopRecording()" class="action-btn circle-btn" style="background-color: rgba(251,50,32,0.15)" tooltip="녹음 완료">
+        <span class="icon-check" aria-hidden="true"></span>
+      </lw-button>
+      <lw-button (click)="cancel()" class="cancel-btn" style="color: var(--lw-main-meta-text, #6b7280); background-color: var(--lw-editor-inactive-bg, rgba(0,0,0,0.04))" tooltip="취소">
+        취소
+      </lw-button>
+    </div>
+  </div>
+
+  <div class="waveform-container" style="background-color: var(--lw-editor-inactive-bg, rgba(0,0,0,0.03))">
+    @for (level of levels(); track $index) {
+      <div class="wave-bar" [style.height.%]="status() === 'paused' ? 20 : level" [style.backgroundColor]="status() === 'paused' ? 'rgba(251,50,32,0.15)' : 'rgba(251,50,32,' + (0.3 + (level/100) * 0.7) + ')'"></div>
+    }
+  </div>
+
+  <div class="level-indicator">
+    <span class="level-label" style="color: var(--lw-main-meta-text, #6b7280)">레벨</span>
+    <div class="level-track" style="background-color: var(--lw-editor-inactive-bg, rgba(0,0,0,0.05))">
+      <div class="level-fill" [style.width.%]="status() === 'paused' ? 0 : currentLevel()" [style.backgroundColor]="currentLevel() > 85 ? '#ef4444' : (currentLevel() > 60 ? '#f59e0b' : '#fb3220')"></div>
+    </div>
+    <span class="level-percent" [style.color]="currentLevel() > 85 ? '#ef4444' : 'var(--lw-main-meta-text, #6b7280)'">
+      {{ status() === 'paused' ? '--' : currentLevel() + '%' }}
+    </span>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-toast">{{ errorMessage() }}</div>
+  }
+</div>

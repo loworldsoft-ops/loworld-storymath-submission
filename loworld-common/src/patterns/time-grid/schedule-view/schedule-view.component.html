@@ -1,0 +1,50 @@
+<div class="view-host">
+  @switch (currentView()) {
+    @case ('month') {
+      <lw-schedule-month-grid
+        [monthDays]="monthDays()" [selectedDate]="selectedDate()"
+        [isMobile]="isMobile()" [calendarColors]="calendarColors()"
+        (selectDate)="selectDate.emit($event)"
+        (selectEvent)="selectEvent.emit($event)"
+        (createEvent)="createEvent.emit($event)"
+        (toggleTask)="toggleTask.emit($event)" />
+    }
+    @case ('week') {
+      <lw-schedule-week-grid
+        [weekDays]="weekDays()" [selectedDate]="selectedDate()"
+        [filteredEvents]="filteredEvents()" [calendarColors]="calendarColors()"
+        [isMobile]="isMobile()"
+        (selectEvent)="selectEvent.emit($event)" />
+    }
+    @case ('day') {
+      <lw-schedule-day-grid
+        [selectedDate]="selectedDate()" [filteredEvents]="filteredEvents()"
+        [calendarColors]="calendarColors()" [isMobile]="isMobile()"
+        (selectEvent)="selectEvent.emit($event)"
+        (prevDay)="prevDay.emit()"
+        (nextDay)="nextDay.emit()" />
+    }
+    @case ('year') {
+      <lw-schedule-year-grid
+        [selectedDate]="selectedDate()" [events]="filteredEvents()"
+        [isMobile]="isMobile()"
+        (goToMonth)="goToMonth.emit($event)"
+        (goToDay)="goToDay.emit($event)" />
+    }
+    @case ('agenda') {
+      <lw-schedule-agenda
+        [monthDays]="monthDays()" [selectedDate]="selectedDate()"
+        [filteredEvents]="filteredEvents()" [calendarColors]="calendarColors()"
+        (selectEvent)="selectEventFromAgenda.emit($event)" />
+    }
+    @default {
+      <lw-schedule-month-grid
+        [monthDays]="monthDays()" [selectedDate]="selectedDate()"
+        [isMobile]="isMobile()" [calendarColors]="calendarColors()"
+        (selectDate)="selectDate.emit($event)"
+        (selectEvent)="selectEvent.emit($event)"
+        (createEvent)="createEvent.emit($event)"
+        (toggleTask)="toggleTask.emit($event)" />
+    }
+  }
+</div>

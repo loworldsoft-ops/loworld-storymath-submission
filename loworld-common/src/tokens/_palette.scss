@@ -1,0 +1,49 @@
+// Primitive palette for Sass fallbacks (aligns with --lw-* tokens where applicable).
+$lw-muted: #6b7280;
+$lw-progress-track: #e5e7eb;
+
+$lw-avatar-bg: #e8e8e8;
+$lw-avatar-icon-color: #888;
+$lw-on-avatar-initial: #ffffff;
+
+$lw-card-bg: #ffffff;
+$lw-card-border: #e5e7eb;
+$lw-card-hover-bg: #fafbfc;
+$lw-card-selected-bg: #f0f7ff;
+$lw-color-primary: #3b82f6;
+
+$lw-metric-label-color: #99a1af;
+$lw-metric-value-color: #d4c9b0;
+
+$lw-chip-border: #e5e7eb;
+$lw-chip-bg: #f9fafb;
+$lw-chip-text: #374151;
+$lw-chip-hover-border: #d1d5db;
+$lw-chip-hover-bg: #f3f4f6;
+$lw-on-primary-contrast: #ffffff;
+
+$lw-empty-color: #99a1af;
+
+// Fab
+$lw-fab-overlay-scrim: rgba(0, 0, 0, 0.35);
+$lw-fab-menu-bg: #ffffff;
+$lw-fab-menu-text: #333333;
+$lw-fab-menu-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+
+// Titlebar
+$lw-surface: #ffffff;
+$lw-border-subtle: #f0f0f0;
+$lw-titlebar-hover-bg: rgba(0, 0, 0, 0.04);
+
+// Modal
+$lw-modal-overlay: rgba(0, 0, 0, 0.25);
+$lw-modal-bg: #ffffff;
+$lw-modal-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+$lw-modal-divider: #f3f4f6;
+$lw-modal-title-color: #364153;
+
+// Search (border/bg reuse chip tokens in component SCSS where noted)
+$lw-search-focus-ring: rgba(59, 130, 246, 0.12);
+$lw-search-icon: #9ca3af;
+$lw-ink: #111827;
+

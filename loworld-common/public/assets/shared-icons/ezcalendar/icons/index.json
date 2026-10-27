@@ -1,0 +1,20 @@
+{
+  "category": "ezcalendar",
+  "targetCount": 1,
+  "style": "engraved-fantasy",
+  "implemented": [
+    {
+      "id": "ezcalendar-clock-recurring",
+      "runtimeId": "clock-recurring",
+      "family": "clock",
+      "svgPath": "svg/ezcalendar/clock-recurring.webp",
+      "previewLabel": "반복 일정 시계",
+      "tags": [
+        "clock",
+        "recurring",
+        "alarm"
+      ]
+    }
+  ],
+  "planned": []
+}

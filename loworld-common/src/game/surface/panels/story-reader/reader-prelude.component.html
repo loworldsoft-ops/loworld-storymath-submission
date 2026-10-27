@@ -1,0 +1,46 @@
+<div class="prelude">
+  <header class="prelude__head">
+    @if (kicker()) {
+      <p class="prelude__kicker">{{ kicker() }}</p>
+    }
+    <h1 class="prelude__title">{{ title() }}</h1>
+  </header>
+
+  @if (cards().length > 0) {
+    <section class="prelude__draw" aria-label="카드가 뽑힌다">
+      <p class="prelude__step">카드가 뽑힌다</p>
+      <ul class="prelude__cards">
+        @for (card of cards(); track card.id; let index = $index) {
+          <li
+            class="prelude__card"
+            [class.prelude__card--picked]="card.id === pickedCardId()"
+            [class.prelude__card--passed]="card.id !== pickedCardId()"
+            [style.animation-delay]="index * 140 + 'ms, 1000ms'"
+            [attr.aria-current]="card.id === pickedCardId() ? 'true' : null">
+            <span class="prelude__card-kind">{{ card.kind }}</span>
+            <span class="prelude__card-name">{{ card.name }}</span>
+            <span class="prelude__card-description">{{ card.description }}</span>
+            @if (card.hint) {
+              <span class="prelude__card-hint">{{ card.hint }}</span>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
+  <ol class="prelude__lines">
+    @for (line of lines(); track $index; let index = $index) {
+      <li class="prelude__line" [style.animation-delay.ms]="linesDelay() + index * 220">
+        @if (showStep(index)) {
+          <span class="prelude__step">{{ stepLabel(line.step) }}</span>
+        }
+        <span class="prelude__line-text">{{ line.text }}</span>
+      </li>
+    }
+  </ol>
+
+  <div class="prelude__actions" [style.animation-delay.ms]="linesDelay() + lines().length * 220">
+    <button lw-button type="button" variant="secondary" (click)="read.emit()">{{ readLabel() }}</button>
+  </div>
+</div>

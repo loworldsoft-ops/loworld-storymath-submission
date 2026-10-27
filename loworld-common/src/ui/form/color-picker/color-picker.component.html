@@ -1,0 +1,17 @@
+<div class="color-section" role="region" aria-label="색상 선택기" (click)="$event.stopPropagation()">
+    <div class="color-picker-container">
+      <div class="color-label" >색상 선택</div>
+      <div class="color-grid">
+        @for (c of palette(); track c) {
+          <lw-button class="color-btn"
+                  [style.backgroundColor]="c"
+                  [class.selected]="currentColor().toLowerCase() === c.toLowerCase()"
+                  (click)="onColorSelect(c, $event)">
+            @if (currentColor().toLowerCase() === c.toLowerCase()) {
+              <span class="icon-glyph icon-check" aria-hidden="true">✓</span>
+            }
+          </lw-button>
+        }
+      </div>
+    </div>
+</div>

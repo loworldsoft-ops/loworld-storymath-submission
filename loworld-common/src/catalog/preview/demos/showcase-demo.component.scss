@@ -1,0 +1,63 @@
+    .showcase-demo-wrap {
+      padding: 24px;
+      background: var(--cd-bg-card, color-mix(in srgb, var(--lw-color-white) 70%, transparent));
+      border-radius: 12px;
+      border: 1px solid var(--cd-border-soft, color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent));
+      text-align: left;
+      color: var(--cd-text-main, var(--lw-hue-slate-700));
+    }
+    .demo-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--cd-border-soft, color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent));
+      padding-bottom: 16px;
+      h3 { margin: 0 0 8px; color: var(--cd-text-title, var(--lw-hue-slate-900)); }
+      p { margin: 0; color: var(--cd-text-muted, var(--lw-hue-slate-500)); font-size: 13px; }
+    }
+    .demo-alert-bar {
+      padding: 10px 16px;
+      background: color-mix(in srgb, var(--lw-hue-blue-500) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lw-hue-blue-500) 15%, transparent);
+      border-radius: 6px;
+      color: var(--cd-prop-type-text, var(--lw-hue-blue-600));
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .event-feedback {
+      padding: 8px 12px;
+      background: color-mix(in srgb, var(--lw-color-success) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lw-color-success) 15%, transparent);
+      border-radius: 6px;
+      color: var(--lw-color-success);
+      font-size: 12px;
+      margin-bottom: 16px;
+      font-family: monospace;
+    }
+    .grid-sandbox {
+      background: var(--cd-bg-code-box, var(--lw-hue-slate-100));
+      border: 1px solid var(--cd-border-soft, color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent));
+      border-radius: 8px;
+      padding: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .placeholder-demo {
+      padding: 40px 24px;
+      text-align: center;
+      background: var(--cd-bg-code-box, var(--lw-hue-slate-100));
+      border-radius: 8px;
+      border: 1px dashed var(--cd-border-soft, color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent));
+      
+      .icon {
+        font-size: 36px;
+        display: inline-block;
+        margin-bottom: 12px;
+      }
+      h4 { margin: 0 0 8px; color: var(--cd-text-title, var(--lw-hue-slate-900)); }
+      p { margin: 0 0 12px; color: var(--cd-text-muted, var(--lw-hue-slate-500)); font-size: 13px; }
+      .guide-text {
+        margin: 0;
+        color: var(--cd-prop-type-text, var(--lw-hue-blue-600));
+        font-weight: 600;
+        font-size: 12px;
+      }
+    }

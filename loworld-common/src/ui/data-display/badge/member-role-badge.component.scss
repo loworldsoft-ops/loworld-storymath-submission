@@ -1,0 +1,42 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--lw-m-badge-border, #{lw.$lw-m-badge-border});
+  background: var(--lw-m-badge-bg, #{lw.$lw-m-badge-bg});
+  color: var(--lw-m-badge-fg, #{lw.$lw-m-badge-fg});
+}
+
+.badge[data-role="OWNER"] {
+  --lw-m-badge-bg: #fef3c7;
+  --lw-m-badge-border: #fcd34d;
+  --lw-m-badge-fg: #92400e;
+}
+
+.badge[data-role="ADMIN"] {
+  --lw-m-badge-bg: #ede9fe;
+  --lw-m-badge-border: #c4b5fd;
+  --lw-m-badge-fg: #5b21b6;
+}
+
+.badge[data-role="MANAGER"] {
+  --lw-m-badge-bg: #dbeafe;
+  --lw-m-badge-border: #93c5fd;
+  --lw-m-badge-fg: #1e40af;
+}
+
+.badge[data-role="VIEWER"] {
+  --lw-m-badge-bg: var(--lw-surface-subtle);
+  --lw-m-badge-border: #d1d5db;
+  --lw-m-badge-fg: #4b5563;
+}

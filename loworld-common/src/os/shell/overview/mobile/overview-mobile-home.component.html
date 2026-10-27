@@ -1,0 +1,42 @@
+<section class="os-mobile-home" aria-label="홈 화면">
+  <header class="os-mobile-home__top">
+    <div class="os-mobile-home__clock">
+      <time class="os-mobile-home__time">{{ currentTime() }}</time>
+      <span class="os-mobile-home__date">{{ currentDate() }}</span>
+    </div>
+    <div class="os-mobile-home__actions">
+      <button
+        lwPressable
+        class="os-mobile-home__action"
+        [attr.aria-label]="hasSession() ? '계정' : '로그인'"
+        (press)="onAccountPress()">
+        <lw-icon name="user" [size]="20" />
+      </button>
+      @if (executionMode.isNativeApp()) {
+        <button
+          lwPressable
+          class="os-mobile-home__action os-mobile-home__action--mode"
+          [attr.aria-label]="executionMode.modeLabel()"
+          [title]="executionMode.modeTooltip()"
+          (press)="executionMode.openModeSelector()">
+          <span class="mode-action-icon-wrap" [class.is-local]="executionMode.isLocalMode()" [class.is-remote]="!executionMode.isLocalMode()">
+            <lw-icon [name]="executionMode.modeIcon()" [size]="20" />
+            <span class="mode-status-dot" aria-hidden="true"></span>
+          </span>
+        </button>
+      }
+      <button
+        lwPressable
+        class="os-mobile-home__action"
+        aria-label="설정"
+        [pressed]="settingsActive()"
+        (press)="settingsRequested.emit()">
+        <lw-icon name="settings" [size]="20" />
+      </button>
+    </div>
+  </header>
+
+  <lw-os-app-grid class="os-mobile-home__grid" [pages]="pages()" [(pageIndex)]="pageIndex" (appOpen)="openApp($event)" />
+
+  <lw-os-dock class="os-mobile-home__dock" label="독" [items]="dockItems()" (itemSelect)="onDockSelect($event)" />
+</section>

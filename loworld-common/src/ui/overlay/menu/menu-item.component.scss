@@ -1,0 +1,9 @@
+@use 'index' as lw;
+:host { display: block; width: 100%; }
+    .menu-item {
+      display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 12px;
+      font-size: 12px; border: none; background: transparent; cursor: pointer;
+      color: var(--lw-cal-text, #{lw.$lw-cal-text}); transition: background 0.15s; text-align: left;
+    }
+    .menu-item:hover { background: var(--lw-cal-cell-hover, #{lw.$lw-cal-cell-hover}); }
+    .menu-item.danger { color: var(--lw-color-danger); }

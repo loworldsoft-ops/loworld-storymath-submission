@@ -1,0 +1,29 @@
+<label class="lw-checkbox-wrapper" (click)="toggleChecked($event)">
+  <input
+    type="checkbox"
+    class="lw-checkbox-native"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    [attr.aria-label]="ariaLabel() || label() || null"
+    [attr.aria-checked]="indeterminate() ? 'mixed' : checked()"
+    (change)="onNativeChange($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+    (click)="$event.stopPropagation()" />
+
+  <span class="lw-checkbox-box" aria-hidden="true">
+    @if (indeterminate()) {
+      <span class="lw-checkbox-dash"></span>
+    } @else if (checked()) {
+      <span class="lw-checkbox-check"></span>
+    }
+  </span>
+
+  @if (label()) {
+    <span class="lw-checkbox-label">{{ label() }}</span>
+  } @else {
+    <span class="lw-checkbox-label">
+      <ng-content></ng-content>
+    </span>
+  }
+</label>

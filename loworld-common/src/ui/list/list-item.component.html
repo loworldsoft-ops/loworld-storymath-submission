@@ -1,0 +1,32 @@
+    <div
+      class="lw-list-item"
+      [class.lw-list-item--compact]="density() === 'compact'"
+      [class.lw-list-item--standard]="density() === 'standard'"
+      [class.lw-list-item--spacious]="density() === 'spacious'"
+      [class.lw-list-item--clickable]="clickable() && !disabled()"
+      [class.lw-list-item--active]="active()"
+      [class.lw-list-item--disabled]="disabled()"
+      role="listitem"
+      [attr.aria-disabled]="disabled()"
+      [attr.tabindex]="clickable() && !disabled() ? 0 : -1"
+      (click)="onItemClick($event)"
+      (keydown.enter)="onKeyEnter($event)"
+      (keydown.space)="onKeyEnter($event)"
+    >
+      <div class="lw-list-item__leading">
+        <ng-content select="[lwLeading]"></ng-content>
+      </div>
+
+      <div class="lw-list-item__content">
+        <ng-content select="[lwContent]"></ng-content>
+        <ng-content></ng-content>
+      </div>
+
+      <div class="lw-list-item__meta">
+        <ng-content select="[lwMeta]"></ng-content>
+      </div>
+
+      <div class="lw-list-item__actions" (click)="$event.stopPropagation()">
+        <ng-content select="[lwActions]"></ng-content>
+      </div>
+    </div>

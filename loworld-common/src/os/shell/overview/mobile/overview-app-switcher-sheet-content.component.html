@@ -1,0 +1,22 @@
+    <div class="switcher-sheet-list">
+      @for (win of windows(); track win.tab) {
+        <lw-button
+          type="button"
+          class="switcher-sheet-item"
+          [class.is-current]="win.tab === activeTab()"
+          (click)="tabSelect.emit(win.tab)">
+          <div class="switcher-item-icon">
+            <lw-os-icon [icon]="win.icon" [size]="20" />
+          </div>
+          <div class="switcher-item-info">
+            <span class="switcher-item-title">{{ win.title }}</span>
+            <span class="switcher-item-tab">{{ win.tab }}</span>
+          </div>
+          @if (win.tab === activeTab()) {
+            <lw-badge size="xs" label="현재 앱" />
+          }
+        </lw-button>
+      } @empty {
+        <div class="switcher-sheet-empty">실행 중인 다른 앱이 없습니다.</div>
+      }
+    </div>

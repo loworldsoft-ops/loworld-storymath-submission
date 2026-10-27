@@ -1,0 +1,34 @@
+<div class="year-view" >
+  <div class="months-grid" [class.mobile]="isMobile()">
+    @for (month of months; track month.getTime()) {
+      <lw-card class="month-card" variant="outlined">
+        <h3 class="month-name" [class.current]="isCurrentMonth(month)"
+            (click)="goToMonth.emit(month)">
+          {{ month.getMonth() + 1 }}월
+        </h3>
+        @if (!isMobile()) {
+          <div class="dow-row">
+            @for (d of dayHeaders; track d; let i = $index) {
+              <span class="dow" [class.sunday]="i === 0" [class.saturday]="i === 6">{{ d }}</span>
+            }
+          </div>
+        }
+        <div class="day-grid">
+          @for (day of getMonthDays(month); track day.getTime()) {
+            <lw-button class="day-btn" [class.mobile]="isMobile()"
+              [class.today]="isToday(day) && isSameMonth(day, month)"
+              [class.other]="!isSameMonth(day, month)"
+              [class.sunday]="day.getDay() === 0 && isSameMonth(day, month)"
+              [class.saturday]="day.getDay() === 6 && isSameMonth(day, month)"
+              (click)="onDayClick(day, month)">
+              {{ day.getDate() }}
+              @if (hasEvents(day) && isSameMonth(day, month)) {
+                <span class="dot"></span>
+              }
+            </lw-button>
+          }
+        </div>
+      </lw-card>
+    }
+  </div>
+</div>

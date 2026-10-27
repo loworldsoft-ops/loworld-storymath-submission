@@ -1,0 +1,392 @@
+@use 'scrollbar' as *;
+@use 'index' as lw;
+
+// ── Overview Window Layer ──
+.overview-window-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.overview-window-layer--above-taskbar {
+  z-index: 360;
+}
+
+lw-os-taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 320;
+  pointer-events: none;
+}
+
+.overview-window-scroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.overview-window-scroll--page {
+  background: transparent;
+}
+
+.overview-window-scroll--builder {
+  padding: 18px;
+}
+
+lw-os-mobile-shell {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+@include lw.lw-below(desktop) {
+  .overview-db-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Demo Page (Desktop & Mobile) ──
+.demo-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.demo-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--lw-text-primary);
+  }
+}
+
+.demo-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+
+
+// Desktop demo: fill remaining space with frosted glass frame
+.demo-frame {
+  border: 1px solid var(--lw-border-color);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--lw-card-bg);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+}
+
+.overview-window-frame,
+.overview-window-body {
+  .demo-page {
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100% !important;
+    background: transparent !important;
+  }
+
+  .demo-frame {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .desktop-frame {
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  lw-llmops-showcase,
+  lw-foundry-shell,
+  .foundry-shell-layout {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: var(--lw-surface-ground) !important;
+  }
+}
+
+.desktop-frame {
+  flex: 1;
+  min-height: 500px;
+  background: transparent;
+
+  &.dark {
+    background: transparent;
+    border-color: color-mix(in srgb, var(--lw-color-white) 14%, transparent);
+  }
+}
+
+// Mobile demo: centered phone frame
+.mobile-frame {
+  width: 390px;
+  height: 844px;
+  margin: 0 auto;
+  border-radius: 40px;
+  border: 8px solid color-mix(in srgb, var(--lw-hue-zinc-900) 95%, transparent);
+  box-shadow: 0 16px 50px color-mix(in srgb, var(--lw-color-black) 28%, transparent);
+  position: relative;
+  transform: translate3d(0, 0, 0);
+}
+
+// ── Event Log (Frosted Glass Terminal) ──
+.event-log {
+  background: var(--overview-glass-card-bg, color-mix(in srgb, var(--lw-color-white) 95%, transparent));
+  border: 1px solid var(--lw-border-color);
+  border-radius: 14px;
+  padding: 16px;
+  max-height: 280px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--lw-text-primary);
+  }
+}
+
+.event-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dev-toolbar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.dev-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--lw-border-color);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--lw-color-white) 92%, transparent);
+  color: var(--lw-text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: color-mix(in srgb, var(--lw-color-white) 85%, transparent);
+    border-color: color-mix(in srgb, var(--lw-color-white) 50%, transparent);
+    transform: translateY(-1px);
+  }
+
+  &--danger {
+    color: var(--lw-color-danger-strong);
+    border-color: color-mix(in srgb, var(--lw-color-danger) 35%, transparent);
+    background: color-mix(in srgb, var(--lw-hue-red-50) 65%, transparent);
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-hue-red-100) 85%, transparent);
+      border-color: color-mix(in srgb, var(--lw-color-danger) 50%, transparent);
+    }
+  }
+
+  &--primary {
+    color: var(--lw-color-primary-strong);
+    border-color: color-mix(in srgb, var(--lw-hue-blue-500) 35%, transparent);
+    background: color-mix(in srgb, var(--lw-hue-blue-50) 65%, transparent);
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-hue-blue-100) 85%, transparent);
+      border-color: color-mix(in srgb, var(--lw-hue-blue-500) 50%, transparent);
+    }
+  }
+}
+
+.event-list {
+  max-height: 140px;
+  overflow-y: auto;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+}
+
+.event-item {
+  display: flex;
+  gap: 12px;
+  padding: 3px 0;
+
+  .event-time {
+    color: var(--lw-hue-stone-400);
+    flex-shrink: 0;
+  }
+
+  .event-name {
+    color: var(--lw-hue-zinc-800);
+  }
+}
+
+.event-empty {
+  color: var(--lw-hue-zinc-400);
+  font-style: italic;
+  text-align: center;
+  padding: 16px;
+}
+
+// ── Component Detail ──
+.component-detail {
+  max-width: 800px;
+}
+
+.component-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+  }
+}
+
+.selector-badge {
+  background: var(--lw-hue-zinc-100);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.category-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &[data-category='shell'] {
+    background: var(--lw-hue-green-100);
+    color: var(--lw-hue-green-700);
+  }
+
+  &[data-category='desktop'] {
+    background: var(--lw-hue-sky-100);
+    color: var(--lw-hue-blue-700);
+  }
+
+  &[data-category='modal'] {
+    background: var(--lw-hue-yellow-50);
+    color: var(--lw-hue-orange-600);
+  }
+
+  &[data-category='mobile'] {
+    background: var(--lw-hue-rose-100);
+    color: var(--lw-hue-red-700);
+  }
+
+  &[data-category='view'] {
+    background: var(--lw-hue-sky-100);
+    color: var(--lw-hue-blue-700);
+  }
+
+  &[data-category='layout'] {
+    background: var(--lw-hue-yellow-50);
+    color: var(--lw-hue-orange-600);
+  }
+
+  &[data-category='detail'] {
+    background: var(--lw-hue-rose-100);
+    color: var(--lw-hue-red-700);
+  }
+
+  &[data-category='page'] {
+    background: var(--lw-hue-pink-100);
+    color: var(--lw-hue-purple-800);
+  }
+}
+
+.component-desc {
+  font-size: 15px;
+  color: var(--lw-hue-stone-500);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 24px 0 8px;
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--lw-hue-zinc-100);
+  }
+
+  th {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--lw-hue-stone-400);
+    background: var(--lw-hue-zinc-50);
+  }
+
+  td code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--lw-hue-blue-600);
+  }
+}
+
+.component-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: var(--lw-hue-zinc-400);
+  font-size: 16px;
+}
+
+// ── Calendar-specific ──
+.placeholder-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 18px;
+  color: var(--lw-hue-gray-400);
+
+  &.dark {
+    color: var(--lw-hue-gray-500);
+  }
+}

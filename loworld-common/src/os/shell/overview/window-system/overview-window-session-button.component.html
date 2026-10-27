@@ -1,0 +1,24 @@
+    <div
+      class="session-button"
+      [class.session-button--floating]="variant() === 'floating'"
+      [class.session-button--placement-top]="sessionPlacement() === 'top'"
+      [class.session-button--placement-bottom]="sessionPlacement() === 'bottom'">
+      <lw-button
+        type="button"
+        class="session-button__trigger"
+        [class.is-authenticated]="isAuthenticated()"
+        [class.is-guest]="!isAuthenticated()"
+        [attr.aria-label]="ariaLabel()"
+        [tooltip]="titleText()"
+        (click)="onClick($event)">
+        <span class="session-button__status-dot" aria-hidden="true"></span>
+        <lw-os-icon icon="member" [size]="14" />
+      </lw-button>
+
+      <div class="session-button__tooltip" role="tooltip">
+        <strong>{{ tooltipTitle() }}</strong>
+        @for (line of tooltipLines(); track line) {
+          <span>{{ line }}</span>
+        }
+      </div>
+    </div>

@@ -1,0 +1,26 @@
+<ng-template #sidebar>
+  <lw-console-sidebar
+    [themeMode]="themeMode()"
+    [collapsed]="collapsed()"
+    [activeTab]="activeTab()"
+    [currentGroup]="currentGroup()"
+    [groups]="groups()"
+    [user]="user()"
+    [platformOpen]="platformOpen()"
+    [groupPopoverOpen]="groupPopoverOpen()"
+    (toggleCollapse)="toggleCollapse.emit()"
+    (toggleTheme)="toggleTheme.emit()"
+    (selectTab)="selectTab.emit($event)"
+    (togglePlatform)="togglePlatform.emit()"
+    (groupPopoverOpenChange)="groupPopoverOpenChange.emit($event)"
+    (selectGroup)="selectGroup.emit($event)"
+    (openProfile)="openProfile.emit()" />
+</ng-template>
+
+<ng-template #main>
+  <main class="lw-console-shell__main">
+    <ng-content />
+  </main>
+</ng-template>
+
+<lw-app-frame [layout]="frameLayout()" [slotTemplates]="{ sidebar: sidebar, detail: main }" />

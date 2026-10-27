@@ -1,0 +1,28 @@
+@if (open()) {
+  <div class="overlay" role="presentation" (click)="open.set(false)"></div>
+  <div class="menu">
+    @for (item of items(); track item.key; let i = $index) {
+      <lw-button class="menu-item"
+              [style.animationDelay.s]="(items().length - 1 - i) * 0.04"
+              (click)="selectItem(item.key)">
+        <span class="menu-label">{{ item.label }}</span>
+        <span class="menu-icon" [style.backgroundColor]="item.bg || 'rgba(59,130,246,0.08)'"
+              [style.color]="item.color || '#3b82f6'">
+          <span [innerHTML]="item.icon"></span>
+        </span>
+      </lw-button>
+    }
+  </div>
+}
+
+<lw-button class="fab" [style.background]="fabColor()"
+        [style.box-shadow]="'0 4px 16px ' + fabColor() + '66'"
+        (click)="open.set(!open())">
+  <div class="fab-icon" [class.open]="open()">
+    @if (open()) {
+      <span class="fab-glyph">✕</span>
+    } @else {
+      <span class="fab-glyph">＋</span>
+    }
+  </div>
+</lw-button>

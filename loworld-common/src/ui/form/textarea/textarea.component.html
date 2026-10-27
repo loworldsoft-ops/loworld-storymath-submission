@@ -1,0 +1,24 @@
+<div class="lw-textarea-wrapper">
+  <textarea
+    class="lw-textarea-native"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    [rows]="rows()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [attr.maxlength]="maxlength()"
+    [attr.aria-label]="ariaLabel()"
+    [style.resize]="resize()"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"></textarea>
+
+  @if (showCount()) {
+    <div class="lw-textarea-counter">
+      <span>{{ value().length }}</span>
+      @if (maxlength()) {
+        <span>/{{ maxlength() }}</span>
+      }
+    </div>
+  }
+</div>

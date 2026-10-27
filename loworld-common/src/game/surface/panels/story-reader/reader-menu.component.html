@@ -1,0 +1,561 @@
+@let data = vm();
+
+<header class="menu__head">
+  <nav class="menu__tabs" role="tablist" aria-label="메뉴">
+    @for (item of tabs(); track item) {
+      <button
+        lw-button
+        type="button"
+        variant="ghost"
+        role="tab"
+        class="menu__tab"
+        [class.menu__tab--on]="tab() === item"
+        [attr.aria-selected]="tab() === item"
+        (click)="selectTab(item)">{{ tabLabel(item) }}</button>
+    }
+  </nav>
+  <button lw-button type="button" variant="ghost" class="menu__close" ariaLabel="닫기" (click)="close.emit()">닫기</button>
+</header>
+
+<div class="menu__body">
+  @switch (tab()) {
+    @case ('cast') {
+      <section class="menu__pane">
+        @if (data.portraitUrl) {
+          <img class="menu__portrait" [src]="data.portraitUrl" [alt]="data.name + '의 모습'" decoding="async" draggable="false" />
+        } @else {
+          <div class="menu__portrait menu__portrait--placeholder" role="img" aria-label="이미지 영역">
+            <span>이미지 영역</span>
+          </div>
+        }
+        <p class="menu__label">{{ data.originName }}</p>
+        <h2 class="menu__title">{{ data.name }}</h2>
+        <p class="menu__text">{{ data.originSummary }}</p>
+
+        <dl class="menu__stats">
+          @for (stat of data.stats; track stat.label) {
+            <div class="menu__stat">
+              <dt>{{ stat.label }}</dt>
+              <dd>{{ stat.value }}</dd>
+            </div>
+          }
+        </dl>
+        @if (data.realm; as realm) {
+          <p class="menu__label">{{ wordOf('realm', '경지') }}</p>
+          <p class="menu__text"><strong>{{ realm.name }}</strong> · 흡수 {{ realm.absorbed }}{{ realm.next ? ' · ' + realm.next : '' }}</p>
+        }
+
+        <p class="menu__label">{{ wordOf('kind.personality', '성품') }}</p>
+        @if (data.disposition; as point) {
+          <div class="menu__plane" role="img" [attr.aria-label]="'성품의 자리: 친밀 ' + point.x + ', 동경 ' + point.y">
+            <span class="menu__plane-axis menu__plane-axis--x" aria-hidden="true"></span>
+            <span class="menu__plane-axis menu__plane-axis--y" aria-hidden="true"></span>
+            <span class="menu__plane-mark menu__plane-mark--left" aria-hidden="true">적대</span>
+            <span class="menu__plane-mark menu__plane-mark--right" aria-hidden="true">친밀</span>
+            <span class="menu__plane-mark menu__plane-mark--top" aria-hidden="true">동경</span>
+            <span class="menu__plane-mark menu__plane-mark--bottom" aria-hidden="true">지배</span>
+            <span class="menu__plane-dot" [style.left.%]="planePosition(point.x)" [style.top.%]="planePosition(point.y, true)"></span>
+          </div>
+        }
+        @if (data.alignment; as align) {
+          <p class="menu__label">성향 (협의와 살기)</p>
+          <div class="menu__alignment-track" [attr.aria-label]="'성향: ' + align.label + ' (' + align.value + ')'">
+            <div class="menu__alignment-labels">
+              <span class="menu__alignment-mark" [class.menu__alignment-mark--active]="align.stance === 'cruel'">패도 (잔혹)</span>
+              <span class="menu__alignment-mark" [class.menu__alignment-mark--active]="align.stance === 'neutral'">중도 (실리)</span>
+              <span class="menu__alignment-mark" [class.menu__alignment-mark--active]="align.stance === 'merciful'">왕도 (자비)</span>
+            </div>
+            <div class="menu__alignment-bar">
+              <span class="menu__alignment-pin" [style.left.%]="(align.value + 100) / 2"></span>
+            </div>
+            <p class="menu__text menu__text--soft">{{ align.label }} · 수치 {{ align.value > 0 ? '+' + align.value : align.value }}</p>
+          </div>
+        }
+        <ul class="menu__list">
+          @for (card of data.cards; track card.id) {
+            <li class="menu__row">
+              <span class="menu__row-name">{{ card.name }}</span>
+              <span class="menu__row-meta">{{ card.description }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="menu__pane">
+        @if ((data.party?.length ?? 0) > 0) {
+          <p class="menu__label">동행 중인 동료 (파티)</p>
+          <ul class="menu__list">
+            @for (comrade of data.party ?? []; track comrade.id) {
+              <li class="menu__row">
+                <span class="menu__row-name">⚔️ {{ comrade.name }}</span>
+                <span class="menu__row-meta">유대 {{ comrade.bond }} · {{ comrade.stance }}{{ comrade.resonance ? ' · ' + comrade.resonance : '' }}</span>
+                @if (comrade.romanceLabel) {
+                  <span class="menu__row-meta menu__row-meta--accent">❤️ {{ comrade.romanceLabel }}</span>
+                }
+              </li>
+            }
+          </ul>
+        }
+        <p class="menu__label">사람들</p>
+        <ul class="menu__list">
+          @for (person of data.people; track person.id) {
+            @if (person.met || person.grudge > 0) {
+              <li class="menu__row">
+                <span class="menu__row-name">{{ person.name }}</span>
+                @if (person.met) {
+                  <span class="menu__row-meta">{{ person.nature }} · {{ person.regard }}</span>
+                }
+                <span class="menu__row-meta">유대 {{ person.bond }} · {{ person.stance }}{{ person.resonance ? ' · ' + person.resonance : '' }}</span>
+                @if (person.grudge > 0) {
+                  <span class="menu__row-meta menu__row-meta--accent">갚을 것 {{ person.grudge }}</span>
+                }
+                @if (person.want) {
+                  <span class="menu__row-meta">바라는 것: {{ person.want }}</span>
+                }
+                @if (person.romanceLabel) {
+                  <span class="menu__row-meta menu__row-meta--accent">❤️ {{ person.romanceLabel }}</span>
+                }
+              </li>
+            }
+          }
+        </ul>
+      </section>
+      <section class="menu__pane">
+        @if ((data.ties ?? []).length > 0) {
+          <p class="menu__label">동료 사이</p>
+          <ul class="menu__list">
+            @for (tie of data.ties ?? []; track tie.key) {
+              <li class="menu__row">
+                <span class="menu__row-name">{{ tie.names }}</span>
+                <span class="menu__row-meta">{{ tie.value }} · {{ tie.resonance }}</span>
+              </li>
+            }
+          </ul>
+        }
+        <p class="menu__label">{{ wordOf('kind.memory', '기억') }}</p>
+        <ul class="menu__list">
+          @for (memory of data.memories; track memory.id) {
+            <li class="menu__row">
+              <span class="menu__row-name">{{ memory.name }}</span>
+              <span class="menu__row-meta">{{ memory.description }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+
+    @case ('arts') {
+      <section class="menu__pane">
+        @for (combo of data.combos; track combo.name) {
+          <div class="menu__combo">
+            <p class="menu__combo-name">
+              {{ combo.name }}
+              <span class="menu__combo-count">{{ combo.complete ? '완성' : combo.owned + ' / ' + combo.required }}</span>
+            </p>
+            <p class="menu__combo-pieces">
+              @for (piece of combo.pieces; track piece.name) {
+                <span class="menu__piece" [class.menu__piece--owned]="piece.owned">{{ piece.name }}</span>
+              }
+            </p>
+          </div>
+        }
+        <ul class="menu__grid">
+          @for (art of data.arts; track art.id) {
+            <li>
+              <button lw-button type="button" variant="secondary" class="menu__cell" [class.menu__cell--on]="selectedTrait()?.id === art.id" (click)="selectedTrait.set(art)">
+                {{ art.name }}
+              </button>
+            </li>
+          }
+        </ul>
+        @if (data.arts.length === 0) {
+          <p class="menu__text menu__text--soft">아직 익힌 것이 없다.</p>
+        }
+      </section>
+      <section class="menu__pane">
+        @if (selectedTrait(); as art) {
+          <p class="menu__label">{{ art.kind }}</p>
+          <h2 class="menu__title">{{ art.name }}</h2>
+          <p class="menu__text">{{ art.description }}</p>
+          @if (art.scene) {
+            <p class="menu__label">얻은 날</p>
+            <p class="menu__prose">{{ art.scene }}</p>
+          }
+        } @else {
+          <p class="menu__text menu__text--soft">무공을 고르면 얻은 날의 일을 다시 읽는다.</p>
+        }
+      </section>
+    }
+
+    @case ('beads') {
+      <section class="menu__pane">
+        @if (data.notice) {
+          <p class="menu__notice">{{ data.notice }}</p>
+        }
+        @if (data.realm; as realm) {
+          <p class="menu__text menu__text--soft">{{ realm.name }} · 흡수 {{ realm.absorbed }}{{ realm.next ? ' · ' + realm.next : '' }}</p>
+        }
+        <ul class="menu__grid">
+          @for (bead of data.beads ?? []; track bead.id) {
+            <li>
+              <button lw-button type="button" variant="secondary" class="menu__cell menu__bead" [class.menu__cell--on]="selectedBeadId() === bead.id" (click)="selectedBeadId.set(bead.id)">
+                <span class="menu__bead-letter" aria-hidden="true">{{ bead.letter }}</span>
+                <span>{{ bead.name }} × {{ bead.count }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+        @if ((data.beads ?? []).length === 0) {
+          <p class="menu__text menu__text--soft">가진 구슬이 없다.</p>
+        }
+        @if ((data.verses ?? []).length > 0) {
+          <p class="menu__label">{{ wordOf('verse', '구결') }}</p>
+          @for (verse of data.verses ?? []; track verse.id) {
+            <div class="menu__combo">
+              <p class="menu__combo-name">
+                {{ verse.name }}
+                <span class="menu__combo-count">{{ verse.complete ? '완성' : verse.fit }}</span>
+              </p>
+              <p class="menu__combo-pieces">
+                @for (piece of verse.letters; track $index) {
+                  <span class="menu__piece" [class.menu__piece--owned]="piece.placed">{{ piece.letter }}</span>
+                }
+              </p>
+            </div>
+          }
+        }
+      </section>
+      <section class="menu__pane">
+        @if (selectedBead(); as bead) {
+          <p class="menu__label">{{ bead.tier }}</p>
+          <h2 class="menu__title"><span class="menu__bead-letter" aria-hidden="true">{{ bead.letter }}</span> {{ bead.name }}</h2>
+          @if (bead.statLine) {
+            <p class="menu__stat-line">{{ bead.statLine }}</p>
+          }
+          <p class="menu__text">{{ bead.description }}</p>
+          <div class="menu__actions">
+            <button lw-button type="button" variant="primary" (click)="absorb.emit(bead.id)">흡수</button>
+            @if (bead.next) {
+              <button lw-button type="button" variant="secondary" [disabled]="!bead.canFuse" (click)="fuse.emit(bead.id)">셋을 합쳐 {{ bead.next }}</button>
+            }
+          </div>
+          @if ((data.socketTargets ?? []).length > 0) {
+            <p class="menu__label">박기</p>
+            <ul class="menu__list">
+              @for (target of data.socketTargets ?? []; track target.itemId) {
+                <li class="menu__row">
+                  <span class="menu__row-name">{{ target.name }}</span>
+                  <span class="menu__combo-pieces">
+                    @for (letter of target.sockets; track $index) {
+                      <span class="menu__piece" [class.menu__piece--owned]="!!letter">{{ letter || '○' }}</span>
+                    }
+                  </span>
+                  <button lw-button type="button" variant="ghost" size="sm" (click)="socket.emit({ itemId: target.itemId, beadId: bead.id })">박기</button>
+                </li>
+              }
+            </ul>
+          }
+          <p class="menu__foot-note">흡수하면 다음 화의 앞에 그 마음이 나온다. 박은 구슬은 빠지지 않는다.</p>
+        } @else {
+          <p class="menu__text menu__text--soft">구슬을 고르면 흡수하거나, 장비에 박거나, 셋을 합친다.</p>
+        }
+      </section>
+    }
+
+    @case ('gear') {
+      <section class="menu__pane">
+        @if (data.notice) {
+          <p class="menu__notice">{{ data.notice }}</p>
+        }
+        <p class="menu__label">입은 것</p>
+        <ul class="menu__doll" aria-label="입은 것">
+          @for (cell of gearCells(); track cell.key) {
+            <li class="menu__doll-place">
+              @if (cell.entry; as entry) {
+                <button
+                  lw-button
+                  type="button"
+                  variant="secondary"
+                  class="menu__doll-cell"
+                  [class.menu__doll-cell--empty]="!entry.item"
+                  [class.menu__cell--on]="!!entry.item && selectedTrait()?.id === entry.item.id"
+                  [disabled]="!entry.item"
+                  (click)="entry.item && selectedTrait.set(entry.item)">
+                  <span class="menu__doll-slot">{{ entry.label }}</span>
+                  <span class="menu__doll-name">{{ entry.item ? entry.item.name : '비었다' }}</span>
+                </button>
+              }
+            </li>
+          }
+        </ul>
+        <p class="menu__label">행낭 속 물건</p>
+        <ul class="menu__grid">
+          @for (item of data.bag; track item.id) {
+            <li>
+              <button lw-button type="button" variant="secondary" class="menu__cell" [class.menu__cell--on]="selectedTrait()?.id === item.id" (click)="selectedTrait.set(item)">
+                {{ item.name }}
+              </button>
+            </li>
+          }
+        </ul>
+        @if (data.bag.length === 0) {
+          <p class="menu__text menu__text--soft">행낭이 비었다.</p>
+        }
+        <p class="menu__foot-note">바꾼 장비는 다음 화부터 이야기에 나온다.</p>
+      </section>
+      <section class="menu__pane">
+        @if (selectedTrait(); as item) {
+          <p class="menu__label">{{ item.kind }}{{ item.equipLabel ? ' · ' + item.equipLabel : '' }}</p>
+          <h2 class="menu__title">{{ item.name }}</h2>
+          @if (item.statLine) {
+            <p class="menu__stat-line">{{ item.statLine }}</p>
+          }
+          <p class="menu__text">{{ item.description }}</p>
+          @if (item.sockets; as sockets) {
+            <p class="menu__combo-pieces">
+              @for (letter of sockets; track $index) {
+                <span class="menu__piece" [class.menu__piece--owned]="!!letter">{{ letter || '○' }}</span>
+              }
+              @if (item.verseName) {
+                <span class="menu__badge">{{ item.verseName }}</span>
+              }
+            </p>
+          }
+          @if (item.equipLabel) {
+            <div class="menu__actions">
+              @if (item.equipped) {
+                <button lw-button type="button" variant="secondary" (click)="unequipFromTrait(item)">벗기</button>
+              } @else {
+                <button lw-button type="button" variant="primary" (click)="equip.emit({ traitId: item.id })">입기</button>
+              }
+            </div>
+          }
+        } @else {
+          <p class="menu__text menu__text--soft">물건을 고르면 설명을 본다.</p>
+        }
+      </section>
+    }
+
+    @case ('journey') {
+      <section class="menu__pane menu__pane--wide">
+        <svg class="menu__map" viewBox="0 0 100 100" role="img" aria-label="지도">
+          @for (route of mapRoutes(); track route.id) {
+            <line class="menu__map-route" [class.menu__map-route--walked]="route.walked" [attr.x1]="route.x1" [attr.y1]="route.y1" [attr.x2]="route.x2" [attr.y2]="route.y2" />
+          }
+          @for (zone of data.zones; track zone.id) {
+            <g class="menu__map-zone" [class.menu__map-zone--visited]="zone.visited" [class.menu__map-zone--current]="zone.current">
+              <circle [attr.cx]="zone.x" [attr.cy]="zone.y" [attr.r]="zone.current ? 3.2 : 2.2" />
+              <text [attr.x]="zone.x" [attr.y]="zone.y - 5" text-anchor="middle">{{ zone.name }}</text>
+            </g>
+          }
+        </svg>
+        <ul class="menu__list">
+          @for (zone of data.zones; track zone.id) {
+            <li class="menu__row">
+              <button lw-button type="button" variant="ghost" class="menu__zone" [class.menu__zone--current]="zone.current" (click)="selectedZoneId.set(zone.id)">
+                <span class="menu__row-name">{{ zone.name }}{{ zone.current ? ' — 지금 여기' : '' }}</span>
+                <span class="menu__row-meta">{{ zone.visited ? zone.episodes.join(', ') : '아직 가지 않았다' }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+        @if (selectedZone(); as zone) {
+          <p class="menu__text">{{ zone.description }}</p>
+        }
+      </section>
+      <section class="menu__pane">
+        <p class="menu__label">거점</p>
+        @if (data.notice) {
+          <p class="menu__notice">{{ data.notice }}</p>
+        }
+        <div class="menu__currency">
+          <span class="menu__label">{{ data.currencyLabel }}</span>
+          <span class="menu__currency-amount">{{ data.silver }}{{ data.currencyUnit }}</span>
+        </div>
+        @if (data.shop; as shop) {
+          <h2 class="menu__title">{{ shop.zoneName }} · {{ shop.name }}</h2>
+          <p class="menu__label">사기</p>
+          <ul class="menu__list">
+            @for (shopItem of shop.items; track shopItem.trait.id) {
+              <li class="menu__row">
+                <div class="menu__item-info" (click)="selectedTrait.set(shopItem.trait)">
+                  <span class="menu__row-name">{{ shopItem.trait.name }}</span>
+                  @if (shopItem.trait.statLine) {
+                    <span class="menu__row-sub">{{ shopItem.trait.statLine }}</span>
+                  }
+                  <span class="menu__row-price">{{ shopItem.price }}{{ data.currencyUnit }}</span>
+                </div>
+                @if (shopItem.owned) {
+                  <span class="menu__badge">가졌다</span>
+                } @else {
+                  <button
+                    lw-button
+                    type="button"
+                    variant="primary"
+                    size="sm"
+                    [disabled]="!shopItem.affordable"
+                    (click)="buy.emit(shopItem.trait.id)">
+                    사기
+                  </button>
+                }
+              </li>
+            }
+          </ul>
+          @if (shop.items.length === 0) {
+            <p class="menu__text menu__text--soft">파는 물건이 없다.</p>
+          }
+
+          <p class="menu__label">팔기</p>
+          <ul class="menu__list">
+            @for (sellable of shop.sellables; track sellable.trait.id) {
+              <li class="menu__row">
+                <div class="menu__item-info" (click)="selectedTrait.set(sellable.trait)">
+                  <span class="menu__row-name">{{ sellable.trait.name }}</span>
+                  <span class="menu__row-price">{{ sellable.price }}{{ data.currencyUnit }}</span>
+                </div>
+                <button
+                  lw-button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  (click)="sell.emit(sellable.trait.id)">
+                  팔기
+                </button>
+              </li>
+            }
+          </ul>
+          @if (shop.sellables.length === 0) {
+            <p class="menu__text menu__text--soft">팔 수 있는 물건이 없다.</p>
+          }
+        } @else {
+          <p class="menu__text menu__text--soft">이곳에는 상점이 없다.</p>
+        }
+      </section>
+      <section class="menu__pane">
+        @if (selectedTrait(); as item) {
+          <p class="menu__label">{{ item.kind }}{{ item.equipLabel ? ' · ' + item.equipLabel : '' }}</p>
+          <h2 class="menu__title">{{ item.name }}</h2>
+          @if (item.statLine) {
+            <p class="menu__stat-line">{{ item.statLine }}</p>
+          }
+          <p class="menu__text">{{ item.description }}</p>
+        } @else {
+          <p class="menu__text menu__text--soft">물건을 고르면 설명을 본다.</p>
+        }
+      </section>
+    }
+
+    @case ('log') {
+      <section class="menu__pane">
+        @if ((data.arcs ?? []).length > 0) {
+          <p class="menu__label">{{ wordOf('arc', '사건') }}</p>
+          <ul class="menu__list">
+            @for (arc of data.arcs ?? []; track arc.id) {
+              <li class="menu__row">
+                <span class="menu__row-name">{{ arc.name }} <span class="menu__combo-count">{{ arc.read }} / {{ arc.total }}</span></span>
+                <span class="menu__row-meta">{{ arc.read === 0 ? '아직' : arc.summary }}</span>
+              </li>
+            }
+          </ul>
+          <p class="menu__label">읽은 화</p>
+        }
+        <ul class="menu__list">
+          @for (entry of data.log; track entry.id) {
+            <li class="menu__row">
+              <button lw-button type="button" variant="ghost" class="menu__zone" [class.menu__zone--current]="selectedLog()?.id === entry.id" (click)="selectedLogId.set(entry.id)">
+                <span class="menu__row-name">{{ entry.title }}</span>
+                <span class="menu__row-meta">{{ entry.summary }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+        @if (data.log.length === 0) {
+          <p class="menu__text menu__text--soft">아직 읽은 것이 없다.</p>
+        }
+      </section>
+      <section class="menu__pane">
+        @if (selectedLog(); as entry) {
+          <p class="menu__label">이렇게 쓰인 이유</p>
+          <h2 class="menu__title">{{ entry.title }}</h2>
+          @for (trace of entry.traces; track $index) {
+            <div class="menu__trace">
+              <p class="menu__prose">{{ trace.text }}</p>
+              @if (trace.reason) {
+                <p class="menu__trace-reason">{{ trace.reason }}</p>
+              }
+              @if (trace.alternative) {
+                <p class="menu__trace-other">달랐다면: {{ trace.alternative }}</p>
+              }
+            </div>
+          }
+          @if (entry.traces.length === 0) {
+            <p class="menu__text menu__text--soft">이 화에는 그대 때문에 달라진 문장이 없다.</p>
+          }
+        }
+      </section>
+    }
+
+    @case ('codex') {
+      <section class="menu__pane">
+        <p class="menu__label">도감 분류</p>
+        <ul class="menu__grid">
+          @for (item of data.codexCategories ?? []; track item.id) {
+            <li>
+              <button
+                lw-button
+                type="button"
+                variant="secondary"
+                class="menu__cell"
+                [class.menu__cell--on]="selectedCodex()?.id === item.id"
+                (click)="selectCodexCategory(item)">
+                {{ item.name }} ({{ item.known }}/{{ item.total }})
+              </button>
+            </li>
+          }
+        </ul>
+        @if ((data.codexCategories?.length ?? 0) === 0) {
+          <p class="menu__text menu__text--soft">기록된 도감이 없다.</p>
+        }
+
+        @if (selectedCodex(); as cat) {
+          <p class="menu__label">{{ cat.name }} 항목</p>
+          <ul class="menu__grid">
+            @for (entry of cat.entries; track entry.id) {
+              <li>
+                <button
+                  lw-button
+                  type="button"
+                  variant="secondary"
+                  class="menu__cell"
+                  [class.menu__cell--on]="selectedCodexEntry()?.id === entry.id"
+                  [disabled]="entry.state === 'unknown'"
+                  (click)="selectCodexEntry(entry)">
+                  {{ entry.name }}
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+      <section class="menu__pane">
+        @if (selectedCodexEntry(); as entry) {
+          @if (entry.card; as card) {
+            <lw-codex-card [vm]="card" [media]="false" size="md" />
+          } @else {
+            <p class="menu__title">{{ entry.name }}</p>
+            <p class="menu__text menu__text--soft">상세 내용이 없다.</p>
+          }
+        } @else {
+          <p class="menu__text menu__text--soft">도감 항목을 고르면 상세 내용을 확인한다.</p>
+        }
+      </section>
+    }
+  }
+</div>
+
+<footer class="menu__foot">
+  <button lw-button type="button" variant="secondary" class="menu__foot-back" (click)="close.emit()">이야기로</button>
+  @if (nextLabel()) {
+    <button lw-button type="button" variant="primary" class="menu__foot-next" (click)="next.emit()">{{ nextLabel() }}</button>
+  }
+</footer>

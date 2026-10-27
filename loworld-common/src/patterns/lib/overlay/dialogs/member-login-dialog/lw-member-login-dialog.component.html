@@ -1,0 +1,144 @@
+<lw-modal
+  [isOpen]="isOpen()"
+  [title]="facade.title()"
+  [subtitle]="facade.subtitle()"
+  variant="custom"
+  [paddingless]="true"
+  [size]="facade.panel() === 'auth' ? 'lg' : 'md'"
+  [windowControls]="resolvedWindowControls()"
+  [windowStyle]="resolvedWindowStyle()"
+  [draggable]="resolvedDraggable()"
+  [showHeader]="resolvedShowHeader()"
+  (closeClick)="close()"
+>
+  <!-- 모달 본문 내용 -->
+  <div class="lw-login-modal__body" [class.lw-login-modal__body--with-context]="showContext()">
+    @if (showContext()) {
+      <aside class="lw-login-modal__context" aria-label="로그인 안내">
+        <span class="lw-login-modal__eyebrow">LOWORLD MEMBER</span>
+        <h3 class="lw-login-modal__context-title">
+          {{ facade.mode() === 'login' ? '학습 공간과 멤버 권한을 이어서 사용합니다.' : '새 계정을 만들고 현재 앱과 바로 연결합니다.' }}
+        </h3>
+        <p class="lw-login-modal__context-copy">
+          {{ facade.mode() === 'login'
+            ? '로그인 후 학습 화면, 멤버 권한, 개인화된 앱 구성을 같은 세션으로 이어서 사용할 수 있습니다.'
+            : '가입이 완료되면 즉시 로그인 상태로 전환되고, 현재 앱의 멤버 기능을 바로 사용할 수 있습니다.' }}
+        </p>
+        <ul class="lw-login-modal__context-list">
+          @if (facade.mode() === 'login') {
+            <li>학습 화면 바로 진입</li>
+            <li>멤버 권한 기반 앱 노출</li>
+            <li>개인 프로필과 세션 연동</li>
+          } @else {
+            <li>간단한 정보만으로 빠른 가입</li>
+            <li>가입 직후 즉시 로그인</li>
+            <li>현재 앱과 바로 연결</li>
+          }
+        </ul>
+        <div class="lw-login-modal__context-badges">
+          <span class="lw-login-modal__context-badge">Study Workspace</span>
+          <span class="lw-login-modal__context-badge">Member Connected</span>
+        </div>
+      </aside>
+    }
+
+    <div class="lw-login-modal__content">
+      @if (facade.panel() === 'auth') {
+        <section class="lw-login-modal__auth-shell">
+          <!-- 로그인 / 회원가입 탭 네비게이션 (가입을 받지 않으면 탭 없이 로그인만 보인다) -->
+          @if (facade.allowSignup()) {
+            <div class="lw-login-modal__tabs" role="tablist" aria-label="인증 선택">
+              <lw-button
+                variant="ghost"
+                class="lw-login-modal__tab"
+                [selected]="facade.mode() === 'login'"
+                label="로그인"
+                (click)="facade.switchMode('login')">
+              </lw-button>
+              <lw-button
+                variant="ghost"
+                class="lw-login-modal__tab"
+                [selected]="facade.mode() === 'signup'"
+                label="회원가입"
+                (click)="facade.switchMode('signup')">
+              </lw-button>
+            </div>
+          }
+
+          <!-- 폼 영역 -->
+          <div class="lw-login-modal__form-pane" [attr.role]="facade.allowSignup() ? 'tabpanel' : null">
+            @if (facade.mode() === 'login') {
+              <lw-auth-login-form
+                [errorText]="facade.error()"
+                [disabled]="facade.submitting()"
+                [submitLabel]="'로그인'"
+                (submitted)="onLogin($event)" />
+            } @else {
+              <lw-auth-signup-form
+                [errorText]="facade.error()"
+                [disabled]="facade.submitting()"
+                [submitLabel]="'가입'"
+                (submitted)="onSignup($event)" />
+            }
+          </div>
+
+          <!-- 상태 알림 배너 (OCP 에러 포매터 연동) -->
+          @if (facade.statusMessage(); as status) {
+            <div
+              class="lw-login-modal__status"
+              [class.lw-login-modal__status--danger]="status.tone === 'danger'"
+              [class.lw-login-modal__status--warning]="status.tone === 'warning'"
+              [class.lw-login-modal__status--success]="status.tone === 'success'"
+              [class.lw-login-modal__status--neutral]="status.tone === 'neutral'"
+              role="alert"
+            >
+              @if (status.title; as title) {
+                <p class="lw-login-modal__status-title">{{ title }}</p>
+              }
+              @if (status.description; as desc) {
+                <p class="lw-login-modal__status-desc">{{ desc }}</p>
+              }
+            </div>
+          }
+        </section>
+      } @else if (facade.account(); as acc) {
+        <!-- 계정 요약 뷰 -->
+        <div class="lw-login-modal__summary">
+          <lw-avatar
+            class="lw-login-modal__summary-avatar"
+            aria-hidden="true"
+            [initial]="facade.avatarInitial()"
+            size="lg"
+          />
+          <p class="lw-login-modal__summary-kicker">현재 연결된 계정</p>
+          <p class="lw-login-modal__summary-greet">
+            <strong>{{ acc.displayName || '멤버 사용자' }}</strong>
+          </p>
+          @if (acc.email) {
+            <p class="lw-login-modal__summary-email">{{ acc.email }}</p>
+          }
+          <div class="lw-login-modal__summary-meta">
+            <span class="lw-login-modal__summary-pill">Member Connected</span>
+            @if (acc.role) {
+              <span class="lw-login-modal__summary-pill lw-login-modal__summary-pill--role">{{ acc.role }}</span>
+            }
+          </div>
+          <p class="lw-login-modal__summary-note">이 계정으로 멤버 권한과 개인 설정이 적용됩니다.</p>
+          <div class="lw-login-modal__summary-actions">
+            @if (facade.mainActionLabel(); as label) {
+              <lw-button variant="primary" size="md" [label]="label" (click)="goMain()"></lw-button>
+            }
+            <lw-button variant="secondary" size="md" label="로그아웃" (click)="onLogout()"></lw-button>
+          </div>
+        </div>
+      } @else {
+        <!-- 오프라인 상태 뷰 -->
+        <div class="lw-login-modal__offline">
+          <p class="lw-login-modal__offline-hint">로그인되지 않았습니다.</p>
+          <lw-button variant="primary" size="md" label="멤버 로그인" (click)="showAuthPanel()">
+          </lw-button>
+        </div>
+      }
+    </div>
+  </div>
+</lw-modal>

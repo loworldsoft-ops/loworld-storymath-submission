@@ -1,0 +1,68 @@
+@use 'index' as lw;
+:host { display: block; height: 100%; }
+    .week-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+    .header-row {
+      display: grid; flex-shrink: 0;
+    }
+    .corner { border-bottom: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); border-right: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); padding: 8px; }
+    .day-col-header {
+      border-bottom: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      border-right: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      text-align: center; padding: 10px 0;
+    }
+    .day-col-header.is-selected { background: var(--lw-cal-cell-selected, #{lw.$lw-cal-cell-selected}); }
+    .dow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .dow.sunday { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .dow.saturday { color: var(--lw-color-primary); }
+    .dom {
+      margin-top: 2px; width: 32px; height: 32px; display: inline-flex;
+      align-items: center; justify-content: center; font-size: 18px; font-weight: 600;
+      border-radius: 50%; color: var(--lw-cal-text, #{lw.$lw-cal-text});
+    }
+    .dom.today-badge { background: var(--lw-cal-accent, #{lw.$lw-cal-accent}); color: var(--lw-surface); }
+    .allday-row { display: grid; border-bottom: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); flex-shrink: 0; }
+    .allday-label { font-size: 10px; font-weight: 500; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); padding: 4px 8px; text-align: right; }
+    .allday-cell { border-left: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); padding: 2px; min-height: 24px; }
+    .allday-chip {
+      font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-bottom: 2px;
+      border-left: 2px solid; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      cursor: pointer; font-weight: 500;
+    }
+    .time-grid { flex: 1; overflow: auto; position: relative; }
+    .grid-inner { display: grid; }
+    .time-label {
+      border-bottom: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      border-right: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      padding: 4px 8px; font-size: 11px; font-weight: 500; text-align: right;
+      color: var(--lw-cal-muted, #{lw.$lw-cal-muted});
+    }
+    .time-cell {
+      border-bottom: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      border-right: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      position: relative;
+    }
+    .time-cell.is-today, .time-cell.is-selected { background: var(--lw-cal-cell-selected, #{lw.$lw-cal-cell-selected}); }
+    .half-line {
+      position: absolute; left: 0; right: 0; border-top: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      opacity: 0.5;
+    }
+    .timed-event {
+      position: absolute; left: 2px; right: 4px; border-radius: 8px; overflow: hidden;
+      padding: 4px 6px; font-size: 11px; border-left: 3px solid; cursor: pointer;
+      z-index: 10; min-height: 20px; font-weight: 600;
+      transition: opacity 0.15s;
+    }
+    .timed-event:hover { opacity: 0.85; }
+    .ev-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ev-time { font-size: 9px; opacity: 0.7; }
+    .now-line { position: absolute; left: 60px; right: 0; z-index: 20; pointer-events: none; display: flex; align-items: center; }
+    .now-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--lw-cal-accent, #{lw.$lw-cal-accent}); margin-left: -4px; }
+    .now-bar { flex: 1; height: 2px; background: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+
+    /* ─── Mobile overrides ─── */
+    .corner.mobile { padding: 4px; }
+    .day-col-header.mobile { padding: 6px 0; }
+    .dom.mobile { width: 26px; height: 26px; font-size: 14px; }
+    .time-label.mobile { padding: 2px 4px; font-size: 10px; }
+    .timed-event.mobile { padding: 2px 4px; font-size: 10px; left: 1px; right: 2px; }
+    .allday-chip-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }

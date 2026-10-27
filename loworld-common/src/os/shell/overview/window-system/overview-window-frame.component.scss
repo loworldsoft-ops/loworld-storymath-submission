@@ -1,0 +1,387 @@
+@use 'index' as lw;
+
+:host {
+  pointer-events: auto;
+}
+
+/* ── macOS Window Frame ───────────────────────────────────── */
+
+.overview-window-frame {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0;
+  border: none;
+  background: var(--overview-window-bg, var(--lw-hue-slate-50));
+  box-shadow: none;
+  transform: none;
+  isolation: isolate;
+
+  /* ── Scoped Glassmorphism Token Bridge for All Hosted Apps ── */
+  --lw-container-bg: transparent;
+  --lw-bg-content: transparent;
+  --lw-bg-shell: transparent;
+  --lw-plan-shell-bg: transparent;
+  --lw-content-area-bg: transparent;
+
+  /* Default Light Mode Glass Tokens */
+  --lw-surface: rgba(255, 255, 255, 0.45);
+  --lw-surface-alt: rgba(255, 255, 255, 0.35);
+  --lw-bg-panel: rgba(255, 255, 255, 0.28);
+  --lw-card-bg: rgba(255, 255, 255, 0.42);
+  --lw-sidebar-bg: rgba(255, 255, 255, 0.08);
+  --lw-plan-shell-sidebar-bg: rgba(255, 255, 255, 0.08);
+  --lw-workspace-pane-divider: rgba(255, 255, 255, 0.20);
+  --lw-border-color: rgba(255, 255, 255, 0.25);
+  --lw-border: rgba(255, 255, 255, 0.40);
+  --plan-shell-border: rgba(255, 255, 255, 0.25);
+  --lw-text-primary: #0f172a;
+  --lw-text-secondary: #334155;
+  --lw-text-muted: #64748b;
+  --overview-glass-card-bg: rgba(255, 255, 255, 0.40);
+  --overview-glass-card-border: rgba(255, 255, 255, 0.40);
+  --overview-glass-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+
+  &.is-custom-positioned {
+    transform: none !important;
+  }
+
+  &.is-window-dragging {
+    user-select: none !important;
+    transition: none !important;
+
+    iframe, webview, object, embed {
+      pointer-events: none !important;
+    }
+  }
+}
+
+/* ── Reactive Theme Token Bridge Overrides ────────────────── */
+
+:host-context([data-lw-theme='dark']) .overview-window-frame,
+:host-context([data-theme='dark']) .overview-window-frame {
+  background: var(--overview-window-bg, var(--lw-hue-slate-900));
+  border-color: color-mix(in srgb, var(--lw-color-white) 14%, transparent);
+  --lw-surface: rgba(15, 23, 42, 0.40);
+  --lw-surface-alt: rgba(30, 41, 59, 0.32);
+  --lw-bg-panel: rgba(15, 23, 42, 0.28);
+  --lw-card-bg: rgba(15, 23, 42, 0.35);
+  --lw-sidebar-bg: rgba(15, 23, 42, 0.16);
+  --lw-plan-shell-sidebar-bg: rgba(15, 23, 42, 0.16);
+  --lw-workspace-pane-divider: rgba(255, 255, 255, 0.10);
+  --lw-border-color: rgba(255, 255, 255, 0.12);
+  --lw-border: rgba(255, 255, 255, 0.12);
+  --plan-shell-border: rgba(255, 255, 255, 0.12);
+  --lw-text-primary: var(--lw-surface-subtle);
+  --lw-text-secondary: var(--lw-border-neutral);
+  --lw-text-muted: var(--lw-text-muted-light);
+  --overview-glass-card-bg: rgba(15, 23, 42, 0.35);
+  --overview-glass-card-border: rgba(255, 255, 255, 0.10);
+  --overview-glass-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.20);
+}
+
+:host-context([data-lw-skin='glassmorphism']) .overview-window-frame {
+  background: var(--overview-window-bg, color-mix(in srgb, var(--lw-hue-slate-50) 72%, transparent));
+  --lw-surface: rgba(255, 255, 255, 0.20);
+  --lw-surface-alt: rgba(255, 255, 255, 0.12);
+  --lw-bg-panel: rgba(255, 255, 255, 0.15);
+  --lw-card-bg: rgba(255, 255, 255, 0.18);
+  --lw-sidebar-bg: rgba(255, 255, 255, 0.10);
+  --lw-titlebar-bg: rgba(255, 255, 255, 0.12);
+  --overview-glass-card-bg: rgba(255, 255, 255, 0.18);
+  --overview-glass-card-border: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 28px 70px color-mix(in srgb, var(--lw-hue-indigo-500) 22%, transparent),
+    0 10px 28px color-mix(in srgb, var(--lw-color-black) 25%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--lw-hue-indigo-500) 35%, transparent);
+}
+
+:host-context([data-lw-skin='newspaper']) .overview-window-frame {
+  background: var(--overview-window-bg, var(--lw-hue-stone-50));
+  --lw-surface: rgba(244, 240, 230, 0.76);
+  --lw-card-bg: rgba(244, 240, 230, 0.74);
+  --lw-sidebar-bg: rgba(234, 228, 216, 0.35);
+  --lw-border-color: rgba(139, 90, 43, 0.35);
+  --lw-text-primary: #1c1917;
+  --lw-text-secondary: #44403c;
+}
+
+:host-context([data-lw-skin='parchment']) .overview-window-frame {
+  background: var(--overview-window-bg, var(--lw-hue-amber-100));
+  --lw-surface: rgba(254, 243, 199, 0.75);
+  --lw-card-bg: rgba(254, 243, 199, 0.72);
+  --lw-sidebar-bg: rgba(253, 230, 138, 0.35);
+  --lw-border-color: rgba(217, 119, 6, 0.35);
+  --lw-text-primary: #451a03;
+  --lw-text-secondary: #78350f;
+}
+
+:host-context([data-lw-skin='cyberpunk']) .overview-window-frame {
+  background: var(--overview-window-bg, var(--lw-hue-zinc-950));
+  --lw-surface: rgba(10, 10, 18, 0.82);
+  --lw-card-bg: rgba(18, 17, 36, 0.78);
+  --lw-sidebar-bg: rgba(10, 10, 18, 0.55);
+  --lw-border-color: rgba(0, 255, 204, 0.45);
+  --lw-text-primary: #00ffcc;
+  --lw-text-secondary: #ff007f;
+  box-shadow:
+    0 28px 70px color-mix(in srgb, var(--lw-hue-teal-400) 15%, transparent),
+    0 0 20px color-mix(in srgb, var(--lw-hue-pink-600) 22%, transparent);
+}
+
+:host-context([data-lw-skin='night']) .overview-window-frame {
+  background: var(--overview-window-bg, var(--lw-bg-content));
+  --lw-surface: var(--lw-bg-panel);
+  --lw-card-bg: var(--lw-bg-panel);
+  --lw-sidebar-bg: var(--lw-bg-content);
+  --lw-border-color: var(--lw-border);
+  --lw-text-primary: var(--lw-text-primary);
+  --lw-text-secondary: var(--lw-text-secondary);
+  box-shadow: 0 28px 70px var(--lw-surface-scrim);
+}
+
+.overview-window-frame.active {
+  border-color: color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+  box-shadow:
+    0 28px 70px color-mix(in srgb, var(--lw-color-black) 55%, transparent),
+    0 10px 28px color-mix(in srgb, var(--lw-color-black) 30%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+}
+
+.overview-window-frame.minimized {
+  display: none;
+}
+
+.overview-window-frame.size-mobile {
+  width: min(430px, calc(100% - 24px));
+  height: min(860px, calc(100% - 24px - var(--window-offset, 0px)));
+}
+
+.overview-window-frame.size-wide {
+  width: min(1360px, calc(100% - 32px));
+}
+
+.overview-window-frame.maximized {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+
+  .overview-window-titlebar {
+    display: none !important;
+  }
+}
+
+/* ── Fullscreen Top-Left Floating Controls (Close & Restore) ─ */
+
+
+/* ── macOS Window Titlebar ────────────────────────────────── */
+
+.overview-window-titlebar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  height: 42px;
+  padding: 0 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--lw-color-white) 18%, transparent);
+  background: var(--lw-titlebar-bg);
+  flex-shrink: 0;
+  user-select: none;
+  box-sizing: border-box;
+  cursor: grab;
+  touch-action: none;
+
+  &.is-dragging {
+    cursor: grabbing;
+  }
+}
+
+[data-lw-skin="dark"] .overview-window-titlebar,
+.overview-theme-win11[data-lw-skin="dark"] .overview-window-titlebar {
+  background: color-mix(in srgb, var(--lw-hue-zinc-800) 82%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--lw-color-white) 8%, transparent);
+}
+
+/* ── macOS 3-Color Traffic Light Buttons ──────────────────── */
+
+.macos-traffic-lights {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+
+  &:hover {
+    .traffic-icon {
+      opacity: 0.75;
+    }
+  }
+}
+
+.traffic-btn {
+  position: relative;
+  width: 12.5px;
+  height: 12.5px;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease, filter 0.12s ease;
+
+  &:active {
+    filter: brightness(0.85);
+    transform: scale(0.92);
+  }
+
+  .traffic-icon {
+    font-size: 8px;
+    font-weight: 800;
+    line-height: 1;
+    color: color-mix(in srgb, var(--lw-color-black) 65%, transparent);
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.traffic-btn--close {
+    background: var(--lw-color-danger);
+    border: 0.5px solid var(--lw-color-danger);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+
+    .traffic-icon {
+      font-size: 7.5px;
+    }
+  }
+
+  &.traffic-btn--minimize {
+    background: var(--lw-color-warning);
+    border: 0.5px solid var(--lw-color-warning);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+
+    .traffic-icon {
+      font-size: 9px;
+      margin-top: -1px;
+    }
+  }
+
+  &.traffic-btn--zoom {
+    background: var(--lw-hue-green-500);
+    border: 0.5px solid var(--lw-hue-green-600);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+
+    .traffic-icon {
+      font-size: 7.5px;
+    }
+  }
+}
+
+/* ── Centered Title & Icon ────────────────────────────────── */
+
+.overview-window-titlebar-info {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 60%;
+  pointer-events: none;
+}
+
+.overview-window-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.overview-window-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lw-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+/* ── Right Window Controls / Session ──────────────────────── */
+
+.overview-window-right-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* ── Window Body ──────────────────────────────────────────── */
+
+.overview-window-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+
+  > lw-window-tab-host,
+  > lw-catalog-docs,
+  > lw-llmops-showcase,
+  > lw-foundry-shell {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    overflow: hidden !important;
+  }
+
+  ::ng-deep .demo-page {
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+  }
+
+  ::ng-deep .demo-frame {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  ::ng-deep .desktop-frame {
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+}
+
+@include lw.lw-below(tablet) {
+  .overview-window-frame,
+  .overview-window-frame.size-mobile,
+  .overview-window-frame.size-wide {
+    top: 36px;
+    left: 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 44px);
+    transform: none;
+  }
+}

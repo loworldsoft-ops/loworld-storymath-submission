@@ -1,0 +1,10 @@
+id,kind,name,rarity,description,might,guard,wit,spirit,fortune,tags,phrases,source,requires,bonds,baneOpponent,baneMultiplier,icon,equip,price,alignment,sockets,letter,next
+item.blade,item,검,common,혈이 둘인 검,5,,,,,검,무기=검,start,,,,,,weapon,,,2,,
+item.plain,item,민검,common,혈이 없는 검,3,,,,,검,무기=민검,draw,,,,,,weapon,10,,,,
+item.sharp,item,날검,common,혈이 없는 날 선 검,7,,,,,검,무기=날검,reward,,,,,,weapon,,,,,
+bead.ga,bead,가의 구슬,low,가,2,,,,,,,loot,,,,,,,10,,,가,bead.na
+bead.na,bead,나의 구슬,mid,나,,4,,,,,,loot,,,,,,,,,,나,
+bead.da,bead,다의 구슬,rare,다,,,3,,,,,loot,,,,,,,,,,다,
+art.verse,art,가나검,fine,구결이 연 검,8,,,,,검,,reward,,,,,,,,,,,
+p_compassion,personality,,,,,,,,,,,start,,,,,,,,,,,
+p_pride,personality,,,,,,,,,,,start,,,,,,,,,,,

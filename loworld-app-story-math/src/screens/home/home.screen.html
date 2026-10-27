@@ -1,0 +1,65 @@
+<lw-stack [fill]="true" [scroll]="true" gap="md" padding="lg" surface="ground">
+  <lw-stack direction="row" justify="between" align="center">
+    <lw-text variant="title">스토리매스</lw-text>
+    <lw-stack direction="row" gap="sm" align="center">
+      @if (!play.canSpeak) {
+        <lw-badge label="읽기 없음" color="warning" />
+      }
+      @if (!play.canListen) {
+        <lw-badge label="듣기 없음" color="warning" />
+      }
+      <lw-button variant="secondary" shape="circle" size="lg" ariaLabel="설정" (click)="play.openSettings()">
+        <lw-icon name="settings" [size]="28" />
+      </lw-button>
+    </lw-stack>
+  </lw-stack>
+
+  <lw-stack direction="row" collapse="sm" gap="lg">
+    <lw-stack gap="md" [fill]="true">
+      <lw-card variant="flat">
+        <lw-stack direction="row" gap="lg" align="start">
+          <lw-avatar icon="notebook" size="lg" />
+          <lw-stack gap="sm" [fill]="true">
+            <lw-text variant="caption" tone="muted">이야기꾼</lw-text>
+            <lw-marked-text look="reading" [segments]="play.segmentsOf(play.greeting())" />
+          </lw-stack>
+        </lw-stack>
+      </lw-card>
+      @if (play.nextQuest(); as next) {
+        <lw-card variant="filled" lwPressable (press)="play.startQuest(next)">
+          <lw-stack direction="row" justify="between" align="center" padding="md">
+            <lw-stack gap="xs">
+              <lw-text variant="label">{{ play.placeOf(next) }}</lw-text>
+              <lw-text variant="display">이어 듣기 — {{ next.topic }}</lw-text>
+            </lw-stack>
+            <lw-icon name="play" [size]="56" />
+          </lw-stack>
+        </lw-card>
+      }
+    </lw-stack>
+
+    <lw-stack gap="md" [fill]="true">
+      <lw-stack direction="row" justify="between" align="center">
+        <lw-text tone="muted">막 — 한 막에 한 학년</lw-text>
+        <lw-tabs variant="segment" size="sm" ariaLabel="학교" [tabs]="schoolTabs" [value]="school()" (tabChange)="pickSchool($event)" />
+      </lw-stack>
+      <lw-grid [cols]="3" [colsSm]="3" gap="md">
+        @for (act of shownActs(); track act.id) {
+          <lw-card lwPressable [selected]="act === play.nextAct()" [disabled]="act.quests.length === 0" (press)="play.openAct(act)">
+            <lw-stack gap="sm" justify="between">
+              <lw-stack gap="xs">
+                <lw-text variant="title">{{ act.title }}</lw-text>
+                <lw-text tone="muted">{{ act.grade }}</lw-text>
+              </lw-stack>
+              @if (act.quests.length > 0) {
+                <lw-progress-bar [value]="play.doneCount(act)" [max]="act.units.length" label="단원" size="sm" />
+              } @else {
+                <lw-text variant="caption" tone="muted">{{ act.units.length }}단원 · 준비 중</lw-text>
+              }
+            </lw-stack>
+          </lw-card>
+        }
+      </lw-grid>
+    </lw-stack>
+  </lw-stack>
+</lw-stack>

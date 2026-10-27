@@ -1,0 +1,7 @@
+{
+  "path": "/detail/llmops/governance",
+  "title": "모델 거버넌스",
+  "desc": "조직이 쓸 AI 모델을 등록하고 통제하는 곳",
+  "toc": [],
+  "html": "<p>모델 거버넌스는 <strong>어떤 모델을 쓸 수 있게 할 것인가</strong>를 정하는 메뉴입니다.\n모델을 등록하는 일(카탈로그), 못 쓰게 막는 일(정책), 실제로 켜고 키를 넣는 일(사용 설정)이 나뉘어 있습니다.</p>\n<div class=\"grid grid-cols-2 gap-3 @container\"><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/llmops/governance/catalog\"><h3 class=\"not-prose mb-1 text-sm font-medium\">모델 카탈로그</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>모델 등록·조회, 사용처 확인, 지원 종료 안내와 삭제</p></div></a><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/llmops/governance/policies\"><h3 class=\"not-prose mb-1 text-sm font-medium\">모델 정책</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>공급사·모델 단위 차단과 허용, 적용 전 영향 미리보기, 변경 이력</p></div></a><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/llmops/governance/usage-settings\"><h3 class=\"not-prose mb-1 text-sm font-medium\">모델 사용 설정</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>인증키 등록, 모델 켜고 끄기, 사용 범위와 기본 모델 지정</p></div></a></div>"
+}

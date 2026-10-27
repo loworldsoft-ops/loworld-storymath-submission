@@ -1,0 +1,15 @@
+who,alignment,card,emotion,stance,regard,speech
+protagonist,cruel,,,,up,roar
+protagonist,cruel,,,,,mock
+protagonist,merciful,,,,down,lecture
+protagonist,merciful,,,,,resolve
+,,p_pride;p_arrogance,,hostile;cold,down,mock
+,,p_pride;p_arrogance,anger,,level;up,bluster
+,,p_pride;p_arrogance,,,level,probe
+,,p_discernment,,hostile;cold,down,lecture
+,,p_courage,,,level;up,resolve
+,,p_discernment,,,up,resolve
+,,,fear,,up,fawn
+,,p_compassion;p_kindness,love;sorrow,warm;trusting,,worry
+,,p_anger;p_wrath,anger,,,roar
+,,,,,,plain

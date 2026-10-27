@@ -1,0 +1,7 @@
+<div class="empty" [attr.data-size]="size()">
+  @if (icon()) {
+    <span class="empty-icon">{{ icon() }}</span>
+  }
+  <p class="empty-message">{{ message() }}</p>
+  <ng-content />
+</div>

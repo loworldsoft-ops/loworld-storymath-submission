@@ -1,0 +1,55 @@
+@if (play.act(); as act) {
+  <lw-stack [fill]="true" [scroll]="true" gap="lg" padding="xl" surface="ground">
+    <lw-stack direction="row" justify="between" align="center">
+      <lw-stack direction="row" gap="md" align="center">
+        <lw-button variant="secondary" (click)="play.goHome()">
+          <lw-icon name="chevron-left" />
+          막 목록
+        </lw-button>
+        <lw-stack gap="xs">
+          <lw-text variant="heading">{{ act.title }} · {{ act.grade }}</lw-text>
+          <lw-text variant="caption" tone="muted">단원 하나가 퀘스트 하나 · 이야기를 듣고 둘 중 하나로 답해요</lw-text>
+        </lw-stack>
+      </lw-stack>
+      <lw-button variant="ghost" shape="circle" ariaLabel="설정" (click)="play.openSettings()">
+        <lw-icon name="settings" [size]="24" />
+      </lw-button>
+    </lw-stack>
+    <lw-progress-bar [value]="play.doneCount(act)" [max]="act.units.length" label="마친 단원" />
+
+    @for (semester of [1, 2]; track semester) {
+      <lw-text variant="label" tone="muted">{{ play.semesterLabel(act, semester) }}</lw-text>
+      @for (unit of act.units; track unit.id) {
+        @if (unit.semester === semester) {
+          @if (play.questOfUnit(act, unit.id); as quest) {
+            <lw-card lwPressable (press)="play.startQuest(quest)">
+              <lw-stack direction="row" gap="md" align="center">
+                @if (play.results().get(quest.id); as result) {
+                  <lw-icon name="check-circle" [size]="32" />
+                  <lw-stack gap="xs">
+                    <lw-text variant="heading">{{ unit.name }}</lw-text>
+                    <lw-text variant="caption" tone="muted">{{ quest.title }} · {{ result.total }}문제 중 {{ result.correct }} · {{ result.plays }}번 들음</lw-text>
+                  </lw-stack>
+                } @else {
+                  <lw-icon name="play" [size]="32" />
+                  <lw-stack gap="xs">
+                    <lw-text variant="heading">{{ unit.name }}</lw-text>
+                    <lw-text variant="caption" tone="muted">{{ quest.title }}</lw-text>
+                  </lw-stack>
+                }
+                <lw-badge [label]="quest.kind === 'birth' ? '탄생 비화' : '원리'" [color]="quest.kind === 'birth' ? 'warning' : 'info'" />
+              </lw-stack>
+            </lw-card>
+          } @else {
+            <lw-card variant="flat">
+              <lw-stack direction="row" gap="md" align="center">
+                <lw-icon name="circle" [size]="32" />
+                <lw-text tone="muted">{{ unit.name }} · 준비 중</lw-text>
+              </lw-stack>
+            </lw-card>
+          }
+        }
+      }
+    }
+  </lw-stack>
+}

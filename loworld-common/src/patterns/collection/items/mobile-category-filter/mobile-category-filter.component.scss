@@ -1,0 +1,6 @@
+@use 'index' as lw;
+@use 'scrollbar' as *;
+:host { display: block; }
+    .filter-row { display: flex; align-items: center; gap: 8px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; }.filter-row { @include lw-scrollbar-none; }
+    .chip { height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--lw-editor-inactive-border, #{lw.$lw-editor-inactive-border}); background: var(--lw-editor-inactive-bg, #{lw.$lw-editor-inactive-bg}); color: var(--lw-editor-inactive-text, #{lw.$lw-editor-inactive-text}); font-size: 13px; font-weight: 500; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+    .chip.active { background: var(--lw-color-danger); color: var(--lw-surface); border-color: var(--lw-color-danger); }

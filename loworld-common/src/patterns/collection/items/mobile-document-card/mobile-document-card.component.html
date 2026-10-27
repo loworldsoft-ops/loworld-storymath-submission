@@ -1,0 +1,50 @@
+<lw-card
+  variant="outlined"
+  [interactive]="true"
+  size="md"
+  [selected]="note().isPinned"
+  (click)="select.emit(note().id)"
+>
+  <div class="title-row">
+    <h3 class="title">
+      @if (note().emoji) {
+        <span class="emoji">{{ note().emoji }}</span>
+      }
+      <span>{{ note().title || '제목 없음' }}</span>
+    </h3>
+
+    @if (note().isPinned) {
+      <span class="icon-glyph icon-pin" aria-hidden="true">📌</span>
+    }
+  </div>
+
+  <p class="preview">{{ note().notePassword ? '이 노트는 잠겨 있어요' : (contentPreview() || '내용이 없습니다.') }}</p>
+
+  <div class="spacer"></div>
+
+  <div class="badges">
+    @if (note().notePassword) {
+      <lw-chip variant="status" [clickable]="false">
+        <span class="icon-star" aria-hidden="true"></span>
+        잠금
+      </lw-chip>
+    }
+    @if (note().reminder && !note().reminderDismissed) {
+      <lw-chip variant="status" [clickable]="false">
+        <span class="icon-star" aria-hidden="true"></span>
+        알림
+      </lw-chip>
+    }
+    @if (hasAudio()) {
+      <lw-chip variant="status" [clickable]="false">
+        <span class="icon-star" aria-hidden="true"></span>
+        녹음
+      </lw-chip>
+    }
+  </div>
+
+  <div class="footer">
+    <span class="date">{{ formatDate(note().createdAt) }}</span>
+    <span class="type-badge" [style.backgroundColor]="colors().bg" [style.color]="colors().text" [style.border]="'1px solid ' + colors().border">{{ label() }}</span>
+  </div>
+</lw-card>

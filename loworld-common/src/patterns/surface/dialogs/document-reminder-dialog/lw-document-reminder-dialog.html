@@ -1,0 +1,76 @@
+    <lw-modal [isOpen]="true" size="md" variant="custom" title="알람 설정" (closeClick)="close.emit()">
+      <div class="document-reminder-dialog" (click)="$event.stopPropagation()">
+
+        <div class="picker-row">
+          <lw-drum [items]="ampmItems" [selected]="ampm()" (select)="ampm.set($any($event))" [width]="56"/>
+          <div class="gap16"></div>
+          <lw-drum [items]="hourItems" [selected]="hour()" (select)="hour.set($event)" [width]="52"/>
+          <div class="colon">:</div>
+          <lw-drum [items]="minuteItems" [selected]="minute()" (select)="minute.set($event)" [width]="52"/>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="opts">
+          <lw-button class="opt" (click)="repeat.set('once')">
+            <span class="radio" [class.on]="repeat() === 'once'"><span></span></span>
+            <span class="opt-label">한번만</span>
+          </lw-button>
+          <lw-button class="opt" (click)="onRepeatClick()">
+            <span class="radio" [class.on]="repeat() === 'repeat'"><span></span></span>
+            <span class="opt-label">반복</span>
+            @if (repeat() === 'repeat' && repeatLabel()) {
+              <span class="opt-val">
+                {{ repeatLabel() }}
+                <span class="icon-glyph icon-chevron-right" aria-hidden="true">›</span>
+              </span>
+            }
+          </lw-button>
+        </div>
+
+        <div class="sep"></div>
+
+        <lw-button class="sound-row">
+          <span class="icon-bell" aria-hidden="true"></span>
+          <span class="opt-label">알림음</span>
+          <span class="opt-val">
+            시스템 기본
+            <span class="icon-glyph icon-chevron-right" aria-hidden="true">›</span>
+          </span>
+        </lw-button>
+
+        <div class="sep"></div>
+
+        @if (value()) {
+          <div class="del-wrap">
+            <lw-button class="del-btn" (click)="save.emit(undefined)">
+              <span class="icon-trash" aria-hidden="true"></span>
+              알람 삭제하기
+            </lw-button>
+          </div>
+        }
+
+        <div class="footer">
+          <lw-button class="cancel-btn" (click)="close.emit()">취소</lw-button>
+          <lw-button class="confirm-btn" (click)="confirm()">확인</lw-button>
+        </div>
+
+        @if (showDayPicker()) {
+          <div class="day-overlay" (click)="showDayPicker.set(false)">
+            <div class="day-panel" (click)="$event.stopPropagation()">
+              <p class="day-title">반복 요일</p>
+              <div class="day-grid">
+                @for (day of days; track day) {
+                  <lw-button class="day-btn" [class.on]="draftDays().includes(day)" (click)="toggleDraftDay(day)">{{ day }}</lw-button>
+                }
+              </div>
+              <div class="day-actions">
+                <lw-button class="day-cancel" (click)="showDayPicker.set(false)">취소</lw-button>
+                <lw-button class="day-confirm" (click)="confirmDays()">확인</lw-button>
+              </div>
+            </div>
+          </div>
+        }
+
+      </div>
+    </lw-modal>

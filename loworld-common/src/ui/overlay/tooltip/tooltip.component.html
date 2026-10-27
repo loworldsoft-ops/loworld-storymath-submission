@@ -1,0 +1,20 @@
+<div class="lw-tooltip__inner">
+  @if (title(); as headerTitle) {
+    <div class="lw-tooltip__header">
+      <span class="lw-tooltip__title">{{ headerTitle }}</span>
+    </div>
+  }
+
+  <div class="lw-tooltip__body">
+    @if (isTemplateContent()) {
+      <ng-container *ngTemplateOutlet="$any(content())" />
+    } @else {
+      <span class="lw-tooltip__text">{{ stringContent() }}</span>
+    }
+    <ng-content />
+  </div>
+
+  @if (arrow()) {
+    <div class="lw-tooltip__arrow" aria-hidden="true"></div>
+  }
+</div>

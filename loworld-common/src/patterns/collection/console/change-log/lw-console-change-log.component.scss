@@ -1,0 +1,21 @@
+@use '../console-ui' as ui;
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.lw-console-log {
+  @include ui.foundry-card;
+  @include ui.foundry-scroll;
+}
+
+.lw-console-log__table {
+  @include ui.foundry-table;
+}
+
+.lw-console-log__detail {
+  margin-left: 6px;
+}

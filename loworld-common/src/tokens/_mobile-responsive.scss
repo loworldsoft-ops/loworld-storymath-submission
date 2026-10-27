@@ -1,0 +1,232 @@
+// ============================================================================
+// LoworldUI Design System — Unified Mobile Responsive System (OCP / DIP)
+// ============================================================================
+@use 'sass:map';
+@use 'scrollbar' as *;
+
+
+// ── 1. Responsive Breakpoint Tokens (SSOT) ──
+$lw-breakpoint-compact: 380px !default;
+$lw-breakpoint-mobile-compact: 380px !default;
+$lw-breakpoint-mobile: 640px !default;
+$lw-breakpoint-tablet: 768px !default;
+$lw-breakpoint-tablet-wide: 1024px !default;
+$lw-breakpoint-desktop: 1024px !default;
+$lw-breakpoint-desktop-wide: 1440px !default;
+
+// ── 2. Unified Mobile Context Selector Mixins (LSP / OCP) ──
+// :host(.is-mobile) [바텀시트, 뷰어], :host-context(.is-mobile), @container (max-width: 768px)
+@mixin lw-mobile-mode {
+  @if & {
+    :host(.is-mobile) &,
+    :host-context(.is-mobile) &,
+    :host([data-lw-mode="mobile"]) & {
+      @content;
+    }
+  } @else {
+    :host(.is-mobile),
+    :host-context(.is-mobile),
+    :host([data-lw-mode="mobile"]) {
+      @content;
+    }
+  }
+
+  @container (max-width: #{$lw-breakpoint-tablet}) {
+    @content;
+  }
+}
+
+// 폭 조건 믹스인. 브라우저 창이 좁을 때와, 화면 안의 가상 화면(시뮬레이터의 `lw-viewport` 컨테이너)이
+// 좁을 때 모두 적용된다. 컴포넌트에서는 `@media (max-width: …)`를 직접 쓰지 말고 이것을 쓴다.
+// 폭은 이름으로 넘긴다: compact(380) · mobile(640) · tablet(768) · desktop(1024) · wide(1440).
+// px 값을 직접 넘겨도 동작하지만 `ds-check`의 C10에 걸린다. 경계값을 다섯 개로 유지하기 위해서다.
+$lw-breakpoints: (
+  compact: $lw-breakpoint-compact,
+  mobile: $lw-breakpoint-mobile,
+  tablet: $lw-breakpoint-tablet,
+  desktop: $lw-breakpoint-desktop,
+  wide: $lw-breakpoint-desktop-wide,
+) !default;
+
+@mixin lw-below($width) {
+  $resolved: if(map.has-key($lw-breakpoints, $width), map.get($lw-breakpoints, $width), $width);
+
+  @container (max-width: #{$resolved}) {
+    @content;
+  }
+
+  @container lw-viewport (max-width: #{$resolved}) {
+    @content;
+  }
+}
+
+// 하위 호환성을 위해 lw-mobile-only 유지
+@mixin lw-mobile-only {
+  @include lw-mobile-mode {
+    @content;
+  }
+}
+
+// 데스크톱 전용 모드 믹스인
+@mixin lw-desktop-mode {
+  :host(:not(.is-mobile)) & {
+    @content;
+  }
+
+  @container (min-width: #{$lw-breakpoint-desktop}) {
+    @content;
+  }
+}
+
+// 호버 스타일 믹스인. 호버할 수 있는 기기(마우스)에서만 적용되어, 터치 기기에서 누른 뒤 강조가 남지 않는다.
+// 컴포넌트에서는 `&:hover`를 직접 쓰지 말고 이것을 쓴다. `$suffix`는 `:hover` 뒤에 붙일 선택자다.
+//   @include lw.lw-hover { … }                       → &:hover { … }
+//   @include lw.lw-hover(':not([disabled])') { … }   → &:hover:not([disabled]) { … }
+@mixin lw-hover($suffix: '') {
+  @media (hover: hover) {
+    &:hover#{$suffix} {
+      @content;
+    }
+  }
+}
+
+// 터치 기기에서 요소의 누르는 영역을 `$size` 이상으로 넓힌다. 보이는 크기는 바뀌지 않는다.
+// 요소는 `position`이 static이 아니어야 하고 `::after`를 다른 용도로 쓰지 않아야 한다.
+@mixin lw-touch-target($size: 44px) {
+  @media (pointer: coarse) {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: #{$size};
+      min-height: #{$size};
+      width: 100%;
+      height: 100%;
+      pointer-events: auto;
+    }
+  }
+}
+
+// 선택자 모양이 `&:hover…`가 아닌 규칙(`.a:hover .b`, `:host(:hover)` 등)을 통째로 감쌀 때 쓴다.
+@mixin lw-hover-only {
+  @media (hover: hover) {
+    @content;
+  }
+}
+
+// 화면 전체를 덮는 고정 오버레이. 안쪽 여백에 안전 영역(노치, 홈 인디케이터)을 반영한다.
+// 컴포넌트에서는 `position: fixed; inset: 0`을 직접 쓰지 말고 이것을 쓴다. `$padding`은 기본 안쪽 여백이다.
+@mixin lw-fixed-overlay($padding: 0px) {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  padding:
+    max(#{$padding}, env(safe-area-inset-top, 0px))
+    max(#{$padding}, env(safe-area-inset-right, 0px))
+    max(#{$padding}, env(safe-area-inset-bottom, 0px))
+    max(#{$padding}, env(safe-area-inset-left, 0px));
+}
+
+// 화면 아래 가장자리에 붙는 요소의 아래 여백에 안전 영역을 더한다.
+@mixin lw-safe-area-bottom($padding: 0px) {
+  padding-bottom: calc(#{$padding} + env(safe-area-inset-bottom, 0px));
+}
+
+// 컴포넌트 호스트 자체에 직접 스타일을 적용할 때
+@mixin lw-mobile-host {
+  :host(.is-mobile),
+  :host-context(.is-mobile) {
+    @content;
+  }
+}
+
+// ── 3. Horizontal Snap Swipe Track Mixin (세로 화면 폭발 방지) ──
+@mixin lw-mobile-snap-track($rows: 1, $item-width: 140px, $item-height: auto, $gap: 8px) {
+  display: grid;
+  grid-auto-flow: column;
+  @if $rows == 1 {
+    grid-template-rows: 1fr;
+  } @else {
+    grid-template-rows: repeat(#{$rows}, minmax(#{$item-height}, 1fr));
+  }
+  grid-auto-columns: minmax(#{$item-width}, auto);
+  gap: #{$gap};
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 4px;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+
+  // 슬림 스크롤바
+  @include lw-scrollbar(4px, var(--lw-game-border-brown, rgba(160, 120, 75, 0.45)), rgba(0, 0, 0, 0.08));
+}
+
+// ── 4. Full-Width CTA Action Button Mixin (터치 최적화) ──
+@mixin lw-mobile-fullwidth-btn($min-height: 42px) {
+  width: 100% !important;
+  min-height: #{$min-height} !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 10px 16px !important;
+  font-size: 0.9rem !important;
+}
+
+// ── 5. Compact Hero Avatar Mixin ──
+@mixin lw-mobile-avatar($size: 46px) {
+  width: #{$size} !important;
+  height: #{$size} !important;
+  min-width: #{$size} !important;
+  min-height: #{$size} !important;
+}
+
+// ── 6. Mobile Input / Edit Group Mixin ──
+@mixin lw-mobile-input-group {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  gap: 6px !important;
+
+  input,
+  .lw-input {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+// ── 7. Mobile Glassmorphism Power-Friendly Degradation (GPU 절전 & 프레임 안정화) ──
+@mixin lw-mobile-glass-surface($fallback-bg: rgba(26, 26, 36, 0.95), $desktop-blur: 24px) {
+  background: var(--lw-glass-surface-bg, #{$fallback-bg});
+  backdrop-filter: blur(var(--lw-glass-blur, #{$desktop-blur}));
+  -webkit-backdrop-filter: blur(var(--lw-glass-blur, #{$desktop-blur}));
+
+  @media (pointer: coarse) {
+    --lw-glass-blur: 0px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--lw-glass-mobile-bg, #{$fallback-bg});
+  }
+
+  :host(.is-mobile) &,
+  :host-context(.is-mobile) & {
+    --lw-glass-blur: 0px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--lw-glass-mobile-bg, #{$fallback-bg});
+  }
+
+  @container (max-width: #{$lw-breakpoint-tablet}) {
+    --lw-glass-blur: 0px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--lw-glass-mobile-bg, #{$fallback-bg});
+  }
+}

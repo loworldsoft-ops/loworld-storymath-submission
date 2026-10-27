@@ -1,0 +1,120 @@
+@if (summary(); as s) {
+  <div class="char-session-menu">
+    <!-- 1. 드롭다운/바텀시트 공통 헤더 카드 -->
+    <lw-card class="dropdown-hero-card" variant="outlined">
+      <div class="hero-avatar">
+        <div class="avatar-inner">
+          @if (effectiveAvatarUrl() && !avatarImageFailed()) {
+            <lw-avatar
+              [src]="effectiveAvatarUrl()!"
+              [alt]="s.name"
+              class="hero-avatar-img"
+            />
+          } @else {
+            <lw-icon [name]="iconName()" [size]="36" renderMode="rich" />
+          }
+        </div>
+        <span class="hero-level">Lv.{{ s.level }}</span>
+      </div>
+      <div class="hero-info">
+        <div class="hero-name-row">
+          <strong class="hero-name">{{ s.name }}</strong>
+          <span class="hero-class-tag">{{ classLabel() }}</span>
+        </div>
+        <div class="hero-cp-row">
+          <span class="cp-label">전투력</span>
+          <strong class="cp-value">⚔️ {{ s.combatPower | number }}</strong>
+        </div>
+      </div>
+    </lw-card>
+
+    <!-- 2. 생명력/마나 게이지 -->
+    @if (s.maxLife) {
+      <div class="vitals-container">
+        <div class="vital-bar hp-bar">
+          <div class="vital-meta">
+            <span class="vital-label">HP</span>
+            <span class="vital-numbers">{{ s.life }} / {{ s.maxLife }}</span>
+          </div>
+          <lw-progress-bar class="vital-track" [value]="s.life" [max]="s.maxLife" [showLabel]="false" color="danger" />
+        </div>
+        @if (s.maxMana) {
+          <div class="vital-bar mp-bar">
+            <div class="vital-meta">
+              <span class="vital-label">MP</span>
+              <span class="vital-numbers">{{ s.mana }} / {{ s.maxMana }}</span>
+            </div>
+            <lw-progress-bar class="vital-track" [value]="s.mana" [max]="s.maxMana" [showLabel]="false" color="primary" />
+          </div>
+        }
+      </div>
+    }
+
+    <div class="dropdown-divider"></div>
+
+    <!-- 3. 주요 액션 버튼 목록 -->
+    <div class="dropdown-actions">
+      <lw-button
+        variant="ghost"
+        [block]="true"
+        class="action-item"
+        (click)="onDetailClick($event)">
+        <span class="icon-glyph icon-info" aria-hidden="true">ℹ️</span>
+        <span>📊 캐릭터 상세 보기 (스탯·장비·스킬)</span>
+      </lw-button>
+
+      <lw-button
+        variant="ghost"
+        [block]="true"
+        class="action-item"
+        (click)="onSelectClick($event)">
+        <span class="icon-plus" aria-hidden="true"></span>
+        <span>🔄 캐릭터 변경 / 선택 / 새로 생성</span>
+      </lw-button>
+
+      <lw-button
+        variant="ghost"
+        [block]="true"
+        class="action-item action-item--logout"
+        (click)="onLogoutClick($event)">
+        <span class="icon-lock" aria-hidden="true"></span>
+        <span>🚪 {{ logoutLabel() }}</span>
+      </lw-button>
+    </div>
+
+    <!-- 4. 동행 파티원 / 로스터 캐릭터 빠른 전환 -->
+    @if (otherCharacters().length > 0) {
+      <div class="dropdown-divider"></div>
+      <div class="roster-section">
+        <div class="roster-section-title">동행 파티원 / 로스터</div>
+        <div class="roster-list">
+          @for (other of otherCharacters(); track other.id) {
+            <lw-button
+              variant="ghost"
+              [block]="true"
+              class="roster-item"
+              (click)="onSwitchClick($event, other.id)"
+              [ariaLabel]="other.name + ' (Lv.' + other.level + ')로 전환'">
+              <span class="roster-avatar">
+                <div class="avatar-inner">
+                  @if (resolveOtherAvatarUrl(other)) {
+                    <lw-avatar
+                      [src]="resolveOtherAvatarUrl(other)"
+                      [alt]="other.name"
+                      class="roster-avatar-img"
+                      size="sm"
+                    />
+                  } @else {
+                    <lw-icon [name]="other.iconName || 'novel-party:party-wanderer'" [size]="20" renderMode="rich" />
+                  }
+                </div>
+              </span>
+              <span class="roster-name">{{ other.name }}</span>
+              <lw-badge size="xs" [label]="'Lv.' + other.level" />
+            </lw-button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

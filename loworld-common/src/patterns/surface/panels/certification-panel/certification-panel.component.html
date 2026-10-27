@@ -1,0 +1,51 @@
+<div class="cert-panel">
+  @if (certification(); as cert) {
+    <!-- 수료 완료 상태 -->
+    <div class="cert-issued">
+      <div class="cert-icon">🎓</div>
+      <div class="cert-info">
+        <p class="cert-title">수료증 발급 완료</p>
+        <p class="cert-number">{{ cert.certificateNumber }}</p>
+        <p class="cert-date">발급일: {{ formatDate(cert.issuedAt) }}</p>
+      </div>
+      <lw-button class="dl-btn" (click)="downloadCert.emit(cert.id)" aria-label="수료증 다운로드">
+        <span class="icon-glyph icon-download" aria-hidden="true">📥</span>
+        다운로드
+      </lw-button>
+    </div>
+  } @else if (allStagesDone()) {
+    @if (room().status === 'review') {
+      <!-- 검토 중 -->
+      <div class="cert-pending">
+        <div class="cert-icon">⏳</div>
+        <p class="cert-title">수료 검토 중</p>
+        <p class="cert-desc">운영진이 자료를 검토하고 있습니다.</p>
+      </div>
+    } @else {
+      <!-- 수료 신청 가능 -->
+      <div class="cert-ready">
+        <div class="cert-icon">✅</div>
+        <p class="cert-title">16단계 완료!</p>
+        <p class="cert-desc">수료를 신청하면 운영진에게 알림이 전송됩니다.</p>
+        <lw-button class="request-btn" (click)="requestCert.emit(room().id)">
+          수료 신청하기
+        </lw-button>
+      </div>
+    }
+  } @else {
+    <!-- 진행 중 -->
+    <div class="cert-locked">
+      <div class="cert-icon">🔒</div>
+      <p class="cert-title">수료증 발급 잠김</p>
+      <p class="cert-desc">16단계를 모두 완료하면 수료를 신청할 수 있습니다.</p>
+    </div>
+  }
+
+  @if (canApprove() && room().status === 'review') {
+    <div class="admin-actions">
+      <lw-button class="approve-btn" (click)="approveCert.emit(room().id)">
+        수료 승인 및 수료증 발급
+      </lw-button>
+    </div>
+  }
+</div>

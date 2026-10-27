@@ -1,0 +1,22 @@
+<div class="lw-slider-wrapper">
+  <div class="lw-slider-track-wrap">
+    <div class="lw-slider-track">
+      <div class="lw-slider-fill" [style.width.%]="fillPercentage()"></div>
+    </div>
+    <input
+      type="range"
+      class="lw-slider-native"
+      [min]="min()"
+      [max]="max()"
+      [step]="step()"
+      [value]="value()"
+      [disabled]="disabled()"
+      [attr.aria-label]="ariaLabel()"
+      (input)="onNativeInput($event)"
+      (change)="onNativeChange($event)" />
+  </div>
+
+  @if (showValueBadge()) {
+    <span class="lw-slider-value-badge">{{ value() }}</span>
+  }
+</div>

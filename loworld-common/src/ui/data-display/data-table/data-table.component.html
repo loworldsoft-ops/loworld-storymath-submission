@@ -1,0 +1,38 @@
+<div class="lw-table__scroll">
+  <table class="lw-table" [class.lw-table--dense]="dense()">
+    @if (caption()) {
+      <caption class="lw-table__caption">{{ caption() }}</caption>
+    }
+    <thead>
+      <tr>
+        @for (col of columns(); track col.key) {
+          <th scope="col" [attr.data-align]="col.align ?? 'start'" [attr.data-width]="col.width ?? null">{{ col.label }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track keyOf(row, i); let i = $index) {
+        <tr
+          [class.is-selectable]="selectable()"
+          [class.is-selected]="selectedKey() !== null && keyOf(row, i) === selectedKey()"
+          [attr.tabindex]="selectable() ? 0 : null"
+          (click)="select(row)"
+          (keydown.enter)="select(row)">
+          @for (col of columns(); track col.key) {
+            <td [attr.data-align]="col.align ?? 'start'">
+              @if (cellByKey().get(col.key); as cell) {
+                <ng-container [ngTemplateOutlet]="cell" [ngTemplateOutletContext]="{ $implicit: row, value: valueOf(row, col.key), index: i }" />
+              } @else {
+                {{ valueOf(row, col.key) }}
+              }
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td class="lw-table__empty" [attr.colspan]="columns().length">{{ emptyMessage() }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

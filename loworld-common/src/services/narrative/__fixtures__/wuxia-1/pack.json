@@ -1,0 +1,29 @@
+{
+  "id": "wuxia-1",
+  "title": "청운의 잡역",
+  "genre": "wuxia",
+  "version": 1,
+  "protagonist": { "defaultName": "이현" },
+  "origins": [
+    {
+      "id": "sword",
+      "name": "검의 길",
+      "summary": "검 하나로 정점에 올랐으나, 믿던 이를 읽지 못해 등을 찔렸다.",
+      "stats": { "might": 10 },
+      "traits": ["mem.sword-path", "p_courage"],
+      "phrases": { "전생": "검" }
+    },
+    {
+      "id": "mind",
+      "name": "수의 길",
+      "summary": "수읽기로 천하를 움직였으나, 배신을 읽고도 막을 힘이 없었다.",
+      "stats": { "wit": 10 },
+      "traits": ["mem.reading-eye", "p_discernment"],
+      "phrases": { "전생": "수" }
+    }
+  ],
+  "startTraits": ["item.broom"],
+  "startGrudges": { "baek-mugyeol": 100 },
+  "episodes": ["ep001", "ep002", "ep003"],
+  "tuning": {}
+}

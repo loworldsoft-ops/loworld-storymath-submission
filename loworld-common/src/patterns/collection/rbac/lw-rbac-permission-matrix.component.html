@@ -1,0 +1,35 @@
+<div class="lw-rbac">
+  <table class="lw-rbac__table">
+    <thead>
+      <tr>
+        <th>권한 영역</th>
+        @for (role of roles(); track role.id) {
+          <th class="lw-rbac__center">{{ role.name }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of matrix(); track row.domain) {
+        <tr>
+          <td>
+            <span class="lw-rbac__domain">{{ row.domainLabel }}</span>
+            <code class="lw-rbac__code">{{ row.domain }}</code>
+          </td>
+          @for (role of roles(); track role.id) {
+            <td class="lw-rbac__center">
+              @if (role.id === 'owner') {
+                <lw-icon class="lw-rbac__locked" name="check" [size]="14" label="항상 허용" [decorative]="false" />
+              } @else {
+                <lw-checkbox
+                  [ariaLabel]="row.domainLabel + ' - ' + role.name"
+                  [disabled]="readonly()"
+                  [checked]="row[role.id]"
+                  (checkedChange)="togglePermission.emit({ domain: row.domain, role: role.id, value: $event })" />
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,112 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lw-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--lw-text-primary);
+    cursor: default;
+    user-select: none;
+  }
+
+  &__required {
+    color: var(--lw-color-danger);
+    font-weight: 700;
+  }
+
+  &__control {
+    width: 100%;
+    position: relative;
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 11.5px;
+    color: var(--lw-text-secondary);
+    line-height: 1.4;
+  }
+
+  &__error {
+    margin: 0;
+    font-size: 11.5px;
+    color: var(--lw-color-danger);
+    font-weight: 500;
+    line-height: 1.4;
+    animation: lw-fade-in 0.15s ease-out;
+  }
+}
+
+// ── 가로(Horizontal) 정렬 모드 ──
+:host(.lw-form-field--horizontal) .lw-form-field {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  .lw-form-field__label-row {
+    min-width: 90px;
+    flex-shrink: 0;
+  }
+
+  .lw-form-field__control {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lw-form-field__hint,
+  .lw-form-field__error {
+    width: 100%;
+    margin-left: 102px;
+  }
+}
+
+// ── Sizes ──
+:host(.lw-form-field--sm) {
+  .lw-form-field__label {
+    font-size: 12px;
+  }
+  .lw-form-field__hint,
+  .lw-form-field__error {
+    font-size: 11px;
+  }
+}
+
+:host(.lw-form-field--lg) {
+  .lw-form-field__label {
+    font-size: 14.5px;
+  }
+  .lw-form-field__hint,
+  .lw-form-field__error {
+    font-size: 12.5px;
+  }
+}
+
+@keyframes lw-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,97 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
+.lw-snackbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: min(420px, calc(100vw - 32px));
+  max-width: min(520px, calc(100vw - 32px));
+  padding: 12px 14px 12px 16px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--lw-hue-slate-900) 12%, transparent);
+  background: color-mix(in srgb, var(--lw-color-white) 96%, transparent);
+  box-shadow:
+    0 12px 32px color-mix(in srgb, var(--lw-hue-slate-900) 16%, transparent),
+    0 2px 8px color-mix(in srgb, var(--lw-hue-slate-900) 8%, transparent);
+  color: var(--lw-text-primary);
+  font-size: 14px;
+  line-height: 1.4;
+  animation: lw-snackbar-enter 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lw-snackbar--saved {
+  border-color: color-mix(in srgb, var(--lw-hue-green-600) 28%, transparent);
+  background: color-mix(in srgb, var(--lw-hue-green-50) 98%, transparent);
+}
+
+.lw-snackbar--error {
+  border-color: color-mix(in srgb, var(--lw-color-danger-hover) 28%, transparent);
+  background: color-mix(in srgb, var(--lw-hue-red-50) 98%, transparent);
+}
+
+.lw-snackbar--auth_required {
+  border-color: color-mix(in srgb, var(--lw-color-warning-hover) 32%, transparent);
+  background: color-mix(in srgb, var(--lw-hue-amber-50) 98%, transparent);
+}
+
+.lw-snackbar--saving {
+  border-color: color-mix(in srgb, var(--lw-hue-blue-500) 28%, transparent);
+  background: color-mix(in srgb, var(--lw-hue-blue-50) 98%, transparent);
+}
+
+.lw-snackbar__message {
+  flex: 1;
+}
+
+.lw-snackbar__close {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.lw-snackbar__close:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--lw-hue-slate-900) 6%, transparent);
+}
+
+.lw-snackbar__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in srgb, var(--lw-hue-blue-500) 20%, transparent);
+  border-top-color: color-mix(in srgb, var(--lw-hue-blue-600) 95%, transparent);
+  border-radius: 50%;
+  animation: lw-snackbar-spin 0.7s linear infinite;
+}
+
+@keyframes lw-snackbar-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lw-snackbar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:host { --lw-host-surface: var(--lw-surface); }

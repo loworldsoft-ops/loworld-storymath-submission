@@ -1,0 +1,9 @@
+<div class="outer" [style.width.px]="width()">
+  <div class="scroll" #el (scroll)="onScroll()">
+    @for (item of items(); track item) {
+      <div class="item" [class.sel]="item === selected()">{{ item }}</div>
+    }
+  </div>
+  <div class="fade-top"></div>
+  <div class="fade-bot"></div>
+</div>

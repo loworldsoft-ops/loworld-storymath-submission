@@ -1,0 +1,36 @@
+<div class="shell">
+  @if (title() || count() !== undefined) {
+    <header class="header">
+      <div class="header-row">
+        @if (title()) {
+          <h2 class="title">{{ title() }}</h2>
+        }
+        @if (count() !== undefined) {
+          <span class="count">{{ count() }}개</span>
+        }
+      </div>
+      <ng-content select="[lwListHeaderExtra]" />
+    </header>
+  }
+
+  <div class="toolbar">
+    @if (showSearch()) {
+      <lw-search-input
+        [query]="searchQuery()"
+        [placeholder]="searchPlaceholder()"
+        (actionEvent)="onSearchAction($event)"
+      />
+    }
+    <ng-content select="[lwListToolbar]" />
+  </div>
+
+  <div class="body">
+    <ng-content select="[lwListBody]" />
+  </div>
+
+  @if (showPagination()) {
+    <footer class="footer">
+      <ng-content select="[lwListFooter]" />
+    </footer>
+  }
+</div>

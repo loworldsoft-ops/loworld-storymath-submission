@@ -1,0 +1,97 @@
+<section class="explorer-window" aria-label="Overview Explorer">
+  <div class="explorer-window__body">
+    <aside class="explorer-window__sidebar" aria-label="탐색 창">
+      <span class="explorer-window__sidebar-title">Library</span>
+      @for (node of navNodes(); track node.id) {
+        <lw-button
+          type="button"
+          class="explorer-window__sidebar-item"
+          [class.active]="isFolderActive(node.id)"
+          [lwTooltip]="node.label"
+          (click)="navigate(node.id)">
+          <span class="explorer-window__sidebar-glyph" aria-hidden="true">
+            <lw-os-icon [icon]="node.icon" [size]="16" />
+          </span>
+          <span class="explorer-window__sidebar-label">{{ node.label }}</span>
+        </lw-button>
+      }
+    </aside>
+
+    <main class="explorer-window__content">
+      @if (currentFolder(); as folder) {
+        <section class="explorer-window__section">
+          <header class="explorer-window__section-head">
+            <div>
+              <h2 class="explorer-window__section-title">{{ folder.title }}</h2>
+              @if (folder.description) {
+                <p class="explorer-window__section-subtitle">{{ folder.description }}</p>
+              }
+            </div>
+            <span class="explorer-window__section-chip">{{ folder.items.length }} items</span>
+          </header>
+
+          @if (quickAccessItems().length > 0) {
+            <div class="explorer-window__quick-access">
+              <h3 class="explorer-window__subheading">Quick access</h3>
+              <div class="explorer-window__quick-grid">
+                @for (item of quickAccessItems(); track item.id) {
+                  <lw-button
+                    type="button"
+                    class="explorer-window__quick-card"
+                    [class.selected]="isItemSelected(item.id)"
+                    [class.running]="isLaunchRunning(item)"
+                    [class.active]="isLaunchActive(item)"
+                    [lwTooltip]="item.label + (item.subtitle ? ' - ' + item.subtitle : '')"
+                    (click)="openItem(item)"
+                    (keydown.enter)="openItem(item)">
+                      <span class="explorer-window__item-glyph" aria-hidden="true">
+                        <lw-os-icon [icon]="item.icon" [size]="20" />
+                      </span>
+                    <span class="explorer-window__item-copy">
+                      <span class="explorer-window__item-label">{{ item.label }}</span>
+                      @if (item.subtitle) {
+                        <span class="explorer-window__item-subtitle">{{ item.subtitle }}</span>
+                      }
+                    </span>
+                  </lw-button>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="explorer-window__items">
+            <h3 class="explorer-window__subheading">All items</h3>
+            <div class="explorer-window__item-list" role="list">
+              @for (item of folder.items; track item.id) {
+                <lw-button
+                  type="button"
+                  class="explorer-window__item-row"
+                  [class.selected]="isItemSelected(item.id)"
+                  [class.running]="isLaunchRunning(item)"
+                  [class.active]="isLaunchActive(item)"
+                  [lwTooltip]="item.label + (item.subtitle ? ' - ' + item.subtitle : '')"
+                  (click)="openItem(item)"
+                  (keydown.enter)="openItem(item)">
+                  <span class="explorer-window__item-main">
+                    <span class="explorer-window__item-glyph" aria-hidden="true">
+                      <lw-os-icon [icon]="item.icon" [size]="20" />
+                    </span>
+                    <span class="explorer-window__item-copy">
+                      <span class="explorer-window__item-label">{{ item.label }}</span>
+                      @if (item.subtitle) {
+                        <span class="explorer-window__item-subtitle">{{ item.subtitle }}</span>
+                      }
+                    </span>
+                  </span>
+                  <span class="explorer-window__item-kind">
+                    {{ item.type === 'folder-link' ? 'Folder' : item.type === 'external-link' ? 'Web link' : 'App' }}
+                  </span>
+                </lw-button>
+              }
+            </div>
+          </div>
+        </section>
+      }
+    </main>
+  </div>
+</section>

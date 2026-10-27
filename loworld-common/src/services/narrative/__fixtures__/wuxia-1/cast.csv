@@ -1,0 +1,6 @@
+id,name,role,nature,might,guard,wit,spirit,bond,want,line,weakness,selfCall,call.hostile,call.cold,call.neutral,call.warm,call.trusting,habit,zone
+gwak-du,곽두,rival,p_pride,30,10,25,10,-40,윗사람의 인정,잡역에게 지는 것,왼 발목,이 몸,잡역 놈,잡역 놈,네놈,이 사제,{{주인공}} 사제,…흥.,zone.chores
+seo-ha,서하,ally,p_compassion,12,8,20,10,30,모두가 무사한 것,약한 자를 버리는 것,,나,{{주인공}},{{주인공}},{{주인공}},{{주인공}},{{주인공}},,zone.chores
+elder-eom,엄 장로,elder,p_discernment,200,60,60,120,0,문의 기강,거짓 장부,,노부,잡역,잡역,잡역,{{주인공}},{{주인공}},,zone.elder-hall
+ma-cheung,마층,rival,p_anger,55,15,30,20,-20,내문 승급,체면,숨이 짧다,나,잡역,잡역,네놈,사제,{{주인공}} 사제,,zone.yard
+baek-mugyeol,백무결,villain,p_courtesy,400,200,300,300,0,,,,나,{{주인공}},{{주인공}},사제,{{주인공}} 사제,{{주인공}} 사제,,zone.yard

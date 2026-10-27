@@ -1,0 +1,20 @@
+    <nav class="os-dock" [attr.aria-label]="label()">
+      @for (item of items(); track item.id) {
+        <button
+          lwPressable
+          class="os-dock__item"
+          [class.is-active]="item.active"
+          [attr.aria-label]="item.label + (item.running ? ' (실행 중)' : '')"
+          [lwTooltip]="item.label"
+          (press)="itemSelect.emit(item.id)">
+          @if (item.iconSrc) {
+            <img class="os-dock__img" [src]="item.iconSrc" alt="" draggable="false" />
+          } @else {
+            <span class="os-dock__glyph"><lw-icon [name]="item.icon" [size]="22" /></span>
+          }
+          @if (item.running) {
+            <span class="os-dock__running" aria-hidden="true"></span>
+          }
+        </button>
+      }
+    </nav>

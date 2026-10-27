@@ -1,0 +1,51 @@
+<form class="lw-auth-form" (submit)="onSubmit($event); $event.preventDefault()">
+  <lw-form-field label="표시 이름">
+    <lw-input
+      id="lw-auth-signup-name"
+      type="text"
+      placeholder="표시 이름을 입력하세요"
+      [value]="displayName()"
+      (valueChange)="displayName.set(''+$event)"
+      ariaLabel="표시 이름"
+    />
+  </lw-form-field>
+  <lw-form-field label="이메일">
+    <lw-input
+      id="lw-auth-signup-email"
+      type="email"
+      placeholder="이메일을 입력하세요"
+      [value]="email()"
+      (valueChange)="email.set(''+$event)"
+      ariaLabel="이메일"
+    />
+  </lw-form-field>
+  <lw-form-field label="비밀번호" hint="8자 이상">
+    <lw-input
+      id="lw-auth-signup-password"
+      type="password"
+      placeholder="비밀번호 (8자 이상)"
+      [value]="password()"
+      (valueChange)="password.set(''+$event)"
+      ariaLabel="비밀번호"
+    />
+  </lw-form-field>
+  <label class="terms">
+    <lw-checkbox
+      [checked]="acceptTerms()"
+      (checkedChange)="acceptTerms.set($event)"
+      required
+    />
+    <span>이용 약관에 동의합니다</span>
+  </label>
+  @if (errorText(); as err) {
+    <p id="lw-auth-signup-err" class="error" role="alert">{{ err }}</p>
+  }
+  <lw-button
+    variant="primary"
+    size="md"
+    [block]="true"
+    [disabled]="disabled()"
+    [label]="disabled() ? '처리 중…' : submitLabel()"
+    (click)="onSubmit($event)">
+  </lw-button>
+</form>

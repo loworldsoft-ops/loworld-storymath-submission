@@ -1,0 +1,101 @@
+// 잠금 화면: 시각, 안내 한 줄, 로그인 단추만 둔다. 색은 테마 토큰을 따른다.
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  box-sizing: border-box;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) 20px calc(16px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  background: var(--lw-surface-ground, var(--lw-surface));
+  color: var(--lw-text-primary);
+}
+
+.lock__main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.lock__clock {
+  text-align: center;
+}
+
+.lock__time {
+  display: block;
+  font-size: clamp(56px, 14vw, 80px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lock__date {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: var(--lw-text-secondary);
+}
+
+.lock__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 28px 24px 24px;
+  border: 1px solid var(--lw-border);
+  border-radius: 16px;
+  background: var(--lw-surface);
+  text-align: center;
+}
+
+.lock__badge {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--lw-color-primary) 12%, transparent);
+  color: var(--lw-color-primary);
+}
+
+.lock__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.lock__desc {
+  margin: 6px 0 22px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--lw-text-secondary);
+}
+
+.lock__submit {
+  width: 100%;
+}
+
+.lock__footer {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-top: 16px;
+  color: var(--lw-text-secondary);
+}

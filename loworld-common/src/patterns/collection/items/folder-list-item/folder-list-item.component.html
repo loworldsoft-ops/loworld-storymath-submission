@@ -1,0 +1,13 @@
+<lw-button
+  class="folder-item"
+  type="button"
+  role="listitem"
+  [class.current]="current()"
+  (click)="select.emit(folder().id)"
+>
+  <span class="icon-folder" aria-hidden="true"></span>
+  {{ folder().name }}
+  @if (current()) {
+    <span class="current-label">현재</span>
+  }
+</lw-button>

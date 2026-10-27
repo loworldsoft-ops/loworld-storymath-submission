@@ -1,0 +1,106 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 0;
+  color: inherit;
+
+  .lw-icon-vector {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    user-select: none;
+    color: inherit;
+    flex-shrink: 0;
+  }
+
+  .lw-icon-system-glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    user-select: none;
+    font-family: inherit;
+    font-style: normal;
+  }
+  
+  .dynamic-raster-mask {
+    display: inline-block;
+    background-color: currentColor;
+    mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  img {
+    pointer-events: none;
+    user-select: none;
+    object-fit: contain;
+    display: block;
+  }
+
+  .dynamic-raster-icon {
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .dynamic-raster-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--lw-hue-gray-700) 90%, transparent) 0%, color-mix(in srgb, var(--lw-hue-zinc-900) 95%, transparent) 100%);
+    border: 1.5px solid color-mix(in srgb, var(--lw-hue-violet-400) 40%, transparent);
+    box-shadow: inset 0 0 8px color-mix(in srgb, var(--lw-color-black) 50%, transparent);
+    user-select: none;
+    box-sizing: border-box;
+
+    .fallback-silhouette-icon {
+      width: 60%;
+      height: 60%;
+      color: color-mix(in srgb, var(--lw-hue-slate-200) 70%, transparent);
+    }
+  }
+
+  .dynamic-svg-mask {
+    display: inline-block;
+    background-color: currentColor; /* 부모의 글자 색상 테마를 100% 완벽히 배경색으로 흡수 */
+    mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .dynamic-svg-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit; /* 부모 색상 상속 → SVG의 currentColor가 이 색상을 사용 */
+    pointer-events: none;
+    user-select: none;
+    line-height: 0;
+
+    // 주입된 SVG가 컨테이너에 맞도록 제어
+    :host-context(.dynamic-svg-inline) svg,
+    ::ng-deep svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

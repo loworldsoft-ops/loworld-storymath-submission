@@ -1,0 +1,438 @@
+/* LoworldUI Component Showcase - Global Styles */
+@use 'lw-theme';
+@use '../shell/styles/os-tokens';
+
+:root {
+  --lw-vh: 100vh;
+  --lw-dvh: 100dvh;
+  --lw-screen-height: 100dvh;
+  --lw-safe-top: env(safe-area-inset-top, 0px);
+  --lw-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --lw-safe-left: env(safe-area-inset-left, 0px);
+  --lw-safe-right: env(safe-area-inset-right, 0px);
+}
+
+@supports not (height: 100dvh) {
+  :root {
+    --lw-dvh: 100vh;
+    --lw-screen-height: 100vh;
+  }
+}
+
+// 전역 리셋은 가장 낮은 레이어에 둔다. 레이어 밖 규칙은 레이어 안 규칙을 항상 이기므로,
+// 리셋이 레이어 밖에 있으면 레이어로 묶인 가이드 본문(lw-docs)의 여백·패딩을 모두 지워 버린다.
+@layer lw-reset, lw-docs;
+
+@layer lw-reset {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ── LoworldUI 전역 모달 포탈 호스트 (DOM Root Teleportation) ── */
+.lw-global-modal-host {
+  position: relative;
+  z-index: 9999;
+}
+
+// ── Global Button Unified Theme & Smart Shield ──
+// 기본 버튼에 테마 토큰(--lw-btn-bg, --lw-btn-color)을 충실히 반영하되,
+// 개별 컴포넌트 전용 클래스(.seg-item, .finder-icon-btn, .nav-item, variants)의 고유 스타일은 보존
+html body lw-button:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']),
+html body button[lw-button]:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']),
+html body a[lw-button]:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']),
+html body .lw-btn:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']) {
+  background: var(--lw-btn-bg, var(--lw-surface));
+  color: var(--lw-btn-color, var(--lw-text-primary));
+  border-color: var(--lw-btn-border, var(--lw-border));
+
+  &:hover:not([disabled]):not(.lw-btn--disabled) {
+    background: var(--lw-btn-hover-bg, var(--lw-surface-alt));
+    color: var(--lw-btn-hover-color, var(--lw-text-primary));
+    border-color: var(--lw-btn-hover-border, var(--lw-border-hover));
+  }
+}
+
+// 다크 모드 컨텍스트에서의 기본 버튼 스타일
+[data-lw-theme='dark'] lw-button:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']),
+[data-lw-theme='dark'] button[lw-button]:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']),
+[data-lw-theme='dark'] a[lw-button]:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']),
+[data-lw-theme='dark'] .lw-btn:not([variant]):not(.lw-btn--ghost):not(.lw-btn--outline):not(.lw-btn--primary):not(.lw-btn--danger):not(.seg-item):not(.finder-icon-btn):not(.nav-item):not([class*='nav-']):not([class*='panel-mode']):not([class*='traffic']):not([class*='pill']):not([role='tab']) {
+  background: var(--lw-btn-bg);
+  color: var(--lw-btn-color);
+  border-color: var(--lw-btn-border);
+
+  &:hover:not([disabled]):not(.lw-btn--disabled) {
+    background: var(--lw-btn-hover-bg);
+    color: var(--lw-btn-hover-color);
+    border-color: var(--lw-btn-hover-border);
+  }
+}
+
+// ── Shared Showcase Demo Styles (global — used by showcase child components) ──
+
+.demo-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.demo-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.demo-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+
+
+.demo-frame {
+  border: 1px solid var(--lw-hue-zinc-200);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--lw-surface);
+}
+
+.desktop-frame {
+  flex: 1;
+  min-height: 500px;
+
+  &.dark { background: var(--lw-hue-stone-900); border-color: var(--lw-hue-zinc-800); }
+}
+
+.mobile-frame {
+  width: 390px;
+  height: 844px;
+  margin: 0 auto;
+  border-radius: 40px;
+  border: 8px solid var(--lw-hue-zinc-900);
+  box-shadow: 0 8px 40px color-mix(in srgb, var(--lw-color-black) 15%, transparent);
+  flex-shrink: 0;
+}
+
+.overview-iphone-screen,
+.overview-mobile-scene {
+  .mobile-frame,
+  .desktop-frame,
+  .demo-frame {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    flex-shrink: 1 !important;
+    background: transparent !important;
+  }
+
+  .demo-page,
+  .plan-demo-page,
+  .plan-demo-page--mobile,
+  .develop-demo-page,
+  .develop-demo-page--mobile {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    background: transparent !important;
+  }
+
+  lw-workspace-mobile-layout {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .overview-window-scroll {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .component-detail {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 16px 12px 60px !important;
+  }
+
+  .tile-grid-container {
+    max-width: 100% !important;
+    padding: 14px 12px !important;
+  }
+}
+
+
+// ── Component Detail Back Button & Header styles (global for all showcase views) ──
+.detail-view-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.detail-view-header-bar {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--lw-surface);
+  border-bottom: 1px solid var(--lw-border-subtle);
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  [data-lw-theme='dark'] & {
+    background: var(--lw-text-primary);
+    border-bottom: 1px solid var(--lw-surface-overlay);
+  }
+}
+
+.back-to-grid-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lw-text-muted);
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--lw-border-neutral);
+  background: var(--lw-surface-subtle);
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 5%, transparent);
+
+  [data-lw-theme='dark'] & {
+    background: var(--lw-surface-overlay);
+    border-color: var(--lw-text-secondary);
+    color: var(--lw-border-neutral);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 25%, transparent);
+
+    &:hover {
+      background: var(--lw-text-secondary);
+      color: var(--lw-surface-subtle);
+    }
+  }
+
+  &:hover {
+    background: var(--lw-surface-ground);
+    color: var(--lw-text-primary);
+    border-color: var(--lw-text-muted-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+  }
+
+  &:active {
+    transform: translateY(0);
+    background: var(--lw-border-subtle);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 5%, transparent);
+  }
+}
+
+// ── Premium Skeleton Styles ──
+.lw-showcase-skeleton {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 24px;
+  background: var(--lw-surface-subtle);
+  gap: 20px;
+  box-sizing: border-box;
+
+  [data-lw-theme='dark'] & {
+    background: var(--lw-text-primary);
+  }
+
+  .sk-shimmer {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent) 25%,
+      color-mix(in srgb, var(--lw-hue-slate-100) 80%, transparent) 50%,
+      color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-animation 1.5s infinite linear;
+    border-radius: 8px;
+
+    [data-lw-theme='dark'] & {
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--lw-hue-slate-800) 80%, transparent) 25%,
+        color-mix(in srgb, var(--lw-hue-slate-700) 80%, transparent) 50%,
+        color-mix(in srgb, var(--lw-hue-slate-800) 80%, transparent) 75%
+      );
+      background-size: 200% 100%;
+    }
+  }
+
+  .sk-header {
+    height: 64px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 16px;
+    background: var(--lw-surface);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 5%, transparent);
+    flex-shrink: 0;
+
+    [data-lw-theme='dark'] & {
+      background: var(--lw-surface-overlay);
+    }
+
+    .sk-profile-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .sk-title {
+      height: 20px;
+      width: 180px;
+    }
+
+    .sk-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 12px;
+      
+      .sk-btn {
+        height: 32px;
+        width: 80px;
+      }
+    }
+  }
+
+  .sk-body {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    min-height: 400px;
+  }
+
+  .sk-sidebar {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--lw-surface);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 5%, transparent);
+
+    [data-lw-theme='dark'] & {
+      background: var(--lw-surface-overlay);
+    }
+
+    .sk-sidebar-item {
+      height: 36px;
+      width: 100%;
+    }
+  }
+
+  .sk-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    
+    .sk-card {
+      background: var(--lw-surface);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 5%, transparent);
+      height: 180px;
+
+      [data-lw-theme='dark'] & {
+        background: var(--lw-surface-overlay);
+      }
+
+      .sk-card-line {
+        height: 16px;
+        
+        &.w-half { width: 50%; }
+        &.w-3q { width: 75%; }
+        &.w-full { width: 100%; }
+      }
+    }
+  }
+}
+
+@keyframes shimmer-animation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Universal Active Focus Highlight (모든 컴포넌트 공통 활성 테두리) */
+.lw-component-highlight-active,
+[data-lw-highlight='active'] {
+  outline: 3px solid var(--lw-color-primary) !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--lw-color-primary) 25%, transparent), 0 0 24px color-mix(in srgb, var(--lw-color-primary) 70%, transparent) !important;
+  animation: universal-glow-pulse 1.2s infinite ease-in-out !important;
+  border-radius: 8px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes universal-glow-pulse {
+  0% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--lw-color-primary) 30%, transparent), 0 0 12px color-mix(in srgb, var(--lw-color-primary) 40%, transparent);
+    outline-color: var(--lw-color-primary);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--lw-color-primary-hover) 40%, transparent), 0 0 28px color-mix(in srgb, var(--lw-color-primary-hover) 80%, transparent);
+    outline-color: var(--lw-color-info, var(--lw-color-primary));
+  }
+  100% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--lw-color-primary) 30%, transparent), 0 0 12px color-mix(in srgb, var(--lw-color-primary) 40%, transparent);
+    outline-color: var(--lw-color-primary);
+  }
+}
+

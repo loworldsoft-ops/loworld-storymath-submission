@@ -1,0 +1,160 @@
+@if (isOpen()) {
+  <div class="overlay" role="presentation" (click)="cancel.emit()">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="캘린더 설정" (click)="$event.stopPropagation()">
+      <!-- Left sidebar -->
+      <div class="modal-nav" >
+        <div class="nav-top">
+          <div class="nav-brand">
+            @if (appIconSrc()) {
+              <img [src]="appIconSrc()" alt="" class="brand-icon" />
+            }
+            <span class="brand-name" >{{ appTitle() }}</span>
+          </div>
+          <div class="nav-tabs">
+            @for (tab of tabs; track tab.key) {
+              <lw-button class="nav-tab" [class.active]="activeTab() === tab.key" (click)="activeTab.set(tab.key)">{{ tab.label }}</lw-button>
+            }
+          </div>
+        </div>
+        <div class="nav-bottom">
+          <lw-button class="nav-link" >1:1 문의</lw-button>
+          <lw-button class="nav-link" >자주 묻는 질문</lw-button>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="modal-content" >
+        <div class="content-head">
+          <lw-button class="close-btn" (click)="cancel.emit()">
+            <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+          </lw-button>
+        </div>
+
+        @switch (activeTab()) {
+          @case ('general') {
+            <div class="tab-body">
+              <h2 class="tab-title" >\uC77C\uBC18</h2>
+              <!-- Language -->
+              <section class="section">
+                <h3 class="section-label" >\uD504\uB85C\uADF8\uB7A8 \uC124\uC815</h3>
+                <div class="row">
+                  <span class="row-label" >언어 선택</span>
+                  <lw-select class="select" [value]="language()" (selectChange)="language.set($event)">
+                    @for (opt of languageOptions; track opt.value) {
+                      <option [value]="opt.value">{{ opt.label }}</option>
+                    }
+                  </lw-select>
+                </div>
+                <div class="row">
+                  <span class="row-label" >테마 선택</span>
+                  <lw-select class="select" [value]="theme()" (selectChange)="theme.set($event)">
+                    @for (opt of themeOptions; track opt.value) {
+                      <option [value]="opt.value">{{ opt.label }}</option>
+                    }
+                  </lw-select>
+                </div>
+              </section>
+              <!-- Region -->
+              <section class="section">
+                <h3 class="section-label" >지역 설정</h3>
+                <div class="row">
+                  <span class="row-label" >지역</span>
+                  <lw-select class="select" [value]="timezone()" (selectChange)="timezone.set($event)">
+                    @for (opt of timezoneOptions; track opt.timezone) {
+                      <option [value]="opt.timezone">{{ opt.city }}</option>
+                    }
+                  </lw-select>
+                </div>
+              </section>
+              <!-- Calendar theme -->
+              <section class="section">
+                <h3 class="section-label" >\uCE98\uB9B0\uB354 \uD14C\uB9C8</h3>
+                <div class="theme-dots">
+                  @for (t of calendarThemes; track t.key) {
+                    <lw-button class="theme-dot" [class.active]="calendarTheme() === t.key"
+                            [style.backgroundColor]="t.color" (click)="calendarTheme.set(t.key)"></lw-button>
+                  }
+                </div>
+              </section>
+              <!-- Toggles -->
+              <section class="section">
+                <h3 class="section-label" >\uD654\uBA74 \uD45C\uC2DC \uC124\uC815</h3>
+                @for (toggle of generalToggles; track toggle.key) {
+                  <lw-card class="toggle-card" variant="outlined">
+                    <div class="toggle-info">
+                      <span class="toggle-title" >{{ toggle.label }}</span>
+                      <span class="toggle-desc">{{ toggle.description }}</span>
+                    </div>
+                    <lw-button class="toggle-switch" [class.on]="isToggleOn(toggle.key)" (click)="toggleSignal(toggle.key)">
+                      <span class="toggle-knob" [class.on]="isToggleOn(toggle.key)"></span>
+                    </lw-button>
+                  </lw-card>
+                }
+              </section>
+              <!-- Actions -->
+              <div class="actions">
+                <lw-button class="link-btn" (click)="resetGeneral()">\uAE30\uBCF8\uAC12\uC73C\uB85C \uBCF5\uC6D0</lw-button>
+                <div class="action-btns">
+                  <lw-button class="btn-cancel" (click)="cancel.emit()">\uCDE8\uC18C</lw-button>
+                  <lw-button class="btn-save" [disabled]="!hasGeneralChanges()" (click)="onSaveGeneral()">\uC800\uC7A5</lw-button>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('shortcuts') {
+            <div class="tab-body">
+              <h2 class="tab-title" >\uB2E8\uCD95\uD0A4</h2>
+              <p class="tab-desc">\uB2E8\uCD95\uD0A4\uAC00 \uAC79\uCE60 \uACBD\uC6B0 \uC77C\uBD80 \uAE30\uB2A5\uC774 \uC815\uC0C1\uC801\uC73C\uB85C \uC791\uB3D9\uD558\uC9C0 \uC54A\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4.</p>
+              <div class="placeholder" >\uB2E8\uCD95\uD0A4 \uC124\uC815 \uC601\uC5ED</div>
+            </div>
+          }
+          @case ('sync') {
+            <div class="tab-body">
+              <h2 class="tab-title" >동기화</h2>
+              @if (subscribedCalendars().length === 0) {
+                <div class="placeholder" >구독 중인 캘린더가 없습니다.</div>
+              }
+              @if (subscribedCalendars().length > 0) {
+                <div class="sync-list">
+                  @for (cal of subscribedCalendars(); track cal.id) {
+                    <div class="sync-item">
+                      <div class="sync-main">
+                        <div class="sync-title-row">
+                          <span class="color-dot" [style.backgroundColor]="cal.color"></span>
+                          <span class="cal-name">{{ cal.name }}</span>
+                          <span class="status-badge" [class.syncing]="cal.syncStatus === 'syncing'" [class.synced]="cal.syncStatus === 'synced'" [class.error]="cal.syncStatus === 'error'">
+                            {{ syncStatusLabel(cal) }}
+                          </span>
+                        </div>
+                        <div class="sync-meta">
+                          <span class="provider-label">{{ cal.subscriptionProvider || 'iCal' }} · 읽기 전용</span>
+                          <span class="sync-status">{{ syncStatusDescription(cal) }}</span>
+                        </div>
+                        @if (cal.syncErrorMessage) {
+                          <div class="sync-error">{{ cal.syncErrorMessage }}</div>
+                        }
+                      </div>
+                      <div class="sync-actions">
+                        <lw-button class="sync-btn" [disabled]="cal.syncStatus === 'syncing'" (click)="syncCalendar.emit(cal.id)">
+                          {{ cal.syncStatus === 'syncing' ? '동기화 중...' : '동기화' }}
+                        </lw-button>
+                        <lw-button class="remove-btn" (click)="removeSubscription.emit(cal.id)">구독 해제</lw-button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+          @case ('about') {
+            <div class="tab-body">
+              <h2 class="tab-title" >\uC815\uBCF4</h2>
+              <p class="tab-desc">{{ appTitle() }} v{{ version() }}</p>
+              <div class="placeholder" >\uC571 \uC815\uBCF4 \uC601\uC5ED</div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,65 @@
+<div
+  #track="lwSwipe"
+  class="os-grid__track"
+  lwSwipeTrack
+  swipeMode="page"
+  [(activeIndex)]="pageIndex"
+  (keydown)="onKeydown($event)">
+  @for (page of pages(); track page.id) {
+    <section class="os-grid__page" [attr.aria-label]="page.title">
+      <h2 class="os-grid__title">{{ page.title }}</h2>
+      @if (page.apps.length > 0) {
+        <ul class="os-grid__apps">
+          @for (app of page.apps; track app.id) {
+            <li class="os-grid__cell">
+              <button
+                lwPressable
+                class="os-grid__app"
+                [class.is-locked]="app.locked"
+                [lwTooltip]="app.tooltip"
+                [attr.aria-label]="app.label + (app.locked ? ' (로그인 필요)' : ' 열기')"
+                (press)="appOpen.emit(app)">
+                <span class="os-grid__icon">
+                  @if (app.iconSrc) {
+                    <img class="os-grid__img" [src]="app.iconSrc" alt="" draggable="false" loading="lazy" />
+                  } @else {
+                    <lw-icon [name]="app.icon" [size]="28" />
+                  }
+                  @if (app.locked) {
+                    <span class="os-grid__lock" aria-hidden="true"><lw-icon name="lock" [size]="11" /></span>
+                  }
+                </span>
+                <span class="os-grid__label">{{ app.label }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      } @else if (page.empty; as empty) {
+        <div class="os-grid__empty">
+          <p class="os-grid__empty-title">{{ empty.title }}</p>
+          <p class="os-grid__empty-hint">{{ empty.hint }}</p>
+          @if (empty.actionLabel) {
+            <lw-button variant="secondary" size="sm" (click)="emptyAction.emit(page)">{{ empty.actionLabel }}</lw-button>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>
+
+@if (pages().length > 1) {
+  <div class="os-grid__dots" role="tablist" aria-label="페이지">
+    @for (page of pages(); track page.id; let i = $index) {
+      <button
+        lwPressable
+        role="tab"
+        class="os-grid__dot"
+        data-os-page-dot
+        [class.is-current]="pageIndex() === i"
+        [attr.aria-selected]="pageIndex() === i"
+        [attr.aria-label]="page.title"
+        [lwTooltip]="page.title"
+        (press)="goTo(i)"></button>
+    }
+  </div>
+}

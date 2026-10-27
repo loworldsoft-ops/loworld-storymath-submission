@@ -1,0 +1,107 @@
+:host {
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lw-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lw-select-native {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--lw-text-primary);
+  background-color: var(--lw-surface);
+  border: 1px solid var(--lw-border-neutral);
+  border-radius: 6px;
+  padding: 8px 32px 8px 12px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--lw-border-hover);
+  }
+
+  &:focus {
+    border-color: var(--lw-color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--lw-color-primary) 18%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background-color: var(--lw-surface-ground);
+  }
+}
+
+.lw-select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--lw-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+
+  &__chevron {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    box-sizing: border-box;
+  }
+}
+
+:host(.lw-select--focused) .lw-select-arrow {
+  color: var(--lw-color-primary);
+  transform: translateY(-50%) rotate(180deg);
+}
+
+// ── Variants ──
+:host(.lw-select--variant-filled) .lw-select-native {
+  background-color: var(--lw-surface-ground);
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--lw-surface-ground) 90%, black);
+  }
+
+  &:focus {
+    background-color: var(--lw-surface);
+    border-color: var(--lw-color-primary);
+  }
+}
+
+:host(.lw-select--variant-outline) .lw-select-native {
+  background-color: transparent;
+  border-width: 1.5px;
+}
+
+// ── Sizes ──
+:host(.lw-select--sm) .lw-select-native {
+  padding: 5px 28px 5px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+:host(.lw-select--lg) .lw-select-native {
+  padding: 11px 36px 11px 14px;
+  font-size: 15px;
+  border-radius: 8px;
+}

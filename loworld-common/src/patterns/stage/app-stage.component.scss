@@ -1,0 +1,22 @@
+// 무대의 모양(.demo-page, .demo-frame)은 OS의 전역 스타일이 정한다(os/shell/styles/_window-layer.scss).
+// 창 안인지 밖인지에 따라 달라져야 해서 여기서 정하지 않는다. 상자 없는 종류의 차이만 여기 둔다.
+.demo-page--bare {
+  gap: 0;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+// 틀 전체를 덮는 것(시작 화면 등)의 자리. 덮을 것이 없으면 자리를 차지하지 않는다.
+.lw-stage-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+}
+
+.lw-stage-cover:empty {
+  display: none;
+}
+
+.demo-frame:has(> .lw-stage-cover:not(:empty)) {
+  position: relative;
+}

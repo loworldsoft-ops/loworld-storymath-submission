@@ -1,0 +1,115 @@
+// 디자인 시스템의 바탕 토큰. `lw-theme.scss`가 문서 루트에 내보낸다.
+//
+// - `$lw-scale-tokens`: 테마와 무관한 단계(간격·모서리·글자·그림자·움직임·층·조작부 높이).
+// - `$lw-core-light-tokens` / `$lw-core-dark-tokens`: 화면 모드에 따라 바뀌는 뜻 토큰 가운데,
+//   여러 곳에서 참조만 되고 정의가 없던 이름과 조작부(버튼·배지·입력)용 이름.
+// - `$lw-density-compact-tokens`: 밀도를 "촘촘하게"로 골랐을 때 단계 토큰을 덮어쓴다.
+//
+// 값은 지금 화면에서 가장 많이 쓰이던 값이다. 밝은 모드의 모양은 바뀌지 않는다.
+
+$lw-scale-tokens: (
+  lw-space-1: 4px,
+  lw-space-2: 8px,
+  lw-space-3: 12px,
+  lw-space-4: 16px,
+  lw-space-5: 20px,
+  lw-space-6: 24px,
+  lw-space-7: 32px,
+  lw-space-8: 40px,
+
+  lw-radius-sm: 6px,
+  lw-radius-md: 8px,
+  lw-radius-lg: 12px,
+  lw-radius-xl: 20px,
+  lw-radius-full: 999px,
+
+  lw-text-xs: 11px,
+  lw-text-sm: 12px,
+  lw-text-md: 13px,
+  lw-text-lg: 15px,
+  lw-text-xl: 18px,
+  lw-text-2xl: 24px,
+
+  lw-weight-regular: 400,
+  lw-weight-medium: 500,
+  lw-weight-semibold: 600,
+  lw-weight-bold: 700,
+
+  lw-duration-fast: 120ms,
+  lw-duration-base: 200ms,
+  lw-duration-slow: 320ms,
+  lw-ease: (cubic-bezier(0.2, 0.8, 0.2, 1)),
+
+  lw-z-base: 0,
+  lw-z-sticky: 100,
+  lw-z-dropdown: 200,
+  lw-z-overlay: 300,
+  lw-z-modal: 400,
+  lw-z-toast: 500,
+
+  lw-control-xs: 24px,
+  lw-control-sm: 30px,
+  lw-control-md: 38px,
+  lw-control-lg: 46px,
+
+  // 꾸밈. 기본 스킨은 꾸밈이 없다. 스킨이 값을 넣는다.
+  lw-effect-backdrop: none,
+  lw-effect-surface-image: none,
+  lw-effect-text-shadow: none,
+);
+
+// 이름과 달리 여러 곳에서 "어두운 면 위의 밝은 글자색"으로 쓰이고 있는 이름들.
+// 화면 모드에 따라 바꾸면 그 글자들이 사라지므로 예전 예비 색 그대로 고정해 둔다.
+// 새 코드에서는 쓰지 않는다. 조작부의 면과 테두리는 `--lw-control-*`를 쓴다.
+$lw-fixed-legacy-tokens: (
+  lw-surface-subtle: #f8fafc,
+  lw-border-neutral: #cbd5e1,
+  lw-text-muted-light: #94a3b8,
+);
+
+$lw-density-compact-tokens: (
+  lw-space-3: 10px,
+  lw-space-4: 12px,
+  lw-space-5: 16px,
+  lw-space-6: 20px,
+  lw-control-sm: 26px,
+  lw-control-md: 32px,
+  lw-control-lg: 40px,
+);
+
+$lw-core-light-tokens: (
+  // 보조 글자. 흰 바탕에서 4.5:1 이상이 나오도록 예전 값(#99a1af, 2.5:1)보다 진하게 둔다.
+  lw-text-muted: #64748b,
+  lw-border-strong: #94a3b8,
+  lw-focus-ring: #2563eb,
+
+  lw-shadow-1: (0 1px 2px rgba(15, 23, 42, 0.06)),
+  lw-shadow-2: (0 6px 16px rgba(15, 23, 42, 0.1)),
+  lw-shadow-3: (0 16px 40px rgba(15, 23, 42, 0.16)),
+
+  // 조작부(버튼·배지·입력)의 기본 면. 스킨이 `--lw-btn-*`을 정하면 그것을 따른다.
+  lw-control-bg: (var(--lw-btn-bg, #ffffff)),
+  lw-control-fg: (var(--lw-btn-color, #0f172a)),
+  lw-control-border: (var(--lw-btn-border, #cbd5e1)),
+  lw-control-bg-hover: (var(--lw-btn-hover-bg, #f1f5f9)),
+  lw-control-fg-hover: (var(--lw-btn-hover-color, #0f172a)),
+  lw-control-border-hover: (var(--lw-btn-hover-border, #94a3b8)),
+  lw-control-bg-subtle: #f1f5f9,
+);
+
+$lw-core-dark-tokens: (
+  lw-border-strong: #475569,
+  lw-focus-ring: #60a5fa,
+
+  lw-shadow-1: (0 1px 2px rgba(0, 0, 0, 0.4)),
+  lw-shadow-2: (0 6px 16px rgba(0, 0, 0, 0.45)),
+  lw-shadow-3: (0 16px 40px rgba(0, 0, 0, 0.55)),
+
+  lw-control-bg: (var(--lw-btn-bg, #1e293b)),
+  lw-control-fg: (var(--lw-btn-color, #f8fafc)),
+  lw-control-border: (var(--lw-btn-border, rgba(255, 255, 255, 0.12))),
+  lw-control-bg-hover: (var(--lw-btn-hover-bg, #334155)),
+  lw-control-fg-hover: (var(--lw-btn-hover-color, #ffffff)),
+  lw-control-border-hover: (var(--lw-btn-hover-border, rgba(255, 255, 255, 0.25))),
+  lw-control-bg-subtle: #1e293b,
+);

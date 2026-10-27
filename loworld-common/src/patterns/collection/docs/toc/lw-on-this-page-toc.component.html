@@ -1,0 +1,19 @@
+<nav class="lw-docs-toc" [attr.aria-label]="title()">
+  <h3 class="lw-docs-toc__title">
+    <lw-icon name="menu" [size]="14" />
+    {{ title() }}
+  </h3>
+  @for (item of items(); track item.id) {
+    <button
+      type="button"
+      class="lw-docs-toc__item"
+      [class.is-active]="item.id === activeId()"
+      [class.is-sub]="item.depth >= 3"
+      [attr.aria-current]="item.id === activeId() ? 'location' : null"
+      (click)="anchorSelect.emit(item.id)">
+      {{ item.text }}
+    </button>
+  } @empty {
+    <p class="lw-docs-toc__empty">목차 항목이 없습니다.</p>
+  }
+</nav>

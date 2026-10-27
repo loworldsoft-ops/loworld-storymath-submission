@@ -1,0 +1,44 @@
+<div
+  class="lw-input-wrapper"
+  [class.lw-input--sm]="size() === 'sm'"
+  [class.lw-input--md]="size() === 'md'"
+  [class.lw-input--lg]="size() === 'lg'"
+  [class.lw-input--filled]="variant() === 'filled'"
+  [class.lw-input--flush]="variant() === 'flush'"
+  [class.lw-input--pill]="variant() === 'pill'"
+  [class.is-disabled]="disabled()"
+  [class.is-focused]="isFocused()">
+  @if (prefixIcon()) {
+    <span class="lw-input-prefix">{{ prefixIcon() }}</span>
+  }
+  <input
+    class="lw-input-native"
+    [type]="type()"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [readOnly]="readonly()"
+    [attr.min]="min()"
+    [attr.max]="max()"
+    [attr.aria-label]="ariaLabel()"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+    (keydown.enter)="enterPressed.emit()" />
+  @if (clearable() && value() && !disabled() && !readonly()) {
+    <button
+      lw-button
+      variant="ghost"
+      size="xs"
+      shape="circle"
+      type="button"
+      class="lw-input-clear-btn"
+      aria-label="입력 지우기"
+      (click)="clear()">
+      ✕
+    </button>
+  }
+  @if (suffixIcon()) {
+    <span class="lw-input-suffix">{{ suffixIcon() }}</span>
+  }
+</div>

@@ -1,0 +1,212 @@
+:host {
+  position: absolute;
+  z-index: 9999;
+  pointer-events: none;
+  display: inline-block;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+  transition:
+    opacity 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.16s ease;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+:host(.lw-tooltip--visible) {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.lw-tooltip__inner {
+  position: relative;
+  max-width: 320px;
+  min-width: max-content;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--lw-color-black) 28%, transparent), 0 2px 8px color-mix(in srgb, var(--lw-color-black) 12%, transparent);
+  white-space: pre-line;
+  word-break: break-word;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* ── Sizes ── */
+:host([data-size='sm']) .lw-tooltip__inner {
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 6px;
+}
+
+:host([data-size='md']) .lw-tooltip__inner {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+:host([data-size='lg']) .lw-tooltip__inner {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+/* ── Variants ── */
+/* 1. Dark Variant (Default) */
+:host([data-variant='dark']) .lw-tooltip__inner {
+  background: var(--lw-surface-overlay);
+  color: var(--lw-surface-subtle);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 12%, transparent);
+}
+
+/* 2. Glass Variant */
+:host([data-variant='glass']) .lw-tooltip__inner {
+  background: color-mix(in srgb, var(--lw-hue-slate-900) 82%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--lw-surface);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 18%, transparent);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--lw-color-black) 36%, transparent);
+}
+
+/* 3. Novel RPG Variant */
+:host([data-variant='novel']) .lw-tooltip__inner {
+  background: var(--lw-hue-zinc-900);
+  color: var(--lw-hue-orange-100);
+  border: 1px solid var(--lw-hue-orange-300);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--lw-color-black) 60%, transparent), inset 0 0 10px color-mix(in srgb, var(--lw-hue-orange-300) 10%, transparent);
+}
+
+/* 4. Light Variant */
+:host([data-variant='light']) .lw-tooltip__inner {
+  background: var(--lw-surface);
+  color: var(--lw-text-primary);
+  border: 1px solid var(--lw-border-neutral);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--lw-hue-slate-900) 12%, transparent);
+}
+
+/* ── Header / Title ── */
+.lw-tooltip__header {
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--lw-color-white) 10%, transparent);
+}
+
+:host([data-variant='light']) .lw-tooltip__header {
+  border-bottom-color: color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+}
+
+:host([data-variant='novel']) .lw-tooltip__header {
+  border-bottom-color: color-mix(in srgb, var(--lw-hue-orange-300) 25%, transparent);
+}
+
+.lw-tooltip__title {
+  font-weight: 700;
+  font-size: 0.95em;
+  display: block;
+}
+
+:host([data-variant='novel']) .lw-tooltip__title {
+  color: var(--lw-hue-yellow-400);
+}
+
+/* ── Body ── */
+.lw-tooltip__body {
+  display: block;
+}
+
+.lw-tooltip__text {
+  display: inline-block;
+  font-weight: 500;
+}
+
+/* ── Arrows (4 Directions) ── */
+.lw-tooltip__arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+/* Top Placement Arrow (Arrow is at bottom pointing down) */
+:host([data-placement='top']) .lw-tooltip__arrow {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-color: var(--lw-surface-overlay) transparent transparent transparent;
+}
+
+:host([data-placement='top'][data-variant='glass']) .lw-tooltip__arrow {
+  border-top-color: color-mix(in srgb, var(--lw-hue-slate-900) 88%, transparent);
+}
+
+:host([data-placement='top'][data-variant='novel']) .lw-tooltip__arrow {
+  border-top-color: var(--lw-hue-zinc-900);
+}
+
+:host([data-placement='top'][data-variant='light']) .lw-tooltip__arrow {
+  border-top-color: var(--lw-surface);
+}
+
+/* Bottom Placement Arrow (Arrow is at top pointing up) */
+:host([data-placement='bottom']) .lw-tooltip__arrow {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 6px 6px 6px;
+  border-color: transparent transparent var(--lw-surface-overlay) transparent;
+}
+
+:host([data-placement='bottom'][data-variant='glass']) .lw-tooltip__arrow {
+  border-bottom-color: color-mix(in srgb, var(--lw-hue-slate-900) 88%, transparent);
+}
+
+:host([data-placement='bottom'][data-variant='novel']) .lw-tooltip__arrow {
+  border-bottom-color: var(--lw-hue-zinc-900);
+}
+
+:host([data-placement='bottom'][data-variant='light']) .lw-tooltip__arrow {
+  border-bottom-color: var(--lw-surface);
+}
+
+/* Left Placement Arrow (Arrow is at right pointing right) */
+:host([data-placement='left']) .lw-tooltip__arrow {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent var(--lw-surface-overlay);
+}
+
+:host([data-placement='left'][data-variant='glass']) .lw-tooltip__arrow {
+  border-left-color: color-mix(in srgb, var(--lw-hue-slate-900) 88%, transparent);
+}
+
+:host([data-placement='left'][data-variant='novel']) .lw-tooltip__arrow {
+  border-left-color: var(--lw-hue-zinc-900);
+}
+
+:host([data-placement='left'][data-variant='light']) .lw-tooltip__arrow {
+  border-left-color: var(--lw-surface);
+}
+
+/* Right Placement Arrow (Arrow is at left pointing left) */
+:host([data-placement='right']) .lw-tooltip__arrow {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-color: transparent var(--lw-surface-overlay) transparent transparent;
+}
+
+:host([data-placement='right'][data-variant='glass']) .lw-tooltip__arrow {
+  border-right-color: color-mix(in srgb, var(--lw-hue-slate-900) 88%, transparent);
+}
+
+:host([data-placement='right'][data-variant='novel']) .lw-tooltip__arrow {
+  border-right-color: var(--lw-hue-zinc-900);
+}
+
+:host([data-placement='right'][data-variant='light']) .lw-tooltip__arrow {
+  border-right-color: var(--lw-surface);
+}

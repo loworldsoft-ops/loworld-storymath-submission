@@ -1,0 +1,19 @@
+    <div class="overview-folder-sheet-grid" role="list">
+      @for (item of items(); track item.id) {
+        <lw-app-icon
+          variant="springboard"
+          size="lg"
+          shape="squircle"
+          [label]="cleanAppLabel(item)"
+          [iconSrc]="getAppIconImage(item)"
+          [running]="isRunning(item)"
+          [active]="isActive(item)"
+          [interactive]="true"
+          [title]="item.label"
+          (appClick)="itemSelect.emit(item)">
+          @if (!getAppIconImage(item)) {
+            <lw-os-icon [icon]="getItemIcon(item)" [size]="28" />
+          }
+        </lw-app-icon>
+      }
+    </div>

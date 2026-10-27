@@ -1,0 +1,28 @@
+<div class="lw-form-field">
+  @if (label()) {
+    <div class="lw-form-field__label-row">
+      <label
+        class="lw-form-field__label"
+        [attr.for]="forId() || null">
+        {{ label() }}
+        @if (required()) {
+          <span class="lw-form-field__required" aria-hidden="true">*</span>
+        }
+      </label>
+    </div>
+  }
+
+  <div class="lw-form-field__control">
+    <ng-content></ng-content>
+  </div>
+
+  @if (error()) {
+    <p class="lw-form-field__error" role="alert">
+      {{ error() }}
+    </p>
+  } @else if (hint()) {
+    <p class="lw-form-field__hint">
+      {{ hint() }}
+    </p>
+  }
+</div>

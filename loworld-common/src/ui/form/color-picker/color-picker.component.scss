@@ -1,0 +1,14 @@
+@use 'index' as lw;
+:host { display: block; border-top: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); border-bottom: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); margin: 6px 0; }
+    .color-picker-container { padding: 10px; }
+    .color-section { width: 100%; }
+    .color-label { font-size: 11px; margin-bottom: 10px; color: var(--lw-cal-text-muted, #{lw.$lw-cal-text-muted}); font-weight: 500; }
+    .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; justify-items: center; }
+    .color-btn {
+      width: 24px; height: 24px; border-radius: 50%; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; margin: 0; transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .color-btn:hover { transform: scale(1.1); }
+    .color-btn.selected { transform: scale(1.1); box-shadow: 0 0 0 2px var(--lw-cal-bg, #{lw.$lw-cal-bg}), 0 0 0 4px currentColor; }
+    svg { pointer-events: none; }

@@ -1,0 +1,89 @@
+<div
+  class="lw-app-icon"
+  [attr.data-variant]="variant()"
+  [attr.data-size]="size()"
+  [attr.data-shape]="shape()"
+  [class.is-interactive]="interactive()"
+  [class.is-active]="active()"
+  [class.is-disabled]="disabled()"
+  [class.is-bouncing]="bouncing()"
+  role="img"
+  [attr.role]="interactive() ? 'button' : 'img'"
+  [attr.tabindex]="interactive() && !disabled() ? 0 : null"
+  [attr.title]="title() || null"
+  [attr.aria-label]="title() || label() || '앱 아이콘'"
+  [attr.aria-disabled]="disabled() ? true : null"
+  (click)="onClick($event)"
+  (keydown)="onKeydown($event)">
+
+  <!-- 1. Visual Icon Area -->
+  <div class="lw-app-icon__visual">
+    <div
+      class="lw-app-icon__squircle"
+      [attr.data-tone]="tone()"
+      [class.is-bouncing]="bouncing()"
+      [class.is-active]="active()">
+
+      <!-- 1. 이미지 우선 (hasValidImage) -->
+      @if (hasValidImage()) {
+        <img
+          [src]="iconSrc()!"
+          [alt]="label()"
+          class="lw-app-icon__img"
+          loading="lazy"
+          draggable="false"
+          (error)="onImageError()" />
+      } @else if (icon()) {
+        <!-- 2. 아이콘 지정 (icon) -->
+        @if (icon()!.length <= 2) {
+          <span class="lw-app-icon__emoji">{{ icon() }}</span>
+        } @else {
+          <lw-icon
+            [name]="icon() === 'gear' ? 'settings' : icon()!"
+            [size]="computedIconPixelSize()" />
+        }
+      } @else {
+        <!-- 3. 자식 컨텐츠 프로젝션 -->
+        <ng-content></ng-content>
+      }
+
+      <!-- Sheen/Gloss Optical Layer -->
+      @if (sheen() && variant() !== 'minimal') {
+        <div class="lw-app-icon__sheen" aria-hidden="true"></div>
+      }
+
+      <!-- Badge (Usage Count or Notification) -->
+      @if (badge() !== null && badge() !== undefined && badge() !== '') {
+        <span class="lw-app-icon__badge" [attr.data-tone]="badgeTone()">
+          {{ badge() }}
+        </span>
+      }
+    </div>
+
+    <!-- Dock Running Dot Indicator -->
+    @if (variant() === 'dock' || running()) {
+      <span
+        class="lw-app-icon__dot"
+        [class.is-running]="running()"
+        [class.is-active]="active()"
+        aria-hidden="true"></span>
+    }
+  </div>
+
+  <!-- 2. Label Area -->
+  @if (shouldDisplayLabel()) {
+    <span class="lw-app-icon__label">{{ label() }}</span>
+  }
+
+  @if (variant() === 'tile') {
+    <div class="lw-app-icon__text">
+      @if (label()) {
+        <span class="lw-app-icon__title">{{ label() }}</span>
+      }
+      @if (subtitle()) {
+        <span class="lw-app-icon__subtitle">{{ subtitle() }}</span>
+      }
+    </div>
+  }
+
+</div>

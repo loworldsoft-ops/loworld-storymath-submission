@@ -1,0 +1,60 @@
+@if (play.quest(); as quest) {
+  <lw-stack [fill]="true" [scroll]="true" gap="lg" padding="xl" surface="ground">
+    <lw-stack direction="row" gap="lg" align="center">
+      <lw-button variant="secondary" size="lg" (click)="play.backToAct()">
+        <lw-icon name="chevron-left" />
+        {{ play.questAct()?.title }}
+      </lw-button>
+      <lw-stack gap="xs" [fill]="true">
+        <lw-text variant="caption" tone="muted">{{ quest.topic }}</lw-text>
+        <lw-text variant="title">{{ quest.title }}</lw-text>
+      </lw-stack>
+      <lw-badge [label]="quest.kind === 'birth' ? '탄생 비화' : '원리'" color="warning" />
+      <lw-button variant="ghost" shape="circle" ariaLabel="설정" (click)="play.openSettings()">
+        <lw-icon name="settings" [size]="24" />
+      </lw-button>
+    </lw-stack>
+    <lw-progress-bar look="segments" [value]="play.paragraphIndex() + 1" [max]="play.storyCount()" label="문단" />
+
+    <lw-stack [fill]="true" justify="center" padding="xl">
+      @if (play.showText()) {
+        <lw-marked-text look="reading" [segments]="play.segmentsOf(play.paragraph())" />
+      } @else {
+        <lw-stack align="center" gap="lg">
+          <lw-spinner kind="wave" size="lg" label="소리로 듣는 중" />
+          <lw-text variant="display">소리로 듣는 중</lw-text>
+          <lw-text tone="muted">글을 감추고 귀로만 들어요</lw-text>
+        </lw-stack>
+      }
+    </lw-stack>
+
+    <lw-stack direction="row" collapse="sm" gap="md" align="center">
+      <lw-stack direction="row" gap="sm" align="center" [fill]="true">
+        @if (play.speaking()) {
+          <lw-spinner kind="wave" size="sm" label="읽는 중" />
+        }
+        <lw-text tone="accent">{{ play.speaking() ? '읽는 중 · ' : '' }}{{ play.autoPlay() ? '자동 진행 켜짐' : '자동 진행 꺼짐' }}</lw-text>
+      </lw-stack>
+      <lw-stack direction="row" gap="md" align="center">
+        <lw-button variant="secondary" shape="circle" size="lg" ariaLabel="앞 문단" (click)="play.previous()">
+          <lw-icon name="chevron-left" [size]="30" />
+        </lw-button>
+        @if (play.speaking()) {
+          <lw-button variant="primary" shape="circle" size="lg" ariaLabel="멈춤" (click)="play.pause()">
+            <lw-icon name="pause" [size]="40" />
+          </lw-button>
+        } @else {
+          <lw-button variant="primary" shape="circle" size="lg" ariaLabel="이 문단 다시 듣기" (click)="play.replay()">
+            <lw-icon name="play" [size]="40" />
+          </lw-button>
+        }
+        <lw-button variant="secondary" shape="circle" size="lg" ariaLabel="다음 문단" (click)="play.next()">
+          <lw-icon name="chevron-right" [size]="30" />
+        </lw-button>
+      </lw-stack>
+      <lw-stack direction="row" justify="end" [fill]="true">
+        <lw-button variant="secondary" size="lg" (click)="play.skipToQuestions()">문제로 건너뛰기</lw-button>
+      </lw-stack>
+    </lw-stack>
+  </lw-stack>
+}

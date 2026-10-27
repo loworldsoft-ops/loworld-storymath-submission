@@ -1,0 +1,30 @@
+<lw-bottom-sheet
+  [open]="open()"
+  [fullWidth]="effectiveFullWidth()"
+  [backdropBlur]="backdropBlur()"
+  [closeOnOverlay]="closeOnOverlay()"
+  [customMaxWidth]="effectiveMaxWidth()"
+  [customMaxHeight]="customMaxHeight()"
+  [contentDrivenHeight]="contentDrivenHeight()"
+  [autoFullscreenThreshold]="autoFullscreenThreshold()"
+  [initialSnap]="initialSnap()"
+  [scrollable]="false"
+  (close)="onClose()">
+  <div lwSheetTitle>
+    @if (kicker()) {
+      <p class="lw-panel-bottom-sheet__kicker">{{ kicker() }}</p>
+    }
+    @if (title()) {
+      <h3 class="lw-panel-bottom-sheet__title">{{ title() }}</h3>
+    }
+  </div>
+
+  <div
+    class="lw-panel-bottom-sheet__body"
+    [class.lw-panel-bottom-sheet__body--full-width]="effectiveFullWidth()"
+    [ngStyle]="containerStyle()">
+    <ng-content select="[battle-arena]" />
+    <ng-content select="[panel-bottom-sheet]" />
+    <ng-content />
+  </div>
+</lw-bottom-sheet>

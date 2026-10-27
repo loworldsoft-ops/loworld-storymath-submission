@@ -1,0 +1,62 @@
+<div
+  class="lw-wf-node"
+  role="button"
+  tabindex="0"
+  [class.lw-wf-node--selected]="selected()"
+  [class.lw-wf-node--running]="node().status === 'running'"
+  [class.lw-wf-node--success]="node().status === 'success'"
+  [class.lw-wf-node--failed]="node().status === 'failed'"
+  [attr.aria-pressed]="selected()"
+  [attr.aria-label]="theme().label + ' 블록: ' + node().title"
+  [attr.data-node-type]="node().type"
+  (click)="$event.stopPropagation(); select.emit(node())"
+  (keydown.enter)="select.emit(node())">
+  <div class="lw-wf-node__header">
+    <span class="lw-wf-node__type-pill" [attr.data-type]="node().type">
+      <lw-icon [name]="theme().icon" [size]="11" />
+      {{ theme().label }}
+    </span>
+    <span class="lw-wf-node__title" [title]="node().title">{{ node().title }}</span>
+    @if (node().status && node().status !== 'idle') {
+      <span class="lw-wf-node__status-dot" [attr.data-status]="node().status"></span>
+    }
+  </div>
+
+  @if (node().description) {
+    <div class="lw-wf-node__desc">{{ node().description }}</div>
+  }
+
+  <div class="lw-wf-node__ports">
+    <div class="lw-wf-node__ports-col lw-wf-node__ports-col--inputs">
+      @for (p of node().inputs; track p.id) {
+        <button
+          type="button"
+          class="lw-wf-port lw-wf-port--input"
+          [class.lw-wf-port--connected]="p.connected"
+          [class.lw-wf-port--target]="connectable()"
+          [attr.aria-label]="'입력 포트 ' + p.label + (connectable() ? ' (여기에 연결)' : '')"
+          (mousedown)="$event.stopPropagation()"
+          (click)="onPortClick($event, p, 'input')">
+          <span class="lw-wf-port__handle"></span>
+          <span class="lw-wf-port__label">{{ p.label }}</span>
+        </button>
+      }
+    </div>
+
+    <div class="lw-wf-node__ports-col lw-wf-node__ports-col--outputs">
+      @for (p of node().outputs; track p.id) {
+        <button
+          type="button"
+          class="lw-wf-port lw-wf-port--output"
+          [class.lw-wf-port--connected]="p.connected"
+          [class.lw-wf-port--pending]="pendingPortId() === p.id"
+          [attr.aria-label]="'출력 포트 ' + p.label + ' (눌러서 연결 시작)'"
+          (mousedown)="$event.stopPropagation()"
+          (click)="onPortClick($event, p, 'output')">
+          <span class="lw-wf-port__label">{{ p.label }}</span>
+          <span class="lw-wf-port__handle"></span>
+        </button>
+      }
+    </div>
+  </div>
+</div>

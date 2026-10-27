@@ -1,0 +1,50 @@
+<div class="lw-sheet-slider" [class.lw-sheet-slider--active]="isSubpageOpen()">
+  <!-- 📱 2-Page 수평 슬라이드 트랙 (단락관리자 pm-depth-slider와 동일 메커니즘) -->
+  <div class="lw-sheet-slider-track" [class.lw-sheet-slider-track--subpage]="isSubpageOpen()">
+    
+    <!-- [Page 0: 메인 지면] -->
+    <div class="lw-sheet-slider-page lw-sheet-slider-page--main" [attr.aria-hidden]="isSubpageOpen()">
+      <ng-content select="[sheet-main]" />
+    </div>
+
+    <!-- [Page 1: 뎁스 서브페이지 상세 지면] -->
+    <div class="lw-sheet-slider-page lw-sheet-slider-page--subpage" [attr.aria-hidden]="!isSubpageOpen()">
+      <!-- 단락관리자 표준 subpage-nav-bar 디자인 -->
+      @if (showSubpageNav()) {
+        <header class="subpage-nav-bar">
+          <div class="subpage-nav-left">
+            <lw-button
+              type="button"
+              class="subpage-back-btn"
+              (click)="closeSubpage()"
+              [tooltip]="backButtonText() + ' 메인으로 돌아가기'">
+              <span class="back-arrow">←</span>
+              <span class="back-text">{{ backButtonText() }}</span>
+            </lw-button>
+            <div class="subpage-title-block">
+              @if (subpageKicker()) {
+                <span class="subpage-kicker">{{ subpageKicker() }}</span>
+              }
+              <h4 class="subpage-title">{{ subpageTitle() }}</h4>
+            </div>
+          </div>
+          <div class="subpage-nav-right">
+            <lw-button
+              type="button"
+              class="subpage-close-btn"
+              (click)="closeSubpage()"
+              tooltip="닫고 이전 화면으로 이동">
+              ✕
+            </lw-button>
+          </div>
+        </header>
+      }
+
+      <!-- 서브페이지 스크롤 가능한 본문 영역 -->
+      <div class="subpage-scroll-body">
+        <ng-content select="[sheet-subpage]" />
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,131 @@
+:host {
+  display: inline-flex;
+  width: 100%;
+  vertical-align: middle;
+}
+
+.lw-input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  border-radius: var(--lw-radius-md);
+  border: 1px solid var(--lw-border);
+  background: var(--lw-surface);
+  color: var(--lw-text-primary);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+
+  &.lw-input--sm {
+    min-height: 28px;
+    font-size: 12px;
+    padding: 0 8px;
+    border-radius: var(--lw-radius-sm);
+  }
+
+  &.lw-input--md {
+    min-height: 36px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  &.lw-input--lg {
+    min-height: 44px;
+    font-size: 16px;
+    padding: 0 16px;
+    border-radius: var(--lw-radius-lg);
+  }
+
+  &.lw-input--filled {
+    background: var(--lw-surface-alt);
+    border-color: transparent;
+  }
+
+  &.lw-input--flush {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    background: transparent;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &.lw-input--pill {
+    border-radius: 9999px;
+  }
+
+  &:hover:not(.is-disabled) {
+    border-color: var(--lw-accent);
+  }
+
+  &.is-focused {
+    border-color: var(--lw-accent);
+    box-shadow: 0 0 0 2px var(--lw-accent-soft, color-mix(in srgb, var(--lw-color-primary) 20%, transparent));
+  }
+
+  &.is-disabled {
+    opacity: 0.55;
+    background: var(--lw-surface-alt);
+    cursor: not-allowed;
+  }
+}
+
+.lw-input-prefix,
+.lw-input-suffix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  color: var(--lw-text-secondary);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.lw-input-prefix {
+  margin-right: 6px;
+}
+
+.lw-input-suffix {
+  margin-left: 6px;
+}
+
+.lw-input-native {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.4;
+  padding: 4px 0;
+
+  &::placeholder {
+    color: var(--lw-text-muted);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.lw-input-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--lw-text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 4px;
+  margin-left: 4px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: var(--lw-text-primary);
+    background-color: var(--lw-surface-alt);
+  }
+}

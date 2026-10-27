@@ -1,0 +1,71 @@
+// OS 셸(데스크톱·모바일 홈)의 역할 색과 치수.
+//
+// 값은 디자인 시스템 토큰(`--lw-*`)을 가리킨다. 그래서 화면 모드와 스킨이 바뀌면 셸도 함께 바뀐다.
+// 셸 컴포넌트는 색·모서리·그림자·시간을 `--os-*`와 `--lw-*` 단계 토큰으로만 쓴다.
+// 컴포넌트 스타일에 테마 분기(`[data-lw-theme]`, `.is-dark`)를 쓰지 않는다.
+
+:root {
+  // 막대: 화면 가장자리에 붙는 표면(메뉴 막대, 독, 하단 바)
+  --os-bar-bg: color-mix(in srgb, var(--lw-surface) 92%, transparent);
+  --os-bar-fg: var(--lw-text-primary);
+  --os-bar-fg-muted: var(--lw-text-secondary);
+  --os-bar-border: var(--lw-control-border);
+
+  // 패널: 필요할 때 뜨는 표면(드롭다운, 위젯, 안내)
+  --os-panel-bg: var(--lw-surface);
+  --os-panel-fg: var(--lw-text-primary);
+  --os-panel-fg-muted: var(--lw-text-secondary);
+  --os-panel-border: var(--lw-control-border);
+
+  --os-hover: var(--lw-surface-hover);
+  --os-active: var(--lw-surface-active);
+  --os-accent: var(--lw-accent);
+  --os-danger: var(--lw-color-danger);
+
+  // 배경화면 위에 직접 놓이는 글자(앱 이름). 테마가 아니라 배경화면의 밝기를 따른다.
+  --os-on-wallpaper: var(--lw-text-primary);
+  --os-on-wallpaper-muted: var(--lw-text-secondary);
+  --os-on-wallpaper-shadow: none;
+  --os-on-wallpaper-dot: var(--lw-text-muted);
+
+  --os-menu-bar-height: 32px;
+  --os-dock-height: 60px;
+  --os-app-tile: 104px;
+  --os-app-icon: 56px;
+}
+
+[data-os-wallpaper-tone='light'] {
+  --os-on-wallpaper: #0f172a;
+  --os-on-wallpaper-muted: #475569;
+  --os-on-wallpaper-shadow: none;
+  --os-on-wallpaper-dot: #64748b;
+}
+
+[data-os-wallpaper-tone='dark'] {
+  --os-on-wallpaper: #ffffff;
+  --os-on-wallpaper-muted: rgba(255, 255, 255, 0.82);
+  --os-on-wallpaper-shadow: none;
+  --os-on-wallpaper-dot: rgba(255, 255, 255, 0.7);
+}
+
+// 그림 배경 위에서는 글자에 그림자를 준다. 단색 배경에서는 필요 없다.
+[data-os-wallpaper-kind='image'] {
+  --os-on-wallpaper-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+// 글래스 스킨: 면이 반투명이라 막대와 패널은 따로 불투명도를 정한다. 흐림은 `--lw-effect-backdrop`이 맡는다.
+[data-lw-skin='glassmorphism'] {
+  --os-bar-bg: rgba(255, 255, 255, 0.62);
+  --os-bar-border: rgba(255, 255, 255, 0.5);
+  --os-panel-bg: rgba(255, 255, 255, 0.92);
+}
+
+[data-lw-theme='dark'][data-lw-skin='glassmorphism'] {
+  --os-bar-bg: rgba(15, 23, 42, 0.6);
+  --os-bar-border: rgba(255, 255, 255, 0.14);
+  --os-panel-bg: rgba(15, 23, 42, 0.92);
+  --os-bar-fg: #f8fafc;
+  --os-bar-fg-muted: #cbd5e1;
+  --os-panel-fg: #f8fafc;
+  --os-panel-fg-muted: #cbd5e1;
+}

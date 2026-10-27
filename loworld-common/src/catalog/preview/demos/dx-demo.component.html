@@ -1,0 +1,43 @@
+<div class="develop-preview-wrap">
+  <div class="develop-preview-frame" 
+       #previewFrame
+       [class.develop-preview-frame--theater]="fullscreenMode() === 'theater'"
+       [class.develop-preview-frame--native]="fullscreenMode() === 'native'">
+
+    <!-- 📍 샌드박스 전체화면 다기능 플로팅 컨트롤러 -->
+    <div class="sandbox-fullscreen-controller" 
+         [class.sandbox-fullscreen-controller--active]="isFullscreenActive()">
+      @if (!isFullscreenActive()) {
+        <lw-button class="fullscreen-btn" (click)="toggleTheaterMode()" tooltip="브라우저 극장 모드">
+          <span>🖥️ Theater Mode</span>
+        </lw-button>
+        <lw-button class="fullscreen-btn" (click)="toggleNativeFullscreen(previewFrame)" tooltip="디바이스 전체화면">
+          <span>📺 Fullscreen</span>
+        </lw-button>
+      } @else {
+        <lw-card class="fullscreen-exit-card animate-fade-in" variant="outlined">
+          <span class="exit-card__status">
+            {{ fullscreenMode() === 'theater' ? '🎭 Theater Mode 활성 중' : '🎬 Native Fullscreen 활성 중' }}
+          </span>
+          <lw-button class="exit-card__btn" (click)="exitFullscreen()" tooltip="전체화면 종료 (Esc)">
+            Exit Fullscreen ✕
+          </lw-button>
+        </lw-card>
+      }
+    </div>
+    
+    @switch (comp().id) {
+      @case ('lw-chatbot') {
+        <lw-dx-demo-chatbot-section
+          [playerGold]="playerGold()"
+          (easterEggGoldAwarded)="onEasterEggGoldAwarded($event)" />
+      }
+      @default {
+        <div style="padding: 2rem; text-align: center; color: var(--lw-color-muted, #888);">
+          <p><strong>{{ comp().name }}</strong> ({{ comp().id }})</p>
+          <p>{{ comp().description }}</p>
+        </div>
+      }
+    }
+  </div>
+</div>

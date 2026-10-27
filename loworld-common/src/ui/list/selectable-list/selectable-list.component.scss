@@ -1,0 +1,44 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lw-list-gap);
+
+  &[data-layout='grid-2'] {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  &[data-layout='grid-auto'] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  &[data-gap='md'] {
+    gap: 12px;
+  }
+}
+
+.empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--lw-muted, #{lw.$lw-muted});
+  font-size: 14px;
+
+  .empty-title {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .empty-desc {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+}

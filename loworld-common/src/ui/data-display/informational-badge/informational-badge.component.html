@@ -1,0 +1,29 @@
+<div
+  class="lw-info-badge"
+  role="status"
+  [attr.role]="clickable() ? 'button' : 'status'"
+  [attr.tabindex]="clickable() ? 0 : null"
+  [attr.data-variant]="variant()"
+  [attr.data-tone]="tone()"
+  [attr.data-size]="size()"
+  [class.is-clickable]="clickable()"
+  [class.is-loading]="loading()"
+  (click)="handleClick()"
+  (keydown.enter)="clickable() && handleClick()">
+
+  @if (loading()) {
+    <span class="lw-info-badge__spinner" aria-hidden="true">⏳</span>
+  } @else if (icon()) {
+    <span class="lw-info-badge__icon" aria-hidden="true">{{ icon() }}</span>
+  }
+
+  @if (label()) {
+    <span class="lw-info-badge__text">{{ label() }}</span>
+  } @else {
+    <span class="lw-info-badge__text"><ng-content></ng-content></span>
+  }
+
+  @if (trailingIcon()) {
+    <span class="lw-info-badge__trailing-icon" aria-hidden="true">{{ trailingIcon() }}</span>
+  }
+</div>

@@ -1,0 +1,53 @@
+@if (effectiveLook() === 'segments') {
+  <div class="progress progress--segments" [attr.data-size]="size()" [attr.aria-label]="resolvedAriaLabel()" role="progressbar"
+       [attr.aria-valuenow]="value()" [attr.aria-valuemin]="0" [attr.aria-valuemax]="max()">
+    <div class="segments-track">
+      @for (item of items(); track $index) {
+        <div class="segment" [class.is-filled]="item.filled" [style.background]="item.filled ? fillColor() : null"></div>
+      }
+    </div>
+    @if (showLabel()) {
+      <div class="header header--inline">
+        @if (label()) { <span class="label">{{ label() }}</span> }
+        <span class="counter">
+          <strong [style.color]="fillColor()">{{ value() }}</strong>
+          <span class="sep"> / {{ max() }}</span>
+        </span>
+      </div>
+    }
+  </div>
+} @else if (effectiveLook() === 'dots') {
+  <div class="progress progress--dots" [attr.data-size]="size()" [attr.aria-label]="resolvedAriaLabel()" role="progressbar"
+       [attr.aria-valuenow]="value()" [attr.aria-valuemin]="0" [attr.aria-valuemax]="max()">
+    <div class="dots-track">
+      @for (item of items(); track $index) {
+        <span class="dot" [class.is-filled]="item.filled" [style.background]="item.filled ? fillColor() : null"></span>
+      }
+    </div>
+    @if (showLabel()) {
+      <div class="header header--inline">
+        @if (label()) { <span class="label">{{ label() }}</span> }
+        <span class="counter">
+          <strong [style.color]="fillColor()">{{ value() }}</strong>
+          <span class="sep"> / {{ max() }}</span>
+        </span>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="progress progress--bar" [attr.data-size]="size()" [attr.aria-label]="resolvedAriaLabel()" role="progressbar"
+       [attr.aria-valuenow]="value()" [attr.aria-valuemin]="0" [attr.aria-valuemax]="max()">
+    @if (showLabel()) {
+      <div class="header">
+        <span class="label">{{ label() }}</span>
+        <span class="counter">
+          <strong [style.color]="fillColor()">{{ value() }}</strong>
+          <span class="sep"> / {{ max() }}</span>
+        </span>
+      </div>
+    }
+    <div class="track">
+      <div class="fill" [style.width.%]="percent()" [style.background]="fillColor()"></div>
+    </div>
+  </div>
+}

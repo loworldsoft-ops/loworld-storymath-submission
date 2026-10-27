@@ -1,0 +1,63 @@
+@if (play.question(); as question) {
+  <lw-stack [fill]="true" [scroll]="true" gap="lg" padding="xl" surface="ground">
+    <lw-stack direction="row" gap="lg" align="center">
+      <lw-button variant="secondary" size="lg" (click)="play.backToAct()">
+        <lw-icon name="chevron-left" />
+        {{ play.questAct()?.title }}
+      </lw-button>
+      <lw-stack [fill]="true" justify="center">
+        <lw-text tone="muted" [truncate]="true">{{ play.quest()?.title }}</lw-text>
+      </lw-stack>
+      <lw-button variant="ghost" shape="circle" ariaLabel="설정" (click)="play.openSettings()">
+        <lw-icon name="settings" [size]="24" />
+      </lw-button>
+    </lw-stack>
+    <lw-progress-bar look="dots" [value]="play.questionIndex() + 1" [max]="play.questionCount()" label="문제" />
+
+    <lw-marked-text look="reading" align="center" [segments]="play.segmentsOf(question.prompt)" />
+
+    <lw-stack direction="row" gap="lg" [fill]="true">
+      @for (choice of question.choices; track $index) {
+        <lw-card variant="accent" [color]="$index === 0 ? 'primary' : 'info'" [fill]="true" lwPressable
+          [selected]="play.picked() === $index" [disabled]="play.picked() !== null && play.picked() !== $index"
+          [ariaLabel]="choice.label" (press)="play.choose($index)">
+          <lw-stack [fill]="true" align="center" justify="center" gap="sm">
+            <lw-text variant="heading" [tone]="$index === 0 ? 'accent' : 'info'">{{ $index === 0 ? '첫째' : '둘째' }}</lw-text>
+            <lw-text variant="display">{{ choice.label }}</lw-text>
+          </lw-stack>
+        </lw-card>
+      }
+    </lw-stack>
+
+    <lw-card variant="flat">
+      <lw-stack direction="row" justify="between" align="center">
+        <lw-stack direction="row" gap="md" align="center">
+          <lw-avatar [icon]="play.speaking() ? 'volume-2' : 'mic'" [tone]="play.listening() ? 'accent' : 'muted'" [active]="play.listening()" />
+          @if (play.speaking()) {
+            <lw-stack gap="xs">
+              <lw-text variant="heading">{{ play.missed() ? '잘 못 들었어요' : '문제를 읽고 있어요' }}</lw-text>
+              @if (play.canAnswerByVoice()) {
+                <lw-text variant="caption" tone="muted">다 읽으면 들을게요</lw-text>
+              }
+            </lw-stack>
+          } @else if (play.listening()) {
+            <lw-stack gap="xs">
+              <lw-text variant="heading">{{ play.missed() ? '한 번 더 들을게요' : '듣고 있어요' }}</lw-text>
+              <lw-text variant="caption" tone="muted">"{{ question.choices[0].label }}" 또는 "{{ question.choices[1].label }}"{{ play.settings().ordinal ? ', 아니면 "첫째" "둘째"' : '' }}라고 말해 주세요</lw-text>
+            </lw-stack>
+          } @else if (play.canAnswerByVoice()) {
+            <lw-button (click)="play.listenAnswer()">말로 답하기</lw-button>
+          } @else {
+            <lw-text tone="muted">보기를 눌러 답해 주세요</lw-text>
+          }
+        </lw-stack>
+        <lw-stack direction="row" gap="md" align="center">
+          @if (play.heard()) {
+            <lw-text variant="heading" tone="accent">들은 말 · "{{ play.heard() }}"</lw-text>
+          }
+          <lw-button variant="secondary" (click)="play.replay()">문제 다시 듣기</lw-button>
+        </lw-stack>
+      </lw-stack>
+    </lw-card>
+  </lw-stack>
+}

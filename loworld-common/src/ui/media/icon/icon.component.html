@@ -1,0 +1,40 @@
+@if (isDynamic()) {
+  @if (hasError()) {
+    <div
+      class="dynamic-raster-fallback"
+      [style.width.px]="size()"
+      [style.height.px]="size()"
+      [attr.role]="decorative() ? 'presentation' : 'img'"
+      [attr.aria-label]="decorative() ? null : label()">
+      <span class="fallback-silhouette-icon">{{ fallbackText() }}</span>
+    </div>
+  } @else {
+    <!-- Full-color raster: WebP/PNG 원본색 유지 -->
+    <img
+      class="dynamic-raster-icon"
+      [src]="mediaUrl()"
+      [style.width.px]="size()"
+      [style.height.px]="size()"
+      [attr.alt]="decorative() ? '' : label()"
+      [attr.role]="decorative() ? 'presentation' : 'img'"
+      loading="lazy"
+      decoding="async"
+      (error)="handleImageError($event)" />
+  }
+} @else {
+  <!-- Core 시스템용 정밀 선형 벡터 아이콘 렌더러 (Lucide 규격 24x24) -->
+  <svg
+    class="lw-icon-vector"
+    [style.width.px]="size()"
+    [style.height.px]="size()"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    [attr.role]="decorative() ? 'presentation' : 'img'"
+    [attr.aria-label]="decorative() ? null : label()"
+    [innerHTML]="systemIconSvg()">
+  </svg>
+}

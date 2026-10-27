@@ -1,0 +1,52 @@
+@use 'index' as lw;
+
+// 독자 화면의 공통 바탕. 평소에는 글만 있다: 테두리와 뱃지를 줄이고 여백을 둔다.
+@mixin reader-surface {
+  --reader-paper: #f6f3ec;
+  --reader-ink: #26231d;
+  --reader-ink-soft: #6f695d;
+  --reader-line: rgba(38, 35, 29, 0.14);
+  --reader-accent: #8a5a2b;
+  --reader-raise: #fffdf8;
+  color: var(--reader-ink);
+  background: var(--reader-paper);
+  font-family: 'Noto Serif KR', 'Nanum Myeongjo', 'Apple SD Gothic Neo', serif;
+
+  &.is-dark {
+    --reader-paper: #17161b;
+    --reader-ink: #e7e2d6;
+    --reader-ink-soft: #9a958a;
+    --reader-line: rgba(231, 226, 214, 0.16);
+    --reader-accent: #d3a46a;
+    --reader-raise: #201f25;
+  }
+}
+
+// 조용한 버튼. lw-button의 색 변수를 독자 화면의 색으로 바꾼다.
+@mixin reader-button {
+  --lw-btn-bg: transparent;
+  --lw-btn-color: var(--reader-ink);
+  --lw-btn-border: var(--reader-line);
+  --lw-btn-hover-bg: var(--reader-raise);
+  --lw-btn-hover-color: var(--reader-ink);
+  --lw-btn-hover-border: var(--reader-accent);
+  --lw-btn-secondary-bg: transparent;
+  --lw-btn-secondary-color: var(--reader-ink);
+  --lw-btn-secondary-border: var(--reader-line);
+  --lw-btn-secondary-hover-bg: var(--reader-raise);
+  --lw-btn-secondary-hover-color: var(--reader-ink);
+  --lw-btn-secondary-hover-border: var(--reader-accent);
+  --lw-btn-ghost-hover-bg: var(--reader-raise);
+  --lw-btn-ghost-hover-color: var(--reader-ink);
+  --lw-btn-ghost-color: var(--reader-ink-soft);
+  --lw-btn-height: 44px;
+  --lw-btn-radius: 6px;
+  --lw-btn-font-size: 0.9375rem;
+  font-family: inherit;
+}
+
+@mixin reader-label {
+  font-size: var(--lw-font-size-xs, 0.75rem);
+  letter-spacing: 0.12em;
+  color: var(--reader-ink-soft);
+}

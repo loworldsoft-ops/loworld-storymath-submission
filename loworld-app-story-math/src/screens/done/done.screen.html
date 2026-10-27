@@ -1,0 +1,73 @@
+@if (play.quest(); as quest) {
+  <lw-stack [fill]="true" [scroll]="true" gap="md" padding="lg" surface="ground">
+    <lw-stack direction="row" justify="between" align="center">
+      <lw-stack direction="row" gap="md" align="center">
+        <lw-button variant="secondary" (click)="play.backToAct()">
+          <lw-icon name="chevron-left" />
+          {{ play.questAct()?.title }}
+        </lw-button>
+        <lw-text variant="title">퀘스트 끝</lw-text>
+      </lw-stack>
+      <lw-stack direction="row" gap="sm" align="center">
+        <lw-badge [label]="(play.questAct()?.title ?? '') + ' · ' + quest.topic" color="warning" />
+        <lw-button variant="ghost" shape="circle" ariaLabel="설정" (click)="play.openSettings()">
+          <lw-icon name="settings" [size]="24" />
+        </lw-button>
+      </lw-stack>
+    </lw-stack>
+
+    <lw-stack direction="row" gap="xl" align="center">
+      <lw-stack direction="row" gap="md" align="center">
+        @for (ok of play.answers(); track $index) {
+          <lw-avatar [icon]="ok ? 'check' : 'x'" [tone]="ok ? 'success' : 'danger'" />
+        }
+      </lw-stack>
+      <lw-stack gap="xs">
+        <lw-text variant="display">{{ play.questionCount() }}문제 중 {{ play.correctCount() }}개 맞혔어요</lw-text>
+        @if (play.results().get(quest.id); as result) {
+          <lw-text tone="muted">이 이야기를 {{ result.plays }}번 들었어요</lw-text>
+        }
+      </lw-stack>
+    </lw-stack>
+
+    <lw-card variant="flat">
+      <lw-stack direction="row" gap="lg" align="start">
+        <lw-avatar icon="notebook" size="lg" />
+        <lw-stack gap="sm" [fill]="true">
+          <lw-text variant="caption" tone="muted">이야기꾼</lw-text>
+          <lw-marked-text look="reading" [segments]="play.segmentsOf(play.closing())" />
+        </lw-stack>
+      </lw-stack>
+    </lw-card>
+
+    <lw-grid [cols]="2" gap="lg">
+      <lw-card variant="flat" lwPressable (press)="play.restart()">
+        <lw-stack direction="row" justify="between" align="center" padding="md">
+          <lw-stack gap="xs">
+            <lw-text variant="label" tone="muted">기초를 다시</lw-text>
+            <lw-text variant="display">한 번 더 듣기</lw-text>
+          </lw-stack>
+          <lw-icon name="rotate-ccw" [size]="44" />
+        </lw-stack>
+      </lw-card>
+      @if (play.followingQuest(); as following) {
+        <lw-card variant="filled" lwPressable (press)="play.startQuest(following)">
+          <lw-stack direction="row" justify="between" align="center" padding="md">
+            <lw-stack gap="xs">
+              <lw-text variant="label">다음 단원</lw-text>
+              <lw-text variant="display">{{ following.topic }}</lw-text>
+            </lw-stack>
+            <lw-icon name="play" [size]="56" />
+          </lw-stack>
+        </lw-card>
+      } @else {
+        <lw-card variant="filled" lwPressable (press)="play.goHome()">
+          <lw-stack direction="row" justify="between" align="center" padding="md">
+            <lw-text variant="display">홈으로</lw-text>
+            <lw-icon name="chevron-right" [size]="56" />
+          </lw-stack>
+        </lw-card>
+      }
+    </lw-grid>
+  </lw-stack>
+}

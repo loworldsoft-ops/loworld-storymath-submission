@@ -1,0 +1,36 @@
+<button lw-button type="button" variant="ghost" class="page__menu" ariaLabel="메뉴" (click)="menu.emit()">
+  <span class="page__menu-bars" aria-hidden="true"></span>
+</button>
+
+@if (bound(); as episode) {
+  <article class="page">
+    <header class="page__head">
+      @if (kicker()) {
+        <p class="page__kicker">{{ kicker() }}</p>
+      }
+      <h1 class="page__title">{{ episode.title }}</h1>
+    </header>
+
+    <div class="page__body">
+      @for (paragraph of episode.paragraphs; track $index) {
+        <p
+          class="page__paragraph"
+          [class.page__paragraph--dialogue]="paragraph.dialogue"
+          [class.page__paragraph--break]="$index > 0 && paragraph.beatKind !== episode.paragraphs[$index - 1].beatKind"
+          [class.page__paragraph--personal]="markPersonal() && paragraph.traces.length > 0">{{ paragraph.text }}</p>
+      }
+    </div>
+
+    <footer class="page__foot">
+      <p class="page__end" aria-hidden="true">·</p>
+      @for (gain of gains(); track gain.id) {
+        <div class="page__gain">
+          <span class="page__gain-kind">{{ gainLabel(gain.kind) }}</span>
+          <span class="page__gain-name">{{ gain.name }}</span>
+          <span class="page__gain-description">{{ gain.description }}</span>
+        </div>
+      }
+      <button lw-button type="button" variant="secondary" class="page__next" (click)="next.emit()">{{ nextLabel() }}</button>
+    </footer>
+  </article>
+}

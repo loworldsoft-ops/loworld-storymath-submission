@@ -1,0 +1,20 @@
+<lw-button
+  type="button"
+  class="action-btn settings-btn"
+  [class.icon-only-btn]="!showLabel()"
+  [class.active]="active()"
+  [ngClass]="customClass()"
+  [variant]="variant()"
+  [size]="size()"
+  [shape]="shape()"
+  [disabled]="disabled()"
+  [ariaLabel]="label()"
+  [tooltip]="label()"
+  [tooltip]="resolvedTitle()"
+  (click)="onClick($event)"
+>
+  <span class="action-btn__icon action-btn__symbol" aria-hidden="true">⚙️</span>
+  @if (showLabel()) {
+    <span class="settings-btn__label">{{ label() }}</span>
+  }
+</lw-button>

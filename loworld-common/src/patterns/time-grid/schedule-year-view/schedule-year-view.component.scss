@@ -1,0 +1,35 @@
+@use 'index' as lw;
+:host { display: block; height: 100%; }
+    .year-view { height: 100%; overflow: auto; padding: 16px; }
+    .months-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .month-card { user-select: none; }
+    .month-name {
+      font-size: 13px; font-weight: 600; text-align: center; margin-bottom: 8px;
+      cursor: pointer; transition: color 0.15s; color: var(--lw-cal-text, #{lw.$lw-cal-text});
+    }
+    .month-name:hover { color: var(--lw-cal-text, #{lw.$lw-cal-text}); }
+    .month-name.current { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .dow-row { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 2px; }
+    .dow { font-size: 9px; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .dow.sunday { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .dow.saturday { color: var(--lw-color-primary); }
+    .day-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 2px 0; }
+    .day-btn {
+      width: 20px; height: 20px; font-size: 9px; border: none; background: none;
+      border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; margin: 0 auto; color: var(--lw-cal-text, #{lw.$lw-cal-text});
+      transition: background 0.15s;
+    }
+    .day-btn:hover { background: var(--lw-cal-cell-hover, #{lw.$lw-cal-cell-hover}); }
+    .day-btn.other { color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .day-btn.today { background: var(--lw-cal-accent, #{lw.$lw-cal-accent}); color: var(--lw-surface) !important; font-weight: 700; }
+    .day-btn.sunday { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .day-btn.saturday { color: var(--lw-color-primary); }
+    .dot {
+      position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+      width: 4px; height: 4px; border-radius: 50%; background: var(--lw-cal-accent, #{lw.$lw-cal-accent});
+    }
+
+    /* ─── Mobile overrides ─── */
+    .months-grid.mobile { grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 12px; }
+    .day-btn.mobile { width: 18px; height: 18px; font-size: 8px; }

@@ -1,0 +1,7 @@
+{
+  "path": "/detail/announcements",
+  "title": "공지사항",
+  "desc": "조직 구성원에게 알릴 내용을 올리는 곳",
+  "toc": [],
+  "html": "<p>공지사항은 조직 전체에 전달할 내용을 올리고 관리하는 메뉴입니다.</p>\n<div class=\"grid grid-cols-2 gap-3 @container\"><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/announcements/view-announcement\"><h3 class=\"not-prose mb-1 text-sm font-medium\">공지사항 확인하기</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>구성원에게 보이는 모습 확인하기</p></div></a><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/announcements/manage-announcements\"><h3 class=\"not-prose mb-1 text-sm font-medium\">공지사항 관리하기</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>공지 작성·수정·삭제</p></div></a></div>"
+}

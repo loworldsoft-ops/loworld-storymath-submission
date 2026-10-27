@@ -1,0 +1,49 @@
+<div class="agenda-view">
+  <div class="inner">
+    <div class="heading">
+      <h2 class="title">
+        {{ selectedDate().getFullYear() }}년 {{ selectedDate().getMonth() + 1 }}월 일정 목록
+      </h2>
+      <p class="sub">{{ daysWithEvents().length }}일에 일정이 있습니다</p>
+    </div>
+    @if (daysWithEvents().length === 0) {
+      <div class="empty">
+        <div class="empty-icon" aria-hidden="true">📅</div>
+        <p>이번 달에 등록된 일정이 없습니다</p>
+      </div>
+    } @else {
+      <div class="list">
+        @for (day of daysWithEvents(); track day.date.toISOString()) {
+          <div class="day-row">
+            <div class="date-col">
+              <div class="dow" [class.sunday]="day.isSunday">{{ day.dowLabel }}</div>
+              <div class="dom" [class.today]="day.isToday"
+                   [class.sunday]="day.isSunday">{{ day.dom }}</div>
+            </div>
+            <div class="events-col">
+              @for (ev of day.events; track ev.id) {
+                <lw-card class="ev-card" [style.borderLeftColor]="ev.color"
+                     [interactive]="true" variant="outlined"
+                     (click)="selectEvent.emit({ eventId: ev.id, date: day.date })">
+                  <div class="ev-card-inner">
+                    <span class="ev-title">{{ ev.title }}</span>
+                    <div class="ev-meta">
+                      @if (!ev.isAllDay) {
+                        <span>{{ ev.formattedStartTime }} – {{ ev.formattedEndTime }}</span>
+                      } @else {
+                        <span>종일</span>
+                      }
+                      @if (ev.location) {
+                        <span class="sep">·</span><span>{{ ev.location }}</span>
+                      }
+                    </div>
+                  </div>
+                </lw-card>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

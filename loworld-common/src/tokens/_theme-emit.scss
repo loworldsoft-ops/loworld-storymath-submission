@@ -1,0 +1,7 @@
+/// Flat map keys must be token names **without** the leading `--` (e.g. `lw-bg-header`).
+/// Output: `--lw-bg-header: <value>;`
+@mixin lw-emit-theme-vars($map) {
+  @each $key, $value in $map {
+    --#{$key}: #{$value};
+  }
+}

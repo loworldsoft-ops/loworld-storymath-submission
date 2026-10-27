@@ -1,0 +1,21 @@
+<lw-card layout="row" variant="outlined" size="sm">
+  <div class="content">
+    <h3 class="title">
+      @if (item().note.emoji) { <span class="emoji">{{ item().note.emoji }}</span> }
+      {{ item().note.title || '제목 없음' }}
+    </h3>
+    <p class="preview">{{ contentPreview() || '내용 없음' }}</p>
+    <div class="meta">
+      <lw-chip variant="status" [clickable]="false">{{ item().note.type }}</lw-chip>
+      <span class="date">{{ daysLeft() }}일 후 삭제</span>
+    </div>
+  </div>
+  <div class="actions">
+    <lw-button class="action-btn" (click)="restore.emit(item().note.id)" tooltip="복구">
+      <span class="icon-restore" aria-hidden="true"></span>
+    </lw-button>
+    <lw-button class="action-btn" (click)="confirmPermanentDelete()" tooltip="영구 삭제">
+      <span class="icon-glyph icon-trash" aria-hidden="true">🗑️</span>
+    </lw-button>
+  </div>
+</lw-card>

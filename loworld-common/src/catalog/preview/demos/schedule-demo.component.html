@@ -1,0 +1,297 @@
+@switch (comp().id) {
+
+  <!-- ══════ 월간 뷰 ══════ -->
+  @case ('lw-schedule-month-grid') {
+    <div class="demo-frame" style="height:560px; overflow:hidden">
+      <lw-schedule-month-grid
+        [monthDays]="monthDays()"
+        [selectedDate]="selectedDate()"
+        [calendarColors]="calendarColors()"
+        (selectDate)="selectedDate.set($event)"
+        (selectEvent)="noop()"
+        (createEvent)="noop()"
+        (toggleTask)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 주간 뷰 ══════ -->
+  @case ('lw-schedule-week-grid') {
+    <div class="demo-frame" style="height:560px; overflow:hidden">
+      <lw-schedule-week-grid
+        [weekDays]="weekDays()"
+        [selectedDate]="selectedDate()"
+        [filteredEvents]="filteredEvents()"
+        (selectEvent)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 일간 뷰 ══════ -->
+  @case ('lw-schedule-day-grid') {
+    <div class="demo-frame" style="height:560px; overflow:hidden">
+      <lw-schedule-day-grid
+        [selectedDate]="selectedDate()"
+        [filteredEvents]="filteredEvents()"
+        (selectEvent)="noop()"
+        (prevDay)="prevDay()"
+        (nextDay)="nextDay()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 연간 뷰 ══════ -->
+  @case ('lw-schedule-year-grid') {
+    <div class="demo-frame" style="height:560px; overflow:hidden">
+      <lw-schedule-year-grid
+        [selectedDate]="selectedDate()"
+        [events]="allEvents()"
+        (goToMonth)="selectedDate.set($event)"
+        (goToDay)="selectedDate.set($event)"
+      />
+    </div>
+  }
+
+  <!-- ══════ 아젠다 뷰 ══════ -->
+  @case ('lw-schedule-agenda') {
+    <div class="demo-frame" style="height:480px; overflow:hidden">
+      <lw-schedule-agenda
+        [selectedDate]="selectedDate()"
+        [monthDays]="monthDays()"
+        [filteredEvents]="filteredEvents()"
+        (selectEvent)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 사이드바 ══════ -->
+  @case ('lw-schedule-sidebar') {
+<div class="demo-frame" style="height:520px; overflow:hidden; width:280px">
+      <lw-schedule-sidebar
+        [selectedDate]="selectedDate()"
+        [calendars]="calendars()"
+        [filter]="filter()"
+        [isOpen]="sidebarOpen()"
+        (selectDate)="selectedDate.set($event)"
+        (navigate)="noop()"
+        (toggleCalendar)="noop()"
+        (openSettings)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 헤더 ══════ -->
+  @case ('lw-schedule-header') {
+<div class="demo-frame">
+      <lw-schedule-header
+        [headerTitle]="headerTitle()"
+        [currentView]="currentView()"
+        [searchQuery]="searchQuery()"
+        (searchQueryChange)="searchQuery.set($event)"
+        (changeView)="currentView.set($event)"
+        (navigatePrev)="noop()"
+        (navigateNext)="noop()"
+        (goToToday)="goToToday()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 이벤트 상세 ══════ -->
+  @case ('lw-schedule-event-detail') {
+    <div class="demo-modal-trigger">
+      <lw-button class="demo-open-btn" (click)="eventDetailOpen.set(true)">📋 이벤트 상세 패널 열기</lw-button>
+    </div>
+    @if (eventDetailOpen()) {
+      <lw-schedule-event-detail
+        [selectedDate]="selectedDate()"
+        [events]="filteredEvents()"
+        [calendars]="calendars()"
+        [selectedEventId]="selectedEventId()"
+        [isCreating]="isCreating()"
+        [use24Hour]="false"
+        [calendarColors]="calendarColors()"
+        [draftType]="'event'"
+        (close)="eventDetailOpen.set(false)"
+        (saveEvent)="eventDetailOpen.set(false)"
+        (updateEvent)="noop()"
+        (deleteEvent)="noop()"
+        (selectEventId)="selectedEventId.set($event)"
+      />
+    }
+  }
+
+  <!-- ══════ 설정 ══════ -->
+  @case ('lw-schedule-settings') {
+    <div class="demo-modal-trigger">
+      <lw-button class="demo-open-btn" (click)="settingsOpen.set(true)">⚙️ 설정 모달 열기</lw-button>
+    </div>
+    @if (settingsOpen()) {
+      <lw-schedule-settings
+        [isOpen]="settingsOpen()"
+        [settings]="calSettings()"
+        [calendars]="calendars()"
+        (cancel)="settingsOpen.set(false)"
+        (saveSettings)="settingsOpen.set(false)"
+      />
+    }
+  }
+
+  <!-- ══════ 휴지통 ══════ -->
+  @case ('lw-schedule-trash-panel') {
+    <div class="demo-frame" style="height:480px; overflow:hidden">
+      <lw-schedule-trash-panel
+        [items]="trashItems()"
+        (restoreEvent)="noop()"
+        (permanentDelete)="noop()"
+        (emptyTrash)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 뽀모도로 ══════ -->
+  @case ('lw-schedule-pomodoro') {
+<div class="demo-frame" style="min-height:400px; overflow:hidden">
+      <lw-schedule-pomodoro (sessionComplete)="noop()" />
+    </div>
+  }
+
+  <!-- ══════ 통계 패널 ══════ -->
+  @case ('lw-schedule-statistics') {
+    <div class="demo-frame" style="min-height:500px; overflow:hidden">
+      <lw-schedule-statistics
+        [events]="allEvents()"
+        [calendars]="calendars()"
+        [selectedDate]="selectedDate()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 구독 모달 ══════ -->
+  @case ('lw-schedule-subscription-dialog') {
+    <div class="demo-modal-trigger">
+      <lw-button class="demo-open-btn" (click)="subscriptionOpen.set(true)">📡 구독 모달 열기</lw-button>
+    </div>
+    @if (subscriptionOpen()) {
+      <lw-schedule-subscription-dialog
+        [isOpen]="subscriptionOpen()"
+        [providers]="MOCK_PROVIDERS"
+        (close)="subscriptionOpen.set(false)"
+        (subscribe)="subscriptionOpen.set(false)"
+      />
+    }
+  }
+
+  <!-- ══════ 기타 (add/sync/remove) → redirect ══════ -->
+  @case ('calendar-add-subscription') {
+    <div class="shell-redirect">
+      <span class="shell-icon">📡</span>
+      <p>설정 모달의 동기화 탭에서 사용되는 컴포넌트입니다.</p>
+      <a class="shell-btn" routerLink="/cal-demo">Calendar Demo에서 보기 →</a>
+    </div>
+  }
+  @case ('calendar-sync-calendar') {
+    <div class="shell-redirect">
+      <span class="shell-icon">🔄</span>
+      <p>설정 모달의 동기화 탭에서 사용되는 컴포넌트입니다.</p>
+      <a class="shell-btn" routerLink="/cal-demo">Calendar Demo에서 보기 →</a>
+    </div>
+  }
+  @case ('calendar-remove-subscription') {
+    <div class="shell-redirect">
+      <span class="shell-icon">❌</span>
+      <p>설정 모달의 구독 해제 버튼 컴포넌트입니다.</p>
+      <a class="shell-btn" routerLink="/cal-demo">Calendar Demo에서 보기 →</a>
+    </div>
+  }
+
+  <!-- ══════ lw-schedule-item-menu ══════ -->
+  @case ('lw-schedule-item-menu') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-schedule-item-menu
+        currentColor="#3b82f6"
+        [palette]="['#3b82f6', '#ef4444', '#10b981', '#f59e0b']"
+        (rename)="noop()"
+        (copyUrl)="noop()"
+        (changeColor)="noop()"
+        (deleteItem)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-schedule-action-row ══════ -->
+  @case ('lw-schedule-action-row') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-schedule-action-row
+        [calendar]="calendars()[0]"
+        [checked]="true"
+        (toggle)="noop()"
+        (rename)="noop()"
+        (changeColor)="noop()"
+        (deleteCalendar)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-schedule-mini-rail ══════ -->
+  @case ('lw-schedule-mini-rail') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px; width:260px;">
+      <lw-schedule-mini-rail
+        [selectedDate]="selectedDate()"
+        (selectDate)="selectedDate.set($event)"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-sidebar-profile-card ══════ -->
+  @case ('lw-sidebar-profile-card') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px; width:280px;">
+      <lw-sidebar-profile-card
+        profileHeadline="사용자 프로필"
+        loginLabel="로그인"
+        [points]="42"
+        [showPoints]="true"
+        (login)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-sync-state-chip ══════ -->
+  @case ('lw-sync-state-chip') {
+    <div class="demo-frame demo-frame-xs" style="display:flex; gap:8px; padding:16px;">
+      <lw-sync-state-chip state="synced" />
+      <lw-sync-state-chip state="syncing" />
+      <lw-sync-state-chip state="offline" />
+    </div>
+  }
+
+  <!-- ══════ lw-list-view ══════ -->
+  @case ('lw-list-view') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-list-view
+        [items]="calendars()"
+        [itemTemplate]="calListTpl"
+      />
+      <ng-template #calListTpl let-item>
+        <div style="padding:6px 10px; font-size:13px;">📅 {{ item.name }}</div>
+      </ng-template>
+    </div>
+  }
+
+  <!-- ══════ lw-menu ══════ -->
+  @case ('lw-menu') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-menu>
+        <div style="padding:8px 12px; font-size:13px;">메뉴 내용</div>
+      </lw-menu>
+    </div>
+  }
+
+  <!-- ══════ 기본 fallback ══════ -->
+  @default {
+    <div class="demo-unavailable">
+      <span>🧩</span>
+      <p>이 컴포넌트의 독립 데모는 준비 중입니다.</p>
+    </div>
+  }
+
+}

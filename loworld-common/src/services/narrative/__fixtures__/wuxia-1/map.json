@@ -1,0 +1,8 @@
+{
+  "zones": [
+    { "id": "zone.chores", "name": "잡역방", "description": "청운문의 가장 낮은 곳. 비질과 물 긷기가 하루의 전부다.", "x": 22, "y": 72, "adjacent": ["zone.yard", "zone.back-hill"] },
+    { "id": "zone.yard", "name": "연무장", "description": "외문 제자들이 검을 익히는 마당. 잡역은 가장자리만 쓴다.", "x": 52, "y": 54, "adjacent": ["zone.chores", "zone.elder-hall"] },
+    { "id": "zone.elder-hall", "name": "장로전", "description": "외문을 다스리는 엄 장로의 처소. 장부와 규율이 여기서 나온다.", "x": 76, "y": 30, "adjacent": ["zone.yard"] },
+    { "id": "zone.back-hill", "name": "후산", "description": "문 뒤의 낮은 산. 밤에는 아무도 오지 않는다.", "x": 26, "y": 26, "adjacent": ["zone.chores"] }
+  ]
+}

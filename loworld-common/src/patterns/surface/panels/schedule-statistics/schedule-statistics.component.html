@@ -1,0 +1,199 @@
+<div class="sp" >
+  <div class="sp-inner">
+    <div class="sp-header">
+      <div class="sp-header-l">
+        <div class="sp-icon">
+          <lucide-icon [img]="BarChart3Icon" [size]="18" />
+        </div>
+        <div>
+          <h1 class="sp-title">\ud1b5\uacc4</h1>
+          <p class="sp-sub">{{ rangeLabel() }}</p>
+        </div>
+      </div>
+      <div class="sp-periods" >
+        @for (opt of periodOptions; track opt.key) {
+          <lw-button class="sp-period" [class.active]="activePeriod()===opt.key"
+            (click)="activePeriod.set(opt.key)">{{ opt.label }}</lw-button>
+        }
+      </div>
+    </div>
+
+    <div class="sp-tabs" >
+      @for (tab of tabOptions; track tab.key) {
+        <lw-button class="sp-tab" [class.active]="activeTab()===tab.key"
+          (click)="activeTab.set(tab.key)">
+          <lucide-icon [img]="tab.icon" [size]="16" />
+          {{ tab.label }}
+        </lw-button>
+      }
+    </div>
+
+    @if (activeTab() === 'events') {
+      @if (eventCount() === 0) {
+        <div class="sp-empty">
+          <lucide-icon [img]="BarChart3Icon" [size]="40" class="sp-empty-icon" />
+          <p class="sp-empty-text">\uc120\ud0dd\ud55c \uae30\uac04\uc5d0 \uc77c\uc815 \ub370\uc774\ud130\uac00 \uc5c6\uc5b4\uc694.</p>
+        </div>
+      } @else {
+        <div class="sp-section-gap">
+          <div class="sp-cards-2">
+            <lw-card class="sp-card" variant="outlined">
+              <div class="sp-card-icon sp-card-icon--blue"><lucide-icon [img]="CalendarIcon" [size]="16" /></div>
+              <div>
+                <p class="sp-card-label">\ucd1d \uc77c\uc815 \uc218</p>
+                <p class="sp-card-val">{{ eventCount() }}</p>
+                @if (allDayCount() > 0) {
+                  <p class="sp-card-sub">\uc885\uc77c \uc77c\uc815 {{ allDayCount() }}\uac74 \ud3ec\ud568</p>
+                }
+              </div>
+            </lw-card>
+            <lw-card class="sp-card" variant="outlined">
+              <div class="sp-card-icon sp-card-icon--violet"><lucide-icon [img]="Clock3Icon" [size]="16" /></div>
+              <div>
+                <p class="sp-card-label">\ucd1d \uc77c\uc815 \uc2dc\uac04</p>
+                <p class="sp-card-val">{{ eventHours() }}h {{ eventMinutesRem() }}m</p>
+                <p class="sp-card-sub">\uc885\uc77c \uc77c\uc815 \uc81c\uc678</p>
+              </div>
+            </lw-card>
+          </div>
+
+          <div class="sp-section" >
+            <h3 class="sp-section-title">\ub0b4 \uce98\ub9b0\ub354 \uc77c\uc815 \ube44\uc911</h3>
+            <div class="sp-donut-row">
+              <div class="sp-donut-wrap">
+                <span class="icon-glyph icon-refresh" aria-hidden="true">🔄</span>
+                <div class="sp-donut-hole" ></div>
+              </div>
+              <div class="sp-legend">
+                @for (item of calendarBreakdown(); track item.id) {
+                  <div class="sp-legend-row">
+                    <span class="sp-legend-dot" [style.backgroundColor]="item.color"></span>
+                    <span class="sp-legend-name">{{ item.name }}</span>
+                    <span class="sp-legend-count">{{ item.value }}\uac74</span>
+                    <span class="sp-legend-pct"
+                      [style.backgroundColor]="item.color+'22'" [style.color]="item.color">
+                      {{ item.percentage }}%
+                    </span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    } @else {
+      @if (taskCount()===0 && totalFocusSessions()===0) {
+        <div class="sp-empty">
+          <lucide-icon [img]="ListTodoIcon" [size]="40" class="sp-empty-icon" />
+          <p class="sp-empty-text">\uc120\ud0dd\ud55c \uae30\uac04\uc5d0 \ud560 \uc77c \ub370\uc774\ud130\uac00 \uc5c6\uc5b4\uc694.</p>
+        </div>
+      } @else {
+        <div class="sp-section-gap">
+          <div class="sp-cards-4">
+            <lw-card class="sp-card" variant="outlined">
+              <div class="sp-card-icon sp-card-icon--indigo"><lucide-icon [img]="ListTodoIcon" [size]="16" /></div>
+              <div>
+                <p class="sp-card-label">\uc0dd\uc131\ub41c \ud560 \uc77c</p>
+                <p class="sp-card-val">{{ taskCount() }}</p>
+              </div>
+            </lw-card>
+            <lw-card class="sp-card" variant="outlined">
+              <div class="sp-card-icon sp-card-icon--green"><lucide-icon [img]="CheckIcon" [size]="16" /></div>
+              <div>
+                <p class="sp-card-label">\uc644\ub8cc</p>
+                <p class="sp-card-val">{{ completedCount() }}</p>
+              </div>
+            </lw-card>
+            <lw-card class="sp-card" variant="outlined">
+              <div class="sp-card-icon sp-card-icon--amber"><lucide-icon [img]="CircleIcon" [size]="16" /></div>
+              <div>
+                <p class="sp-card-label">\ubbf8\uc644\ub8cc</p>
+                <p class="sp-card-val">{{ incompleteCount() }}</p>
+              </div>
+            </lw-card>
+            <lw-card class="sp-card" variant="outlined">
+              <div class="sp-card-icon sp-card-icon--accent"><lucide-icon [img]="BarChart3Icon" [size]="16" /></div>
+              <div>
+                <p class="sp-card-label">\uc644\ub8cc\uc728</p>
+                <p class="sp-card-val sp-card-val--accent">{{ completionRate() }}%</p>
+              </div>
+            </lw-card>
+          </div>
+
+          <div class="sp-row-2">
+            <div class="sp-section" >
+              <h3 class="sp-section-title">\ud560 \uc77c \uc644\ub8cc\uc728</h3>
+              <div class="sp-donut-center">
+                <div class="sp-donut-sm-wrap">
+                  <span class="icon-glyph icon-refresh" aria-hidden="true">🔄</span>
+                  <div class="sp-donut-sm-hole" >
+                    <span class="sp-donut-pct">{{ completionRate() }}%</span>
+                    <span class="sp-donut-pct-label">\uc644\ub8cc\uc728</span>
+                  </div>
+                </div>
+                <div class="sp-donut-sm-legend">
+                  <div class="sp-dsm-item"><span class="sp-dsm-dot" style="background:#10b981"></span><span>\uc644\ub8cc {{ completedCount() }}</span></div>
+                  <div class="sp-dsm-item"><span class="sp-dsm-dot" style="background:#e5e7eb"></span><span>\ubbf8\uc644\ub8cc {{ incompleteCount() }}</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sp-section" >
+              <h3 class="sp-section-title sp-section-title--icon">
+                <lucide-icon [img]="TimerIcon" [size]="14" class="sp-timer-icon" />
+                \ube3c\ubaa8\ub3c4\ub85c \uc9d1\uc911 \uc2dc\uac04
+              </h3>
+              <div class="sp-focus-total">
+                <span class="sp-focus-num">{{ focusHours() }}</span><span class="sp-focus-unit">h</span>
+                <span class="sp-focus-num">{{ focusMinsRem() }}</span><span class="sp-focus-unit">m</span>
+              </div>
+              <p class="sp-focus-sub">\ucd1d \uc9d1\uc911 \uc2dc\uac04</p>
+              <div class="sp-focus-meta">
+                <div class="sp-fmeta sp-fmeta--orange">
+                  <lucide-icon [img]="TimerIcon" [size]="14" />
+                  <p class="sp-fmeta-val">{{ totalFocusSessions() }}</p>
+                  <p class="sp-fmeta-label">\ucd1d \uc138\uc158 \uc218</p>
+                </div>
+                <div class="sp-fmeta sp-fmeta--blue">
+                  <lucide-icon [img]="Clock3Icon" [size]="14" />
+                  <p class="sp-fmeta-val">{{ avgFocusMins() }}\ubd84</p>
+                  <p class="sp-fmeta-label">\ud3c9\uade0 \uc138\uc158 \uae38\uc774</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (focusByDay().length > 0) {
+            <div class="sp-section" >
+              <h3 class="sp-section-title">\uc77c\uc790\ubcc4 \uc9d1\uc911 \uc2dc\uac04</h3>
+              <span class="icon-calendar" aria-hidden="true"></span>
+            </div>
+          }
+
+          @if (topFocusTasks().length > 0) {
+            <div class="sp-section" >
+              <h3 class="sp-section-title">\uc9d1\uc911 \uc2dc\uac04 TOP {{ topFocusTasks().length }} \ud560 \uc77c</h3>
+              @for (item of topFocusTasks(); track item.title) {
+                <div class="sp-top-item">
+                  <span class="sp-top-rank"
+                    [class.rank-1]="$index===0" [class.rank-2]="$index===1" [class.rank-3]="$index===2">
+                    {{ $index+1 }}
+                  </span>
+                  <div class="sp-top-info">
+                    <div class="sp-top-row">
+                      <span class="sp-top-title">{{ item.title }}</span>
+                      <span class="sp-top-mins">{{ item.minutes }}\ubd84</span>
+                    </div>
+                    <div class="sp-top-bar-bg" >
+                      <div class="sp-top-bar" [style.width.%]="item.ratio" [style.backgroundColor]="topTaskColor($index)"></div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

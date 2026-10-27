@@ -1,0 +1,386 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.explorer-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: transparent;
+  color: var(--lw-text-primary);
+}
+
+.explorer-window__sidebar-item,
+.explorer-window__quick-card,
+.explorer-window__item-row {
+  border: none;
+  background: transparent;
+  font: inherit;
+}
+
+
+
+.explorer-window__sidebar-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.explorer-window__sidebar-item:hover,
+.explorer-window__quick-card:hover,
+.explorer-window__item-row:hover {
+  background: var(--lw-card-hover-bg);
+}
+
+.explorer-window__body {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  min-height: 0;
+  flex: 1;
+}
+
+.explorer-window__sidebar {
+  display: grid;
+  align-content: start;
+  gap: 3px;
+  padding: 16px 12px;
+  border-right: 1px solid var(--lw-border-divider);
+  background: color-mix(in srgb, var(--lw-color-white) 8%, transparent);
+}
+
+.explorer-window__sidebar-title {
+  padding: 0 12px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lw-text-muted);
+}
+
+.explorer-window__sidebar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 9px;
+  text-align: left;
+  color: var(--lw-text-secondary);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.explorer-window__sidebar-item:hover {
+  transform: translateX(2px);
+}
+
+.explorer-window__sidebar-glyph {
+  color: var(--lw-text-muted);
+  transition: color 140ms ease;
+}
+
+.explorer-window__sidebar-item.active {
+  background: color-mix(in srgb, var(--lw-accent) 16%, transparent);
+  color: var(--lw-text-primary);
+  font-weight: 600;
+}
+
+.explorer-window__sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 3px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--lw-accent);
+  transform: translateY(-50%);
+}
+
+.explorer-window__sidebar-item.active .explorer-window__sidebar-glyph {
+  color: var(--lw-accent);
+}
+
+.explorer-window__sidebar-label {
+  font-size: 13px;
+}
+
+.explorer-window__content {
+  min-height: 0;
+  overflow: auto;
+  padding: 26px 28px 32px;
+}
+
+.explorer-window__section {
+  display: grid;
+  gap: 24px;
+}
+
+.explorer-window__section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--lw-border-divider);
+}
+
+.explorer-window__section-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--lw-text-primary);
+}
+
+.explorer-window__section-subtitle {
+  margin: 8px 0 0;
+  color: var(--lw-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.explorer-window__section-chip {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--lw-accent) 12%, transparent);
+  color: var(--lw-text-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.explorer-window__subheading {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--lw-text-secondary);
+}
+
+.explorer-window__quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.explorer-window__quick-card,
+.explorer-window__item-row {
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.explorer-window__quick-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 96px;
+  padding: 16px;
+  background: color-mix(in srgb, var(--lw-color-white) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 50%, transparent);
+  box-shadow:
+    0 8px 24px -4px color-mix(in srgb, var(--lw-hue-slate-900) 8%, transparent),
+    0 2px 6px color-mix(in srgb, var(--lw-hue-slate-900) 4%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 85%, transparent);
+}
+
+.explorer-window__quick-card:hover {
+  transform: translateY(-3px);
+  background: color-mix(in srgb, var(--lw-color-white) 88%, transparent);
+  border-color: color-mix(in srgb, var(--lw-accent) 40%, color-mix(in srgb, var(--lw-color-white) 60%, transparent));
+  box-shadow:
+    0 16px 36px -6px color-mix(in srgb, var(--lw-hue-blue-700) 18%, transparent),
+    0 4px 12px color-mix(in srgb, var(--lw-hue-slate-900) 6%, transparent),
+    inset 0 1px 0 var(--lw-surface);
+}
+
+.explorer-window__item-list {
+  display: grid;
+  gap: 8px;
+}
+
+.explorer-window__item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 60px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--lw-color-white) 94%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-hue-slate-900) 4%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 80%, transparent);
+}
+
+.explorer-window__item-row:hover {
+  background: color-mix(in srgb, var(--lw-color-white) 85%, transparent);
+  border-color: color-mix(in srgb, var(--lw-accent) 35%, color-mix(in srgb, var(--lw-color-white) 60%, transparent));
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--lw-hue-slate-900) 8%, transparent), inset 0 1px 0 var(--lw-surface);
+  transform: translateY(-1px);
+}
+
+.explorer-window__item-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.explorer-window__item-glyph {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  color: var(--lw-accent);
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--lw-accent) 14%, transparent),
+      color-mix(in srgb, var(--lw-accent) 4%, var(--lw-bg-input)));
+  border: 1px solid color-mix(in srgb, var(--lw-accent) 18%, var(--lw-border-color));
+  transition: transform 150ms ease;
+}
+
+.explorer-window__quick-card:hover .explorer-window__item-glyph,
+.explorer-window__item-row:hover .explorer-window__item-glyph {
+  transform: scale(1.05);
+}
+
+.explorer-window__item-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  text-align: left;
+}
+
+.explorer-window__item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--lw-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.explorer-window__item-subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--lw-text-secondary);
+}
+
+.explorer-window__item-kind {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--lw-text-muted) 10%, transparent);
+  color: var(--lw-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.explorer-window__quick-card.selected,
+.explorer-window__item-row.selected {
+  background: color-mix(in srgb, var(--lw-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--lw-accent) 28%, transparent);
+}
+
+.explorer-window__quick-card.running,
+.explorer-window__item-row.running {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-accent) 28%, transparent) inset;
+}
+
+.explorer-window__quick-card.active,
+.explorer-window__item-row.active {
+  background: color-mix(in srgb, var(--lw-accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--lw-accent) 40%, transparent);
+}
+
+:host-context([data-theme='dark']),
+:host-context([data-lw-theme='dark']) {
+  .explorer-window__quick-card {
+    background: color-mix(in srgb, var(--lw-hue-slate-800) 72%, transparent);
+    border-color: color-mix(in srgb, var(--lw-color-white) 12%, transparent);
+    box-shadow: 0 8px 24px -4px color-mix(in srgb, var(--lw-color-black) 45%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 10%, transparent);
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-hue-slate-800) 88%, transparent);
+      border-color: color-mix(in srgb, var(--lw-hue-indigo-500) 50%, transparent);
+      box-shadow: 0 16px 36px -6px color-mix(in srgb, var(--lw-color-black) 60%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 18%, transparent);
+    }
+  }
+
+  .explorer-window__item-row {
+    background: color-mix(in srgb, var(--lw-hue-slate-800) 60%, transparent);
+    border-color: color-mix(in srgb, var(--lw-color-white) 10%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-black) 30%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 8%, transparent);
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-hue-slate-800) 82%, transparent);
+      border-color: color-mix(in srgb, var(--lw-hue-indigo-500) 45%, transparent);
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--lw-color-black) 45%, transparent), inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 15%, transparent);
+    }
+  }
+
+  .explorer-window__item-label {
+    color: var(--lw-surface-subtle);
+  }
+
+  .explorer-window__item-subtitle {
+    color: var(--lw-border-neutral);
+  }
+}
+
+@include lw.lw-below(desktop) {
+  .explorer-window__body {
+    grid-template-columns: 1fr;
+  }
+
+  .explorer-window__sidebar {
+    grid-auto-flow: column;
+    align-content: center;
+    overflow: auto;
+    padding: 10px 12px;
+    border-right: none;
+    border-bottom: 1px solid var(--lw-border-divider);
+  }
+
+  .explorer-window__sidebar-title {
+    display: none;
+  }
+
+  .explorer-window__sidebar-item:hover {
+    transform: none;
+  }
+
+  .explorer-window__quick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@include lw.lw-below(tablet) {
+  .explorer-window__content {
+    padding: 16px;
+  }
+
+  .explorer-window__section-title {
+    font-size: 22px;
+  }
+
+  .explorer-window__quick-grid {
+    grid-template-columns: 1fr;
+  }
+}

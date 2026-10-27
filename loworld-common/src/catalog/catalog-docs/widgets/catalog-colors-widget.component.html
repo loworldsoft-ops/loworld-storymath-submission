@@ -1,0 +1,13 @@
+<div class="catalog-colors">
+  @for (token of tokens; track token.token) {
+    <lw-card variant="outlined">
+      <div class="catalog-colors__token">
+        <code class="catalog-colors__name">{{ token.token }}</code>
+        <div class="catalog-colors__values">
+          <lw-chip size="sm" variant="default" [colorDot]="token.lightValue" [tooltip]="'라이트 ' + token.lightValue">라이트</lw-chip>
+          <lw-chip size="sm" variant="default" [colorDot]="token.darkValue" [tooltip]="'다크 ' + token.darkValue">다크</lw-chip>
+        </div>
+      </div>
+    </lw-card>
+  }
+</div>

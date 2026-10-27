@@ -1,0 +1,26 @@
+@if (items().length === 0) {
+  <div class="empty" role="status">
+    @if (emptyIcon()) {
+      <span class="empty-icon" aria-hidden="true">{{ emptyIcon() }}</span>
+    }
+    <span class="empty-title">{{ emptyTitle() }}</span>
+    @if (emptyDescription()) {
+      <p class="empty-desc">{{ emptyDescription() }}</p>
+    }
+  </div>
+} @else {
+  <div
+    class="list"
+    role="list"
+    [attr.data-layout]="layout()"
+    [attr.data-gap]="gap()"
+    [style.--lw-list-gap]="gapPx()"
+  >
+    @for (item of items(); track trackBy()(item, i); let i = $index) {
+      <ng-container
+        [ngTemplateOutlet]="itemTemplate()"
+        [ngTemplateOutletContext]="rowContext(item, i)"
+      />
+    }
+  </div>
+}

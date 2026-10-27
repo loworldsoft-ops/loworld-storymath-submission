@@ -1,0 +1,23 @@
+{
+  "path": "/detail/agent-status",
+  "title": "에이전트 현황",
+  "desc": "에이전트의 배포 상태와 마지막 실행 시점을 조회하는 방법",
+  "toc": [
+    {
+      "id": "에이전트-조회와-필터",
+      "depth": 2,
+      "text": "에이전트 조회와 필터"
+    },
+    {
+      "id": "목록에서-확인할-수-있는-것",
+      "depth": 2,
+      "text": "목록에서 확인할 수 있는 것"
+    },
+    {
+      "id": "하단-요약과-페이지-이동",
+      "depth": 2,
+      "text": "하단 요약과 페이지 이동"
+    }
+  ],
+  "html": "<p>에이전트 현황 화면에서 워크플로우의 배포와 실행 상태를 한눈에 확인할 수 있습니다.\n왼쪽 사이드바의 <strong>플랫폼 관리 &gt; 에이전트 현황</strong>에서 들어갑니다.</p>\n<div class=\"flex gap-2 my-4 rounded-xl border bg-fd-card p-3 ps-1 text-sm text-fd-card-foreground shadow-md\" style=\"--callout-color:var(--color-fd-info, var(--color-fd-muted))\"><div role=\"none\" class=\"w-0.5 bg-(--callout-color)/50 rounded-sm\"></div><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-5 -me-0.5 fill-(--callout-color) text-fd-card\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 16v-4\"></path><path d=\"M12 8h.01\"></path></svg><div class=\"flex flex-col gap-2 min-w-0 flex-1\"><div class=\"text-fd-muted-foreground prose-no-margin empty:hidden\"><p>이 화면은 계정·감사 관리 권한이 있는 사용자가 이용할 수 있습니다.</p></div></div></div>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"에이전트-조회와-필터\"><a data-card=\"\" href=\"#에이전트-조회와-필터\" class=\"peer\">에이전트 조회와 필터</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>검색창을 사용하거나 <strong>그룹</strong>, <strong>배포 상태</strong>, <strong>기간</strong> 필터를 선택해 대상을 좁혀 보세요.</p>\n<div class=\"relative overflow-auto prose-no-margin my-6\"><table><thead><tr><th>필터</th><th>고를 수 있는 값</th></tr></thead><tbody><tr><td><strong>그룹</strong></td><td>여러 그룹을 함께 선택할 수 있고, 하위 그룹을 포함할지 정합니다</td></tr><tr><td><strong>배포</strong></td><td>전체 · 배포됨 · 미배포</td></tr><tr><td><strong>기간</strong></td><td>전체 기간 · 최근 7일 · 최근 30일 · 최근 90일 · 직접 선택</td></tr></tbody></table></div>\n<p>기간에서 <strong>직접 선택</strong>을 고르면 시작일과 종료일을 지정합니다. 시작일이 종료일보다 늦으면 안내가 표시됩니다.</p>\n<p>필터를 하나라도 사용하면 오른쪽에 <strong>초기화</strong>가 나타납니다. 그 옆에는 조건에 맞는 <strong>결과</strong> 건수가 표시됩니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"목록에서-확인할-수-있는-것\"><a data-card=\"\" href=\"#목록에서-확인할-수-있는-것\" class=\"peer\">목록에서 확인할 수 있는 것</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>목록에는 그룹·워크스페이스·워크플로우 이름과 ID, 생성자, 배포 상태, 생성일, 마지막 실행 시점이 표시됩니다.</p>\n<p>그룹을 제외한 <strong>워크스페이스</strong>, <strong>워크플로우</strong>, <strong>생성자</strong>, <strong>배포</strong>, <strong>생성일</strong>, <strong>마지막 실행</strong> 열은 머리글을 눌러 정렬할 수 있습니다.</p>\n<p>조건에 맞는 워크플로우가 없으면 <strong>워크플로우가 없습니다</strong>라고 표시됩니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"하단-요약과-페이지-이동\"><a data-card=\"\" href=\"#하단-요약과-페이지-이동\" class=\"peer\">하단 요약과 페이지 이동</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>화면 아래에는 조건에 맞는 <strong>워크플로우</strong> 총 개수와 <strong>배포됨</strong>, <strong>미배포</strong> 개수가 함께 표시됩니다.</p>\n<p>목록은 한 번에 20건씩 보여 주며, 현재 쪽 번호와 좌우 버튼으로 이동합니다.</p>"
+}

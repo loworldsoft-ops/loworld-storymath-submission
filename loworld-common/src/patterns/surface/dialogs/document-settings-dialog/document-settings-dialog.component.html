@@ -1,0 +1,566 @@
+@if (isSheetMode()) {
+  <lw-bottom-sheet
+    [open]="true"
+    [fullWidth]="true"
+    [edgeToEdge]="true"
+    [backdropBlur]="true"
+    [closeOnOverlay]="true"
+    [scrollable]="false"
+    [showBack]="mobileViewLevel() === 'detail'"
+    backLabel="목록"
+    (back)="goBackToMobileMenu()"
+    (close)="close.emit()">
+    <div lwSheetTitle class="settings-sheet-title-group">
+      <span class="mobile-sheet-title">{{ mobileViewLevel() === 'detail' ? activeTabObj().label : '설정' }}</span>
+    </div>
+
+    <ng-container *ngTemplateOutlet="modalInnerContent" />
+  </lw-bottom-sheet>
+} @else if (isEmbeddedMode()) {
+  <ng-container *ngTemplateOutlet="modalInnerContent" />
+} @else {
+  <lw-modal
+    class="settings-frame"
+    [isOpen]="true"
+    size="lg"
+    variant="custom"
+    [paddingless]="true"
+    [windowControls]="windowControls()"
+    [windowStyle]="windowStyle()"
+    [draggable]="draggable()"
+    [showHeader]="showHeader()"
+    [title]="resolvedBrandName() + ' 설정'"
+    (closeClick)="close.emit()">
+    <ng-container *ngTemplateOutlet="modalInnerContent" />
+  </lw-modal>
+}
+
+<ng-template #modalInnerContent>
+  <div class="modal document-settings-dialog" role="presentation" [class.is-sheet-mode]="isSheetMode() || isEmbeddedMode()" [class.is-embedded-mode]="isEmbeddedMode()" (click)="$event.stopPropagation()">
+    <!-- 📱 모바일 바텀시트 전용 상단 헤더 & 네비게이션 바 (데스크톱 및 외부 lw-bottom-sheet 감싸기 환경에서는 숨김) -->
+    @if (!isSheetMode() && !isEmbeddedMode()) {
+      <div class="mobile-sheet-header">
+        <div class="mobile-sheet-handle-bar" aria-hidden="true">
+          <span class="mobile-sheet-handle-pill"></span>
+        </div>
+
+        <div class="mobile-sheet-nav-bar">
+          @if (mobileViewLevel() === 'detail') {
+            <!-- 뒤로 가기 버튼 -->
+            <lw-button
+              variant="ghost"
+              size="xs"
+              type="button"
+              class="mobile-sheet-back-btn"
+              (click)="goBackToMobileMenu()"
+              aria-label="메뉴로 돌아가기">
+              <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+              <span class="mobile-back-text">메뉴</span>
+            </lw-button>
+
+            <span class="mobile-sheet-title">{{ activeTabObj().label }}</span>
+          } @else {
+            <!-- 메뉴 목록 타이틀 -->
+            <div class="mobile-sheet-brand">
+              <div class="brand-icon">
+                @if (brandIconUrl()) {
+                  <img [src]="brandIconUrl()" class="brand-icon-img" [alt]="resolvedBrandName()" />
+                } @else {
+                  <span class="brand-text">{{ resolvedBrandBadgeText() }}</span>
+                }
+              </div>
+              <span class="brand-name">{{ resolvedBrandName() }} 설정</span>
+            </div>
+          }
+
+          <!-- 닫기 버튼 -->
+          <lw-close-button
+            size="xs"
+            variant="default"
+            ariaLabel="설정 닫기"
+            tooltip="설정 닫기"
+            (closeClick)="close.emit()" />
+        </div>
+      </div>
+    }
+
+    <!-- 슬라이드 트랙: 데스크톱에서는 2열 레이아웃, 모바일에서는 좌우 스와이프 트랙 -->
+    <div class="sheet-body-slider" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+      <div class="sheet-body-track" [class.is-detail]="mobileViewLevel() === 'detail'">
+        <!-- 모바일 전용 메뉴 목록 페이지 (데스크톱에서는 숨김) -->
+        <div class="mobile-menu-page">
+          <p class="mobile-menu-caption">{{ resolvedBrandName() }}</p>
+          <ul class="mobile-menu-list">
+            @for (tab of displayTabs(); track tab.id) {
+              <li class="mobile-menu-row">
+                <button type="button" class="mobile-menu-item" (click)="openMobileDetail(tab.id)">
+                  <span class="mobile-menu-item__icon" aria-hidden="true"><lw-icon [name]="tab.icon" [size]="18" /></span>
+                  <span class="mobile-menu-item__text">
+                    <span class="mobile-menu-item__title">{{ tab.label }}</span>
+                    <span class="mobile-menu-item__desc">{{ getTabDesc(tab.id) }}</span>
+                  </span>
+                  @if (getTabBadge(tab.id); as badge) {
+                    <span class="mobile-menu-item__value">{{ badge }}</span>
+                  }
+                  <lw-icon class="mobile-menu-item__chevron" name="chevron-right" [size]="16" />
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- 데스크톱 좌측 사이드바 (모바일에서는 숨김) -->
+        <div class="nav desktop-only-nav">
+          <div class="nav-top">
+            <div class="brand">
+              <div class="brand-left">
+                <div class="brand-icon">
+                  @if (brandIconUrl()) {
+                    <img [src]="brandIconUrl()" class="brand-icon-img" [alt]="resolvedBrandName()" />
+                  } @else {
+                    <span class="brand-text">{{ resolvedBrandBadgeText() }}</span>
+                  }
+                </div>
+                <span class="brand-name">{{ resolvedBrandName() }}</span>
+              </div>
+            </div>
+            <div class="tab-list">
+              @for (tab of displayTabs(); track tab.id) {
+                <lw-button
+                  class="tab-item"
+                  variant="ghost"
+                  size="md"
+                  [selected]="activeTab() === tab.id"
+                  [class.active]="activeTab() === tab.id"
+                  (click)="activeTab.set(tab.id)">
+                  <span class="tab-item-text">{{ tab.label }}</span>
+                </lw-button>
+              }
+            </div>
+          </div>
+          <div class="nav-bottom">
+            <a href="mailto:support@eznote.app" class="nav-link">1:1 문의</a>
+            <a href="#" class="nav-link">자주 묻는 질문</a>
+          </div>
+        </div>
+
+        <!-- Right content (모바일에서는 슬라이드 2번째 상세 페이지) -->
+        <div class="content" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
+      @switch (activeTab()) {
+        @case ('play-theme') {
+          <div class="section flex-col">
+            <div class="section-title-wrap">
+              <h2 class="section-title">모양</h2>
+              <p class="section-subtitle">
+                화면 모드, 스킨, 밀도, 움직임을 고릅니다. 고르면 바로 적용됩니다.
+              </p>
+            </div>
+            <lw-appearance-settings (appearanceChange)="onAppearanceChange()" />
+            <lw-frame-settings />
+            @if (showWallpaperSetting()) {
+              <div class="section-group">
+                <div class="setting-row">
+                  <div class="toggle-info">
+                    <p class="setting-label">배경화면</p>
+                    <p class="setting-desc">바탕화면과 홈 화면에 쓸 배경 이미지를 고릅니다</p>
+                  </div>
+                  <lw-button type="button" variant="outline" size="sm" (click)="wallpaperRequest.emit()">
+                    변경
+                  </lw-button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+        @case ('reader-options') {
+          <div class="section flex-col">
+            <div class="section-title-wrap">
+              <h2 class="section-title">읽기 옵션</h2>
+              <p class="section-subtitle">콘텐츠 뷰어의 재생 연출 및 타이핑 속도를 제어합니다.</p>
+            </div>
+            <div class="section-group">
+              <!-- ⌨️ 서사 타이핑 효과 토글 (기본 OFF) -->
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">서사 타이핑 효과</p>
+                  <p class="setting-desc">본문 텍스트가 한 글자씩 타이핑되며 나타나는 연출을 켭니다 (기본: 꺼짐)</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="effectiveTypingIntroEnabled()"
+                  (toggle)="onToggleTypingIntro()"
+                  ariaLabel="서사 타이핑 효과 토글" />
+              </div>
+
+              <!-- ⚡ 서사 타이핑 속도 배속 -->
+              @if (effectiveTypingIntroEnabled()) {
+                <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                  <div class="toggle-info">
+                    <p class="setting-label">⚡ 서사 타이핑 속도 배속</p>
+                    <p class="setting-desc">본문 서사 텍스트가 타이핑되는 진행 속도를 조절합니다</p>
+                  </div>
+                    <div class="novel-speed-chip-group">
+                      @for (preset of speedPresets; track preset.value) {
+                        <lw-button
+                          type="button"
+                          [variant]="preset.value === typingSpeed() ? 'primary' : 'outline'"
+                          size="sm"
+                          class="novel-speed-chip"
+                          (click)="setTypingSpeed(preset.value)">
+                          <span class="speed-icon">{{ preset.icon }}</span>
+                          <span class="speed-label">{{ preset.label }}</span>
+                        </lw-button>
+                      }
+                    </div>
+
+                </div>
+              }
+
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">자동 재생</p>
+                  <p class="setting-desc">소설 씬 타이핑 및 턴 자동 진행</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="!!playAutoMode()"
+                  (toggle)="playAutoModeChange.emit(!playAutoMode())"
+                  ariaLabel="자동 재생 토글" />
+              </div>
+
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">자동 저장</p>
+                  <p class="setting-desc">진행 상태를 로컬 및 DB에 자동으로 저장합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="!!playAutoSave()"
+                  (toggle)="playAutoSaveChange.emit(!playAutoSave())"
+                  ariaLabel="자동 저장 토글" />
+              </div>
+
+              <!-- 💬 하단 명령/대화 독 (Command Dock) 토글 -->
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">💬 하단 명령 독 (Command Dock)</p>
+                  <p class="setting-desc">소설 화면 하단에 CLI/명령 입력창 및 AI 챗 어시스턴트 독(lw-play-command-dock)을 노출합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="effectiveCommandDockEnabled()"
+                  (toggle)="onToggleCommandDock()"
+                  ariaLabel="하단 명령 독 표시 토글" />
+              </div>
+            </div>
+
+
+            <div class="section-group novel-action-group">
+              <lw-button type="button" variant="primary" class="novel-dialog-action-btn" (click)="manualSaveRequest.emit()">
+                💾 지금 DB에 저장
+              </lw-button>
+              <lw-button type="button" variant="secondary" class="novel-dialog-action-btn" (click)="restartRequest.emit()">
+                ↺ 처음부터 다시 시작
+              </lw-button>
+            </div>
+          </div>
+        }
+        @case ('preferences') {
+          <div class="section flex-col">
+            <div class="section-title-wrap">
+              <h2 class="section-title">툴팁 및 디버그</h2>
+              <p class="section-subtitle">버튼 설명 툴팁과 개발용 로그를 켜고 끕니다.</p>
+            </div>
+            <div class="section-group">
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">버튼 기본 설명 툴팁</p>
+                  <p class="setting-desc">버튼 마우스 호버 시 기능 안내 및 텍스트 툴팁을 표시합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="buttonTooltipsEnabled()"
+                  (toggle)="toggleButtonTooltips()"
+                  ariaLabel="버튼 기본 설명 툴팁 토글" />
+              </div>
+
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">컴포넌트 엔지니어링 메타 툴팁</p>
+                  <p class="setting-desc">[LwButton] variant, size, action 등 컴포넌트 아키텍처 디버그 정보를 툴팁에 함께 표시합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="componentTooltipsEnabled()"
+                  (toggle)="toggleComponentTooltips()"
+                  ariaLabel="컴포넌트 엔지니어링 메타 툴팁 토글" />
+              </div>
+
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">타이틀바 버튼 텍스트 라벨</p>
+                  <p class="setting-desc">타이틀바 버튼에 아이콘뿐만 아니라 텍스트 라벨도 함께 표시합니다 (해제 시 아이콘 전용)</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="titlebarButtonLabelsEnabled()"
+                  (toggle)="toggleTitlebarButtonLabels()"
+                  ariaLabel="타이틀바 버튼 텍스트 라벨 토글" />
+              </div>
+
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">브라우저 콘솔 텔레메트리 로그</p>
+                  <p class="setting-desc">버튼 클릭 및 컴포넌트 상호작용 로그를 콘솔에 출력합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="consoleLogsEnabled()"
+                  (toggle)="toggleConsoleLogs()"
+                  ariaLabel="브라우저 콘솔 로그 토글" />
+              </div>
+            </div>
+          </div>
+        }
+        @case ('window') {
+          <div class="section flex-col">
+            <div class="section-title-wrap">
+              <h2 class="section-title">윈도우 및 앱 실행 설정</h2>
+              <p class="section-subtitle">데스크톱 환경에서 애플리케이션 창이 열릴 때의 기본 동작과 디스플레이 방식을 제어합니다.</p>
+            </div>
+
+            <div class="section-group">
+              <div class="launch-mode-title-group">
+                <h3 class="subsection-title">앱 실행 시작 크기 (Launch Mode)</h3>
+                <p class="subsection-desc">작업 표시줄, 데스크톱 아이콘, 시작 메뉴에서 앱을 실행할 때 초기 창 형태를 선택하세요.</p>
+              </div>
+
+              <div class="launch-mode-grid">
+                <!-- 1. 창 모드로 시작 (기본값) -->
+                <div
+                  class="launch-mode-card"
+                  role="button"
+                  tabindex="0"
+                  [attr.aria-pressed]="effectiveWindowLaunchMode() === 'normal'"
+                  [class.is-active]="effectiveWindowLaunchMode() === 'normal'"
+                  (click)="onSelectWindowLaunchMode('normal')"
+                  (keydown.enter)="onSelectWindowLaunchMode('normal')">
+                  <div class="card-radio-row">
+                    <span class="card-icon">🗗</span>
+                    <div class="card-badge" [class.badge-active]="effectiveWindowLaunchMode() === 'normal'">
+                      {{ effectiveWindowLaunchMode() === 'normal' ? '✓ 적용 중' : '창 모드' }}
+                    </div>
+                  </div>
+                  <div class="card-title">창 모드로 시작 (Windowed)</div>
+                  <div class="card-desc">
+                    독립된 크기의 윈도우 창으로 실행하여 여러 앱을 동시에 보고 자유롭게 드래그하며 멀티태스킹할 수 있습니다.
+                  </div>
+                </div>
+
+                <!-- 2. 전체화면으로 시작 -->
+                <div
+                  class="launch-mode-card"
+                  role="button"
+                  tabindex="0"
+                  [attr.aria-pressed]="effectiveWindowLaunchMode() === 'maximized'"
+                  [class.is-active]="effectiveWindowLaunchMode() === 'maximized'"
+                  (click)="onSelectWindowLaunchMode('maximized')"
+                  (keydown.enter)="onSelectWindowLaunchMode('maximized')">
+                  <div class="card-radio-row">
+                    <span class="card-icon">⤢</span>
+                    <div class="card-badge" [class.badge-active]="effectiveWindowLaunchMode() === 'maximized'">
+                      {{ effectiveWindowLaunchMode() === 'maximized' ? '✓ 적용 중' : '기본 권장' }}
+                    </div>
+                  </div>
+                  <div class="card-title">전체화면으로 시작 (Fullscreen)</div>
+                  <div class="card-desc">
+                    앱을 실행하자마자 화면 전체를 채우는 최대화(Maximized) 상태로 시작하여 집중 모드로 몰입할 수 있습니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-group" style="margin-top: 8px;">
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">빠른 전환 드롭다운</p>
+                  <p class="setting-desc">선택된 앱 실행 모드를 즉시 변경합니다</p>
+                </div>
+                <div class="select-wrap" style="width: 170px;">
+                  <lw-select
+                    [value]="effectiveWindowLaunchMode()"
+                    (selectChange)="onSelectWindowLaunchMode($event)"
+                    class="setting-select">
+                    <option value="normal">🗗 창 모드로 시작</option>
+                    <option value="maximized">⤢ 전체화면으로 시작</option>
+                  </lw-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        @case ('general') {
+          <div class="section">
+            <div class="section-title-wrap">
+              <h2 class="section-title">일반 설정</h2>
+              <p class="section-subtitle">시스템 기본 언어 및 표시 테마를 설정합니다.</p>
+            </div>
+            <div class="section-group">
+              <lw-form-field label="언어 선택" hint="UI에 표시될 기본 언어를 변경합니다">
+                <div class="select-wrap">
+                  <lw-select [value]="settings().language" (selectChange)="settingsChange.emit({language: $event})" class="setting-select">
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="zh-TW">繁體中文</option>
+                  </lw-select>
+                </div>
+              </lw-form-field>
+              @if (!hideWindowMode()) {
+                <lw-form-field label="앱 실행 화면 모드" hint="앱을 실행할 때 창 모드로 시작할지 전체화면으로 시작할지 설정합니다">
+                  <div class="select-wrap" style="width: 170px;">
+                    <lw-select
+                      [value]="effectiveWindowLaunchMode()"
+                      (selectChange)="onSelectWindowLaunchMode($event)"
+                      class="setting-select">
+                      <option value="normal">🗗 창 모드로 시작</option>
+                      <option value="maximized">⤢ 전체화면으로 시작</option>
+                    </lw-select>
+                  </div>
+                </lw-form-field>
+              }
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">마우스 툴팁 가이드</p>
+                  <p class="setting-desc">컴포넌트 및 버튼 마우스 호버 시 도움말 툴팁을 표시합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="tooltipsEnabled()"
+                  (toggle)="toggleTooltips()"
+                  ariaLabel="마우스 툴팁 가이드 토글" />
+              </div>
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">브라우저 콘솔 텔레메트리 로그</p>
+                  <p class="setting-desc">버튼 클릭 및 컴포넌트 상호작용 로그를 콘솔에 출력합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="consoleLogsEnabled()"
+                  (toggle)="toggleConsoleLogs()"
+                  ariaLabel="브라우저 콘솔 로그 토글" />
+              </div>
+            </div>
+          </div>
+        }
+        @case ('shortcuts') {
+          <div class="section flex-col">
+            <div class="section-title-wrap">
+              <h2 class="section-title">단축키 안내</h2>
+              <p class="section-subtitle">단축키가 겹칠 경우 일부 기능이 정상적으로 작동하지 않을 수 있습니다.</p>
+            </div>
+            <div class="section-group">
+              @for (sc of shortcuts; track sc.id) {
+                <div class="setting-row">
+                  <p class="setting-label">{{ sc.label }}</p>
+                  <span class="shortcut-key">{{ sc.keys }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+        @case ('notification') {
+          <div class="section">
+            <div class="section-title-wrap">
+              <h2 class="section-title">알림 설정</h2>
+              <p class="section-subtitle">시스템 알림 및 알림음 재생 여부를 제어합니다.</p>
+            </div>
+            <div class="section-group">
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">리마인더 알림</p>
+                  <p class="setting-desc">설정한 시간에 알림을 표시합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="!!settings().notificationReminder"
+                  (toggle)="settingsChange.emit({ notificationReminder: !settings().notificationReminder })"
+                  ariaLabel="리마인더 알림 토글" />
+              </div>
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">알림음</p>
+                  <p class="setting-desc">알림 발생 시 효과음을 재생합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="!!settings().notificationSound"
+                  (toggle)="settingsChange.emit({ notificationSound: !settings().notificationSound })"
+                  ariaLabel="알림음 토글" />
+              </div>
+            </div>
+          </div>
+        }
+        @case ('sync') {
+          <div class="section">
+            <div class="section-title-wrap">
+              <h2 class="section-title">클라우드 동기화</h2>
+              <p class="section-subtitle">클라우드 서버와 데이터 실시간 동기화를 설정합니다.</p>
+            </div>
+            <div class="section-group">
+              <div class="setting-row">
+                <div class="toggle-info">
+                  <p class="setting-label">자동 동기화</p>
+                  <p class="setting-desc">모든 변경사항을 서버에 실시간 자동 저장합니다</p>
+                </div>
+                <lw-slide-switch
+                  [checked]="!!settings().autoSync"
+                  (toggle)="settingsChange.emit({ autoSync: !settings().autoSync })"
+                  ariaLabel="자동 동기화 토글" />
+              </div>
+            </div>
+          </div>
+        }
+        @case ('info') {
+          <div class="section">
+            <div class="section-title-wrap">
+              <h2 class="section-title">버전 및 빌드 정보</h2>
+              <p class="section-subtitle">시스템 빌드 버전 및 소프트웨어 배포 정보입니다.</p>
+            </div>
+            <div class="section-group">
+              <div class="info-card">
+                <div class="info-logo">{{ resolvedBrandBadgeText() }}</div>
+                <div class="info-detail">
+                  <p class="info-name">{{ resolvedBrandName() }}</p>
+                  <p class="info-ver">v{{ buildInfo.version }} · Commit {{ buildInfo.gitCommit }}</p>
+                  <p class="info-copy">© Loworld UI Monorepo. All rights reserved.</p>
+                </div>
+              </div>
+
+              <!-- 상세 빌드 메타데이터 그리드 카드 -->
+              <div class="build-meta-card">
+                <div class="meta-row">
+                  <span class="meta-label">🏷️ 앱 버전</span>
+                  <span class="meta-value font-bold">v{{ buildInfo.version }}</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">📌 Git 커밋</span>
+                  <span class="meta-value font-mono">{{ buildInfo.gitCommit }} ({{ buildInfo.gitBranch }})</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">🕒 빌드 일시</span>
+                  <span class="meta-value">{{ buildInfo.buildDateKst }}</span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">📱 런타임 플랫폼</span>
+                  <span class="meta-value">
+                    @if (runtimePlatform() === 'android-bridge') {
+                      <span class="platform-badge platform-android">🤖 Android Native Shell</span>
+                    } @else {
+                      <span class="platform-badge platform-web">🌐 Web Browser (Desktop/Mobile)</span>
+                    }
+                  </span>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label">🚀 빌드 환경</span>
+                  <span class="meta-value font-mono">{{ buildInfo.environment }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

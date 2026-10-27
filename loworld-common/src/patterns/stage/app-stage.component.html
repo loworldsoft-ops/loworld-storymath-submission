@@ -1,0 +1,22 @@
+<ng-template #body><ng-content /></ng-template>
+
+@if (bare()) {
+  <div class="demo-page demo-page--bare">
+    <ng-container [ngTemplateOutlet]="body" />
+    <ng-content select="[lwStageOverlay]" />
+    <ng-content select="lw-dev-tools" />
+  </div>
+} @else {
+  <div class="demo-page">
+    <div class="demo-frame" [class.desktop-frame]="frame() === 'desktop'" [class.mobile-frame]="frame() === 'mobile'">
+      @if (loading()) {
+        <lw-spinner />
+      } @else {
+        <ng-container [ngTemplateOutlet]="body" />
+        <div class="lw-stage-cover"><ng-content select="[lwStageCover]" /></div>
+      }
+    </div>
+    <ng-content select="[lwStageOverlay]" />
+    <ng-content select="lw-dev-tools" />
+  </div>
+}

@@ -1,0 +1,28 @@
+{
+  "path": "/detail/organization/my-group",
+  "title": "내 그룹 관리",
+  "desc": "",
+  "toc": [
+    {
+      "id": "팀원-초대하기-기존-계정",
+      "depth": 2,
+      "text": "팀원 초대하기 (기존 계정)"
+    },
+    {
+      "id": "그룹-역할-변경하기",
+      "depth": 2,
+      "text": "그룹 역할 변경하기"
+    },
+    {
+      "id": "팀원-이동하기",
+      "depth": 2,
+      "text": "팀원 이동하기"
+    },
+    {
+      "id": "팀원-내보내기",
+      "depth": 2,
+      "text": "팀원 내보내기"
+    }
+  ],
+  "html": "<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"팀원-초대하기-기존-계정\"><a data-card=\"\" href=\"#팀원-초대하기-기존-계정\" class=\"peer\">팀원 초대하기 (기존 계정)</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>이미 계정이 있는 사용자를 그룹에 추가합니다.</p>\n<div class=\"fd-steps\"><div class=\"fd-step\"><p>우측 패널 상단의 <strong>&quot;초대하기&quot;</strong> 버튼을 클릭합니다.</p></div><div class=\"fd-step\"><p>이름 또는 이메일을 2글자 이상 입력해 사용자를 검색합니다. 검색 결과에는 사용자의 현재 소속 그룹이 함께 표시되며, 이미 선택한 그룹에 속한 사용자는 선택할 수 없습니다.</p></div><div class=\"fd-step\"><p>검색 결과에서 사용자를 선택합니다. 최상위 그룹에서는 <strong>조직관리자</strong> 또는 <strong>그룹원</strong>, 하위 그룹에서는 <strong>그룹관리자</strong> 또는 <strong>그룹원</strong>으로 역할을 정합니다.</p></div><div class=\"fd-step\"><p><strong>&quot;N명 초대&quot;</strong> 버튼을 클릭해 선택한 사용자를 그룹에 바로 추가합니다.</p></div></div>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"그룹-역할-변경하기\"><a data-card=\"\" href=\"#그룹-역할-변경하기\" class=\"peer\">그룹 역할 변경하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>팀원의 그룹 내 역할을 변경합니다.</p>\n<p>그룹 역할 배지는 현재 역할을 보여주는 용도이므로 배지에서 직접 변경하지 않습니다.\n사용자 행의 <strong>역할 관리 아이콘</strong>을 눌러 모달을 연 뒤 역할을 선택하고 저장하세요.</p>\n<ul>\n<li>최상위 그룹에서는 <strong>조직관리자</strong> 또는 <strong>그룹원</strong>을 선택합니다.</li>\n<li>하위 그룹에서는 <strong>그룹관리자</strong> 또는 <strong>그룹원</strong>을 선택합니다.</li>\n<li>같은 모달에서 사용자에게 부여할 커스텀 역할도 함께 선택할 수 있습니다.</li>\n</ul>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"팀원-이동하기\"><a data-card=\"\" href=\"#팀원-이동하기\" class=\"peer\">팀원 이동하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>다른 그룹으로 소속을 옮깁니다.\n사용자 행의 <strong>이동 아이콘</strong>을 클릭하면 대상 그룹을 선택하는 창이 열립니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"팀원-내보내기\"><a data-card=\"\" href=\"#팀원-내보내기\" class=\"peer\">팀원 내보내기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>그룹에서 제거하려면 사용자 행의 <strong>내보내기 아이콘</strong>을 클릭하세요.\n사용자를 그룹에서 내보내면 해당 그룹에서 받은 역할이 함께 회수됩니다.\n일반 계정이 마지막 소속 그룹에서도 제거되면 소속 그룹이 없다는 안내 화면이 표시됩니다.</p>\n<div class=\"flex gap-2 my-4 rounded-xl border bg-fd-card p-3 ps-1 text-sm text-fd-card-foreground shadow-md\" style=\"--callout-color:var(--color-fd-warning, var(--color-fd-muted))\"><div role=\"none\" class=\"w-0.5 bg-(--callout-color)/50 rounded-sm\"></div><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-5 -me-0.5 fill-(--callout-color) text-fd-card\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"></path><path d=\"M12 9v4\"></path><path d=\"M12 17h.01\"></path></svg><div class=\"flex flex-col gap-2 min-w-0 flex-1\"><div class=\"text-fd-muted-foreground prose-no-margin empty:hidden\"><p>그룹에 그룹관리자가 한 명도 남지 않더라도 멤버를 내보낼 수 있습니다. 내보내기 전에 그룹 관리 공백이 생기지 않는지 확인하세요.</p></div></div></div>"
+}

@@ -1,0 +1,10 @@
+    <div
+      class="overview-wallpaper-backdrop"
+      [style.backgroundColor]="wallpaperStore.currentWallpaper().solidColorHex ?? null"
+      [style.backgroundImage]="wallpaperStore.currentWallpaper().isSolidColor ? null : 'url(' + wallpaperStore.currentWallpaper().desktopUrl + ')'"
+      [style.filter]="wallpaperStore.wallpaperBlur() > 0 ? 'blur(' + wallpaperStore.wallpaperBlur() + 'px)' : null"
+      aria-hidden="true">
+    </div>
+    @if (!wallpaperStore.currentWallpaper().isSolidColor) {
+      <div class="overview-wallpaper-scrim" aria-hidden="true"></div>
+    }

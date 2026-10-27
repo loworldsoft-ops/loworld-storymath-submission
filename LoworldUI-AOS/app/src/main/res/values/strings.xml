@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 앱 이름은 여기에 없다. app.native.json의 appName으로 빌드할 때 넣는다(app/build.gradle.kts). -->
+    <string name="mode_select_title">실행 방식</string>
+    <string name="mode_remote_title">온라인 (웹에 배포한 것)</string>
+    <string name="mode_local_title">내장 (앱에 넣어 둔 것)</string>
+
+    <!-- 설정 화면에 보이는 소리 엔진의 이름. 깔린 엔진은 그 엔진 앱이 정한 이름을 쓴다(AndroidSpeech.kt). -->
+    <string name="speech_android_tts">안드로이드 기본 목소리</string>
+    <string name="speech_android_stt">안드로이드 기본 인식</string>
+    <string name="speech_android_stt_ondevice">기기 안에서 인식 (인터넷 없이)</string>
+    <string name="speech_pleos_tts">Pleos 차량 목소리</string>
+    <string name="speech_pleos_stt">Pleos 차량 인식</string>
+</resources>

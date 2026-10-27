@@ -1,0 +1,118 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lw-progress-gap, #{lw.$lw-progress-gap});
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--lw-progress-font, #{lw.$lw-progress-font-size});
+  color: var(--lw-progress-label-color, var(--lw-game-play-text, var(--lw-text-primary, currentColor)));
+  text-shadow: none !important;
+
+  &--inline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+.label {
+  font-weight: 600;
+  color: var(--lw-progress-label-color, var(--lw-game-play-text, var(--lw-text-primary, currentColor)));
+  text-shadow: none !important;
+}
+
+.counter strong {
+  font-weight: 700;
+  color: var(--lw-progress-label-color, var(--lw-game-play-text, var(--lw-text-primary, currentColor)));
+  text-shadow: none !important;
+}
+
+.sep {
+  color: var(--lw-progress-label-color, var(--lw-game-play-muted, var(--lw-text-muted, currentColor)));
+  opacity: 0.6;
+}
+
+.track {
+  height: var(--lw-progress-height, #{lw.$lw-progress-height-md});
+  background: var(--lw-progress-track);
+  border-radius: var(--lw-progress-radius, #{lw.$lw-progress-radius-pill});
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: var(--lw-progress-radius, #{lw.$lw-progress-radius-pill});
+  transition: width 0.4s ease;
+}
+
+/* ── Segments look ── */
+.progress--segments {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+
+  .segments-track {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .segment {
+    flex: 1 1 0;
+    min-width: 0;
+    height: var(--lw-progress-height, #{lw.$lw-progress-height-md});
+    background: var(--lw-progress-track, var(--lw-border));
+    border-radius: var(--lw-progress-radius, #{lw.$lw-progress-radius-pill});
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+  }
+}
+
+/* ── Dots look ── */
+.progress--dots {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+
+  .dots-track {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--lw-progress-track, var(--lw-border));
+    flex-shrink: 0;
+    transition: background-color 0.3s ease;
+  }
+}
+
+/* ── Size variants ── */
+:host[data-size='sm'] .track,
+:host[data-size='sm'] .segment,
+.progress[data-size='sm'] .track,
+.progress[data-size='sm'] .segment {
+  height: #{lw.$lw-progress-height-sm};
+}
+
+.progress[data-size='lg'] .track,
+.progress[data-size='lg'] .segment {
+  height: #{lw.$lw-progress-height-lg};
+}

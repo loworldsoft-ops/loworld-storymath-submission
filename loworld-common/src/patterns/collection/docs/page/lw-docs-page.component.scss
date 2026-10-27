@@ -1,0 +1,166 @@
+// 캡슐화를 끈 스타일시트다. `.lw-docs-page` 밖의 선택자를 추가하지 않는다.
+.lw-docs-page {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  color: var(--lw-text-primary);
+}
+
+.lw-docs-page__head {
+  margin-bottom: 24px;
+}
+
+.lw-docs-page__tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.lw-docs-page__title {
+  margin: 4px 0 0;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.lw-docs-page__desc {
+  margin: 8px 0 0;
+  color: var(--lw-text-muted);
+  font-size: 16px;
+}
+
+.lw-docs-page__pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--lw-border-subtle);
+}
+
+.lw-docs-page__pager-label {
+  overflow: hidden;
+  max-width: 260px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── 기본 본문 타이포그래피 (basicProse) ──
+.lw-docs-page--prose .lw-docs-prose {
+  font-size: 14.5px;
+  line-height: 1.75;
+
+  h2 {
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--lw-border-subtle);
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.35;
+    scroll-margin-top: 16px;
+  }
+
+  h3 {
+    margin: 24px 0 8px;
+    font-size: 16.5px;
+    font-weight: 700;
+    scroll-margin-top: 16px;
+  }
+
+  p {
+    margin: 0 0 12px;
+    color: var(--lw-text-secondary);
+  }
+
+  ul,
+  ol {
+    margin: 0 0 12px;
+    padding-left: 22px;
+    color: var(--lw-text-secondary);
+  }
+
+  li {
+    margin: 2px 0;
+  }
+
+  a {
+    color: var(--lw-color-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  strong {
+    color: var(--lw-text-primary);
+    font-weight: 600;
+  }
+
+  code {
+    padding: 1px 5px;
+    border: 1px solid var(--lw-border-subtle);
+    border-radius: 4px;
+    background: var(--lw-surface-alt);
+    font-size: 0.9em;
+  }
+
+  pre {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    overflow-x: auto;
+    border: 1px solid var(--lw-border-subtle);
+    border-radius: 8px;
+    background: var(--lw-surface-alt);
+    font-size: 12.5px;
+    line-height: 1.6;
+
+    code {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      font-size: inherit;
+    }
+  }
+
+  .table-wrap {
+    margin: 0 0 16px;
+    overflow-x: auto;
+    border: 1px solid var(--lw-border-subtle);
+    border-radius: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  th,
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--lw-border-subtle);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--lw-surface-alt);
+    color: var(--lw-text-secondary);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  td.num,
+  th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}

@@ -1,0 +1,751 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+  position: relative;
+  overflow: visible;
+
+  &:hover {
+    z-index: 20;
+  }
+}
+
+.lw-app-icon {
+  display: inline-flex;
+  position: relative;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  text-decoration: none;
+  outline: none;
+  font-family: inherit;
+  overflow: visible;
+
+  /* ── 1. Variant Layouts & Animations ────────────────────────────── */
+  &[data-variant='springboard'] {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    overflow: visible;
+
+    .lw-app-icon__visual {
+      overflow: visible;
+    }
+
+    .lw-app-icon__squircle {
+      transform-origin: center center;
+      transition:
+        transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.22s ease,
+        background-color 0.2s ease;
+    }
+
+    &.is-interactive:hover {
+      z-index: 15;
+
+      .lw-app-icon__squircle {
+        transform: translateY(-5px) scale(1.08);
+        box-shadow: none;
+        background: transparent;
+
+        .lw-app-icon__svg,
+        .lw-app-icon__img {
+          transform: scale(1.04);
+        }
+      }
+
+      .lw-app-icon__label {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 6px color-mix(in srgb, var(--lw-color-black) 15%, transparent);
+      }
+    }
+
+    &.is-interactive:active .lw-app-icon__squircle {
+      transform: scale(0.92);
+      transition-duration: 0.08s;
+    }
+  }
+
+  &[data-variant='dock'] {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+    overflow: visible;
+
+    --lw-icon-dim: 44px;
+    --lw-icon-radius: 11px;
+    --lw-icon-font: 20px;
+
+    &[data-size='xs'] {
+      --lw-icon-dim: 24px;
+      --lw-icon-radius: 6px;
+      --lw-icon-font: 12px;
+    }
+    &[data-size='sm'] {
+      --lw-icon-dim: 36px;
+      --lw-icon-radius: 9px;
+      --lw-icon-font: 16px;
+    }
+    &[data-size='md'] {
+      --lw-icon-dim: 44px;
+      --lw-icon-radius: 11px;
+      --lw-icon-font: 20px;
+    }
+    &[data-size='lg'] {
+      --lw-icon-dim: 52px;
+      --lw-icon-radius: 13px;
+      --lw-icon-font: 24px;
+    }
+    &[data-size='xl'] {
+      --lw-icon-dim: 64px;
+      --lw-icon-radius: 16px;
+      --lw-icon-font: 28px;
+    }
+
+    .lw-app-icon__visual {
+      overflow: visible;
+    }
+
+    .lw-app-icon__squircle {
+      transform-origin: center bottom;
+      transition:
+        transform 0.22s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.22s ease,
+        background-color 0.2s ease;
+    }
+
+    // Invisible Hit Cushion - Prevents hover trigger flicker when scaling/moving
+    &.is-interactive::before {
+      content: '';
+      position: absolute;
+      inset: -14px -6px -10px -6px;
+      background: transparent;
+      pointer-events: auto;
+    }
+
+    // macOS Signature Spring Magnification Hover Effect
+    &.is-interactive:hover {
+      z-index: 25;
+
+      .lw-app-icon__squircle {
+        transform: scale(1.24) translateY(-8px);
+        background: transparent;
+        box-shadow: none;
+
+        &::after {
+          display: none !important;
+        }
+
+        .lw-app-icon__svg {
+          transform: scale(1.08);
+          color: var(--lw-ink);
+        }
+
+        .lw-app-icon__img {
+          transform: scale(1.08);
+        }
+      }
+    }
+
+    // Active Press Feedback
+    &.is-interactive:active .lw-app-icon__squircle {
+      transform: scale(0.96) translateY(-2px);
+      transition-duration: 0.08s;
+    }
+
+    // 📱 Mobile Context: 위로 솟구치는 데스크톱 확대 대신 제자리 모바일 햅틱 스퀴즈 & 펄스 적용
+    :host-context([data-lw-dock]) &,
+    :host-context([data-lw-mode='mobile']) &,
+    :host-context(.is-mobile) & {
+      .lw-app-icon__squircle {
+        transform-origin: center center;
+        transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, filter 0.15s ease;
+      }
+
+      &.is-interactive:hover {
+        z-index: 20;
+
+        .lw-app-icon__squircle {
+          transform: scale(1.06) translateY(0); // 🌟 위로 들썩임 제거, 제자리 미세 펄스
+          box-shadow:
+            0 0 0 1px color-mix(in srgb, var(--lw-color-black) 12%, transparent),
+            0 6px 16px color-mix(in srgb, var(--lw-color-black) 14%, transparent);
+          filter: brightness(1.04);
+
+          .lw-app-icon__svg,
+          .lw-app-icon__img {
+            transform: scale(1.02);
+          }
+        }
+      }
+
+      &.is-interactive:active .lw-app-icon__squircle {
+        transform: scale(0.91) translateY(0); // 🌟 쫀득한 햅틱 탭 피드백
+        filter: brightness(0.92);
+        transition-duration: 0.08s;
+        box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 12%, transparent);
+      }
+    }
+  }
+
+  &[data-variant='tile'] {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px;
+    border-radius: 12px;
+    position: relative;
+    overflow: visible;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+    .lw-app-icon__squircle {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    &.is-interactive:hover {
+      background: color-mix(in srgb, var(--lw-color-black) 4%, transparent);
+      transform: translateX(4px);
+
+      .lw-app-icon__squircle {
+        transform: scale(1.04);
+        box-shadow:
+          0 0 0 1px color-mix(in srgb, var(--lw-color-black) 16%, transparent),
+          0 8px 18px color-mix(in srgb, var(--lw-color-black) 18%, transparent);
+      }
+
+      .lw-app-icon__title {
+        color: var(--lw-accent);
+      }
+    }
+
+    &.is-interactive:active {
+      transform: scale(0.98);
+
+      .lw-app-icon__squircle {
+        transform: scale(0.95);
+        transition-duration: 0.08s;
+      }
+    }
+  }
+
+  &[data-variant='minimal'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+
+    .lw-app-icon__squircle {
+      background: var(--lw-app-icon-minimal-bg);
+      box-shadow: var(--lw-app-icon-minimal-shadow);
+      border: var(--lw-app-icon-minimal-border);
+      transition: background-color 0.15s ease, transform 0.15s cubic-bezier(0.2, 0.9, 0.3, 1);
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .lw-app-icon__svg {
+      color: currentColor;
+      filter: none;
+      transition: transform 0.15s ease;
+    }
+
+    &.is-interactive:hover .lw-app-icon__squircle {
+      background: var(--lw-app-icon-minimal-hover-bg, color-mix(in srgb, var(--lw-color-black) 8%, transparent));
+      transform: scale(1.08);
+      box-shadow: none;
+
+      .lw-app-icon__svg {
+        transform: scale(1.06);
+      }
+    }
+
+    &.is-interactive:active .lw-app-icon__squircle {
+      transform: scale(0.92);
+      transition-duration: 0.06s;
+    }
+
+    &.is-active .lw-app-icon__squircle {
+      background: var(--lw-app-icon-minimal-active-bg, color-mix(in srgb, var(--lw-color-black) 12%, transparent));
+    }
+  }
+
+  /* ── 2. Size Tokens ────────────────────────────────────────────── */
+  --lw-icon-dim: 60px;
+  --lw-icon-radius: 14px;
+  --lw-icon-font: 26px;
+
+  &[data-size='xs'] {
+    --lw-icon-dim: 24px;
+    --lw-icon-radius: 6px;
+    --lw-icon-font: 13px;
+  }
+  &[data-size='sm'] {
+    --lw-icon-dim: 36px;
+    --lw-icon-radius: 9px;
+    --lw-icon-font: 18px;
+  }
+  &[data-size='md'] {
+    --lw-icon-dim: 48px;
+    --lw-icon-radius: 12px;
+    --lw-icon-font: 22px;
+  }
+  &[data-size='lg'] {
+    --lw-icon-dim: 60px;
+    --lw-icon-radius: 14px;
+    --lw-icon-font: 28px;
+  }
+  &[data-size='xl'] {
+    --lw-icon-dim: 72px;
+    --lw-icon-radius: 17px;
+    --lw-icon-font: 34px;
+  }
+
+  /* ── 3. Visual Squircle Container ──────────────────────────────── */
+  &__visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__squircle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--lw-icon-dim);
+    height: var(--lw-icon-dim);
+    border-radius: var(--lw-icon-radius);
+    box-sizing: border-box;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+    overflow: visible;
+
+    &::after {
+      display: none !important;
+    }
+
+    &[data-tone='danger'] {
+      background: transparent;
+      box-shadow: none;
+
+      .lw-app-icon__svg {
+        color: var(--lw-color-danger);
+      }
+    }
+
+    &[data-tone='primary'] {
+      background: transparent;
+      box-shadow: none;
+
+      .lw-app-icon__svg {
+        color: var(--lw-color-primary);
+      }
+    }
+  }
+
+  /* ── 4. Shape Modifiers ────────────────────────────────────────── */
+  &[data-shape='circle'] &__squircle,
+  &[data-shape='circle'] &__squircle::after {
+    border-radius: 50% !important;
+  }
+  &[data-shape='rounded'] &__squircle,
+  &[data-shape='rounded'] &__squircle::after {
+    border-radius: 8px !important;
+  }
+  &[data-shape='square'] &__squircle,
+  &[data-shape='square'] &__squircle::after {
+    border-radius: 2px !important;
+  }
+
+  /* ── 5. Inner Media & Icons ────────────────────────────────────── */
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: inherit;
+    display: block;
+    z-index: 1;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  &__svg {
+    color: var(--lw-surface-overlay);
+    z-index: 1;
+    filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--lw-color-black) 15%, transparent));
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  &__emoji {
+    font-size: var(--lw-icon-font);
+    line-height: 1;
+    z-index: 1;
+    user-select: none;
+  }
+
+  /* ── 6. Sheen / Gloss Optical Polish ───────────────────────────── */
+  &__sheen {
+    display: none !important;
+  }
+
+  /* ── 7. Notification / Usage Badge ─────────────────────────────── */
+  &__badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 8px;
+    font-size: 9.5px;
+    font-weight: 800;
+    line-height: 16px;
+    text-align: center;
+    border: 1.5px solid color-mix(in srgb, var(--lw-color-white) 95%, transparent);
+    box-shadow: 0 2px 5px color-mix(in srgb, var(--lw-color-black) 35%, transparent);
+    z-index: 5;
+    pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+
+    &[data-tone='primary'] {
+      background: linear-gradient(135deg, var(--lw-hue-blue-500) 0%, var(--lw-hue-blue-700) 100%);
+      color: var(--lw-surface);
+    }
+    &[data-tone='danger'] {
+      background: linear-gradient(135deg, var(--lw-color-danger) 0%, var(--lw-hue-red-700) 100%);
+      color: var(--lw-surface);
+    }
+    &[data-tone='warning'] {
+      background: linear-gradient(135deg, var(--lw-color-warning) 0%, var(--lw-color-warning-hover) 100%);
+      color: var(--lw-surface);
+    }
+    &[data-tone='success'] {
+      background: linear-gradient(135deg, var(--lw-color-success) 0%, var(--lw-hue-emerald-700) 100%);
+      color: var(--lw-surface);
+    }
+  }
+
+  /* ── 8. Dock Running Indicator Dot ─────────────────────────────── */
+  &__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    margin-top: 4px;
+    background: transparent;
+    transition: all 0.2s ease;
+
+    &.is-running {
+      background: var(--lw-color-primary);
+      box-shadow: 0 0 5px color-mix(in srgb, var(--lw-hue-blue-500) 60%, transparent);
+    }
+    &.is-active {
+      background: var(--lw-color-success);
+      box-shadow: 0 0 6px color-mix(in srgb, var(--lw-color-success) 80%, transparent);
+    }
+  }
+
+  /* ── 9. Text & Labels ──────────────────────────────────────────── */
+  &__label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--lw-color-white);
+    text-align: center;
+    line-height: 1.25;
+    word-break: keep-all;
+    max-width: 80px;
+    letter-spacing: -0.01em;
+    padding: 2.5px 7px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--lw-hue-slate-900) 78%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-black) 35%, transparent);
+    text-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 95%, transparent);
+    box-sizing: border-box;
+    transition: all 0.18s ease;
+  }
+
+  &[data-variant='dock'] &__label {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    font-size: 10px;
+    font-weight: 500;
+    color: inherit;
+    line-height: 1.1;
+    max-width: 58px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--lw-text-primary);
+  }
+
+  &__subtitle {
+    font-size: 11.5px;
+    color: var(--lw-text-muted);
+  }
+
+  /* ── 10. Interactive & Animations ──────────────────────────────── */
+  &.is-interactive {
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--lw-color-primary);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+  }
+
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Dock Bounce Animation */
+  &__squircle.is-bouncing,
+  &.is-bouncing &__squircle {
+    animation: appIconBounce 0.75s cubic-bezier(0.28, 0.84, 0.42, 1);
+  }
+}
+
+@keyframes appIconBounce {
+  0% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-16px) scale(1.15); }
+  50% { transform: translateY(-3px) scale(1.04); }
+  70% { transform: translateY(-8px) scale(1.08); }
+  85% { transform: translateY(-2px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ── 11. Dark Mode / Wallpaper Adaptations ───────────────────────── */
+:host-context([data-lw-theme='dark']) .lw-app-icon,
+:host-context([data-lw-play-theme='dark']) .lw-app-icon {
+  .lw-app-icon__squircle {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+
+    &::after {
+      display: none !important;
+    }
+  }
+
+  &[data-variant='dock'].is-interactive:hover .lw-app-icon__squircle {
+    background: transparent;
+    box-shadow: none;
+
+    &::after {
+      display: none !important;
+    }
+
+    .lw-app-icon__svg {
+      color: var(--lw-surface);
+    }
+  }
+
+  &[data-variant='springboard'].is-interactive:hover .lw-app-icon__squircle {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &[data-variant='tile'].is-interactive:hover {
+    background: color-mix(in srgb, var(--lw-color-white) 6%, transparent);
+
+    .lw-app-icon__title {
+      color: var(--lw-accent);
+    }
+  }
+
+  .lw-app-icon__svg {
+    color: var(--lw-surface-ground);
+  }
+
+  .lw-app-icon__label {
+    background: color-mix(in srgb, var(--lw-hue-slate-900) 88%, transparent);
+    color: var(--lw-hue-slate-50) !important;
+    border-color: color-mix(in srgb, var(--lw-color-primary) 45%, transparent);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--lw-color-primary) 20%, transparent), 0 2px 8px color-mix(in srgb, var(--lw-color-black) 50%, transparent);
+    text-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 95%, transparent);
+  }
+
+  .lw-app-icon__title {
+    color: var(--lw-surface-subtle);
+  }
+
+  &[data-variant='minimal'] {
+    .lw-app-icon__squircle {
+      background: var(--lw-app-icon-minimal-bg);
+      box-shadow: none;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .lw-app-icon__svg {
+      color: currentColor;
+    }
+
+    &.is-interactive:hover .lw-app-icon__squircle {
+      background: var(--lw-app-icon-minimal-hover-bg, color-mix(in srgb, var(--lw-color-white) 14%, transparent));
+      transform: scale(1.08);
+      box-shadow: none;
+
+      .lw-app-icon__svg {
+        transform: scale(1.06);
+      }
+    }
+
+    &.is-active .lw-app-icon__squircle {
+      background: var(--lw-app-icon-minimal-active-bg, color-mix(in srgb, var(--lw-color-white) 22%, transparent));
+    }
+  }
+
+  .lw-app-icon__subtitle {
+    color: var(--lw-text-muted-light);
+  }
+}
+
+/* ── 12. Theme Skin Adaptations (Newspaper, Parchment, Cyberpunk) ── */
+:host-context([data-lw-skin='newspaper']) .lw-app-icon,
+:host-context([data-lw-play-theme='newspaper']) .lw-app-icon {
+  .lw-app-icon__squircle {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .lw-app-icon__img {
+    filter: sepia(0.35) contrast(1.12) brightness(0.96);
+  }
+
+  .lw-app-icon__label {
+    background: var(--lw-hue-stone-200);
+    color: var(--lw-hue-stone-900);
+    border-color: color-mix(in srgb, var(--lw-hue-amber-900) 40%, transparent);
+    box-shadow: 0 2px 5px color-mix(in srgb, var(--lw-hue-amber-950) 15%, transparent);
+    text-shadow: none;
+    font-weight: 700;
+  }
+
+  .lw-app-icon__svg {
+    color: var(--lw-hue-amber-950);
+  }
+
+  &.is-interactive:hover .lw-app-icon__squircle {
+    box-shadow: none;
+    background: transparent;
+  }
+}
+
+:host-context([data-lw-skin='parchment']) .lw-app-icon,
+:host-context([data-lw-play-theme='parchment']) .lw-app-icon {
+  .lw-app-icon__squircle {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .lw-app-icon__img {
+    filter: sepia(0.24) saturate(1.2) hue-rotate(-8deg);
+  }
+
+  .lw-app-icon__label {
+    background: var(--lw-hue-amber-100);
+    color: var(--lw-hue-amber-950);
+    border-color: color-mix(in srgb, var(--lw-hue-amber-700) 45%, transparent);
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--lw-hue-amber-900) 18%, transparent);
+    text-shadow: none;
+    font-weight: 700;
+  }
+
+  .lw-app-icon__svg {
+    color: var(--lw-hue-amber-900);
+  }
+
+  &.is-interactive:hover .lw-app-icon__squircle {
+    box-shadow: none;
+    background: transparent;
+  }
+}
+
+:host-context([data-lw-skin='cyberpunk']) .lw-app-icon {
+  .lw-app-icon__squircle {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .lw-app-icon__img {
+    filter: saturate(1.35) contrast(1.15) drop-shadow(0 0 6px color-mix(in srgb, var(--lw-hue-teal-400) 45%, transparent));
+  }
+
+  .lw-app-icon__label {
+    background: color-mix(in srgb, var(--lw-color-black) 92%, transparent);
+    color: var(--lw-hue-teal-400);
+    border-color: var(--lw-hue-pink-600);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--lw-hue-pink-600) 45%, transparent);
+    text-shadow: 0 0 4px var(--lw-hue-teal-400);
+  }
+
+  .lw-app-icon__svg {
+    color: var(--lw-hue-teal-400);
+    filter: drop-shadow(0 0 4px var(--lw-hue-teal-400));
+  }
+
+  &.is-interactive:hover .lw-app-icon__squircle {
+    box-shadow: none;
+    background: transparent;
+  }
+}
+
+:host-context([data-lw-skin='night']) .lw-app-icon {
+  .lw-app-icon__label {
+    background: var(--lw-bg-panel);
+    color: var(--lw-text-primary);
+    border-color: var(--lw-border);
+  }
+}
+

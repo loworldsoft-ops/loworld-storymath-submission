@@ -1,0 +1,6 @@
+<div class="filter-row">
+  <lw-chip variant="filter" [selected]="selectedFolderId() === null" (select)="selectFolder.emit(null)">전체</lw-chip>
+  @for (folder of folders(); track folder.id) {
+    <lw-chip variant="filter" [selected]="selectedFolderId() === folder.id" (select)="selectFolder.emit(folder.id)">{{ folder.name }}</lw-chip>
+  }
+</div>

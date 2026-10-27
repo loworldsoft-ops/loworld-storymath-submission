@@ -1,0 +1,23 @@
+@if (loading()) {
+  <span class="lw-btn__spinner" aria-hidden="true"></span>
+}
+
+@if (prefixIcon() && !loading()) {
+  <span class="lw-btn__icon lw-btn__icon--prefix" aria-hidden="true">
+    <i [class]="prefixIcon()"></i>
+  </span>
+}
+
+@if (!loading() || (shape() !== 'circle' && shape() !== 'square')) {
+  @if (label()) {
+    {{ label() }}
+  } @else {
+    <ng-content></ng-content>
+  }
+}
+
+@if (suffixIcon() && !loading()) {
+  <span class="lw-btn__icon lw-btn__icon--suffix" aria-hidden="true">
+    <i [class]="suffixIcon()"></i>
+  </span>
+}

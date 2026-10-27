@@ -1,0 +1,35 @@
+<form class="lw-auth-form" (submit)="onSubmit($event); $event.preventDefault()">
+  <lw-form-field label="아이디 또는 이메일">
+    <lw-input
+      id="lw-auth-login-email"
+      type="text"
+      placeholder="아이디 또는 이메일을 입력하세요"
+      [value]="email()"
+      (valueChange)="email.set(''+$event)"
+      ariaLabel="아이디 또는 이메일"
+      [disabled]="disabled()"
+    />
+  </lw-form-field>
+  <lw-form-field label="비밀번호">
+    <lw-input
+      id="lw-auth-login-password"
+      type="password"
+      placeholder="비밀번호를 입력하세요"
+      [value]="password()"
+      (valueChange)="password.set(''+$event)"
+      ariaLabel="비밀번호"
+      [disabled]="disabled()"
+    />
+  </lw-form-field>
+  @if (errorText(); as err) {
+    <p id="lw-auth-login-err" class="error" role="alert">{{ err }}</p>
+  }
+  <lw-button
+    variant="primary"
+    size="md"
+    [block]="true"
+    [disabled]="disabled()"
+    [label]="disabled() ? '처리 중…' : submitLabel()"
+    (click)="onSubmit($event)">
+  </lw-button>
+</form>

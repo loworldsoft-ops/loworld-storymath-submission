@@ -1,0 +1,52 @@
+@use 'index' as lw;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.header {
+  flex-shrink: 0;
+}
+
+.header-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.count {
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}
+
+.toolbar {
+  flex-shrink: 0;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
+:host { --lw-host-surface: var(--lw-surface); }

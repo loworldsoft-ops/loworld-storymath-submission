@@ -1,0 +1,19 @@
+<label class="lw-radio-label">
+  <span class="lw-radio-indicator">
+    <input
+      type="radio"
+      class="lw-radio-native"
+      [name]="name()"
+      [value]="value()"
+      [checked]="isChecked()"
+      [disabled]="disabled()"
+      (change)="onNativeChange($event)" />
+    <span class="lw-radio-circle"></span>
+    <span class="lw-radio-dot"></span>
+  </span>
+
+  @if (label()) {
+    <span class="lw-radio-text">{{ label() }}</span>
+  }
+  <ng-content />
+</label>

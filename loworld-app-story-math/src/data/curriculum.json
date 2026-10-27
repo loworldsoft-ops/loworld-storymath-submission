@@ -1,0 +1,234 @@
+{
+  "acts": [
+    {
+      "id": "act-1",
+      "title": "1막",
+      "grade": "초등 1학년",
+      "units": [
+        { "id": "g1-1-01", "semester": 1, "name": "9까지의 수" },
+        { "id": "g1-1-02", "semester": 1, "name": "여러 가지 모양" },
+        { "id": "g1-1-03", "semester": 1, "name": "덧셈과 뺄셈" },
+        { "id": "g1-1-04", "semester": 1, "name": "비교하기" },
+        { "id": "g1-1-05", "semester": 1, "name": "50까지의 수" },
+        { "id": "g1-2-01", "semester": 2, "name": "100까지의 수" },
+        { "id": "g1-2-02", "semester": 2, "name": "덧셈과 뺄셈 (1)" },
+        { "id": "g1-2-03", "semester": 2, "name": "모양과 시각" },
+        { "id": "g1-2-04", "semester": 2, "name": "덧셈과 뺄셈 (2)" },
+        { "id": "g1-2-05", "semester": 2, "name": "규칙 찾기" },
+        { "id": "g1-2-06", "semester": 2, "name": "덧셈과 뺄셈 (3)" }
+      ]
+    },
+    {
+      "id": "act-2",
+      "title": "2막",
+      "grade": "초등 2학년",
+      "units": [
+        { "id": "g2-1-01", "semester": 1, "name": "세 자리 수" },
+        { "id": "g2-1-02", "semester": 1, "name": "여러 가지 도형" },
+        { "id": "g2-1-03", "semester": 1, "name": "덧셈과 뺄셈" },
+        { "id": "g2-1-04", "semester": 1, "name": "길이 재기 (1)" },
+        { "id": "g2-1-05", "semester": 1, "name": "분류하기" },
+        { "id": "g2-1-06", "semester": 1, "name": "곱셈" },
+        { "id": "g2-2-01", "semester": 2, "name": "네 자리 수" },
+        { "id": "g2-2-02", "semester": 2, "name": "곱셈구구" },
+        { "id": "g2-2-03", "semester": 2, "name": "길이 재기 (2)" },
+        { "id": "g2-2-04", "semester": 2, "name": "시각과 시간" },
+        { "id": "g2-2-05", "semester": 2, "name": "표와 그래프" },
+        { "id": "g2-2-06", "semester": 2, "name": "규칙 찾기" }
+      ]
+    },
+    {
+      "id": "act-3",
+      "title": "3막",
+      "grade": "초등 3학년",
+      "units": [
+        { "id": "g3-1-01", "semester": 1, "name": "덧셈과 뺄셈" },
+        { "id": "g3-1-02", "semester": 1, "name": "평면도형" },
+        { "id": "g3-1-03", "semester": 1, "name": "나눗셈 (1)" },
+        { "id": "g3-1-04", "semester": 1, "name": "곱셈 (1)" },
+        { "id": "g3-1-05", "semester": 1, "name": "길이와 시간" },
+        { "id": "g3-1-06", "semester": 1, "name": "분수와 소수" },
+        { "id": "g3-2-01", "semester": 2, "name": "곱셈 (2)" },
+        { "id": "g3-2-02", "semester": 2, "name": "나눗셈 (2)" },
+        { "id": "g3-2-03", "semester": 2, "name": "원" },
+        { "id": "g3-2-04", "semester": 2, "name": "분수" },
+        { "id": "g3-2-05", "semester": 2, "name": "들이와 무게" },
+        { "id": "g3-2-06", "semester": 2, "name": "자료의 정리" }
+      ]
+    },
+    {
+      "id": "act-4",
+      "title": "4막",
+      "grade": "초등 4학년",
+      "units": [
+        { "id": "g4-1-01", "semester": 1, "name": "큰 수" },
+        { "id": "g4-1-02", "semester": 1, "name": "각도" },
+        { "id": "g4-1-03", "semester": 1, "name": "곱셈과 나눗셈" },
+        { "id": "g4-1-04", "semester": 1, "name": "평면도형의 이동" },
+        { "id": "g4-1-05", "semester": 1, "name": "막대그래프" },
+        { "id": "g4-1-06", "semester": 1, "name": "규칙 찾기" },
+        { "id": "g4-2-01", "semester": 2, "name": "분수의 덧셈과 뺄셈" },
+        { "id": "g4-2-02", "semester": 2, "name": "삼각형" },
+        { "id": "g4-2-03", "semester": 2, "name": "소수의 덧셈과 뺄셈" },
+        { "id": "g4-2-04", "semester": 2, "name": "사각형" },
+        { "id": "g4-2-05", "semester": 2, "name": "꺾은선그래프" },
+        { "id": "g4-2-06", "semester": 2, "name": "다각형" }
+      ]
+    },
+    {
+      "id": "act-5",
+      "title": "5막",
+      "grade": "초등 5학년",
+      "units": [
+        { "id": "g5-1-01", "semester": 1, "name": "자연수의 혼합 계산" },
+        { "id": "g5-1-02", "semester": 1, "name": "약수와 배수" },
+        { "id": "g5-1-03", "semester": 1, "name": "규칙과 대응" },
+        { "id": "g5-1-04", "semester": 1, "name": "약분과 통분" },
+        { "id": "g5-1-05", "semester": 1, "name": "분수의 덧셈과 뺄셈" },
+        { "id": "g5-1-06", "semester": 1, "name": "다각형의 둘레와 넓이" },
+        { "id": "g5-2-01", "semester": 2, "name": "수의 범위와 어림하기" },
+        { "id": "g5-2-02", "semester": 2, "name": "분수의 곱셈" },
+        { "id": "g5-2-03", "semester": 2, "name": "합동과 대칭" },
+        { "id": "g5-2-04", "semester": 2, "name": "소수의 곱셈" },
+        { "id": "g5-2-05", "semester": 2, "name": "직육면체" },
+        { "id": "g5-2-06", "semester": 2, "name": "평균과 가능성" }
+      ]
+    },
+    {
+      "id": "act-6",
+      "title": "6막",
+      "grade": "초등 6학년",
+      "units": [
+        { "id": "g6-1-01", "semester": 1, "name": "분수의 나눗셈 (1)" },
+        { "id": "g6-1-02", "semester": 1, "name": "각기둥과 각뿔" },
+        { "id": "g6-1-03", "semester": 1, "name": "소수의 나눗셈 (1)" },
+        { "id": "g6-1-04", "semester": 1, "name": "비와 비율" },
+        { "id": "g6-1-05", "semester": 1, "name": "여러 가지 그래프" },
+        { "id": "g6-1-06", "semester": 1, "name": "직육면체의 부피와 겉넓이" },
+        { "id": "g6-2-01", "semester": 2, "name": "분수의 나눗셈 (2)" },
+        { "id": "g6-2-02", "semester": 2, "name": "소수의 나눗셈 (2)" },
+        { "id": "g6-2-03", "semester": 2, "name": "공간과 입체" },
+        { "id": "g6-2-04", "semester": 2, "name": "비례식과 비례배분" },
+        { "id": "g6-2-05", "semester": 2, "name": "원의 넓이" },
+        { "id": "g6-2-06", "semester": 2, "name": "원기둥, 원뿔, 구" }
+      ]
+    },
+    {
+      "id": "act-7",
+      "title": "7막",
+      "grade": "중학교 1학년",
+      "units": [
+        { "id": "g7-1-01", "semester": 1, "name": "소인수분해" },
+        { "id": "g7-1-02", "semester": 1, "name": "정수와 유리수" },
+        { "id": "g7-1-03", "semester": 1, "name": "정수와 유리수의 계산" },
+        { "id": "g7-1-04", "semester": 1, "name": "문자의 사용과 식" },
+        { "id": "g7-1-05", "semester": 1, "name": "일차방정식" },
+        { "id": "g7-1-06", "semester": 1, "name": "좌표평면과 그래프" },
+        { "id": "g7-2-01", "semester": 2, "name": "기본 도형" },
+        { "id": "g7-2-02", "semester": 2, "name": "작도와 합동" },
+        { "id": "g7-2-03", "semester": 2, "name": "다각형" },
+        { "id": "g7-2-04", "semester": 2, "name": "원과 부채꼴" },
+        { "id": "g7-2-05", "semester": 2, "name": "다면체와 회전체" },
+        { "id": "g7-2-06", "semester": 2, "name": "자료의 정리와 해석" }
+      ]
+    },
+    {
+      "id": "act-8",
+      "title": "8막",
+      "grade": "중학교 2학년",
+      "units": [
+        { "id": "g8-1-01", "semester": 1, "name": "유리수와 순환소수" },
+        { "id": "g8-1-02", "semester": 1, "name": "식의 계산" },
+        { "id": "g8-1-03", "semester": 1, "name": "일차부등식" },
+        { "id": "g8-1-04", "semester": 1, "name": "연립일차방정식" },
+        { "id": "g8-1-05", "semester": 1, "name": "일차함수와 그래프" },
+        { "id": "g8-1-06", "semester": 1, "name": "일차함수와 일차방정식" },
+        { "id": "g8-2-01", "semester": 2, "name": "삼각형의 성질" },
+        { "id": "g8-2-02", "semester": 2, "name": "사각형의 성질" },
+        { "id": "g8-2-03", "semester": 2, "name": "도형의 닮음" },
+        { "id": "g8-2-04", "semester": 2, "name": "닮음의 활용" },
+        { "id": "g8-2-05", "semester": 2, "name": "피타고라스 정리" },
+        { "id": "g8-2-06", "semester": 2, "name": "경우의 수와 확률" }
+      ]
+    },
+    {
+      "id": "act-9",
+      "title": "9막",
+      "grade": "중학교 3학년",
+      "units": [
+        { "id": "g9-1-01", "semester": 1, "name": "제곱근과 실수" },
+        { "id": "g9-1-02", "semester": 1, "name": "근호를 포함한 식의 계산" },
+        { "id": "g9-1-03", "semester": 1, "name": "다항식의 곱셈과 인수분해" },
+        { "id": "g9-1-04", "semester": 1, "name": "이차방정식" },
+        { "id": "g9-1-05", "semester": 1, "name": "이차방정식의 근의 공식" },
+        { "id": "g9-1-06", "semester": 1, "name": "이차함수와 그래프" },
+        { "id": "g9-2-01", "semester": 2, "name": "삼각비" },
+        { "id": "g9-2-02", "semester": 2, "name": "삼각비의 활용" },
+        { "id": "g9-2-03", "semester": 2, "name": "원과 직선" },
+        { "id": "g9-2-04", "semester": 2, "name": "원주각" },
+        { "id": "g9-2-05", "semester": 2, "name": "산포도와 상자그림" },
+        { "id": "g9-2-06", "semester": 2, "name": "산점도와 상관관계" }
+      ]
+    },
+    {
+      "id": "act-10",
+      "title": "10막",
+      "grade": "고등학교 1학년",
+      "units": [
+        { "id": "g10-1-01", "semester": 1, "name": "다항식의 연산", "course": "공통수학1" },
+        { "id": "g10-1-02", "semester": 1, "name": "나머지정리와 인수분해", "course": "공통수학1" },
+        { "id": "g10-1-03", "semester": 1, "name": "복소수", "course": "공통수학1" },
+        { "id": "g10-1-04", "semester": 1, "name": "이차방정식과 이차함수", "course": "공통수학1" },
+        { "id": "g10-1-05", "semester": 1, "name": "여러 가지 방정식과 부등식", "course": "공통수학1" },
+        { "id": "g10-1-06", "semester": 1, "name": "순열과 조합", "course": "공통수학1" },
+        { "id": "g10-1-07", "semester": 1, "name": "행렬과 그 연산", "course": "공통수학1" },
+        { "id": "g10-2-01", "semester": 2, "name": "평면좌표와 직선의 방정식", "course": "공통수학2" },
+        { "id": "g10-2-02", "semester": 2, "name": "원의 방정식", "course": "공통수학2" },
+        { "id": "g10-2-03", "semester": 2, "name": "도형의 이동", "course": "공통수학2" },
+        { "id": "g10-2-04", "semester": 2, "name": "집합", "course": "공통수학2" },
+        { "id": "g10-2-05", "semester": 2, "name": "명제", "course": "공통수학2" },
+        { "id": "g10-2-06", "semester": 2, "name": "함수", "course": "공통수학2" },
+        { "id": "g10-2-07", "semester": 2, "name": "유리함수와 무리함수", "course": "공통수학2" }
+      ]
+    },
+    {
+      "id": "act-11",
+      "title": "11막",
+      "grade": "고등학교 2학년",
+      "units": [
+        { "id": "g11-1-01", "semester": 1, "name": "지수", "course": "대수" },
+        { "id": "g11-1-02", "semester": 1, "name": "로그", "course": "대수" },
+        { "id": "g11-1-03", "semester": 1, "name": "지수함수와 로그함수", "course": "대수" },
+        { "id": "g11-1-04", "semester": 1, "name": "삼각함수", "course": "대수" },
+        { "id": "g11-1-05", "semester": 1, "name": "사인법칙과 코사인법칙", "course": "대수" },
+        { "id": "g11-1-06", "semester": 1, "name": "등차수열과 등비수열", "course": "대수" },
+        { "id": "g11-1-07", "semester": 1, "name": "수열의 합과 수학적 귀납법", "course": "대수" },
+        { "id": "g11-2-01", "semester": 2, "name": "함수의 극한", "course": "미적분Ⅰ" },
+        { "id": "g11-2-02", "semester": 2, "name": "함수의 연속", "course": "미적분Ⅰ" },
+        { "id": "g11-2-03", "semester": 2, "name": "미분계수와 도함수", "course": "미적분Ⅰ" },
+        { "id": "g11-2-04", "semester": 2, "name": "도함수의 활용", "course": "미적분Ⅰ" },
+        { "id": "g11-2-05", "semester": 2, "name": "부정적분과 정적분", "course": "미적분Ⅰ" },
+        { "id": "g11-2-06", "semester": 2, "name": "정적분의 활용", "course": "미적분Ⅰ" }
+      ]
+    },
+    {
+      "id": "act-12",
+      "title": "12막",
+      "grade": "고등학교 3학년",
+      "units": [
+        { "id": "g12-1-01", "semester": 1, "name": "중복순열과 중복조합", "course": "확률과 통계" },
+        { "id": "g12-1-02", "semester": 1, "name": "이항정리", "course": "확률과 통계" },
+        { "id": "g12-1-03", "semester": 1, "name": "확률의 뜻과 활용", "course": "확률과 통계" },
+        { "id": "g12-1-04", "semester": 1, "name": "조건부확률", "course": "확률과 통계" },
+        { "id": "g12-1-05", "semester": 1, "name": "확률분포와 정규분포", "course": "확률과 통계" },
+        { "id": "g12-1-06", "semester": 1, "name": "통계적 추정", "course": "확률과 통계" },
+        { "id": "g12-2-01", "semester": 2, "name": "수열의 극한과 급수", "course": "미적분Ⅱ" },
+        { "id": "g12-2-02", "semester": 2, "name": "지수함수와 로그함수의 미분", "course": "미적분Ⅱ" },
+        { "id": "g12-2-03", "semester": 2, "name": "여러 가지 미분법과 적분법", "course": "미적분Ⅱ" },
+        { "id": "g12-2-04", "semester": 2, "name": "이차곡선", "course": "기하" },
+        { "id": "g12-2-05", "semester": 2, "name": "공간도형과 공간좌표", "course": "기하" },
+        { "id": "g12-2-06", "semester": 2, "name": "벡터", "course": "기하" }
+      ]
+    }
+  ]
+}

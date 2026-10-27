@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+:host:not(:empty) {
+  margin-bottom: 24px;
+}
+
+.catalog-family__title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+}

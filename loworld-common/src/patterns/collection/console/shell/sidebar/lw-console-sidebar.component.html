@@ -1,0 +1,150 @@
+<aside class="lw-console-sb" aria-label="LLMOps 내비게이션">
+  <!-- 브랜드 + 테마/접기 -->
+  <div class="lw-console-sb__head">
+    @if (!collapsed()) {
+      <button type="button" class="lw-console-sb__brand" (click)="selectTab.emit('dashboard')" title="대시보드로 이동">
+        <span class="lw-console-sb__logo" aria-hidden="true"></span>
+        <span class="lw-console-sb__brand-text">{{ brand() }}</span>
+      </button>
+      <lw-button variant="ghost" size="xs" [iconOnly]="true" [ariaLabel]="themeLabel()" [tooltip]="themeLabel()" (click)="toggleTheme.emit()">
+        <lw-icon [name]="themeMode() === 'dark' ? 'sun' : 'moon'" [size]="16" />
+      </lw-button>
+    }
+    <lw-button variant="ghost" size="xs" [iconOnly]="true" [ariaLabel]="collapseLabel()" [tooltip]="collapseLabel()" (click)="toggleCollapse.emit()">
+      <lw-icon name="panel-left" [size]="16" />
+    </lw-button>
+  </div>
+
+  <!-- 그룹 전환 -->
+  <div class="lw-console-sb__group">
+    <button
+      type="button"
+      class="lw-console-sb__group-btn"
+      aria-haspopup="listbox"
+      [attr.aria-expanded]="groupPopoverOpen()"
+      [title]="currentGroup().name"
+      (click)="toggleGroupPopover($event)">
+      @if (collapsed()) {
+        <lw-avatar size="sm" [initial]="currentGroup().name[0]" [alt]="currentGroup().name" />
+      } @else {
+        <span class="lw-console-sb__group-info">
+          <span class="lw-console-sb__group-name">{{ currentGroup().name }}</span>
+          <lw-badge variant="subtle" tone="warning" size="xs">{{ currentRoleLabel() }}</lw-badge>
+        </span>
+        <lw-icon name="chevrons-up-down" [size]="14" />
+      }
+    </button>
+
+    @if (groupPopoverOpen() && !collapsed()) {
+      <div class="lw-console-sb__popover" role="listbox" aria-label="그룹 전환">
+        <div class="lw-console-sb__popover-head">
+          <lw-icon name="folder-open" [size]="14" />
+          <span>{{ currentGroup().name }}</span>
+        </div>
+        <lw-search-input
+          placeholder="그룹 검색"
+          [query]="groupSearchQuery()"
+          (actionEvent)="groupSearchQuery.set($event.payload)" />
+        <div class="lw-console-sb__popover-list">
+          @for (row of groupTree(); track row.group.id) {
+            <button
+              type="button"
+              role="option"
+              class="lw-console-sb__popover-item"
+              [class.is-active]="row.group.id === currentGroup().id"
+              [class.is-depth-1]="row.depth === 1"
+              [class.is-depth-2]="row.depth >= 2"
+              [attr.aria-selected]="row.group.id === currentGroup().id"
+              (click)="onGroupPick(row.group.id)">
+              <lw-icon name="folder" [size]="14" />
+              <span class="lw-console-sb__popover-name">{{ row.group.name }}</span>
+              @if (row.group.id === currentGroup().id) {
+                <lw-icon name="check" [size]="14" />
+              }
+            </button>
+          } @empty {
+            <p class="lw-console-sb__popover-empty">검색 결과가 없습니다</p>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- 메인 메뉴 -->
+  <nav class="lw-console-sb__nav">
+    @for (group of navGroups; track group.label) {
+      <lw-side-menu-section [title]="collapsed() ? '' : group.label">
+        @for (item of group.items; track item.id) {
+          @if (collapsed()) {
+            <lw-button
+              variant="ghost"
+              size="sm"
+              [iconOnly]="true"
+              [selected]="activeTab() === item.id"
+              [ariaLabel]="item.label"
+              [tooltip]="item.label"
+              tooltipPlacement="right"
+              (click)="selectTab.emit(item.id)">
+              <lw-icon [name]="item.icon" [size]="16" />
+            </lw-button>
+          } @else {
+            <lw-side-menu-item [label]="item.label" [icon]="item.icon" [active]="activeTab() === item.id" (itemClick)="selectTab.emit(item.id)">
+              <lw-icon itemIcon [name]="item.icon" [size]="16" />
+            </lw-side-menu-item>
+          }
+        }
+      </lw-side-menu-section>
+    }
+  </nav>
+
+  <!-- 하단: 플랫폼 관리, 공지, 챗봇, 사용자 -->
+  <div class="lw-console-sb__foot">
+    @if (collapsed()) {
+      <lw-button variant="ghost" size="sm" [iconOnly]="true" ariaLabel="플랫폼 관리" tooltip="플랫폼 관리" tooltipPlacement="right" (click)="onPlatformToggle()">
+        <lw-icon name="layout-dashboard" [size]="16" />
+      </lw-button>
+    } @else {
+      <lw-side-menu-item label="플랫폼 관리" icon="layout-dashboard" [attr.aria-expanded]="platformOpen()" (itemClick)="onPlatformToggle()">
+        <lw-icon itemIcon name="layout-dashboard" [size]="16" />
+        <lw-icon [name]="platformOpen() ? 'chevron-down' : 'chevron-right'" [size]="14" />
+      </lw-side-menu-item>
+      @if (platformOpen()) {
+        @for (item of platformItems; track item.id) {
+          <lw-side-menu-item variant="sub" [label]="item.label" [icon]="item.icon" [active]="activeTab() === item.id" (itemClick)="selectTab.emit(item.id)">
+            <lw-icon itemIcon [name]="item.icon" [size]="14" />
+          </lw-side-menu-item>
+        }
+      }
+    }
+
+    @for (item of footItems; track item.id) {
+      @if (collapsed()) {
+        <lw-button
+          variant="ghost"
+          size="sm"
+          [iconOnly]="true"
+          [selected]="activeTab() === item.id"
+          [ariaLabel]="item.label"
+          [tooltip]="item.label"
+          tooltipPlacement="right"
+          (click)="selectTab.emit(item.id)">
+          <lw-icon [name]="item.icon" [size]="16" />
+        </lw-button>
+      } @else {
+        <lw-side-menu-item [label]="item.label" [icon]="item.icon" [active]="activeTab() === item.id" (itemClick)="selectTab.emit(item.id)">
+          <lw-icon itemIcon [name]="item.icon" [size]="16" />
+        </lw-side-menu-item>
+      }
+    }
+
+    <button type="button" class="lw-console-sb__user" [attr.aria-label]="user().name + ' 설정 열기'" (click)="openProfile.emit()">
+      <lw-avatar size="sm" [initial]="user().name[0]" [alt]="user().name" />
+      @if (!collapsed()) {
+        <span class="lw-console-sb__user-text">
+          <span class="lw-console-sb__user-name">{{ user().name }}</span>
+          <span class="lw-console-sb__user-email">{{ user().email }}</span>
+        </span>
+      }
+    </button>
+  </div>
+</aside>

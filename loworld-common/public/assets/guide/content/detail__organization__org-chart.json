@@ -1,0 +1,13 @@
+{
+  "path": "/detail/organization/org-chart",
+  "title": "전체 조직도",
+  "desc": "",
+  "toc": [
+    {
+      "id": "조직도-탐색하기",
+      "depth": 2,
+      "text": "조직도 탐색하기"
+    }
+  ],
+  "html": "<p>조직 전체의 그룹 계층 구조를 <strong>인터랙티브 다이어그램</strong>으로 파악합니다.\n내 그룹 관리 탭의 트리 목록과 달리, 그룹 간 관계를 시각적으로 확인하기에 적합합니다.</p>\n<hr/>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"조직도-탐색하기\"><a data-card=\"\" href=\"#조직도-탐색하기\" class=\"peer\">조직도 탐색하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<ul>\n<li><strong>줌 인/아웃</strong> — 마우스 휠 또는 우측 하단 컨트롤로 조절합니다</li>\n<li><strong>드래그 이동</strong> — 캔버스를 드래그하여 원하는 영역으로 이동합니다</li>\n<li><strong>전체 보기</strong> — 전체 보기 버튼으로 모든 그룹이 화면에 맞게 자동 조정됩니다</li>\n</ul>\n<p>각 그룹 노드에는 <strong>그룹명, 계층 단계, 하위 그룹 수</strong>가 표시됩니다.\n노드를 클릭하면 해당 그룹이 선택됩니다.</p>"
+}

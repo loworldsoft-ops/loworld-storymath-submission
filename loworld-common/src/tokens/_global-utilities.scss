@@ -1,0 +1,177 @@
+// 전역 유틸 클래스와 표준 키프레임. `lw-theme.scss`가 한 번만 내보낸다.
+@use 'scrollbar' as *;
+@use 'animations' as *;
+
+// ── 스크롤바 ──
+.lw-scrollbar-none {
+  @include lw-scrollbar-none;
+}
+
+.lw-scrollbar-thin {
+  @include lw-scrollbar;
+}
+
+// ── Standard Keyframes ──
+@keyframes lw-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lw-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes lw-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes lw-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes lw-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes lw-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes lw-modal-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lw-modal-pop-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes lw-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Legacy Aliases for Seamless Backward Compatibility ──
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ── Utility Classes ──
+.lw-animate-fade-in {
+  @include lw-animate-fade-in;
+}
+
+.lw-animate-pulse {
+  @include lw-animate-pulse;
+}
+
+.lw-animate-spin {
+  @include lw-animate-spin;
+}
+
+// ── 순서 바꾸기(`lwReorderItem`) 상태 표시 ──
+[data-lw-reorder-index] {
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.lw-reorder-item--dragging {
+  opacity: 0.85;
+  cursor: grabbing;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.lw-reorder-item--over {
+  outline: 2px dashed var(--lw-accent, #0284c7);
+  outline-offset: 2px;
+}
+
+// ── 누를 수 있는 요소(`lwPressable`)의 키보드 포커스 표시 ──
+[lwPressable] {
+  cursor: pointer;
+}
+
+[lwPressable]:focus-visible {
+  outline: 2px solid var(--lw-focus-ring, #6366f1);
+  outline-offset: 2px;
+}

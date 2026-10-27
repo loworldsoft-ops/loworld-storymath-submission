@@ -1,0 +1,869 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 848 / 1264;
+
+  /* ── 테마 토큰 브릿지: 기본 라이트 테마 (Light Novel) ── */
+  --lw-card-bg: #faf8f2;
+  --lw-card-inner-bg: transparent;
+  --lw-card-inner-border: transparent;
+  --lw-card-text: var(--lw-text-primary);
+  --lw-card-text-soft: var(--lw-text-muted);
+  --lw-card-border-color: rgba(217, 119, 6, 0.35);
+  --lw-card-frame-border: rgba(217, 119, 6, 0.7);
+  --lw-card-accent: var(--lw-color-amber);
+  --lw-card-pill-bg: rgba(245, 158, 11, 0.12);
+  --lw-card-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --lw-card-lore-bg: rgba(245, 158, 11, 0.12);
+  --lw-card-text-shadow: none;
+  --lw-codex-card-bg-image: url('/assets/novel/cards/codex-card-front-light.jpg');
+
+  /* 속성 라인 및 로어 명시성 강화 (라이트 모드 고대비 가독성) */
+  --lw-card-prop-bullet: var(--lw-color-amber-dark);
+  --lw-card-prop-label: var(--lw-text-secondary);
+  --lw-card-prop-val: var(--lw-text-primary);
+  --lw-card-prop-positive: #047857;
+  --lw-card-prop-positive-val: #065f46;
+  --lw-card-prop-accent: var(--lw-color-amber-dark);
+  --lw-card-prop-accent-val: #92400e;
+  --lw-card-prop-danger: var(--lw-color-danger-dark);
+  --lw-card-prop-danger-val: #991b1b;
+  --lw-card-prop-warning: #c2410c;
+  --lw-card-prop-warning-val: #9a3412;
+  --lw-card-lore-text: var(--lw-surface-overlay);
+  --lw-card-lore-border: rgba(217, 119, 6, 0.28);
+}
+
+/* ── 1. 다크 테마 (Dark Novel / Classic Dark) ── */
+:host-context([data-lw-theme='dark']),
+:host([data-lw-play-theme='dark']),
+:host-context([data-lw-play-theme='dark']),
+:host-context([data-lw-play-theme='classic-dark']),
+:host-context([data-lw-play-theme='d2r-dark']),
+:host-context(.is-dark) {
+  --lw-card-bg: #070a12;
+  --lw-card-inner-bg: transparent;
+  --lw-card-inner-border: transparent;
+  --lw-card-text: var(--lw-surface-subtle);
+  --lw-card-text-soft: var(--lw-border-neutral);
+  --lw-card-border-color: rgba(245, 158, 11, 0.4);
+  --lw-card-frame-border: var(--lw-color-warning);
+  --lw-card-accent: var(--lw-color-warning);
+  --lw-card-pill-bg: rgba(15, 23, 42, 0.7);
+  --lw-card-shadow: 0 14px 36px -4px rgba(0, 0, 0, 0.75), 0 4px 12px rgba(0, 0, 0, 0.5);
+  --lw-card-lore-bg: rgba(10, 14, 26, 0.75);
+  --lw-card-text-shadow: none;
+  --lw-codex-card-bg-image: url('/assets/novel/cards/codex-card-front-dark.jpg');
+
+  /* 다크 테마 발광 가독성 */
+  --lw-card-prop-bullet: var(--lw-color-warning-light, #fbbf24);
+  --lw-card-prop-label: var(--lw-text-muted-light);
+  --lw-card-prop-val: var(--lw-surface-subtle);
+  --lw-card-prop-positive: #34d399;
+  --lw-card-prop-positive-val: #6ee7b7;
+  --lw-card-prop-accent: var(--lw-color-warning-light, #fbbf24);
+  --lw-card-prop-accent-val: #fde047;
+  --lw-card-prop-danger: var(--lw-color-danger-light);
+  --lw-card-prop-danger-val: #fca5a5;
+  --lw-card-prop-warning: #fb923c;
+  --lw-card-prop-warning-val: #fdba74;
+  --lw-card-lore-text: var(--lw-surface-ground);
+  --lw-card-lore-border: rgba(245, 158, 11, 0.35);
+}
+
+/* ── 2. 고전 양피지 테마 (Parchment) ── */
+:host([data-lw-play-theme='parchment']),
+:host-context([data-lw-play-theme='parchment']) {
+  --lw-card-bg: #faf3e3;
+  --lw-card-inner-bg: transparent;
+  --lw-card-inner-border: transparent;
+  --lw-card-text: #451a03;
+  --lw-card-text-soft: #78350f;
+  --lw-card-border-color: rgba(180, 83, 9, 0.4);
+  --lw-card-frame-border: var(--lw-color-amber);
+  --lw-card-accent: var(--lw-color-amber-dark);
+  --lw-card-pill-bg: rgba(253, 230, 138, 0.6);
+  --lw-card-shadow: 0 12px 30px -4px rgba(69, 26, 3, 0.2), 0 2px 8px rgba(69, 26, 3, 0.1);
+  --lw-card-lore-bg: rgba(217, 119, 6, 0.12);
+  --lw-card-text-shadow: none;
+  --lw-codex-card-bg-image: url('/assets/novel/cards/codex-card-front-parchment.jpg');
+
+  --lw-card-prop-bullet: var(--lw-color-amber-dark);
+  --lw-card-prop-label: #78350f;
+  --lw-card-prop-val: #451a03;
+  --lw-card-prop-positive: #065f46;
+  --lw-card-prop-positive-val: #047857;
+  --lw-card-prop-accent: #92400e;
+  --lw-card-prop-accent-val: #78350f;
+  --lw-card-prop-danger: #991b1b;
+  --lw-card-prop-danger-val: #7f1d1d;
+  --lw-card-prop-warning: #9a3412;
+  --lw-card-prop-warning-val: #7c2d12;
+  --lw-card-lore-text: #451a03;
+  --lw-card-lore-border: rgba(180, 83, 9, 0.35);
+}
+
+/* ── 3. 신문 양식 테마 (Newspaper) ── */
+:host([data-lw-play-theme='newspaper']),
+:host-context([data-lw-play-theme='newspaper']) {
+  --lw-card-bg: #fbf9f4;
+  --lw-card-inner-bg: transparent;
+  --lw-card-inner-border: transparent;
+  --lw-card-text: #1c1917;
+  --lw-card-text-soft: #44403c;
+  --lw-card-border-color: rgba(68, 64, 60, 0.35);
+  --lw-card-frame-border: #78716c;
+  --lw-card-accent: #991b1b;
+  --lw-card-pill-bg: rgba(231, 229, 228, 0.6);
+  --lw-card-shadow: 0 10px 26px -4px rgba(28, 25, 23, 0.15), 0 2px 8px rgba(28, 25, 23, 0.08);
+  --lw-card-lore-bg: rgba(153, 27, 27, 0.08);
+  --lw-card-text-shadow: none;
+  --lw-codex-card-bg-image: url('/assets/novel/cards/codex-card-front-newspaper.jpg');
+
+  --lw-card-prop-bullet: #78716c;
+  --lw-card-prop-label: #44403c;
+  --lw-card-prop-val: #1c1917;
+  --lw-card-prop-positive: #15803d;
+  --lw-card-prop-positive-val: #166534;
+  --lw-card-prop-accent: #991b1b;
+  --lw-card-prop-accent-val: #7f1d1d;
+  --lw-card-prop-danger: var(--lw-color-danger-dark);
+  --lw-card-prop-danger-val: #991b1b;
+  --lw-card-prop-warning: #c2410c;
+  --lw-card-prop-warning-val: #9a3412;
+  --lw-card-lore-text: #1c1917;
+  --lw-card-lore-border: rgba(68, 64, 60, 0.32);
+}
+
+.lw-codex-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 848 / 1264;
+  min-width: var(--lw-codex-card-min-width, 240px);
+  box-sizing: border-box;
+  border-radius: 16px;
+  background-color: var(--lw-card-bg);
+  background-image: var(--lw-codex-card-bg-image);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: var(--lw-card-shadow);
+  color: var(--lw-card-text);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  cursor: default;
+  overflow: hidden;
+  scroll-snap-align: start;
+
+  &.is-interactive {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -4px color-mix(in srgb, var(--lw-color-black) 75%, transparent), 0 0 24px color-mix(in srgb, var(--lw-color-warning) 45%, transparent);
+
+      .lw-codex-card__frame-border {
+        box-shadow: inset 0 0 18px color-mix(in srgb, var(--lw-color-warning) 30%, transparent);
+      }
+    }
+  }
+
+  &.is-selected {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 2px var(--lw-color-warning), 0 18px 40px color-mix(in srgb, var(--lw-color-black) 80%, transparent), 0 0 28px color-mix(in srgb, var(--lw-color-warning) 65%, transparent);
+
+    .lw-codex-card__frame-border {
+      box-shadow: inset 0 0 24px color-mix(in srgb, var(--lw-color-warning) 45%, transparent);
+    }
+  }
+
+  &.is-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+  }
+
+  /* ── 1. 카드 외곽 프레임 오버레이 ── */
+  &__frame-border {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    border-radius: inherit;
+    border: none;
+    background: transparent !important;
+    transition: all 0.22s ease;
+  }
+
+  /* ── 2. 내용 본문 컨테이너 ── */
+  &__inner {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    padding: 1.35rem 1.25rem 1.1rem;
+    background: transparent;
+    border-radius: inherit;
+    border: none !important;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    transition: all 0.22s ease;
+  }
+
+  /* ── 3. 헤더 영역 ── */
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+    width: 100%;
+  }
+
+  &__icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--lw-hue-slate-900) 70%, transparent);
+    border: 1.5px solid color-mix(in srgb, var(--lw-color-warning) 50%, transparent);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-black) 40%, transparent);
+    overflow: hidden;
+  }
+
+  &__icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  &__lock-indicator {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    font-size: 0.7rem;
+    background: color-mix(in srgb, var(--lw-color-black) 75%, transparent);
+    border-radius: 50%;
+    padding: 2px;
+  }
+
+  &__equipped-badge {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    font-size: 0.625rem;
+    font-weight: 900;
+    background: var(--lw-color-success);
+    color: var(--lw-surface);
+    border-radius: 3px;
+    padding: 1px 4px;
+  }
+
+  &__title-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    min-width: 0;
+    width: 100%;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--lw-card-text);
+    text-shadow: none;
+    min-width: 0;
+    flex: 1;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+
+    &.name--common { color: var(--lw-card-text); }
+    &.name--magic { color: var(--lw-color-primary-strong); }
+    &.name--rare { color: var(--lw-color-amber); }
+    &.name--legendary { color: var(--lw-hue-purple-600); }
+    &.name--unique { color: var(--lw-color-orange); }
+    &.name--set { color: var(--lw-color-success-strong); }
+
+    :host-context([data-lw-theme='dark']) &,
+    :host-context([data-lw-play-theme='dark']) &,
+    :host-context([data-lw-play-theme='classic-dark']) & {
+      &.name--common { color: var(--lw-surface-subtle); }
+      &.name--magic { color: var(--lw-hue-blue-400); }
+      &.name--rare { color: var(--lw-color-warning-light, var(--lw-color-warning)); }
+      &.name--legendary { color: var(--lw-hue-purple-400); }
+      &.name--unique { color: var(--lw-hue-orange-400); }
+      &.name--set { color: var(--lw-color-success); }
+    }
+
+    &.is-locked-name {
+      opacity: 0.7;
+    }
+  }
+
+  &__name-en {
+    font-size: 0.7rem;
+    color: var(--lw-card-text-soft);
+    text-shadow: none;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &__rarity-badge {
+    font-size: 0.625rem;
+    font-weight: 800;
+    padding: 0.125rem 0.45rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    text-shadow: none;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 15%, transparent);
+
+    &.rarity--common {
+      background: color-mix(in srgb, var(--lw-hue-slate-400) 25%, transparent);
+      color: var(--lw-border-subtle);
+      border: 1px solid color-mix(in srgb, var(--lw-color-warning) 30%, transparent);
+    }
+    &.rarity--magic {
+      background: color-mix(in srgb, var(--lw-hue-blue-600) 35%, transparent);
+      color: var(--lw-hue-blue-300);
+      border: 1px solid color-mix(in srgb, var(--lw-hue-blue-500) 60%, transparent);
+    }
+    &.rarity--rare {
+      background: color-mix(in srgb, var(--lw-hue-amber-700) 40%, transparent);
+      color: var(--lw-hue-amber-200);
+      border: 1px solid color-mix(in srgb, var(--lw-color-warning) 60%, transparent);
+    }
+    &.rarity--legendary {
+      background: color-mix(in srgb, var(--lw-hue-purple-700) 35%, transparent);
+      color: var(--lw-hue-purple-200);
+      border: 1px solid color-mix(in srgb, var(--lw-hue-purple-500) 60%, transparent);
+    }
+    &.rarity--unique {
+      background: color-mix(in srgb, var(--lw-hue-orange-700) 35%, transparent);
+      color: var(--lw-hue-orange-100);
+      border: 1px solid color-mix(in srgb, var(--lw-hue-orange-500) 60%, transparent);
+    }
+    &.rarity--set {
+      background: color-mix(in srgb, var(--lw-hue-emerald-700) 35%, transparent);
+      color: var(--lw-hue-emerald-200);
+      border: 1px solid color-mix(in srgb, var(--lw-color-success) 60%, transparent);
+    }
+  }
+
+  &__meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__category {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--lw-card-text-soft);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    text-shadow: none;
+  }
+
+  &__sub {
+    font-size: 0.725rem;
+    font-weight: 600;
+    color: var(--lw-card-text-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    text-shadow: none;
+  }
+
+  &__socket-tag {
+    font-size: 0.625rem;
+    font-weight: 800;
+    background: color-mix(in srgb, var(--lw-hue-purple-500) 25%, transparent);
+    color: var(--lw-color-purple-strong);
+    border: 1px solid color-mix(in srgb, var(--lw-hue-purple-500) 40%, transparent);
+    border-radius: 4px;
+    padding: 0.05rem 0.35rem;
+    margin-left: auto;
+    flex-shrink: 0;
+    text-shadow: none;
+  }
+
+  &__top-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* ── 4. 단정한 아케인 그라데이션 구분선 ── */
+  &__divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--lw-color-warning) 45%, transparent), transparent);
+    margin: 0.2rem 0;
+  }
+
+  /* ── 5. ◈ 도감 무기 속성 라인 리스트 ── */
+  &__props {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  &__prop-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--lw-card-text);
+    width: 100%;
+    min-width: 0;
+    text-shadow: none;
+
+    &.prop-tone--danger {
+      color: var(--lw-card-prop-danger);
+      .lw-codex-card__prop-bullet { color: var(--lw-card-prop-danger); text-shadow: none; }
+      .lw-codex-card__prop-val { color: var(--lw-card-prop-danger-val); }
+    }
+    &.prop-tone--positive {
+      color: var(--lw-card-prop-positive);
+      .lw-codex-card__prop-bullet { color: var(--lw-card-prop-positive); text-shadow: none; }
+      .lw-codex-card__prop-val { color: var(--lw-card-prop-positive-val); }
+    }
+    &.prop-tone--accent {
+      color: var(--lw-card-prop-accent);
+      .lw-codex-card__prop-bullet { color: var(--lw-card-prop-accent); text-shadow: none; }
+      .lw-codex-card__prop-val { color: var(--lw-card-prop-accent-val); }
+    }
+    &.prop-tone--warning {
+      color: var(--lw-card-prop-warning);
+      .lw-codex-card__prop-bullet { color: var(--lw-card-prop-warning); text-shadow: none; }
+      .lw-codex-card__prop-val { color: var(--lw-card-prop-warning-val); }
+    }
+    &.prop-tone--default {
+      color: var(--lw-card-text);
+      .lw-codex-card__prop-bullet { color: var(--lw-card-prop-bullet); text-shadow: none; }
+      .lw-codex-card__prop-val { color: var(--lw-card-prop-val); }
+    }
+  }
+
+  &__prop-bullet {
+    font-size: 0.65rem;
+    color: var(--lw-card-prop-bullet);
+    flex-shrink: 0;
+    line-height: 1.45;
+    margin-top: 1px;
+    font-weight: 700;
+  }
+
+  &__prop-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  &__prop-label {
+    font-weight: 700;
+    color: var(--lw-card-prop-label);
+    white-space: nowrap;
+
+    &::after {
+      content: ':';
+      margin-left: 1px;
+    }
+  }
+
+  &__prop-val {
+    font-weight: 800;
+    color: var(--lw-card-prop-val);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* ── 6. 칩 리스트 (요구치, 룬워드 등) ── */
+  &__chips-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  &__chip {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    background: var(--lw-card-pill-bg);
+    border: 1px solid var(--lw-card-border-color);
+    color: var(--lw-card-text);
+    box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 10%, transparent);
+
+    &--runeword {
+      background: color-mix(in srgb, var(--lw-hue-purple-700) 20%, transparent);
+      color: var(--lw-hue-purple-700);
+      border-color: color-mix(in srgb, var(--lw-hue-purple-500) 40%, transparent);
+
+      :host-context([data-lw-theme='dark']) &,
+      :host-context([data-lw-play-theme='dark']) & {
+        background: color-mix(in srgb, var(--lw-hue-purple-700) 30%, transparent);
+        color: var(--lw-hue-purple-200);
+        border-color: color-mix(in srgb, var(--lw-hue-purple-500) 50%, transparent);
+      }
+    }
+
+    &--met {
+      background: color-mix(in srgb, var(--lw-hue-emerald-700) 20%, transparent);
+      color: var(--lw-hue-emerald-700);
+      border-color: color-mix(in srgb, var(--lw-color-success) 35%, transparent);
+
+      :host-context([data-lw-theme='dark']) &,
+      :host-context([data-lw-play-theme='dark']) & {
+        background: color-mix(in srgb, var(--lw-hue-emerald-700) 30%, transparent);
+        color: var(--lw-hue-emerald-200);
+        border-color: color-mix(in srgb, var(--lw-color-success) 45%, transparent);
+      }
+    }
+  }
+
+  /* ── 7. 단락 서사 보기 버튼 (기승전결 전체보기 바텀시트 호출) ── */
+  &__paragraph-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0.25rem 0 0;
+    padding: 0.4rem 0.65rem;
+    background: var(--lw-card-lore-bg);
+    border: 1px solid var(--lw-card-lore-border, color-mix(in srgb, var(--lw-color-warning-hover) 25%, transparent));
+    border-left: 3px solid var(--lw-card-accent);
+    border-radius: 0 6px 6px 0;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 4%, transparent);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-color-warning) 10%, transparent);
+      border-color: var(--lw-card-accent);
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-warning-hover) 16%, transparent);
+      transform: translateY(-1px);
+
+      .lw-codex-card__paragraph-btn-badge {
+        background: var(--lw-card-accent);
+        color: var(--lw-surface);
+        border-color: var(--lw-card-accent);
+        transform: scale(1.03);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--lw-card-accent);
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__paragraph-btn-left {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  &__paragraph-btn-icon {
+    font-size: 0.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  &__paragraph-btn-title {
+    font-size: 0.725rem;
+    font-weight: 800;
+    color: var(--lw-card-prop-accent, var(--lw-hue-amber-700));
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    :host-context([data-lw-theme='dark']) &,
+    :host-context([data-lw-play-theme='dark']) &,
+    :host-context([data-lw-play-theme='classic-dark']) & {
+      color: var(--lw-color-warning-light, var(--lw-color-warning));
+    }
+  }
+
+  &__paragraph-btn-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.1rem 0.38rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--lw-color-warning-hover) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--lw-color-warning-hover) 30%, transparent);
+    color: var(--lw-card-prop-accent, var(--lw-hue-amber-700));
+    transition: all 0.15s ease;
+    user-select: none;
+    line-height: 1.2;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    :host-context([data-lw-theme='dark']) &,
+    :host-context([data-lw-play-theme='dark']) &,
+    :host-context([data-lw-play-theme='classic-dark']) & {
+      color: var(--lw-hue-amber-200);
+      background: color-mix(in srgb, var(--lw-color-warning) 20%, transparent);
+      border-color: color-mix(in srgb, var(--lw-color-warning) 40%, transparent);
+    }
+  }
+
+  &__lore {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    font-weight: 500;
+    font-style: normal;
+    color: var(--lw-card-lore-text, var(--lw-card-text));
+    padding: 0.625rem 0.85rem;
+    background: var(--lw-card-lore-bg);
+    border: 1px solid var(--lw-card-lore-border, color-mix(in srgb, var(--lw-color-warning-hover) 25%, transparent));
+    border-left: 4px solid var(--lw-card-accent);
+    border-radius: 0 8px 8px 0;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 4%, transparent);
+    text-shadow: none;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ── 2-0. 영웅 / 배너 일러스트 프레임 (배너 레이아웃) ── */
+  &__hero-frame {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--lw-card-image-bg, radial-gradient(circle, color-mix(in srgb, var(--lw-color-warning-hover) 15%, transparent) 0%, color-mix(in srgb, var(--lw-hue-slate-100) 80%, transparent) 70%));
+    border: var(--lw-card-image-border, 1px solid color-mix(in srgb, var(--lw-color-warning-hover) 30%, transparent));
+    box-sizing: border-box;
+    flex-shrink: 0;
+
+    .lw-codex-card__hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lw-codex-card__hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--lw-card-image-overlay, linear-gradient(to top, color-mix(in srgb, var(--lw-color-white) 85%, transparent) 0%, transparent 100%));
+      pointer-events: none;
+    }
+
+    .lw-codex-card__hero-cat-tag {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--lw-card-accent);
+      background: var(--lw-card-pill-bg);
+      border: 1px solid var(--lw-card-pill-border);
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      z-index: 3;
+    }
+
+    .lw-codex-card__hero-slot-tag {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--lw-card-pill-text, var(--lw-card-text));
+      background: var(--lw-card-pill-bg);
+      border: 1px solid var(--lw-card-pill-border);
+      padding: 1px 5px;
+      border-radius: 4px;
+      z-index: 3;
+    }
+
+    .lw-codex-card__hero-active-badge {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: var(--lw-card-positive);
+      background: color-mix(in srgb, var(--lw-hue-emerald-100) 95%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lw-color-success) 60%, transparent);
+      padding: 1px 5px;
+      border-radius: 4px;
+      z-index: 3;
+
+      :host-context([data-lw-theme='dark']) &,
+      :host-context([data-lw-play-theme='dark']) & {
+        color: var(--lw-color-success);
+        background: color-mix(in srgb, var(--lw-hue-emerald-900) 85%, transparent);
+      }
+    }
+  }
+
+  &:hover .lw-codex-card__hero-img {
+    transform: scale(1.06);
+  }
+
+  &--has-hero {
+    .lw-codex-card__inner {
+      padding: 0.85rem 0.8rem 0.75rem;
+      gap: 0.35rem;
+    }
+    .lw-codex-card__icon-wrap {
+      width: 28px;
+      height: 28px;
+    }
+    .lw-codex-card__icon {
+      font-size: 1rem;
+    }
+    .lw-codex-card__name {
+      font-size: 0.88rem;
+    }
+  }
+
+  /* ── 8. 하단 액션 ── */
+  &__bottom {
+    padding-top: 0.25rem;
+    flex-shrink: 0;
+
+    &:empty {
+      display: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .lw-codex-card__default-action-btn {
+      width: 100%;
+      display: block;
+    }
+  }
+
+  /* ── 사이즈 변형 (848:1264 정밀 종횡비 대응) ── */
+  &--sm {
+    border-radius: 12px;
+
+    .lw-codex-card__inner {
+      margin: 0;
+      padding: 0.65rem 0.6rem 0.55rem;
+      gap: 0.25rem;
+      border-radius: 8px;
+    }
+    .lw-codex-card__hero-frame {
+      height: 100px;
+    }
+    .lw-codex-card__icon-wrap {
+      width: 26px;
+      height: 26px;
+    }
+    .lw-codex-card__icon {
+      font-size: 0.95rem;
+    }
+    .lw-codex-card__name {
+      font-size: 0.82rem;
+    }
+    .lw-codex-card__props {
+      padding: 2px 0;
+    }
+    .lw-codex-card__prop-line {
+      font-size: 0.7rem;
+      line-height: 1.3;
+    }
+    .lw-codex-card__lore {
+      font-size: 0.68rem;
+      padding: 0.3rem 0.5rem;
+    }
+  }
+
+  &--lg {
+    border-radius: 18px;
+
+    .lw-codex-card__inner {
+      margin: 0;
+      padding: 1.25rem 1.15rem 1rem;
+      gap: 0.65rem;
+      border-radius: 12px;
+    }
+    .lw-codex-card__hero-frame {
+      height: 150px;
+    }
+    .lw-codex-card__icon-wrap {
+      width: 50px;
+      height: 50px;
+    }
+    .lw-codex-card__icon {
+      font-size: 2rem;
+    }
+    .lw-codex-card__name {
+      font-size: 1.2rem;
+    }
+  }
+}

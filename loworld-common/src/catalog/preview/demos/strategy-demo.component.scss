@@ -1,0 +1,9 @@
+    :host { display: block; width: 100%; }
+    .plan-preview-wrap { display: grid; gap: 12px; }
+    .plan-preview-caption { font-size: 12px; color: var(--lw-hue-slate-500); }
+    .plan-preview-frame {
+      height: 520px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--lw-hue-slate-200);
+    }

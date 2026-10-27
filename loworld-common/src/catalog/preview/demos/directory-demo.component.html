@@ -1,0 +1,107 @@
+@switch (comp().id) {
+  @case ('lw-directory-shell') {
+    <div class="demo-frame shell-frame">
+      <lw-directory-shell
+        [members]="listDemo()"
+        [selectedMemberId]="selectedList()"
+        [canCreate]="true"
+        [canUpdate]="true"
+        [canDelete]="true"
+        title="Directory Shell"
+        (selectMember)="onListSelect($event)"
+        (createMember)="onSave($event)"
+        (updateMember)="onSave($event)"
+        (deleteMember)="onDeleteShell($event)"
+      />
+    </div>
+  }
+  @case ('member-list') {
+    <div class="demo-pad">
+      <lw-selectable-list
+        [items]="listDemo()"
+        [selectedId]="selectedList()"
+        [emptyTitle]="'멤버가 없습니다'"
+        [itemTemplate]="memberRow"
+      />
+      <ng-template #memberRow let-m let-selected="selected">
+        <lw-account-row
+          role="listitem"
+          [member]="m"
+          [selected]="selected"
+          [canEdit]="true"
+          [canDelete]="true"
+          (select)="onListSelect($event)"
+          (edit)="openFormEdit($event)"
+          (delete)="onDeleteMember($event)"
+        />
+      </ng-template>
+    </div>
+  }
+  @case ('lw-account-row') {
+    <div class="demo-pad">
+      <lw-account-row
+        [member]="listDemo()[0]!"
+        [selected]="true"
+        [canEdit]="true"
+        [canDelete]="true"
+        (select)="onListSelect($event)"
+        (edit)="noop()"
+        (delete)="noop()"
+      />
+    </div>
+  }
+  @case ('lw-account-role-badge') {
+    <div class="demo-row">
+      <lw-account-role-badge role="OWNER" />
+      <lw-account-role-badge role="ADMIN" />
+      <lw-account-role-badge role="MANAGER" />
+      <lw-account-role-badge role="VIEWER" />
+    </div>
+  }
+  @case ('lw-account-form-dialog') {
+    <div class="demo-pad">
+      <lw-button type="button" class="demo-btn" (click)="openFormCreate()">폼 열기 (create)</lw-button>
+      <lw-modal
+        [isOpen]="showForm()"
+        title="멤버 계정 등록/수정"
+        subtitle="단일 모달 기반 멤버 관리 폼"
+        variant="custom"
+        size="md"
+        (closeClick)="showForm.set(false)"
+      >
+        <div style="padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+          <p>이름: <strong>{{ editTarget()?.displayName || '새 멤버' }}</strong></p>
+          <p>권한: <strong>{{ editTarget()?.role || 'VIEWER' }}</strong></p>
+          <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem;">
+            <lw-button variant="secondary" (click)="showForm.set(false)">취소</lw-button>
+            <lw-button variant="primary" (click)="showForm.set(false)">저장</lw-button>
+          </div>
+        </div>
+      </lw-modal>
+    </div>
+  }
+  @case ('lw-account-delete-dialog') {
+    <div class="demo-pad">
+      <lw-button type="button" class="demo-btn" (click)="openDel()">삭제 확인 열기</lw-button>
+      <lw-modal
+        [isOpen]="showDel()"
+        title="멤버 삭제 확인"
+        subtitle="정말로 해당 멤버를 삭제하시겠습니까?"
+        variant="custom"
+        size="sm"
+        (closeClick)="showDel.set(false)"
+      >
+        <p style="padding: 1rem 0; margin: 0; color: rgba(255,255,255,0.8);">
+          '{{ listDemo()[0].displayName }}' 멤버가 영구적으로 삭제됩니다.
+        </p>
+        <div lwModalFooter style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+          <lw-button variant="secondary" (click)="showDel.set(false)">취소</lw-button>
+          <lw-button variant="primary" (click)="onConfirmDel()">삭제 확인</lw-button>
+        </div>
+      </lw-modal>
+    </div>
+  }
+  @default {
+    <p class="demo-fallback">이 컴포넌트용 인라인 데모가 없습니다.</p>
+  }
+}

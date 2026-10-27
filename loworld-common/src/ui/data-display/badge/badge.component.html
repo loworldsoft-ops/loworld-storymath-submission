@@ -1,0 +1,21 @@
+<span class="badge"
+      [style.--_bg]="styles().bg"
+      [style.--_text]="styles().text"
+      [style.--_border]="styles().border"
+      [style.--_subtle-bg]="styles().subtleBg"
+      [attr.data-variant]="variant()"
+      [attr.data-size]="effectiveSize()"
+      [attr.data-tone]="effectiveTone()"
+      [class.badge--pill]="pill()">
+  @if (icon()) {
+    <span class="badge__icon" aria-hidden="true">{{ icon() }}</span>
+  }
+  @if (label()) {
+    <span class="badge__text">{{ label() }}</span>
+  } @else {
+    <span class="badge__text"><ng-content></ng-content></span>
+  }
+  @if (trailingIcon()) {
+    <span class="badge__trailing-icon" aria-hidden="true">{{ trailingIcon() }}</span>
+  }
+</span>

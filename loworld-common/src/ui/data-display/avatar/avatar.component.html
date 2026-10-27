@@ -1,0 +1,14 @@
+<div class="avatar" [attr.data-size]="size()" [class.has-icon]="icon()">
+  @if (icon()) {
+    <lw-icon class="avatar-icon" [name]="icon()!" />
+  } @else if (src() && !_imgError()) {
+    <img class="avatar-img" [src]="src()!" [alt]="alt()" (error)="_imgError.set(true)" loading="lazy" decoding="async" />
+  } @else if (initial()) {
+    <span class="avatar-initial" [style.background]="initialBg()">{{ initial() }}</span>
+  } @else {
+    <span class="avatar-fallback" aria-hidden="true">
+      <span class="avatar-fallback__head"></span>
+      <span class="avatar-fallback__body"></span>
+    </span>
+  }
+</div>

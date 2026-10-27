@@ -1,0 +1,78 @@
+@use '../console-ui' as ui;
+
+:host {
+  display: contents;
+}
+
+.lw-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 320px;
+  color: var(--lw-text-primary);
+
+  h4 {
+    @include ui.foundry-section-title;
+  }
+}
+
+.lw-profile__me {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 2px 0 6px;
+    color: var(--lw-text-muted);
+    font-size: 13px;
+  }
+}
+
+.lw-profile__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lw-profile__group {
+  @include ui.foundry-card;
+  @include ui.foundry-toolbar;
+  padding: 10px 12px;
+
+  strong {
+    display: block;
+    font-size: 13px;
+  }
+
+  span {
+    color: var(--lw-text-muted);
+    font-size: var(--lw-font-size-2xs, 0.6875rem);
+  }
+}
+
+.lw-profile__form {
+  @include ui.foundry-form;
+  max-width: 420px;
+}
+
+.lw-profile__prefs {
+  display: flex;
+  flex-direction: column;
+}
+
+.lw-profile__pref {
+  @include ui.foundry-toolbar;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--lw-border-subtle);
+  font-size: 13px;
+}
+
+.lw-profile__muted {
+  color: var(--lw-text-muted);
+}

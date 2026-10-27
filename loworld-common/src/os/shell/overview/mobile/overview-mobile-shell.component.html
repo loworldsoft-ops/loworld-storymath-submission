@@ -1,0 +1,56 @@
+<section class="overview-mobile-shell" data-lw-overlay-container aria-label="모바일 overview">
+  <div class="overview-mobile-shell__content" [class.is-scene-open]="sceneOpen()">
+    @if (!sceneOpen()) {
+      <lw-os-mobile-home
+        [folders]="folders()"
+        [memberSession]="memberSession()"
+        [runningTabs]="runningTabs()"
+        [activeWindowTab]="activeWindowTab()"
+        [selectedGroupId]="selectedGroupId()"
+        [pins]="pins()"
+        [loginLabel]="loginLabel()"
+        [settingsActive]="settingsActive()"
+        (groupSelected)="onGroupSelected($event)"
+        (groupOpenRequested)="onGroupOpen($event)"
+        (runningTabSelected)="onRunningTabSelected($event)"
+        (launchRequested)="onLaunch($event)"
+        (startToggleRequested)="startToggleRequested.emit()"
+        (searchRequested)="searchRequested.emit()"
+        (pinToggleRequested)="pinToggleRequested.emit($event)"
+        (settingsRequested)="settingsRequested.emit()"
+        (loginRequested)="onLogin()"
+        (accountRequested)="onAccount()"
+        (logoutRequested)="onLogout()" />
+    }
+
+    <ng-content select="[mobile-scene]" />
+  </div>
+
+  @if (dockVisible()) {
+    <lw-os-mobile-dock
+      [selectedAction]="dockAction()"
+      [hasRunningWindows]="runningTabs().length > 0"
+      [runningCount]="runningTabs().length"
+      [themeMode]="themeMode()"
+      (actionSelected)="onDockAction($event)" />
+  }
+
+  @if (sheetFolder(); as currentFolder) {
+    <lw-bottom-sheet
+      [open]="sheetOpen()"
+      [fullWidth]="true"
+      [edgeToEdge]="true"
+      [backdropBlur]="true"
+      [closeOnOverlay]="true"
+      [scrollable]="true"
+      [title]="currentFolder.title"
+      [kicker]="currentFolder.description || '앱 그룹'"
+      (close)="onSheetClose()">
+      <lw-os-folder-sheet-content
+        [items]="currentFolder.items"
+        [runningTabs]="runningTabs()"
+        [activeTab]="activeWindowTab()"
+        (itemSelect)="onSheetItemSelect($event)" />
+    </lw-bottom-sheet>
+  }
+</section>

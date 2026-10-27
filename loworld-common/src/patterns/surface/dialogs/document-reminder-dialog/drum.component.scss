@@ -1,0 +1,9 @@
+@use 'index' as lw;
+@use 'scrollbar' as *;
+:host { display: block; flex-shrink: 0; }
+    .outer { position: relative; overflow: hidden; height: 144px; }
+    .scroll { height: 100%; overflow-y: auto; scroll-snap-type: y mandatory; padding-top: 48px; padding-bottom: 48px; scrollbar-width: none; -webkit-overflow-scrolling: touch; box-sizing: border-box; }.scroll { @include lw-scrollbar-none; }
+    .item { height: 48px; display: flex; align-items: center; justify-content: center; scroll-snap-align: start; font-size: 18px; font-weight: 400; color: color-mix(in srgb, var(--lw-color-black) 18%, transparent); user-select: none; transition: color 0.15s, font-size 0.15s, font-weight 0.15s; }
+    .item.sel { font-size: 28px; font-weight: 700; color: var(--lw-hue-stone-950); }
+    .fade-top { position: absolute; top: 0; left: 0; right: 0; height: 34px; background: linear-gradient(to bottom, var(--lw-color-white), transparent); pointer-events: none; }
+    .fade-bot { position: absolute; bottom: 0; left: 0; right: 0; height: 34px; background: linear-gradient(to top, var(--lw-color-white), transparent); pointer-events: none; }

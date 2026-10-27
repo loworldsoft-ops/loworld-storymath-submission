@@ -1,0 +1,7 @@
+<strong class="lw-sheet-title__name">{{ title() }}</strong>
+@for (detail of details(); track $index) {
+  @if (detail) {
+    <span class="lw-sheet-title__detail">{{ detail }}</span>
+  }
+}
+<ng-content />

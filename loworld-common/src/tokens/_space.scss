@@ -1,0 +1,97 @@
+// Layout tokens for components (compile-time defaults for var(...) fallbacks).
+// 글자 크기 단계. 가장 작은 단계가 11px이고, 그보다 작은 글자는 쓰지 않는다. rem이라 사용자의 글자 크기 설정을 따른다.
+$lw-font-size-2xs: 0.6875rem; // 11px — 뱃지·보조 표시
+$lw-font-size-xs: 0.75rem; // 12px — 모바일 본문 최소
+$lw-progress-gap: 6px;
+$lw-progress-font-size: 12px;
+$lw-progress-height-md: 6px;
+$lw-progress-height-sm: 4px;
+$lw-progress-height-lg: 10px;
+$lw-progress-radius-pill: 999px;
+
+// Avatar
+$lw-avatar-radius: 50%;
+$lw-avatar-size-sm: 28px;
+$lw-avatar-size-md: 36px;
+$lw-avatar-size-lg: 44px;
+$lw-avatar-initial-font-sm: 11px;
+$lw-avatar-initial-font-md: 14px;
+$lw-avatar-initial-font-lg: 16px;
+$lw-avatar-fallback-scale: 60%;
+
+// Card
+$lw-card-radius: 12px;
+$lw-card-padding-sm: 10px;
+$lw-card-padding-md: 14px;
+$lw-card-padding-lg: 18px;
+$lw-card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+// Metric
+$lw-metric-gap: 8px;
+$lw-metric-padding-block: 3px;
+$lw-metric-font-size: 12px;
+
+// Badge
+$lw-badge-font-sm: 10px;
+$lw-badge-font-md: 11px;
+$lw-badge-font-lg: 13px;
+
+// Empty state
+$lw-empty-gap: 8px;
+$lw-empty-padding-y: 24px;
+$lw-empty-padding-x: 16px;
+$lw-empty-icon-size: 32px;
+$lw-empty-font-size: 13px;
+$lw-empty-padding-sm-y: 8px;
+$lw-empty-padding-sm-x: 12px;
+$lw-empty-font-sm: 12px;
+$lw-empty-icon-sm: 20px;
+$lw-empty-padding-lg-y: 48px;
+$lw-empty-padding-lg-x: 24px;
+$lw-empty-font-lg: 15px;
+$lw-empty-icon-lg: 48px;
+
+// Fab
+$lw-fab-menu-right: 16px;
+$lw-fab-menu-bottom: 96px;
+$lw-fab-menu-gap: 10px;
+$lw-fab-menu-item-height: 52px;
+$lw-fab-menu-icon-size: 40px;
+$lw-fab-anchor-right: 16px;
+$lw-fab-anchor-bottom: 20px;
+$lw-fab-size-default: 56px;
+
+// Titlebar
+$lw-titlebar-px: 12px;
+$lw-titlebar-gap: 8px;
+$lw-titlebar-height-sm: 40px;
+$lw-titlebar-height-md: 48px;
+$lw-titlebar-height-lg: 56px;
+$lw-titlebar-menu-btn: 32px;
+$lw-titlebar-menu-radius: 8px;
+
+// Modal
+$lw-modal-radius: 16px;
+$lw-modal-width-sm: 340px;
+$lw-modal-width-md: 440px;
+$lw-modal-width-lg: 580px;
+$lw-modal-header-py: 18px;
+$lw-modal-header-px: 20px;
+$lw-modal-body-padding: 20px;
+$lw-modal-footer-py: 16px;
+$lw-modal-footer-px: 20px;
+$lw-modal-title-font-size: 14px;
+$lw-modal-close-size: 32px;
+$lw-modal-close-radius: 8px;
+$lw-modal-inner-gap: 8px;
+
+// Search
+$lw-search-gap: 6px;
+$lw-search-radius: 8px;
+$lw-search-icon-sm: 12px;
+$lw-search-icon-md: 14px;
+$lw-search-icon-lg: 16px;
+$lw-search-input-sm: 12px;
+$lw-search-input-md: 13px;
+$lw-search-input-lg: 14px;
+

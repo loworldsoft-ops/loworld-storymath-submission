@@ -1,0 +1,33 @@
+@use 'index' as lw;
+:host { display: flex; flex-direction: column; height: 100%; width: 100%; min-height: 0; min-width: 0; }
+    .locked-screen { flex: 1; min-height: 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid var(--lw-main-border-l, #{lw.$lw-main-border-l}); }
+    .lock-icon-wrap { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: color-mix(in srgb, var(--lw-color-danger-hover) 8%, transparent); }
+    .locked-title { font-size: 16px; font-weight: 600; margin: 0 0 4px; color: var(--lw-empty-title-text, #{lw.$lw-empty-title-text}); }
+    .locked-desc { font-size: 12px; margin: 0 0 20px; color: var(--lw-empty-desc-text, #{lw.$lw-empty-desc-text}); }
+    .locked-form { width: 260px; display: flex; flex-direction: column; gap: 8px; }
+    .password-field { position: relative; }
+    .password-input { width: 100%; box-sizing: border-box; font-size: 12px; border-radius: 12px; padding: 10px 36px 10px 12px; border: 1px solid var(--lw-editor-tag-input-border, #{lw.$lw-editor-tag-input-border}); background: var(--lw-editor-tag-input-bg, #{lw.$lw-editor-tag-input-bg}); color: var(--lw-editor-tag-input-text, #{lw.$lw-editor-tag-input-text}); outline: none; }
+    .password-input:focus { box-shadow: 0 0 0 2px color-mix(in srgb, var(--lw-color-danger-hover) 15%, transparent); }
+    .password-input.error { border-color: var(--lw-color-danger); }
+    .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); padding: 2px; border-radius: 4px; background: none; border: none; cursor: pointer; color: var(--lw-editor-label-text, #{lw.$lw-editor-label-text}); }
+    .eye-btn:hover { opacity: 0.7; }
+    .error-text { font-size: 10px; color: var(--lw-color-danger); text-align: center; margin: 0; }
+    .unlock-btn { width: 100%; padding: 10px; background: var(--lw-color-danger); color: var(--lw-surface); font-size: 12px; font-weight: 500; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 10%, transparent); transition: background 0.15s; }
+    .unlock-btn:hover { background: var(--lw-color-danger-hover); }
+    .empty-state { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+    .empty-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: var(--lw-empty-icon-bg, #{lw.$lw-empty-icon-bg}); color: var(--lw-empty-icon-color, #{lw.$lw-empty-icon-color}); }
+    .empty-title { font-size: 16px; font-weight: 600; margin: 0 0 8px; color: var(--lw-empty-title-text, #{lw.$lw-empty-title-text}); }
+    .empty-desc { font-size: 12px; margin: 0 0 24px; text-align: center; line-height: 1.6; color: var(--lw-empty-desc-text, #{lw.$lw-empty-desc-text}); }
+    .fab-area { position: absolute; bottom: 20px; right: 20px; z-index: 10; }
+    .fab-menu { position: absolute; bottom: 100%; right: 0; margin-bottom: 8px; border-radius: 16px; overflow: hidden; padding: 6px 0; min-width: 180px; background: var(--lw-card-bg, #{lw.$lw-card-bg}); box-shadow: 0 8px 32px color-mix(in srgb, var(--lw-color-black) 14%, transparent), 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 6%, transparent); }
+    .fab-item { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 12px; color: var(--lw-main-title-text, #{lw.$lw-main-title-text}); transition: opacity 0.15s; }
+    .fab-item:hover { opacity: 0.8; }
+    .fab-item-icon { width: 28px; height: 28px; border-radius: 12px; background: var(--lw-color-danger); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .fab-item-text { text-align: left; }
+    .fab-item-title { font-weight: 500; }
+    .fab-item-desc { font-size: 10px; margin-top: 2px; color: var(--lw-empty-desc-text, #{lw.$lw-empty-desc-text}); }
+    .fab-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--lw-color-danger); color: var(--lw-surface); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; box-shadow: 0 4px 16px color-mix(in srgb, var(--lw-color-danger-hover) 35%, transparent); transition: transform 0.2s ease, background 0.15s; }
+    .fab-btn:hover { background: var(--lw-color-danger-hover); }
+    .fab-btn:active { transform: scale(0.95); }
+    .fab-btn.open { transform: rotate(45deg); }
+    .mr-1 { margin-right: 4px; }

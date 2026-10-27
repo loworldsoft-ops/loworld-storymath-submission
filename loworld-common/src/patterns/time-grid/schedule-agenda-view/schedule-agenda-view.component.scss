@@ -1,0 +1,28 @@
+@use 'index' as lw;
+:host { display: block; height: 100%; }
+    .agenda-view { height: 100%; overflow-y: auto; background: var(--lw-cal-bg, #{lw.$lw-cal-bg}); }
+    .inner { max-width: 768px; margin: 0 auto; padding: 24px 20px; }
+    .heading { margin-bottom: 24px; }
+    .title { font-size: 18px; font-weight: 700; color: var(--lw-cal-text, #{lw.$lw-cal-text}); }
+    .sub { font-size: 12px; margin-top: 4px; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .empty { text-align: center; padding: 80px 0; }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .empty p { font-size: 14px; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .list { display: flex; flex-direction: column; gap: 4px; }
+    .day-row { display: flex; gap: 16px; }
+    .date-col { width: 64px; flex-shrink: 0; padding-top: 12px; text-align: right; }
+    .dow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .dow.sunday { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .dom { font-size: 18px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; color: var(--lw-cal-text, #{lw.$lw-cal-text}); }
+    .dom.today { width: 32px; height: 32px; border-radius: 50%; background: var(--lw-cal-accent, #{lw.$lw-cal-accent}); color: var(--lw-surface); }
+    .dom.sunday { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .events-col { flex: 1; border-left: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); padding: 8px 0 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .ev-card {
+      padding: 12px; border-radius: 12px; cursor: pointer; transition: all 0.15s;
+      border: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); border-left-width: 3px;
+    }
+    .ev-card:hover { box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 6%, transparent); }
+    .ev-card-inner { min-width: 0; }
+    .ev-title { font-size: 13px; font-weight: 600; color: var(--lw-cal-text, #{lw.$lw-cal-text}); }
+    .ev-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 11px; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .sep { color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }

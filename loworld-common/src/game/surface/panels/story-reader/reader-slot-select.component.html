@@ -1,0 +1,101 @@
+<div class="select">
+  <div class="select__nav">
+    <button lw-button type="button" variant="ghost" class="select__back-to-bookshelf" (click)="backToBookshelf.emit()">
+      ← 책장으로
+    </button>
+  </div>
+  <p class="select__label">Novel Reader</p>
+  <h1 class="select__title">{{ title() }}</h1>
+
+  @if (creatingSlotId(); as slotId) {
+    <section class="select__create" aria-label="새 캐릭터">
+      <label class="select__field">
+        <span class="select__field-label">이름</span>
+        <input class="select__input" type="text" maxlength="8" [placeholder]="defaultName()" [value]="name()" (input)="onName($event)" />
+      </label>
+
+      @if (portraits().length > 0) {
+        <p class="select__field-label">모습</p>
+        <div class="select__portraits" role="radiogroup" aria-label="캐릭터의 모습">
+          @for (portrait of portraits(); track portrait.id) {
+            <button
+              lw-button
+              type="button"
+              variant="secondary"
+              class="select__portrait"
+              role="radio"
+              [ariaLabel]="portrait.label"
+              [attr.aria-checked]="portraitId() === portrait.id"
+              [class.select__portrait--on]="portraitId() === portrait.id"
+              (click)="portraitId.set(portrait.id)">
+              <img class="select__portrait-image" [src]="portrait.url" alt="" loading="lazy" decoding="async" draggable="false" />
+            </button>
+          }
+        </div>
+      }
+
+      <p class="select__field-label">전생</p>
+      <div class="select__origins" role="radiogroup" aria-label="전생의 갈래">
+        @for (origin of origins(); track origin.id) {
+          <button
+            lw-button
+            type="button"
+            variant="secondary"
+            class="select__origin"
+            role="radio"
+            [attr.aria-checked]="originId() === origin.id"
+            [class.select__origin--on]="originId() === origin.id"
+            (click)="originId.set(origin.id)">
+            <span class="select__origin-name">{{ origin.name }}</span>
+            <span class="select__origin-summary">{{ origin.summary }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="select__actions">
+        <button lw-button type="button" variant="ghost" (click)="cancel()">돌아가기</button>
+        <button lw-button type="button" variant="secondary" [disabled]="!originId()" (click)="confirm()">눈을 뜬다</button>
+      </div>
+    </section>
+  } @else {
+    <ul class="select__slots">
+      @for (slot of slots(); track slot.id) {
+        <li class="select__slot-row">
+          <button lw-button type="button" variant="secondary" class="select__slot" [class.select__slot--empty]="slot.empty" (click)="open(slot)">
+            @if (slot.empty) {
+              <span class="select__slot-name">새로 시작한다</span>
+              <span class="select__slot-meta">빈 자리</span>
+            } @else {
+              @if (slot.portraitUrl) {
+                <img class="select__slot-portrait" [src]="slot.portraitUrl" alt="" decoding="async" draggable="false" />
+              } @else {
+                <div class="select__slot-portrait select__slot-portrait--placeholder" role="img" aria-label="이미지 영역">
+                  <span>이미지</span>
+                </div>
+              }
+              <span class="select__slot-text">
+                <span class="select__slot-name">{{ slot.name }}</span>
+                <span class="select__slot-meta">{{ slot.originName }} · {{ slot.progress }}</span>
+              </span>
+            }
+          </button>
+          @if (!slot.empty) {
+            <button
+              lw-button
+              type="button"
+              variant="ghost"
+              class="select__inspect"
+              title="디비에 저장된 내용 확인"
+              (click)="$event.stopPropagation(); inspect.emit(slot.id)">
+              <span class="select__inspect-icon">💾</span>
+              <span>DB</span>
+            </button>
+          }
+          @if (devTools() && !slot.empty) {
+            <button lw-button type="button" variant="ghost" class="select__remove" (click)="remove.emit(slot.id)">지우기</button>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

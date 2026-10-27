@@ -1,0 +1,80 @@
+@if (effectiveSummary(); as s) {
+  <div class="char-session-container" [class.char-session-container--compact]="compact() || isMobile()">
+    <!-- 아바타 버튼 (클릭 시 캐릭터 상세 모달 오픈) -->
+    <lw-button
+      variant="ghost"
+      size="xs"
+      [shape]="(compact() || isMobile()) ? 'circle' : 'default'"
+      class="char-avatar-btn"
+      [selected]="isMenuOpen()"
+      (click)="onAvatarClick($event)"
+      [ariaLabel]="name() + ' (Lv.' + level() + ' ' + classLabel() + ') - 캐릭터 상세 보기'">
+      <div class="avatar-wrapper">
+        <div class="avatar-inner">
+          @if (effectiveAvatarUrl() && !avatarImageFailed()) {
+            <lw-avatar
+              [src]="effectiveAvatarUrl()!"
+              [alt]="name()"
+              class="char-avatar-img"
+              size="sm"
+            />
+          } @else {
+            <lw-icon [name]="iconName()" [size]="isMobile() ? 22 : 24" renderMode="rich" />
+          }
+        </div>
+        <span class="char-lvl-badge">Lv.{{ level() }}</span>
+      </div>
+      @if (!compact() && !isMobile()) {
+        <div class="char-meta">
+          <span class="char-name">{{ name() }}</span>
+          <span class="char-class">{{ classLabel() }}</span>
+        </div>
+      }
+    </lw-button>
+
+    <!-- 드롭다운 메뉴 토글 버튼 (기본 비활성, showChevron=true 일 때만 표출) -->
+    @if (showChevron()) {
+      <lw-button
+        variant="ghost"
+        shape="circle"
+        size="xs"
+        class="char-menu-toggle-btn"
+        [selected]="isMenuOpen()"
+        (click)="toggleMenu($event)"
+        ariaLabel="캐릭터 퀵 메뉴 열기">
+        <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+      </lw-button>
+    }
+
+    <!-- 💻 데스크톱: 플로팅 드롭다운 메뉴 (공통 LwCharacterSessionMenuComponent 사용) -->
+    @if (!isMobile() && isMenuOpen()) {
+      <div class="char-dropdown" role="menu">
+        <lw-character-session-menu
+          [summary]="effectiveSummary()"
+          [otherCharacters]="otherCharacters()"
+          [logoutLabel]="logoutLabel()"
+          (detailClick)="onDetailFromMenu($event)"
+          (selectClick)="onSelectFromMenu()"
+          (switchClick)="onSwitchFromMenu($event)"
+          (logoutClick)="onLogoutFromMenu()" />
+      </div>
+    }
+  </div>
+} @else {
+  <!-- 캐릭터 미선택 (로그인 전) 게스트 상태 -->
+  <lw-button
+    variant="ghost"
+    size="xs"
+    class="char-guest-btn"
+    [class.char-guest-btn--compact]="compact() || isMobile()"
+    (click)="onSelectTriggerClick($event)"
+    [ariaLabel]="unselectedLabel()">
+    <div class="guest-icon-wrapper">
+      <span class="icon-user" aria-hidden="true"></span>
+      <span class="pulse-dot" aria-hidden="true"></span>
+    </div>
+    @if (!compact() && !isMobile()) {
+      <span class="guest-label">{{ unselectedLabel() }}</span>
+    }
+  </lw-button>
+}

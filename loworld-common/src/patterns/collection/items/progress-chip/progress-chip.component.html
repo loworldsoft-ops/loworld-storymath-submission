@@ -1,0 +1,16 @@
+@if (chip(); as c) {
+  <div class="progress-chip" [attr.data-tone]="c.tone || 'default'">
+    @if (c.icon) {
+      <span class="chip-icon" aria-hidden="true">{{ c.icon }}</span>
+    }
+    <span class="chip-label">{{ c.label }}</span>
+    @if (c.value !== undefined && c.value !== null) {
+      <strong class="chip-val">{{ c.value }}</strong>
+    }
+    @if (c.progressPercent !== undefined && c.progressPercent !== null) {
+      <div class="chip-mini-progress" [lwTooltip]="'진행률 ' + c.progressPercent + '%'">
+        <div class="chip-mini-fill" [style.width.%]="c.progressPercent"></div>
+      </div>
+    }
+  </div>
+}

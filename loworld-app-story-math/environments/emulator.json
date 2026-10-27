@@ -1,0 +1,10 @@
+{
+  "id": "emulator",
+  "firebase": {
+    "apiKey": "demo-key",
+    "authDomain": "demo-loworld.firebaseapp.com",
+    "projectId": "demo-loworld",
+    "appId": "demo-app",
+    "emulator": { "authUrl": "http://127.0.0.1:9099", "firestoreHost": "127.0.0.1", "firestorePort": 8080 }
+  }
+}

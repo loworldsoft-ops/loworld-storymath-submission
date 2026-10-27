@@ -1,0 +1,74 @@
+    .event-log {
+      background: var(--lw-color-white);
+      border: 1px solid var(--lw-hue-zinc-200);
+      border-radius: 12px;
+      padding: 16px;
+      max-height: 280px;
+      flex-shrink: 0;
+    }
+    .event-log h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .event-log-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .dev-toolbar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .event-list {
+      max-height: 140px;
+      overflow-y: auto;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+    }
+    .event-item {
+      display: flex;
+      gap: 12px;
+      padding: 3px 0;
+    }
+    .event-time { color: var(--lw-hue-stone-400); flex-shrink: 0; }
+    .event-name { color: var(--lw-hue-zinc-800); }
+    .event-empty {
+      color: var(--lw-hue-zinc-400);
+      font-style: italic;
+      text-align: center;
+      padding: 16px;
+    }
+    /* dev-btn: applied to ng-content projected buttons */
+    :host ::ng-deep .dev-btn, .dev-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--lw-hue-zinc-300);
+      border-radius: 6px;
+      background: var(--lw-hue-stone-50);
+      color: var(--lw-hue-zinc-600);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    :host ::ng-deep .dev-btn:hover, .dev-btn:hover {
+      background: var(--lw-hue-zinc-100);
+      border-color: var(--lw-hue-stone-300);
+    }
+    :host ::ng-deep .dev-btn--danger, .dev-btn--danger {
+      color: var(--lw-color-danger-hover);
+      border-color: var(--lw-hue-rose-200);
+      background: var(--lw-hue-red-50);
+    }
+    :host ::ng-deep .dev-btn--danger:hover, .dev-btn--danger:hover {
+      background: var(--lw-hue-pink-100);
+      border-color: var(--lw-hue-red-300);
+    }

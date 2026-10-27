@@ -1,0 +1,43 @@
+{
+  "path": "/detail/workflow/logs",
+  "title": "Logs",
+  "desc": "",
+  "toc": [
+    {
+      "id": "로그-파악하기",
+      "depth": 2,
+      "text": "로그 파악하기"
+    },
+    {
+      "id": "로그-내보내기",
+      "depth": 3,
+      "text": "로그 내보내기"
+    },
+    {
+      "id": "실행-오류-원인-파악하기",
+      "depth": 2,
+      "text": "실행 오류 원인 파악하기"
+    },
+    {
+      "id": "배포-직후-정상-작동-확인하기",
+      "depth": 2,
+      "text": "배포 직후 정상 작동 확인하기"
+    },
+    {
+      "id": "로그-시각적으로-파악하기",
+      "depth": 2,
+      "text": "로그 시각적으로 파악하기"
+    },
+    {
+      "id": "전체-실행-흐름-확인하기",
+      "depth": 3,
+      "text": "전체 실행 흐름 확인하기"
+    },
+    {
+      "id": "워크플로우별-상태-확인하기",
+      "depth": 3,
+      "text": "워크플로우별 상태 확인하기"
+    }
+  ],
+  "html": "<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"로그-파악하기\"><a data-card=\"\" href=\"#로그-파악하기\" class=\"peer\">로그 파악하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>워크플로우가 실행될 때마다 로그가 자동으로 기록됩니다.\n워크플로우 편집기 내 <strong>Logs</strong> 메뉴에서 실행 이력 조회, 오류 원인 파악, 블록별 처리 내역 확인이 가능합니다.</p>\n<p>상단 툴바에서 조건을 조합하여 원하는 로그만 표시합니다.</p>\n<ul>\n<li><strong>시간 범위</strong> — 최근 30분부터 30일까지, 또는 직접 날짜 지정</li>\n<li><strong>Workflow</strong> — 특정 워크플로우만 조회 (다중 선택)</li>\n<li><strong>Trigger</strong> — Manual / API / Schedule / Chat / Webhook 등 트리거 유형별</li>\n<li><strong>Status</strong>: 전체(Any status) / 오류(Error) / 정보(Info)</li>\n</ul>\n<p>검색창에 워크플로우 이름이나 실행 ID를 입력해 바로 찾을 수도 있습니다.</p>\n<p>실행 상태 배지에는 오류(<strong>Error</strong>), 대기 중(<strong>Pending</strong>), 실행 중(<strong>Running</strong>), 취소됨(<strong>Cancelled</strong>), 정보(<strong>Info</strong>)가 표시됩니다. <strong>Pending</strong>, <strong>Running</strong>, <strong>Cancelled</strong>는 개별 필터 항목으로 제공되지 않습니다.</p>\n<p>로그 목록에서는 각 실행의 <strong>Cost</strong>와 <strong>Duration</strong>을 확인할 수 있습니다.\n로그 목록에서 행을 클릭하면 오른쪽에 상세 패널이 열립니다. 키보드 <strong>↑/↓</strong> 로 로그 간 이동이 가능합니다.</p>\n<h3 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"로그-내보내기\"><a data-card=\"\" href=\"#로그-내보내기\" class=\"peer\">로그 내보내기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h3>\n<p>현재 필터 조건에 맞는 로그를 <strong>CSV 파일</strong>로 내보낼 수 있습니다.\n특정 기간의 실행 내역을 보고하거나 외부 분석 도구로 옮길 때 사용하세요.</p>\n<p>CSV 내보내기 버튼은 화면에서 워크스페이스 역할이 <strong>Owner</strong> 또는 <strong>Editor</strong>인 사용자에게 표시됩니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"실행-오류-원인-파악하기\"><a data-card=\"\" href=\"#실행-오류-원인-파악하기\" class=\"peer\">실행 오류 원인 파악하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>Status가 <strong>Error</strong> 인 로그를 클릭하면 상세 패널에서 다음을 확인할 수 있습니다.</p>\n<p><strong>Trace Span</strong> — 블록별 실행 내역</p>\n<ul>\n<li>어느 블록에서 실패했는지, 각 블록의 입력값·출력값</li>\n<li>외부 도구 호출 내역 및 응답</li>\n</ul>\n<p><strong>Workflow Output</strong> — 최종 출력 JSON 전체를 확인하고 복사할 수 있습니다.</p>\n<p><strong>View Snapshot</strong> — 실행 당시 워크플로우 캔버스를 열어 어떤 경로로 실행됐는지 시각적으로 파악합니다.</p>\n<p>상세 화면에는 <strong>Pending Resume</strong>, <strong>Files</strong>, <strong>Cost Breakdown</strong>도 표시됩니다.\n로그 행을 마우스 오른쪽 버튼으로 누르면 실행 ID 복사, 워크플로우 또는 Snapshot 열기, 필터 메뉴가 나타납니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"배포-직후-정상-작동-확인하기\"><a data-card=\"\" href=\"#배포-직후-정상-작동-확인하기\" class=\"peer\">배포 직후 정상 작동 확인하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p><strong>Logs</strong>에서 워크플로우 실패 알림을 설정할 수 있습니다.\n툴바의 <strong>Live</strong> 버튼을 켜면 목록이 3초마다 갱신되며, 한 번에 50건씩 기록을 더 불러옵니다.\n배포 후 트리거가 정상적으로 수신되는지, 오류 없이 실행되는지 바로 확인할 때 활용하세요.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"로그-시각적으로-파악하기\"><a data-card=\"\" href=\"#로그-시각적으로-파악하기\" class=\"peer\">로그 시각적으로 파악하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p><strong>Logs</strong> 화면 오른쪽 상단에서 <strong>Dashboard</strong>를 선택하면 실행 현황을 차트와 워크플로우별 상태로 확인할 수 있습니다.</p>\n<h3 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"전체-실행-흐름-확인하기\"><a data-card=\"\" href=\"#전체-실행-흐름-확인하기\" class=\"peer\">전체 실행 흐름 확인하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h3>\n<p>상단에는 다음 세 가지 지표와 시간대별 추이가 표시됩니다.</p>\n<div class=\"relative overflow-auto prose-no-margin my-6\"><table><thead><tr><th>항목</th><th>설명</th></tr></thead><tbody><tr><td><strong>Runs</strong></td><td>선택한 조건에서 실행된 전체 횟수</td></tr><tr><td><strong>Errors</strong></td><td>실행 중 오류가 발생한 횟수</td></tr><tr><td><strong>Latency</strong></td><td>실행에 걸린 평균 시간</td></tr></tbody></table></div>\n<p>검색과 기간·상태·워크플로우·폴더·트리거 필터를 사용하면 확인할 실행 범위를 좁힐 수 있습니다.</p>\n<h3 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"워크플로우별-상태-확인하기\"><a data-card=\"\" href=\"#워크플로우별-상태-확인하기\" class=\"peer\">워크플로우별 상태 확인하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h3>\n<p>하단 목록에서는 워크플로우별 실행 상태와 성공률을 확인할 수 있습니다.</p>\n<div class=\"relative overflow-auto prose-no-margin my-6\"><table><thead><tr><th>표시 색상</th><th>의미</th></tr></thead><tbody><tr><td><strong>초록</strong></td><td>성공률 100%</td></tr><tr><td><strong>노랑</strong></td><td>성공률 95% 이상 100% 미만</td></tr><tr><td><strong>빨강</strong></td><td>성공률 95% 미만</td></tr><tr><td><strong>회색</strong></td><td>해당 구간에 실행 기록 없음</td></tr></tbody></table></div>\n<p>워크플로우를 선택하면 해당 워크플로우의 결과만 확인할 수 있습니다. 상태 막대의 구간을 선택하면 상단의 Runs, Errors, Latency도 선택한 구간을 기준으로 바뀝니다.</p>\n<p>오류가 발생한 구간을 찾았다면 <strong>Logs</strong>로 전환해 해당 실행의 상세 내용을 확인하세요.</p>"
+}

@@ -1,0 +1,70 @@
+<div class="month-view" [class.mobile]="isMobile()">
+  <div class="day-headers" [class.mobile]="isMobile()">
+    @for (d of dayHeaders; track d; let i = $index) {
+      <div class="day-header" [class.sunday]="i === 0" [class.saturday]="i === 6">{{ d }}</div>
+    }
+  </div>
+  <div class="grid" [class.mobile]="isMobile()" [style.gridTemplateRows]="'repeat(' + weekCount() + ', 1fr)'">
+    @for (day of monthDaysWithSelection(); track day.dateIso) {
+      <div class="cell" [class.mobile]="isMobile()" [class.other-month]="!day.isCurrentMonth"
+           [class.selected]="day.isSelected"
+           role="gridcell"
+           tabindex="0"
+           [attr.aria-selected]="day.isSelected"
+           (click)="selectDate.emit(day.date)"
+           (keydown.enter)="selectDate.emit(day.date)">
+        <div class="day-num-wrap">
+          @if (day.isToday) {
+            <span class="day-num today-badge" [class.mobile]="isMobile()">{{ day.dayNumber }}</span>
+          } @else {
+            <span class="day-num" [class.mobile]="isMobile()" [class.sunday]="day.isSunday"
+                  [class.saturday]="day.isSaturday"
+                  [class.muted]="!day.isCurrentMonth">{{ day.dayNumber }}</span>
+          }
+        </div>
+        @if (isMobile()) {
+          <!-- Mobile: color dots only -->
+          @if (day.events.length > 0 && day.isCurrentMonth) {
+            <div class="dot-row">
+              @for (ev of day.events.slice(0, 3); track ev.id) {
+                <span class="ev-dot" [style.backgroundColor]="ev.calendarId | lwCalendarColor:calendarColors()"></span>
+              }
+            </div>
+          }
+        } @else {
+          <!-- Desktop: full event chips -->
+          @for (ev of day.events.slice(0, 3); track ev.id) {
+            <div class="event-chip" [style.backgroundColor]="ev.calendarId | lwCalendarColor:calendarColors():'14'"
+                 [style.color]="ev.calendarId | lwCalendarColor:calendarColors()"
+                 [style.borderColor]="ev.calendarId | lwCalendarColor:calendarColors():'30'"
+                 role="button"
+                 tabindex="0"
+                 [attr.aria-label]="ev.title"
+                 (click)="onEventClick(ev, $event)"
+                 (keydown.enter)="onEventClick(ev, $event)">
+              @if (ev.type === 'task') {
+                <span class="task-check" [class.completed]="ev.isCompleted"
+                      role="checkbox"
+                      [attr.aria-checked]="ev.isCompleted"
+                      tabindex="0"
+                      (click)="onToggleTask(ev, $event)"
+                      (keydown.enter)="onToggleTask(ev, $event)">{{ ev.isCompleted ? '☑' : '☐' }}</span>
+              }
+              @if (ev.isAllDay) {
+                <span class="allday-dot" [style.backgroundColor]="ev.calendarId | lwCalendarColor:calendarColors()"></span>
+              }
+              <span [class.completed]="ev.type === 'task' && !!ev.isCompleted">{{ ev.title }}</span>
+            </div>
+          }
+          @if (day.events.length > 3) {
+            <div class="more-count">+{{ day.events.length - 3 }}</div>
+          }
+          <div class="quick-add">
+            <lw-button class="quick-btn" (click)="onQuickAdd(day.date, 'task', $event)" tooltip="새 할 일">✓</lw-button>
+            <lw-button class="quick-btn accent" (click)="onQuickAdd(day.date, 'event', $event)" tooltip="새 일정">+</lw-button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

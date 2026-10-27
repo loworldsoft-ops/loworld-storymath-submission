@@ -1,0 +1,168 @@
+<section class="os-desktop" aria-label="데스크톱">
+  <h1 class="os-desktop__sr-only">Loworld 데스크톱</h1>
+
+  <header class="os-menubar" role="banner">
+    <div class="os-menubar__side">
+      <div class="os-menubar__anchor">
+        <button
+          lwPressable
+          class="os-menubar__item os-menubar__item--brand"
+          data-os-menu="system"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="activeMenu() === 'system'"
+          [pressed]="activeMenu() === 'system'"
+          (press)="toggleMenu('system', $event)">
+          <img class="os-menubar__logo" src="/assets/icons/apps/app_mascot.png" alt="" />
+          <span>Loworld</span>
+        </button>
+        @if (activeMenu() === 'system') {
+          <lw-os-menu label="시스템">
+            <lw-os-menu-item (select)="openSettings()">시스템 설정…</lw-os-menu-item>
+            <lw-os-menu-item (select)="openWallpaper()">배경화면…</lw-os-menu-item>
+            <lw-os-menu-divider />
+            <lw-os-menu-item (select)="resetAppUsage()">자주 사용하는 앱 기록 초기화…</lw-os-menu-item>
+          </lw-os-menu>
+        }
+      </div>
+
+      <div class="os-menubar__anchor">
+        <button
+          lwPressable
+          class="os-menubar__item"
+          data-os-menu="view"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="activeMenu() === 'view'"
+          [pressed]="activeMenu() === 'view'"
+          (press)="toggleMenu('view', $event)">
+          보기
+        </button>
+        @if (activeMenu() === 'view') {
+          <lw-os-menu label="보기">
+            <lw-os-menu-item (select)="showPhoneMode()">스마트폰 화면으로 보기</lw-os-menu-item>
+            <lw-os-menu-item hint="⌃⌘F" (select)="toggleFullscreen()">
+              {{ isFullscreen() ? '전체 화면 끝내기' : '전체 화면' }}
+            </lw-os-menu-item>
+          </lw-os-menu>
+        }
+      </div>
+    </div>
+
+    <div class="os-menubar__side">
+      <div class="os-menubar__anchor">
+        <button
+          lwPressable
+          class="os-menubar__item os-menubar__item--icon"
+          aria-label="앱 검색"
+          lwTooltip="앱 검색"
+          [pressed]="activeMenu() === 'search' || !!searchQuery()"
+          (press)="toggleMenu('search', $event)">
+          <lw-icon name="search" [size]="16" />
+        </button>
+        @if (activeMenu() === 'search') {
+          <lw-os-menu label="앱 검색" align="end">
+            <label class="os-search">
+              <lw-icon name="search" [size]="14" />
+              <input
+                #searchInput
+                class="os-search__input"
+                type="search"
+                placeholder="앱 이름"
+                aria-label="앱 이름으로 찾기"
+                [value]="searchQuery()"
+                (input)="onSearchInput($event)"
+                (keydown.enter)="closeAllMenus()" />
+            </label>
+            @if (searchQuery()) {
+              <lw-os-menu-item (select)="clearSearch()">검색 지우기</lw-os-menu-item>
+            }
+          </lw-os-menu>
+        }
+      </div>
+
+      <button
+        lwPressable
+        class="os-menubar__item os-menubar__item--icon"
+        aria-label="Loworld Factory 통계"
+        lwTooltip="Loworld Factory 통계"
+        [pressed]="factoryOpen()"
+        (press)="toggleFactory($event)">
+        <lw-icon name="chart" [size]="16" />
+      </button>
+
+      <button
+        lwPressable
+        class="os-menubar__item os-menubar__item--icon"
+        aria-label="시스템 설정"
+        lwTooltip="시스템 설정"
+        (press)="openSettings()">
+        <lw-icon name="settings" [size]="16" />
+      </button>
+
+      @if (executionMode.isNativeApp()) {
+        <button
+          lwPressable
+          class="os-menubar__item os-menubar__item--icon os-menubar__item--mode"
+          [attr.aria-label]="executionMode.modeLabel()"
+          [lwTooltip]="executionMode.modeTooltip()"
+          (press)="executionMode.openModeSelector()">
+          <span class="mode-action-icon-wrap" [class.is-local]="executionMode.isLocalMode()" [class.is-remote]="!executionMode.isLocalMode()">
+            <lw-icon [name]="executionMode.modeIcon()" [size]="16" />
+            <span class="mode-status-dot" aria-hidden="true"></span>
+          </span>
+        </button>
+      }
+
+      <div class="os-menubar__anchor">
+        <button
+          lwPressable
+          class="os-menubar__item os-menubar__item--icon"
+          [attr.aria-label]="isAuthenticated() ? '계정' : '로그인'"
+          [lwTooltip]="isAuthenticated() ? currentMemberSession()!.displayName : '로그인'"
+          [pressed]="activeMenu() === 'session'"
+          (press)="isAuthenticated() ? toggleMenu('session', $event) : onLogin()">
+          <lw-icon name="user" [size]="16" />
+          @if (isAuthenticated()) {
+            <span class="os-menubar__online" aria-hidden="true"></span>
+          }
+        </button>
+        @if (activeMenu() === 'session' && currentMemberSession(); as session) {
+          <lw-os-menu label="계정" align="end">
+            <div class="os-account">
+              <lw-avatar [initial]="(session.displayName || 'U').charAt(0)" size="md" />
+              <div class="os-account__text">
+                <div class="os-account__name-row">
+                  <strong class="os-account__name">{{ session.displayName }}</strong>
+                  @if (session.directoryRole) {
+                    <lw-account-role-badge [role]="session.directoryRole" />
+                  }
+                </div>
+                @if (session.email) {
+                  <span class="os-account__email">{{ session.email }}</span>
+                }
+              </div>
+            </div>
+            <lw-os-menu-divider />
+            <lw-os-menu-item (select)="onAccount()">계정 정보</lw-os-menu-item>
+            <lw-os-menu-item (select)="openSettings()">시스템 설정…</lw-os-menu-item>
+            <lw-os-menu-divider />
+            <lw-os-menu-item [danger]="true" (select)="onLogout()">로그아웃</lw-os-menu-item>
+          </lw-os-menu>
+        }
+      </div>
+
+      <time class="os-menubar__clock">{{ clockText() }}</time>
+    </div>
+  </header>
+
+  <div class="os-desktop__canvas">
+    <lw-os-app-grid
+      [pages]="pages()"
+      [(pageIndex)]="pageIndex"
+      (appOpen)="openApp($event)"
+      (emptyAction)="clearSearch()" />
+
+    @if (factoryOpen()) {
+      <lw-os-factory-panel [windowCount]="windowCount()" [foldersCount]="folders().length" (closeRequested)="factoryOpen.set(false)" />
+    }
+  </div>
+</section>

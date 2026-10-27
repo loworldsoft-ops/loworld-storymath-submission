@@ -1,0 +1,111 @@
+@if (stages().length === 0) {
+  <div class="stage-list-empty" role="status">
+    등록된 과제가 없습니다.
+  </div>
+} @else {
+<div
+  class="stage-list"
+  role="list">
+  @for (stage of stages(); track stage.number; let i = $index) {
+    <div
+      class="stage-row"
+      role="listitem"
+      [attr.draggable]="dragDropEnabled() && canReorder() ? true : null"
+      (dragstart)="onDragStart(i, $event)"
+      (dragover)="onDragOver($event)"
+      (drop)="onRowDrop(i, $event)"
+      [class.completed]="!!stage.completedAt"
+      [class.is-clickable]="canCheckStage(stage)"
+      (click)="onRowClick(stage)">
+      @if (dragDropEnabled() && canReorder()) {
+        <lw-button type="button" class="drag-handle" tooltip="드래그하여 순서 변경" aria-label="순서 변경: 드래그" (click)="$event.stopPropagation()">
+          <span class="icon-grip" aria-hidden="true"></span>
+        </lw-button>
+      }
+
+      <!-- 번호 -->
+      <div class="step-num" [class.done]="!!stage.completedAt">
+        @if (stage.completedAt) {
+          <span class="icon-glyph icon-check" aria-hidden="true">✓</span>
+        } @else {
+          {{ stage.number }}
+        }
+      </div>
+
+      <!-- 제목 -->
+      <div class="stage-info">
+        <span class="stage-title">{{ stage.title }}</span>
+        @if (stage.completedAt) {
+          <span class="completed-date">{{ formatDate(stage.completedAt) }} 완료</span>
+        }
+        @if (stage.completionMemo) {
+          <span class="completed-memo">{{ stage.completionMemo }}</span>
+        }
+      </div>
+
+      <!-- 액션 버튼 -->
+      <div class="actions">
+        @if (stage.contentUrl) {
+          <a [href]="stage.contentUrl" target="_blank" rel="noopener noreferrer"
+             role="link"
+             class="action-btn link-btn" [lwTooltip]="'강의 자료 열기'" aria-label="강의 자료 열기"
+             (click)="$event.stopPropagation()">
+            <span class="icon-external-link" aria-hidden="true"></span>
+          </a>
+        }
+
+        <lw-button type="button" class="action-btn memo-btn"
+                (click)="memoClick.emit(stage.number); $event.stopPropagation()"
+                [class.has-memo]="!!stage.memoNoteId"
+                tooltip="메모"
+                [attr.aria-label]="'단계 ' + stage.number + ' 메모'">
+          <span class="icon-memo" aria-hidden="true"></span>
+        </lw-button>
+
+        @if (canCheckStage(stage)) {
+          <lw-button type="button" class="action-btn check-btn"
+                  [class.checked]="!!stage.completedAt"
+                  (click)="onCheckClick(stage, $event)"
+                  [tooltip]="stage.completedAt ? '완료 취소' : '완료 체크'"
+                  [attr.aria-label]="'단계 ' + stage.number + (stage.completedAt ? ' 완료 취소' : ' 완료 체크')">
+            @if (stage.completedAt) {
+              <span class="icon-check" aria-hidden="true"></span>
+            } @else {
+              <span class="icon-check" aria-hidden="true"></span>
+            }
+          </lw-button>
+        }
+      </div>
+    </div>
+  }
+</div>
+}
+
+<!-- ── 완료 체크 확인 모달 (body 레벨 lw-modal 로 렌더) ── -->
+<lw-modal [isOpen]="confirmMode() !== null" size="sm" variant="custom" title="단계 완료 처리" (closeClick)="closeConfirm()">
+  @if (confirmMode(); as mode) {
+    <div class="stage-confirm-modal">
+      @if (mode === 'complete') {
+        @if (targetStage(); as st) {
+          <p class="stage-confirm-sub" style="margin-top: 0;">{{ st.number }}. {{ st.title }}</p>
+        }
+        <div class="stage-confirm-body">
+          <lw-form-field label="완료 날짜">
+            <lw-input type="date" class="scf-input" [value]="inputDate()" (valueChange)="inputDate.set(''+$event)" />
+          </lw-form-field>
+          <lw-form-field label="메모 (선택)">
+            <lw-textarea class="scf-textarea" [rows]="3" placeholder="완료 관련 메모를 남겨주세요" [value]="inputMemo()" (valueChange)="inputMemo.set($event)" />
+          </lw-form-field>
+        </div>
+        <div class="stage-confirm-footer">
+          <lw-button type="button" class="stage-confirm-cancel" (click)="closeConfirm()">취소</lw-button>
+          <lw-button type="button" class="stage-confirm-ok" (click)="confirmComplete()">
+            <span class="icon-glyph icon-check" aria-hidden="true">✓</span>
+            완료 처리
+          </lw-button>
+        </div>
+      }
+    </div>
+  }
+</lw-modal>
+

@@ -1,0 +1,35 @@
+@if (!permitted()) {
+  <lw-empty-state message="변경 이력을 볼 권한이 없습니다. 그룹 관리자에게 문의하세요." />
+} @else if (logs().length === 0) {
+  <lw-empty-state message="기록된 변경 이력이 없습니다." />
+} @else {
+  <div class="lw-console-log">
+    <table class="lw-console-log__table">
+      <thead>
+        <tr>
+          <th>유형</th>
+          <th>대상</th>
+          <th>변경 내용</th>
+          <th>그룹</th>
+          <th>변경자</th>
+          <th>일시</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (log of logs(); track log.id) {
+          <tr>
+            <td>{{ log.type }}</td>
+            <td>{{ log.target }}</td>
+            <td>
+              <lw-badge variant="subtle" tone="neutral" size="xs">{{ log.tag }}</lw-badge>
+              <span class="lw-console-log__detail">{{ log.detail }}</span>
+            </td>
+            <td>{{ log.group }}</td>
+            <td>{{ log.by }}</td>
+            <td>{{ log.at }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

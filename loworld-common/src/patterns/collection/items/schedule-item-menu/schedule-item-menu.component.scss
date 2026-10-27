@@ -1,0 +1,4 @@
+@use 'index' as lw;
+:host { display: block; }
+
+:host { --lw-host-surface: var(--lw-surface); }

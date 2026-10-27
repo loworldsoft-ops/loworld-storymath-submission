@@ -1,0 +1,17 @@
+@use "sass:map";
+@use "token-definitions" as def;
+
+/// 디자인 토큰을 활용한 CSS 속성 안전 적용 매핑 믹스인
+/// @param $property - css 속성명 (ex: background, color)
+/// @param $token-name - $lw-theme-tokens 맵 내부의 정의 키값
+@mixin lw-token($property, $token-name) {
+  // 컴파일 타임 사전 유효성 체크
+  @if not map.has-key(def.$lw-theme-tokens, $token-name) {
+    @error "❌ 아키텍처 오류: '#{$token-name}' 디자인 토큰은 글로벌 토큰 정의 맵에 존재하지 않는 잘못된 토큰입니다. 다시 확인해 주세요!";
+  }
+
+  $fallback-value: map.get(def.$lw-theme-tokens, $token-name);
+  
+  // 브라우저 동적 테마를 위한 CSS변수 적용 + 안전한 컴파일 타임 Fallback 값 삽입
+  #{$property}: var(--lw-#{$token-name}, #{$fallback-value});
+}

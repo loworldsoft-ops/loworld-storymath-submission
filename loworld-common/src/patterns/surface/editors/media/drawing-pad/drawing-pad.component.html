@@ -1,0 +1,43 @@
+<div class="overlay" role="presentation" (click)="close.emit()"></div>
+<div class="panel">
+  <div class="panel-header">
+    <div>
+      <div class="eyebrow">그리기</div>
+      <h3>손글씨 캔버스</h3>
+      <p>간단한 스케치나 다이어그램을 PNG 첨부로 저장합니다.</p>
+    </div>
+    <lw-button class="icon-btn" (click)="close.emit()">
+      <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+    </lw-button>
+  </div>
+
+  <div class="toolbar">
+    <div class="swatches">
+      @for (color of colors; track color) {
+        <lw-button class="swatch" [class.active]="selectedColor() === color && !eraser()" [style.backgroundColor]="color" (click)="selectColor(color)"></lw-button>
+      }
+    </div>
+    <div class="sizes">
+      @for (size of strokeSizes; track size) {
+        <lw-button class="size-btn" [class.active]="selectedSize() === size" (click)="selectedSize.set(size)">{{ size }}</lw-button>
+      }
+    </div>
+    <lw-button class="tool-btn" [class.active]="eraser()" (click)="eraser.set(!eraser())">지우개</lw-button>
+    <lw-button class="tool-btn" (click)="undo()" [disabled]="!strokes().length">되돌리기</lw-button>
+    <lw-button class="tool-btn" (click)="clearCanvas()" [disabled]="!strokes().length">전체 삭제</lw-button>
+  </div>
+
+  <div class="canvas-wrap" #container>
+    <canvas #canvas class="canvas"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp($event)"
+      (pointerleave)="onPointerUp($event)"
+      (pointercancel)="onPointerUp($event)"></canvas>
+  </div>
+
+  <div class="actions">
+    <lw-button class="secondary-btn" (click)="close.emit()">취소</lw-button>
+    <lw-button class="primary-btn" (click)="insertDrawing()" [disabled]="!strokes().length">노트에 넣기</lw-button>
+  </div>
+</div>

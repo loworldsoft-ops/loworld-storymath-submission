@@ -1,0 +1,15 @@
+    <div class="overview-access-gate">
+      <div class="overview-access-gate__badge">{{ badgeLabel() }}</div>
+      <h3>{{ title() }}</h3>
+      <p>{{ description() }}</p>
+      <lw-button
+        type="button"
+        variant="primary"
+        shape="pill"
+        size="md"
+        class="overview-access-gate__button"
+        (click)="ctaRequested.emit()"
+      >
+        {{ ctaLabel() }}
+      </lw-button>
+    </div>

@@ -1,0 +1,103 @@
+:host {
+  position: absolute;
+  inset: 0;
+  z-index: var(--lw-z-overlay);
+  display: block;
+}
+
+.os-start__scrim {
+  position: absolute;
+  inset: 0;
+}
+
+// 독 바로 위, 가운데.
+.os-start {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--os-dock-height) + var(--lw-space-6));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  width: min(520px, calc(100% - var(--lw-space-7)));
+  max-height: min(560px, calc(100% - var(--os-dock-height) - var(--os-menu-bar-height) - var(--lw-space-8)));
+  border: 1px solid var(--os-panel-border);
+  border-radius: var(--lw-radius-lg);
+  background: var(--os-panel-bg);
+  color: var(--os-panel-fg);
+  box-shadow: var(--lw-shadow-3);
+  overflow: hidden;
+}
+
+.os-start__body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--lw-space-3) var(--lw-space-4);
+  padding: var(--lw-space-4);
+  overflow-y: auto;
+}
+
+.os-start__section-title {
+  margin: 0 0 var(--lw-space-1);
+  padding: 0 var(--lw-space-2);
+  font-size: var(--lw-text-xs);
+  font-weight: var(--lw-weight-semibold);
+  color: var(--os-panel-fg-muted);
+}
+
+.os-start__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.os-start__row {
+  display: flex;
+  align-items: center;
+  gap: var(--lw-space-2);
+  width: 100%;
+  height: var(--lw-control-sm);
+  padding: 0 var(--lw-space-2);
+  border: 0;
+  border-radius: var(--lw-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--lw-text-md);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--os-active);
+    outline: none;
+  }
+}
+
+.os-start__glyph {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  color: var(--os-panel-fg-muted);
+}
+
+.os-start__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.os-start__meta {
+  flex: none;
+  font-size: var(--lw-text-xs);
+  color: var(--os-panel-fg-muted);
+}
+
+@container lw-viewport (max-width: 640px) {
+  .os-start__body {
+    grid-template-columns: 1fr;
+  }
+}

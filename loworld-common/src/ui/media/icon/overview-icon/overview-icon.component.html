@@ -1,0 +1,148 @@
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="overview-icon-svg"
+  [attr.width]="size()"
+  [attr.height]="size()"
+  [attr.role]="decorative() ? 'presentation' : 'img'"
+  [attr.aria-label]="decorative() ? null : label()">
+  @switch (icon()) {
+    @case ('windows') {
+      <rect x="3" y="3" width="8" height="8" rx="1.25" />
+      <rect x="13" y="3" width="8" height="8" rx="1.25" />
+      <rect x="3" y="13" width="8" height="8" rx="1.25" />
+      <rect x="13" y="13" width="8" height="8" rx="1.25" />
+    }
+    @case ('menu') {
+      <path d="M4 6.5h16M4 12h16M4 17.5h16" />
+    }
+    @case ('sun') {
+      <circle cx="12" cy="12" r="4.25" />
+      <path d="M12 2.5v2.5M12 19v2.5M2.5 12h2.5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" />
+    }
+    @case ('moon') {
+      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+    }
+    @case ('search') {
+      <circle cx="11" cy="11" r="7.25" />
+      <path d="m16.5 16.5 4.5 4.5" />
+    }
+    @case ('folder') {
+      <path d="M3.75 6.25A2.25 2.25 0 0 1 6 4h3.38a2.25 2.25 0 0 1 1.7 0.77l0.94 1.15A2.25 2.25 0 0 0 13.72 6.75H18A2.25 2.25 0 0 1 20.25 9v9A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6.25Z" />
+    }
+    @case ('home') {
+      <path d="m3 10.5 9-7.5 9 7.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <path d="M9 21v-6h6v6" />
+    }
+    @case ('monitor') {
+      <rect x="3" y="4.5" width="18" height="12.5" rx="2" />
+      <path d="M8 20.5h8M12 17v3.5" />
+    }
+    @case ('note') {
+      <path d="M6 3.75h9.5L20.25 8.5v11.75A2 2 0 0 1 18.25 22.25H6A2 2 0 0 1 4 20.25V5.75A2 2 0 0 1 6 3.75Z" />
+      <path d="M14.75 3.75v5.5h5.5M8 12.5h8M8 16.5h5.5" />
+    }
+    @case ('book') {
+      <path d="M12 7.25c-1.2-1.2-2.73-1.8-4.6-1.8H5.25v12.8H7.4c1.87 0 3.4.6 4.6 1.8V7.25Z" stroke-linejoin="round" />
+      <path d="M12 7.25c1.2-1.2 2.73-1.8 4.6-1.8h2.15v12.8H16.6c-1.87 0-3.4.6-4.6 1.8V7.25Z" stroke-linejoin="round" />
+      <path d="M12 7.25v12.8M8 9.5h1.5M15.75 9.5h-1.5" />
+    }
+    @case ('mobile') {
+      <rect x="7.25" y="3.5" width="9.5" height="17" rx="2" />
+      <path d="M10 6.5h4" />
+      <circle cx="12" cy="17.2" r="0.9" fill="currentColor" stroke="none" />
+    }
+    @case ('components') {
+      <rect x="4.25" y="4.25" width="6.25" height="6.25" rx="1.25" />
+      <rect x="13.5" y="4.25" width="6.25" height="6.25" rx="1.25" />
+      <rect x="4.25" y="13.5" width="6.25" height="6.25" rx="1.25" />
+      <rect x="13.5" y="13.5" width="6.25" height="6.25" rx="1.25" />
+    }
+    @case ('calendar') {
+      <rect x="4" y="5.5" width="16" height="14.5" rx="2" />
+      <path d="M8 3.75v3.5M16 3.75v3.5M4 9.5h16M8.5 13h2M13.5 13h2M8.5 16.5h2M13.5 16.5h2" />
+    }
+    @case ('study') {
+      <path d="M12 4.5 19 8l-7 3.5L5 8l7-3.5Z" stroke-linejoin="round" />
+      <path d="M7 10.5v4.2c0 .8 2.2 2.3 5 2.3s5-1.5 5-2.3v-4.2M19 8v5" stroke-linejoin="round" />
+    }
+    @case ('member') {
+      <circle cx="12" cy="8.25" r="3.25" />
+      <path d="M5.5 19c1.1-3 3.5-4.5 6.5-4.5s5.4 1.5 6.5 4.5" />
+    }
+    @case ('tools') {
+      <path d="M14.5 5.5a3 3 0 0 0-4.1 3.9l-5.7 5.7a1.6 1.6 0 1 0 2.3 2.3l5.7-5.7a3 3 0 0 0 3.9-4.1l-2 2-2.1-2.1 2-2Z" stroke-linejoin="round" />
+    }
+    @case ('external') {
+      <path d="M10 6H6.75a2 2 0 0 0-2 2v9.25a2 2 0 0 0 2 2H16a2 2 0 0 0 2-2V14M13 5h6v6M19 5l-8.5 8.5" stroke-linejoin="round" />
+    }
+    @case ('builder') {
+      <path d="M5 7.5h14M5 12h14M5 16.5h9" />
+      <path d="M17.5 4.75 19.75 7l-5.5 5.5H12v-2.25l5.5-5.5Z" stroke-linejoin="round" />
+    }
+    @case ('database') {
+      <ellipse cx="12" cy="6.25" rx="6.75" ry="2.75" />
+      <path d="M5.25 6.25v7.5c0 1.52 3.02 2.75 6.75 2.75s6.75-1.23 6.75-2.75v-7.5M5.25 10c0 1.52 3.02 2.75 6.75 2.75S18.75 11.52 18.75 10" />
+    }
+    @case ('network') {
+      <path d="M4.5 10.75a11.1 11.1 0 0 1 15 0M7.5 13.75a6.7 6.7 0 0 1 9 0M10.5 16.75a2.3 2.3 0 0 1 3 0" />
+      <circle cx="12" cy="19.25" r="1" fill="currentColor" stroke="none" />
+    }
+    @case ('volume') {
+      <path d="M5 14h3.3l4.2 3.4V6.6L8.3 10H5v4Z" stroke-linejoin="round" />
+      <path d="M16 9.25a4.5 4.5 0 0 1 0 5.5M18.25 6.75a7.75 7.75 0 0 1 0 10.5" />
+    }
+    @case ('battery') {
+      <rect x="4.25" y="8" width="14.5" height="8" rx="1.5" />
+      <path d="M19.75 10.25v3.5" />
+      <rect x="6.75" y="10.75" width="6.5" height="2.5" fill="currentColor" stroke="none" />
+    }
+    @case ('arrow-left') {
+      <path d="m14.5 6.5-5 5.5 5 5.5" />
+    }
+    @case ('arrow-right') {
+      <path d="m9.5 6.5 5 5.5-5 5.5" />
+    }
+    @case ('arrow-up') {
+      <path d="m6.5 14.5 5.5-5 5.5 5" />
+    }
+    @case ('arrow-down') {
+      <path d="m6.5 9.5 5.5 5 5.5-5" />
+    }
+    @case ('refresh') {
+      <path d="M18 10V5.5h-4.5" stroke-linejoin="round" />
+      <path d="M18 5.5A7 7 0 1 0 19 13" />
+    }
+    @case ('minimize') {
+      <path d="M6 12.5h12" />
+    }
+    @case ('maximize') {
+      <rect x="6" y="6" width="12" height="12" rx="1" />
+    }
+    @case ('restore') {
+      <path d="M9 9.25V6.5h8.5V15H14.75" stroke-linejoin="round" />
+      <rect x="6.5" y="9.25" width="8.5" height="8.25" rx="1" />
+    }
+    @case ('close') {
+      <path d="m7 7 10 10M17 7 7 17" />
+    }
+    @case ('chart') {
+      <path d="M4 20h16M7 20v-5M12 20V8M17 20v-9" />
+    }
+    @case ('settings') {
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-linejoin="round" />
+    }
+    @case ('sidebar') {
+      <rect x="3.75" y="4" width="16.5" height="16" rx="2.5" />
+      <path d="M9 4v16" />
+    }
+    @default {
+      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
+    }
+  }
+</svg>

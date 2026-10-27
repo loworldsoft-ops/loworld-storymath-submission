@@ -1,0 +1,36 @@
+    :host {
+      display: block;
+      width: 100%;
+    }
+
+    .lw-list-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      background: var(--lw-list-bg, transparent);
+      box-sizing: border-box;
+
+      &.lw-list--rounded {
+        border-radius: var(--lw-list-radius, 8px);
+        overflow: hidden;
+      }
+
+      &.lw-list--bordered {
+        border: 1px solid var(--lw-list-border, color-mix(in srgb, var(--lw-color-white) 8%, transparent));
+      }
+
+      &.lw-list--card {
+        background: var(--lw-list-card-bg, color-mix(in srgb, var(--lw-color-white) 2%, transparent));
+        box-shadow: var(--lw-list-shadow, 0 2px 8px color-mix(in srgb, var(--lw-color-black) 20%, transparent));
+      }
+
+      &.lw-list--divided .lw-list__items > ::ng-deep lw-list-item:not(:last-child) {
+        border-bottom: 1px solid var(--lw-list-divider, color-mix(in srgb, var(--lw-color-white) 6%, transparent));
+      }
+    }
+
+    .lw-list__items {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }

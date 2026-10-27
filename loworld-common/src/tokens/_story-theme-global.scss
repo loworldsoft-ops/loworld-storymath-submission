@@ -1,0 +1,154 @@
+// 노벨 플레이 테마의 전역 선언. `lw-theme.scss`가 한 번만 내보낸다.
+// 예전에는 `index`를 쓰는 모든 컴포넌트 스타일에 이 블록이 복사됐다.
+// 문서 루트가 아닌 요소의 선택자에 `:not(html):not(body)`를 붙인 것은, 컴포넌트 범위로 복사되던 때처럼
+// `lw-theme.scss`의 테마별 기본 규칙보다 우선하게 하기 위해서다.
+@use 'story-theme-bridge' as bridge;
+
+:root,
+html,
+body,
+[data-lw-play-theme]:not(html):not(body) {
+  --lw-game-play-bg: var(--lw-bg-content, transparent);
+  --lw-game-play-surface: var(--lw-surface, var(--lw-bg-panel, rgba(255, 255, 255, 0.20)));
+  --lw-game-play-text: var(--lw-text-primary, #0f172a);
+  --lw-game-play-text-soft: var(--lw-text-secondary, #334155);
+  --lw-game-play-muted: var(--lw-text-muted, #64748b);
+  --lw-game-play-muted-strong: var(--lw-text-primary, #0f172a);
+  --lw-game-play-border: var(--lw-border, var(--lw-border-color, rgba(255, 255, 255, 0.25)));
+  --lw-game-play-accent: var(--lw-game-accent, var(--lw-color-primary, #6366f1));
+  --lw-game-play-card-bg: var(--lw-card-bg, var(--lw-surface, rgba(255, 255, 255, 0.20)));
+  --lw-game-play-history-bg: var(--lw-surface-alt, rgba(255, 255, 255, 0.15));
+  --lw-game-border-brown: rgba(99, 102, 241, 0.25);
+  --lw-game-border-brown-strong: rgba(99, 102, 241, 0.55);
+  --lw-game-border-brown-soft: rgba(99, 102, 241, 0.15);
+}
+
+:root[data-lw-play-theme="newspaper"],
+html[data-lw-play-theme="newspaper"],
+body[data-lw-play-theme="newspaper"],
+[data-lw-play-theme="newspaper"]:not(html):not(body) {
+  --lw-game-play-bg: #fbf9f4;
+  --lw-game-play-surface: #f4f0e6;
+  --lw-game-play-text: #1c1917;
+  --lw-game-play-text-soft: #44403c;
+  --lw-game-play-muted: #78716c;
+  --lw-game-play-muted-strong: #57534e;
+  --lw-game-play-border: #d6d3d1;
+  --lw-game-play-accent: #991b1b;
+  --lw-game-play-history-bg: #eae4d8;
+  --lw-game-bg-panel: #f4f0e6;
+  --lw-game-bg-panel-alt: #eae4d8;
+  --lw-game-text-body: #1c1917;
+  --lw-game-text-muted: #78716c;
+  --lw-game-border: #d6d3d1;
+  --lw-game-accent: #991b1b;
+  --lw-bg-content: #fbf9f4;
+  --lw-bg-panel: #f4f0e6;
+  --lw-game-border-brown: rgba(139, 90, 43, 0.45);
+  --lw-game-border-brown-strong: rgba(139, 90, 43, 0.8);
+  --lw-game-border-brown-soft: rgba(139, 90, 43, 0.25);
+}
+
+:root[data-lw-play-theme="dark"],
+html[data-lw-play-theme="dark"],
+body[data-lw-play-theme="dark"],
+[data-lw-play-theme="dark"]:not(html):not(body) {
+  --lw-game-play-bg: #0f172a;
+  --lw-game-play-surface: #1e293b;
+  --lw-game-play-text: #f8fafc;
+  --lw-game-play-text-soft: #cbd5e1;
+  --lw-game-play-muted: #94a3b8;
+  --lw-game-play-muted-strong: #e2e8f0;
+  --lw-game-play-border-color: var(--lw-border);
+  --lw-game-play-accent: #38bdf8;
+  --lw-game-play-history-bg: #1e293b;
+  --lw-game-bg-panel: #1e293b;
+  --lw-game-bg-panel-alt: #0f172a;
+  --lw-game-text-body: #f8fafc;
+  --lw-game-text-muted: #94a3b8;
+  --lw-game-border-color: var(--lw-border);
+  --lw-game-accent: #38bdf8;
+  --lw-bg-content: #0f172a;
+  --lw-bg-panel: #1e293b;
+  --lw-game-border-brown: rgba(180, 130, 80, 0.42);
+  --lw-game-border-brown-strong: rgba(205, 155, 100, 0.8);
+  --lw-game-border-brown-soft: rgba(180, 130, 80, 0.22);
+}
+
+:root[data-lw-play-theme="light"],
+html[data-lw-play-theme="light"],
+body[data-lw-play-theme="light"],
+[data-lw-play-theme="light"]:not(html):not(body) {
+  --lw-game-play-bg: #f8fafc;
+  --lw-game-play-surface: #ffffff;
+  --lw-game-play-text: #0f172a;
+  --lw-game-play-text-soft: #334155;
+  --lw-game-play-muted: #64748b;
+  --lw-game-play-muted-strong: #1e293b;
+  --lw-game-play-border: #e2e8f0;
+  --lw-game-play-accent: #0284c7;
+  --lw-game-play-history-bg: #ffffff;
+  --lw-game-bg-panel: #ffffff;
+  --lw-game-bg-panel-alt: #f1f5f9;
+  --lw-game-text-body: #0f172a;
+  --lw-game-text-muted: #64748b;
+  --lw-game-border: #e2e8f0;
+  --lw-game-accent: #0284c7;
+  --lw-bg-content: #f8fafc;
+  --lw-bg-panel: #ffffff;
+  --lw-game-border-brown: rgba(150, 100, 50, 0.38);
+  --lw-game-border-brown-strong: rgba(150, 100, 50, 0.75);
+  --lw-game-border-brown-soft: rgba(150, 100, 50, 0.2);
+}
+
+:root[data-lw-play-theme="parchment"],
+html[data-lw-play-theme="parchment"],
+body[data-lw-play-theme="parchment"],
+[data-lw-play-theme="parchment"]:not(html):not(body) {
+  --lw-game-play-bg: #fef3c7;
+  --lw-game-play-surface: #fde68a;
+  --lw-game-play-text: #451a03;
+  --lw-game-play-text-soft: #78350f;
+  --lw-game-play-muted: #92400e;
+  --lw-game-play-muted-strong: #78350f;
+  --lw-game-play-border: #f59e0b;
+  --lw-game-play-accent: #d97706;
+  --lw-game-play-history-bg: #fef9c3;
+  --lw-game-bg-panel: #fde68a;
+  --lw-game-bg-panel-alt: #fef3c7;
+  --lw-game-text-body: #451a03;
+  --lw-game-text-muted: #92400e;
+  --lw-game-border: #f59e0b;
+  --lw-game-accent: #d97706;
+  --lw-bg-content: #fef3c7;
+  --lw-bg-panel: #fde68a;
+  --lw-game-border-brown: rgba(160, 100, 30, 0.5);
+  --lw-game-border-brown-strong: rgba(160, 100, 30, 0.85);
+  --lw-game-border-brown-soft: rgba(160, 100, 30, 0.28);
+}
+
+:root[data-lw-play-theme="glassmorphism"],
+html[data-lw-play-theme="glassmorphism"],
+body[data-lw-play-theme="glassmorphism"],
+[data-lw-play-theme="glassmorphism"]:not(html):not(body) {
+  --lw-game-play-bg: transparent;
+  --lw-game-play-surface: var(--lw-surface, rgba(255, 255, 255, 0.20));
+  --lw-game-play-text: #0f172a;
+  --lw-game-play-text-soft: #334155;
+  --lw-game-play-muted: #64748b;
+  --lw-game-play-muted-strong: #475569;
+  --lw-game-play-border: var(--lw-border, rgba(255, 255, 255, 0.25));
+  --lw-game-play-accent: #6366f1;
+  --lw-game-play-history-bg: rgba(255, 255, 255, 0.15);
+  --lw-game-bg-panel: var(--lw-surface, rgba(255, 255, 255, 0.20));
+  --lw-game-bg-panel-alt: rgba(255, 255, 255, 0.12);
+  --lw-game-text-body: #0f172a;
+  --lw-game-text-muted: #64748b;
+  --lw-game-border: var(--lw-border, rgba(255, 255, 255, 0.25));
+  --lw-game-accent: #6366f1;
+  --lw-bg-content: transparent;
+  --lw-bg-panel: var(--lw-surface, rgba(255, 255, 255, 0.20));
+  --lw-game-border-brown: rgba(99, 102, 241, 0.25);
+  --lw-game-border-brown-strong: rgba(99, 102, 241, 0.55);
+  --lw-game-border-brown-soft: rgba(99, 102, 241, 0.15);
+}

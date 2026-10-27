@@ -1,0 +1,20 @@
+{
+  "id": "w9-mini",
+  "title": "시험 팩",
+  "genre": "test",
+  "version": 1,
+  "protagonist": { "defaultName": "갑" },
+  "origins": [
+    { "id": "warm", "name": "따뜻한 길", "summary": "", "stats": { "might": 10 }, "traits": ["p_compassion"] },
+    { "id": "cold", "name": "차가운 길", "summary": "", "stats": { "might": 10 }, "traits": ["p_pride"] }
+  ],
+  "startTraits": ["item.blade"],
+  "startGrudges": {},
+  "episodes": ["ep1", "ep2", "ep3"],
+  "realms": [
+    { "id": "realm.first", "name": "처음", "absorbed": 0 },
+    { "id": "realm.second", "name": "둘째", "absorbed": 2, "stats": { "guard": 5 } }
+  ],
+  "arcs": [{ "id": "arc.trial", "name": "시련", "summary": "두 화에 걸친 일" }],
+  "tuning": { "lootBonus.rare": 0.5 }
+}

@@ -1,0 +1,28 @@
+    @if (icon()) {
+      <span class="icon">
+        <ng-content select="[itemIcon]" />
+      </span>
+    } @else {
+      <ng-content select="[itemIcon]" />
+    }
+
+    <div class="nav-item-text">
+      <span class="label">{{ label() }}</span>
+      @if (showRouteBadge() && routeTag()) {
+        <span
+          class="nav-route-tag"
+          (click)="onRouteTagClick($event)"
+          [title]="'클릭하여 라우터 복사: ' + (routePath() || routeTag())"
+        >
+          {{ routeTag() }}
+        </span>
+      }
+    </div>
+
+    @if (badge() !== undefined && badge() !== null) {
+      <span class="nav-badge" [class.nav-badge--sub]="variant() === 'sub'">
+        {{ badge() }}
+      </span>
+    }
+
+    <ng-content />

@@ -1,0 +1,42 @@
+@if (open()) {
+  <div
+    class="lw-side-panel-backdrop"
+    role="presentation"
+    [class.lw-side-panel-backdrop--blur]="backdropBlur()"
+    (click)="onBackdropClick()"
+    aria-hidden="true"
+  ></div>
+
+  <section
+    class="lw-side-panel-drawer"
+    [class.lw-side-panel-drawer--left]="position() === 'left'"
+    [class.lw-side-panel-drawer--right]="position() === 'right'"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="title() || '사이드 패널 다이얼로그'"
+    (click)="$event.stopPropagation()"
+  >
+    <header class="lw-side-panel-header">
+      <div class="lw-side-panel-title">
+        <ng-content select="[lwPanelTitle]" />
+        @if (title()) {
+          <h2>{{ title() }}</h2>
+        }
+      </div>
+      @if (showClose()) {
+        <lw-button
+          type="button"
+          class="lw-side-panel-close"
+          (click)="close.emit()"
+          aria-label="닫기"
+        >
+          <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+        </lw-button>
+      }
+    </header>
+
+    <div class="lw-side-panel-body">
+      <ng-content />
+    </div>
+  </section>
+}

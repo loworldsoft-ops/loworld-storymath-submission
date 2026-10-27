@@ -1,0 +1,26 @@
+<div class="lw-console-page">
+  <header class="lw-console-page__header">
+    <div class="lw-console-page__title-group">
+      @if (icon()) {
+        <lw-icon class="lw-console-page__icon" [name]="icon()" [size]="20" />
+      }
+      <div class="lw-console-page__titles">
+        <h2 class="lw-console-page__title">{{ title() }}</h2>
+        @if (subtitle()) {
+          <p class="lw-console-page__subtitle">{{ subtitle() }}</p>
+        }
+      </div>
+    </div>
+    <div class="lw-console-page__actions">
+      <ng-content select="[pageActions]" />
+    </div>
+  </header>
+
+  <div class="lw-console-page__toolbar">
+    <ng-content select="[pageToolbar]" />
+  </div>
+
+  <div class="lw-console-page__body" [class.lw-console-page__body--flush]="flush()">
+    <ng-content />
+  </div>
+</div>

@@ -1,0 +1,12 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.icon {
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+:host { --lw-host-surface: var(--lw-surface); }

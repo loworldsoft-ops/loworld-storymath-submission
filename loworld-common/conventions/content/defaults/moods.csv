@@ -1,0 +1,12 @@
+situation,card,regard,bond,emotion
+belittled,p_pride;p_arrogance;p_anger;p_wrath,,,anger
+belittled,,up,,fear
+belittled,,,,hate
+prevailed,p_compassion;p_kindness,,,sorrow
+prevailed,,,,joy
+humbled,p_pride;p_arrogance,,,anger
+humbled,,,,fear
+friend-at-risk,,,20,love
+friend-at-risk,,,,calm
+coveting,,,,desire
+,,,,calm

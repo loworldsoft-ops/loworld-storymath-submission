@@ -1,0 +1,51 @@
+<header class="lw-docs-page__head">
+  <div class="lw-docs-page__tools">
+    <lw-button variant="ghost" size="xs" tooltip="본문 복사" (click)="onCopyPage()">
+      <lw-icon name="copy" [size]="12" />
+      Copy page
+    </lw-button>
+    @if (pager().prev; as prev) {
+      <lw-button variant="ghost" size="xs" [iconOnly]="true" [ariaLabel]="'이전: ' + prev.label" [tooltip]="'이전: ' + prev.label" (click)="navigate.emit({ path: prev.path })">
+        <lw-icon name="chevron-left" [size]="14" />
+      </lw-button>
+    }
+    @if (pager().next; as next) {
+      <lw-button variant="ghost" size="xs" [iconOnly]="true" [ariaLabel]="'다음: ' + next.label" [tooltip]="'다음: ' + next.label" (click)="navigate.emit({ path: next.path })">
+        <lw-icon name="chevron-right" [size]="14" />
+      </lw-button>
+    }
+  </div>
+  <h1 class="lw-docs-page__title">{{ article().title }}</h1>
+  @if (article().desc) {
+    <p class="lw-docs-page__desc">{{ article().desc }}</p>
+  }
+</header>
+
+<ng-content />
+
+<lw-docs-article-viewer
+  [html]="article().html"
+  [anchor]="anchor()"
+  [dark]="dark()"
+  [assetBase]="assetBase()"
+  (navigate)="navigate.emit($event)"
+  (anchorSelect)="anchorSelect.emit($event)"
+  (activeAnchorChange)="activeAnchorChange.emit($event)"
+  (codeCopied)="codeCopied.emit($event)" />
+
+<nav class="lw-docs-page__pager" aria-label="이전·다음 문서">
+  @if (pager().prev; as prev) {
+    <lw-button variant="outline" size="sm" (click)="navigate.emit({ path: prev.path })">
+      <lw-icon name="chevron-left" [size]="14" />
+      <span class="lw-docs-page__pager-label">{{ prev.label }}</span>
+    </lw-button>
+  } @else {
+    <span></span>
+  }
+  @if (pager().next; as next) {
+    <lw-button variant="outline" size="sm" (click)="navigate.emit({ path: next.path })">
+      <span class="lw-docs-page__pager-label">{{ next.label }}</span>
+      <lw-icon name="chevron-right" [size]="14" />
+    </lw-button>
+  }
+</nav>

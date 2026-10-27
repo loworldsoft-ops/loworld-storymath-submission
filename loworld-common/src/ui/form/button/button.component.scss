@@ -1,0 +1,303 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid var(--lw-btn-border, var(--lw-btn-border-color, transparent));
+  border-radius: var(--lw-btn-radius, var(--lw-radius-md));
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  gap: 6px;
+  outline: none;
+  text-shadow: none !important;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--lw-surface), 0 0 0 4px var(--lw-focus-ring);
+  }
+
+  &:active:not([disabled]):not(.lw-btn--disabled) {
+    transform: translateY(1px);
+  }
+
+  &[disabled],
+  &.lw-btn--disabled,
+  &.lw-btn--loading {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.lw-btn--loading {
+    &.lw-btn--circle,
+    &.lw-btn--square {
+      > :not(.lw-btn__spinner) {
+        display: none !important;
+      }
+    }
+  }
+
+  // --- Sizes (부모에서 --lw-btn-height / --lw-btn-padding 오버라이드 지원) ---
+  &.lw-btn--xs {
+    height: var(--lw-btn-height, 24px);
+    padding: var(--lw-btn-padding, 0 8px);
+    font-size: var(--lw-btn-font-size, 11px);
+    border-radius: var(--lw-btn-radius);
+    gap: 4px;
+  }
+
+  &.lw-btn--sm {
+    height: var(--lw-btn-height, 30px);
+    padding: var(--lw-btn-padding, 0 12px);
+    font-size: var(--lw-btn-font-size, 12px);
+    border-radius: var(--lw-btn-radius);
+  }
+
+  // 📱 Mobile Touch Ergonomics: WCAG 2.1 AA & Apple HIG 44px 최소 터치 타깃 보장 (md 38px 포함)
+  &.lw-btn--xs,
+  &.lw-btn--sm,
+  &.lw-btn--md {
+    @include lw.lw-touch-target;
+  }
+
+  &.lw-btn--md {
+    height: var(--lw-btn-height, 38px);
+    padding: var(--lw-btn-padding, 0 16px);
+    font-size: var(--lw-btn-font-size, 14px);
+    border-radius: var(--lw-btn-radius);
+  }
+
+  &.lw-btn--lg {
+    height: var(--lw-btn-height, 46px);
+    padding: var(--lw-btn-padding, 0 22px);
+    font-size: var(--lw-btn-font-size, 15px);
+    border-radius: var(--lw-btn-radius);
+    font-weight: 600;
+  }
+
+  // --- Shapes ---
+  &.lw-btn--pill {
+    border-radius: 9999px !important;
+  }
+
+  &.lw-btn--circle,
+  &.lw-btn--square,
+  &.lw-btn--icon-only {
+    padding: var(--lw-btn-padding, 0) !important;
+    flex-shrink: 0;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center;
+
+    &.lw-btn--xs { width: var(--lw-btn-width, 24px); height: var(--lw-btn-height, 24px); font-size: 12px; }
+    &.lw-btn--sm { width: var(--lw-btn-width, 32px); height: var(--lw-btn-height, 32px); font-size: 14px; }
+    &.lw-btn--md { width: var(--lw-btn-width, 38px); height: var(--lw-btn-height, 38px); font-size: 16px; }
+    &.lw-btn--lg { width: var(--lw-btn-width, 46px); height: var(--lw-btn-height, 46px); font-size: 18px; }
+
+    .lw-btn__content {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.lw-btn--circle {
+    border-radius: 50% !important;
+  }
+
+
+  &.lw-btn--block {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  &.lw-btn--hidden {
+    display: none !important;
+  }
+
+  // ── Unified Button Styles (불변의 단일 표준 버튼 스타일 - 외부 영향 차단 쉴드) ──
+  background: var(--lw-control-bg) !important;
+  color: var(--lw-control-fg) !important;
+  border-color: var(--lw-control-border) !important;
+
+  .lw-btn__content,
+  .lw-btn__content * {
+    color: inherit;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &:hover:not([disabled]):not(.lw-btn--disabled) {
+    background: var(--lw-control-bg-hover) !important;
+    color: var(--lw-control-fg-hover) !important;
+    border-color: var(--lw-control-border-hover) !important;
+    box-shadow: var(--lw-shadow-1) !important;
+
+    .lw-btn__content,
+    .lw-btn__content * {
+      color: inherit;
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+  }
+
+  &:active:not([disabled]):not(.lw-btn--disabled) {
+    transform: translateY(1px);
+  }
+
+  // --- Variants (모든 테마 및 외부 환경에서 100% 동일한 단일 불변 스타일) ---
+  &.lw-btn--primary,
+  &.lw-btn--novel {
+    background: var(--lw-btn-primary-bg, var(--lw-accent)) !important;
+    color: var(--lw-btn-primary-color, var(--lw-text-on-accent)) !important;
+    border-color: var(--lw-btn-primary-border, var(--lw-accent)) !important;
+
+    .lw-btn__content {
+      color: var(--lw-btn-primary-color, var(--lw-text-on-accent)) !important;
+    }
+
+    &:hover:not([disabled]):not(.lw-btn--disabled) {
+      background: var(--lw-btn-primary-hover-bg, var(--lw-accent-hover)) !important;
+      color: var(--lw-btn-primary-hover-color, var(--lw-text-on-accent)) !important;
+      border-color: var(--lw-btn-primary-hover-border, var(--lw-accent-hover)) !important;
+
+      .lw-btn__content {
+        color: var(--lw-btn-primary-hover-color, var(--lw-text-on-accent)) !important;
+      }
+    }
+  }
+
+  &.lw-btn--secondary {
+    background: var(--lw-btn-secondary-bg, var(--lw-control-bg)) !important;
+    color: var(--lw-btn-secondary-color, var(--lw-control-fg)) !important;
+    border-color: var(--lw-btn-secondary-border, var(--lw-control-border)) !important;
+
+    .lw-btn__content {
+      color: var(--lw-btn-secondary-color, var(--lw-control-fg)) !important;
+    }
+
+    &:hover:not([disabled]):not(.lw-btn--disabled) {
+      background: var(--lw-btn-secondary-hover-bg, var(--lw-control-bg-hover)) !important;
+      color: var(--lw-btn-secondary-hover-color, var(--lw-control-fg-hover)) !important;
+      border-color: var(--lw-btn-secondary-hover-border, var(--lw-control-border-hover)) !important;
+      box-shadow: var(--lw-shadow-1) !important;
+
+      .lw-btn__content {
+        color: var(--lw-btn-secondary-hover-color, var(--lw-control-fg-hover)) !important;
+      }
+    }
+  }
+
+  &.lw-btn--outline {
+    background: var(--lw-btn-outline-bg) !important;
+    color: var(--lw-btn-outline-color, var(--lw-text-primary)) !important;
+    border-color: var(--lw-btn-outline-border, var(--lw-border-strong)) !important;
+
+    .lw-btn__content {
+      color: var(--lw-btn-outline-color, var(--lw-text-primary)) !important;
+    }
+
+    &:hover:not([disabled]):not(.lw-btn--disabled) {
+      background: var(--lw-btn-outline-hover-bg, var(--lw-surface-hover)) !important;
+      color: var(--lw-btn-outline-hover-color, var(--lw-accent)) !important;
+      border-color: var(--lw-btn-outline-hover-border, var(--lw-accent)) !important;
+
+      .lw-btn__content {
+        color: var(--lw-btn-outline-hover-color, var(--lw-accent)) !important;
+      }
+    }
+  }
+
+  &.lw-btn--ghost {
+    background: var(--lw-btn-ghost-bg) !important;
+    color: var(--lw-btn-ghost-color, var(--lw-text-secondary)) !important;
+    border-color: var(--lw-btn-ghost-border) !important;
+
+    .lw-btn__content {
+      color: var(--lw-btn-ghost-color, var(--lw-text-secondary)) !important;
+    }
+
+    &:hover:not([disabled]):not(.lw-btn--disabled) {
+      background: var(--lw-btn-ghost-hover-bg, var(--lw-surface-active)) !important;
+      color: var(--lw-btn-ghost-hover-color, var(--lw-text-primary)) !important;
+
+      .lw-btn__content {
+        color: var(--lw-btn-ghost-hover-color, var(--lw-text-primary)) !important;
+      }
+    }
+  }
+
+  &.lw-btn--danger {
+    background: var(--lw-btn-danger-bg, var(--lw-danger-bg, var(--lw-color-danger-hover))) !important;
+    color: var(--lw-text-on-accent) !important;
+    border-color: transparent !important;
+
+    .lw-btn__content {
+      color: var(--lw-text-on-accent) !important;
+    }
+
+    &:hover:not([disabled]):not(.lw-btn--disabled) {
+      background: var(--lw-btn-danger-hover-bg) !important;
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-danger-hover) 30%, transparent) !important;
+    }
+  }
+}
+
+// --- Elements inside template ---
+.lw-btn__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  line-height: 1.2;
+  width: 100%;
+
+  &--hidden {
+    visibility: hidden;
+  }
+}
+
+.lw-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.lw-btn__spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: lw-spin 0.65s linear infinite;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+@keyframes lw-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

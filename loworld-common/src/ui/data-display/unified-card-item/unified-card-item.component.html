@@ -1,0 +1,37 @@
+    <lw-card
+      layout="stack"
+      variant="outlined"
+      [interactive]="true"
+      [selected]="!!item().selected"
+      (click)="selectItem.emit(item().id)"
+    >
+      <div class="card-header">
+        @if (item().iconUrl) {
+          <img [src]="item().iconUrl" [alt]="item().title" class="card-icon" />
+        }
+        <div class="header-titles">
+          <h4 class="card-title">{{ item().title }}</h4>
+          @if (item().subTitle) {
+            <span class="card-subtitle">{{ item().subTitle }}</span>
+          }
+        </div>
+        @if (item().badge) {
+          <span class="card-badge" [attr.data-variant]="item().badgeVariant || 'neutral'">
+            {{ item().badge }}
+          </span>
+        }
+      </div>
+
+      @if (item().contentSnippet) {
+        <p class="card-snippet">{{ item().contentSnippet }}</p>
+      }
+
+      <div class="card-footer">
+        @if (item().timestamp) {
+          <span class="card-time">{{ item().timestamp }}</span>
+        }
+        <div class="actions">
+          <ng-content select="[cardActions]"></ng-content>
+        </div>
+      </div>
+    </lw-card>

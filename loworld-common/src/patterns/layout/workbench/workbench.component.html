@@ -1,0 +1,6 @@
+<ng-template #header><div class="lw-workbench__header"><ng-content select="[lwWorkbenchHeader]" /></div></ng-template>
+<ng-template #navSlot><div class="lw-workbench__nav"><ng-content select="[lwWorkbenchNav]" /></div></ng-template>
+<ng-template #main><div class="lw-workbench__main"><ng-content /></div></ng-template>
+<ng-template #asideSlot><div class="lw-workbench__aside"><ng-content select="[lwWorkbenchAside]" /></div></ng-template>
+
+<lw-app-frame [layout]="layout()" [slotTemplates]="{ topbar: header, sidebar: navSlot, detail: main, aside: asideSlot }" />

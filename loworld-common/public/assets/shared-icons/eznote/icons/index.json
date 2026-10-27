@@ -1,0 +1,20 @@
+{
+  "category": "eznote",
+  "targetCount": 1,
+  "style": "engraved-fantasy",
+  "implemented": [
+    {
+      "id": "eznote-folder-shared",
+      "runtimeId": "folder-shared",
+      "family": "folder",
+      "svgPath": "svg/eznote/folder-shared.webp",
+      "previewLabel": "공유 폴더",
+      "tags": [
+        "folder",
+        "shared",
+        "group"
+      ]
+    }
+  ],
+  "planned": []
+}

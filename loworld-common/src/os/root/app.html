@@ -1,0 +1,494 @@
+<router-outlet class="hidden-outlet" />
+<lw-snackbar-host />
+<lw-dialog-host />
+<div class="showcase" [class.showcase-overview]="activeTab() === 'overview'" [attr.data-lw-play-theme]="overviewPlayTheme()" [attr.data-lw-skin]="overviewSkin()">
+  <div class="showcase-body">
+
+
+    <!-- Main Content -->
+    <main class="showcase-content" [class.full-width]="!isSidebarVisible()">
+
+      <!-- ═══ 전체 쇼케이스 진입 인증 게이트 ═══ -->
+      @if (!overviewIsAuthenticated() || activeTab() === 'login') {
+        <!-- 🔒 필수 OS 로그인 잠금 화면 (로그인 전 및 /login 라우트 접근 시 표시) -->
+        <lw-os-lock-screen
+          [isMobile]="overviewIsMobile()"
+          [themeMode]="overviewThemeMode()"
+          [submitting]="overviewLoginSubmitting()"
+          (loginRequested)="overviewMemberLoginOpen()"
+          (deviceModeToggle)="toggleOverviewDeviceMode()"
+          (themeToggle)="toggleOverviewTheme()"
+        />
+      } @else {
+        <!-- ═══ Overview Tab ═══ -->
+        @if (activeTab() === 'overview') {
+          <ng-template #overviewWindowContent let-window>
+          @if (isWindowAccessRestricted(window.tab)) {
+            <lw-os-access-gate
+              title="접근 제한"
+              description="이 창을 열람하려면 로그인이 필요합니다."
+              (ctaRequested)="overviewMemberLoginOpen()"
+            />
+          } @else if (window.tab === 'overview-explorer') {
+            <lw-os-explorer-window
+              [folders]="overviewExplorerFolders()"
+              [currentFolderId]="$any(window.explorerFolderId ?? 'home')"
+              [runningTabs]="overviewRunningTabs()"
+              [activeWindowTab]="overviewActiveWindowTab()"
+              (navigateRequested)="navigateOverviewExplorer($event)"
+              (launchRequested)="launchFromOverview($event)"
+            />
+          } @else if (windowTabRegistry.has(window.tab)) {
+            @if (windowTabRegistry.shouldWrapInScrollPage(window.tab)) {
+              <div class="overview-window-scroll overview-window-scroll--page">
+                <lw-window-tab-host
+                  [component]="windowTabRegistry.getComponent(window.tab) ?? null"
+                  [loadComponent]="windowTabRegistry.getLoadComponent(window.tab) ?? null"
+                  [inputs]="getWindowTabInputs(window)"
+                  [frameDefaults]="windowTabRegistry.get(window.tab)?.frame"
+                  (loginRequested)="overviewMemberLoginOpen()"
+                  (logoutRequested)="overviewMemberLogout()"
+                  (accountRequested)="overviewMemberAccountOpen()"
+                  (openNav)="navPanelOpen.set(true)"
+                  (toggleTheme)="toggleOverviewTheme()"
+                  (navigateTo)="openOverviewWindow($event)"
+                  (routeStateChange)="onAllComponentsRouteStateChange($event)"
+                  (closeRequested)="closeOverviewWindow(window.tab)"
+                  (mobileSidebarCloseRequested)="closeOverviewAllComponentsMobileSidebar()"
+                  (navigateRequested)="navigateOverviewExplorer($event)"
+                  (launchRequested)="launchFromOverview($event)"
+                />
+              </div>
+            } @else {
+              <lw-window-tab-host
+                [component]="windowTabRegistry.getComponent(window.tab) ?? null"
+                [loadComponent]="windowTabRegistry.getLoadComponent(window.tab) ?? null"
+                [inputs]="getWindowTabInputs(window)"
+                  [frameDefaults]="windowTabRegistry.get(window.tab)?.frame"
+                (loginRequested)="overviewMemberLoginOpen()"
+                (logoutRequested)="overviewMemberLogout()"
+                (accountRequested)="overviewMemberAccountOpen()"
+                (openNav)="navPanelOpen.set(true)"
+                (toggleTheme)="toggleOverviewTheme()"
+                (navigateTo)="openOverviewWindow($event)"
+                (routeStateChange)="onAllComponentsRouteStateChange($event)"
+                (closeRequested)="closeOverviewWindow(window.tab)"
+                (mobileSidebarCloseRequested)="closeOverviewAllComponentsMobileSidebar()"
+                (navigateRequested)="navigateOverviewExplorer($event)"
+                (launchRequested)="launchFromOverview($event)"
+              />
+            }
+          } @else if (resolveCatalogMeta(window.tab); as catMeta) {
+            @defer (on idle) {
+              <lw-domain-catalog-host
+                [components]="catMeta.catalog"
+                [selectedComponent]="catMeta.selected()"
+                [domain]="catMeta.domain"
+                [themeMode]="overviewThemeMode()"
+                (componentSelect)="catMeta.onSelect($event)"
+                (resetSelection)="catMeta.onReset()"
+                (openNav)="navPanelOpen.set(true)" />
+            }
+          }
+        </ng-template>
+
+        <!-- 모바일 OS 화면. 시뮬레이터 프레임 안에서도, 실제 모바일 화면에서도 같은 템플릿을 그린다. -->
+        <ng-template #overviewMobileOs>
+          <div
+            class="overview-iphone-screen"
+            data-lw-overlay-container
+            [appMobileViewportScope]="overviewSimulated()"
+            [class.is-native-mobile]="!overviewSimulated()">
+            @if (!overviewResolvedMobileWindow()) {
+              <div
+                class="overview-mobile-wallpaper-backdrop"
+                [style.backgroundColor]="wallpaperStore.currentWallpaper().solidColorHex ?? null"
+                [style.backgroundImage]="wallpaperStore.currentWallpaper().isSolidColor ? null : 'url(' + wallpaperStore.currentWallpaper().mobileUrl + ')'"
+                [style.filter]="wallpaperStore.wallpaperBlur() > 0 ? 'blur(' + wallpaperStore.wallpaperBlur() + 'px)' : null"
+                aria-hidden="true"></div>
+              @if (!wallpaperStore.currentWallpaper().isSolidColor) {
+                <div class="overview-mobile-wallpaper-vignette" aria-hidden="true"></div>
+              }
+            }
+            <lw-os-mobile-shell
+              class="overview-theme-win11"
+              [folders]="overviewExplorerFolders()"
+              [memberSession]="overviewMemberAuthSession()"
+              [loginLabel]="overviewLoginLabel()"
+              [pins]="overviewTaskbarPins()"
+              [settingsActive]="isOverviewSettingsOpen()"
+              [selectedGroupId]="overviewMobileSelectedGroup()"
+              [sheetFolder]="overviewMobileSheetFolder()"
+              [sheetOpen]="overviewMobileSheetFolder() !== null"
+              [activeWindowTab]="overviewActiveWindowTab()"
+              [runningTabs]="overviewRunningTabs()"
+              [workspaceCount]="overviewWorkspaceCount()"
+              [folderCount]="overviewFolderCount()"
+              [runningCount]="overviewOpenWindowCount()"
+              [loginStateLabel]="overviewLoginStateLabel()"
+              [dockAction]="overviewMobileDockAction()"
+              [dockVisible]="false"
+              [sceneOpen]="overviewResolvedMobileWindow() !== null"
+              [themeMode]="overviewThemeMode()"
+              (groupSelected)="selectOverviewMobileGroup($event)"
+              (groupOpenRequested)="openOverviewMobileGroup($event)"
+              (sheetCloseRequested)="closeOverviewMobileGroup()"
+              (sheetNavigateRequested)="openOverviewMobileGroup($event)"
+              (launchRequested)="launchFromOverview($event)"
+              (runningTabSelected)="focusOverviewMobileRunningTab($event)"
+              (startToggleRequested)="toggleOverviewStart()"
+              (searchRequested)="openOverviewWindow('all-components')"
+              (pinToggleRequested)="toggleOverviewWindowFromTaskbar($event)"
+              (settingsRequested)="toggleOverviewSettings()"
+              (loginRequested)="overviewMemberLoginOpen()"
+              (accountRequested)="overviewMemberAccountOpen()"
+              (logoutRequested)="overviewMemberLogout()"
+              (dockActionRequested)="handleOverviewMobileDockAction($event)">
+              @if (overviewResolvedMobileWindow(); as window) {
+                <lw-os-mobile-scene
+                  mobile-scene
+                  [title]="window.title"
+                  [icon]="window.icon"
+                  [fullscreen]="false"
+                  [frameless]="isMobileSimulatorFrameless()"
+                  [showSessionControl]="showOverviewWindowSessionControl(window.tab)"
+                  [memberSession]="showOverviewWindowSessionControl(window.tab) ? overviewMemberAuthSession() : null"
+                  [windows]="overviewWindows()"
+                  [runningTabs]="overviewRunningTabs()"
+                  [activeTab]="overviewActiveWindowTab()"
+                  [isSettingsOpen]="isOverviewSettingsOpen()"
+                  (menuRequested)="openOverviewMobileSceneMenu()"
+                  (homeRequested)="closeOverviewWindow(window.tab)"
+                  (backRequested)="closeOverviewWindow(window.tab)"
+                  (closeRequested)="closeOverviewWindow(window.tab)"
+                  (settingsRequested)="toggleOverviewSettings()"
+                  (runningTabSelected)="focusOverviewMobileRunningTab($event)"
+                  (loginRequested)="overviewMemberLoginOpen()"
+                  (accountRequested)="overviewMemberAccountOpen()">
+                  <ng-container [ngTemplateOutlet]="overviewWindowContent" [ngTemplateOutletContext]="{ $implicit: window }" />
+                </lw-os-mobile-scene>
+              }
+            </lw-os-mobile-shell>
+
+            @defer (when isOverviewSettingsOpen()) {
+              @if (isOverviewSettingsOpen()) {
+                <lw-os-settings-dialog-host
+                  class="overview-mobile-settings-sheet"
+                  [presentation]="'sheet'"
+                  [mode]="activeAppSettingsMode()"
+                  [brandName]="activeAppBrandName()"
+                  [windowLaunchMode]="overviewWindowLaunchMode()"
+                  [hideWindowMode]="true"
+                  [showWallpaperSetting]="true"
+                  (wallpaperRequested)="openOverviewWallpaperFromSettings()"
+                  [windowControls]="false"
+                  [windowStyle]="'standard'"
+                  [draggable]="false"
+                  (windowLaunchModeChange)="setOverviewWindowLaunchMode($event)"
+                  (close)="closeOverviewSettings()"
+                />
+              }
+            }
+
+            <!-- 📱 모바일 시뮬레이터 내부 포탈 멤버 로그인 바텀시트 -->
+            @defer (when isLoginDialogOpen()) {
+              @if (isLoginDialogOpen()) {
+                <lw-os-login-dialog-host
+                  class="overview-mobile-login-sheet"
+                  [data]="loginDialogData()"
+                  [isOpen]="isLoginDialogOpen()"
+                  [windowControls]="false"
+                  [windowStyle]="'standard'"
+                  [draggable]="false"
+                  (closeRequested)="closeLoginDialog()"
+                />
+              }
+            }
+          </div>
+        </ng-template>
+
+        @if (overviewSimulated()) {
+          <!-- 데스크톱 화면의 스마트폰 모드: 기종 프레임 안에 모바일 OS -->
+          <!-- 실제 모바일 화면에는 시뮬레이터 코드와 스타일을 내려보내지 않도록 따로 불러온다. -->
+          @defer {
+            <lw-device-simulator
+              [backdropUrl]="wallpaperStore.currentWallpaper().desktopUrl"
+              [backdropBlur]="wallpaperStore.wallpaperBlur()"
+              [statusLabel]="overviewStatusLabel()"
+              [idle]="overviewOpenWindowCount() === 0"
+              (homeRequested)="minimizeActiveOverviewWindow()"
+              (deviceModeChange)="setOverviewDeviceMode($event)"
+              (wallpaperRequested)="wallpaperStore.openModal()"
+              (settingsRequested)="toggleOverviewSettings()">
+              <ng-container [ngTemplateOutlet]="overviewMobileOs" />
+            </lw-device-simulator>
+          }
+        } @else if (overviewIsMobile()) {
+          <!-- 실제 모바일 화면: 프레임 없이 화면에 바로 그린다 -->
+          <div class="overview-mobile-native-stage" data-lw-mobile-surface>
+            <ng-container [ngTemplateOutlet]="overviewMobileOs" />
+          </div>
+        } @else {
+          <!-- 🖥️ 데스크톱 모드: 순수 데스크톱 셸만 렌더링 -->
+          <div
+            class="overview-page overview-theme-win11 overview-server-shell"
+            [attr.data-lw-theme]="overviewThemeMode()"
+            [attr.data-lw-play-theme]="overviewPlayTheme()"
+            [attr.data-lw-skin]="overviewSkin()"
+            [class.overview-server-shell--maximized]="overviewHasActiveApp()">
+            @if (!overviewHasActiveApp()) {
+              <div class="overview-server-body">
+                <div class="overview-server-wallpaper">
+                  <lw-os-desktop-wallpaper-stage />
+                  <lw-os-desktop-surface
+                    [folders]="overviewExplorerFolders()"
+                    [windowCount]="overviewWindows().length"
+                    [activeExplorerFolderId]="overviewExplorerActiveFolderId()"
+                    [isOwner]="overviewRole() === 'OWNER'"
+                    [deviceMode]="overviewEffectiveDeviceMode()"
+                    [memberSession]="overviewMemberAuthSession()"
+                    (deviceModeChange)="setOverviewDeviceMode($event)"
+                    (folderOpenRequested)="openOverviewExplorer($event)"
+                    (launchRequested)="launchFromOverview($event)"
+                    (settingsRequested)="toggleOverviewSettings()"
+                    (loginRequested)="overviewMemberLoginOpen()"
+                    (accountRequested)="overviewMemberAccountOpen()"
+                    (logoutRequested)="overviewMemberLogout()"
+                  />
+                </div>
+              </div>
+            }
+
+            @if (overviewWindowsByZIndex().length > 0) {
+              <div
+                class="overview-window-layer"
+                [class.overview-window-layer--above-taskbar]="overviewHasActiveApp()"
+                aria-label="열린 창">
+                @for (window of overviewWindowsByZIndex(); track window.tab) {
+                  <lw-os-window-frame
+                    [title]="window.title"
+                    [icon]="window.icon"
+                    [active]="overviewActiveWindowTab() === window.tab"
+                    [minimized]="window.state === 'minimized'"
+                    [maximized]="true"
+                    [size]="window.size"
+                    [zIndex]="window.zIndex"
+                    [offset]="0"
+                    [showSessionControl]="showOverviewWindowSessionControl(window.tab)"
+                    [memberSession]="showOverviewWindowSessionControl(window.tab) ? overviewMemberAuthSession() : null"
+                    [showTitlebar]="false"
+                    (focusRequested)="focusOverviewWindow(window.tab)"
+                    (minimizeRequested)="minimizeOverviewWindow(window.tab)"
+                    (maximizeRequested)="toggleMaximizeOverviewWindow(window.tab)"
+                    (closeRequested)="closeOverviewWindow(window.tab)"
+                    (loginRequested)="overviewMemberLoginOpen()"
+                    (accountRequested)="overviewMemberAccountOpen()">
+
+                    <ng-container [ngTemplateOutlet]="overviewWindowContent" [ngTemplateOutletContext]="{ $implicit: window }" />
+                  </lw-os-window-frame>
+                }
+              </div>
+            }
+
+            @defer (when overviewStartOpen()) {
+              @if (overviewStartOpen() && !overviewHasActiveApp()) {
+                <lw-os-start-panel
+                  [sections]="overviewStartSections()"
+                  [memberSession]="overviewMemberAuthSession()"
+                  (closeRequested)="closeOverviewStart()"
+                  (launchRequested)="launchFromOverview($event)"
+                  (loginRequested)="overviewMemberLoginOpen()"
+                  (accountRequested)="overviewMemberAccountOpen()"
+                  (logoutRequested)="overviewMemberLogout()" />
+              }
+            }
+
+            @if (!overviewHasActiveApp()) {
+              <lw-os-taskbar
+                [pins]="overviewTaskbarPins()"
+                [activeWindowTab]="overviewActiveWindowTab()"
+                [runningTabs]="overviewRunningTabs()"
+                [minimizedTabs]="overviewMinimizedTabs()"
+                [startOpen]="overviewStartOpen()"
+                [workspaceCount]="overviewWorkspaceCount()"
+                [folderCount]="overviewFolderCount()"
+                [openWindowCount]="overviewOpenWindowCount()"
+                [memberSession]="overviewMemberAuthSession()"
+                [loginLabel]="overviewLoginLabel()"
+                [loginStateLabel]="overviewLoginStateLabel()"
+                [themeMode]="overviewThemeMode()"
+                [settingsActive]="isOverviewSettingsOpen()"
+                (startToggleRequested)="toggleOverviewStart()"
+                (searchRequested)="openOverviewWindow('all-components')"
+                (pinToggleRequested)="toggleOverviewWindowFromTaskbar($event)"
+                (loginRequested)="overviewMemberLoginOpen()"
+                (accountRequested)="overviewMemberAccountOpen()"
+                (logoutRequested)="overviewMemberLogout()"
+                (settingsRequested)="toggleOverviewSettings()"
+                (themeToggleRequested)="toggleOverviewTheme()"
+              />
+            }
+
+          </div>
+        }
+
+        @defer (when isOverviewSettingsOpen()) {
+          @if (!overviewIsMobile() && isOverviewSettingsOpen()) {
+            <lw-os-settings-dialog-host
+              [mode]="activeAppSettingsMode()"
+              [brandName]="activeAppBrandName()"
+              [windowLaunchMode]="overviewWindowLaunchMode()"
+              [hideWindowMode]="true"
+              [showWallpaperSetting]="true"
+              (wallpaperRequested)="openOverviewWallpaperFromSettings()"
+              (windowLaunchModeChange)="setOverviewWindowLaunchMode($event)"
+              (close)="closeOverviewSettings()"
+            />
+          }
+        }
+
+        <!-- 통합 배경화면 변경 다이얼로그 (데스크톱 & 스마트폰) -->
+        @defer (on idle) {
+          <lw-os-wallpaper-dialog />
+        }
+      }
+
+      <!-- ═══ Direct Route: Domain Catalog (Note, Calendar, Homework, Novel, DB, Plan, Showcase) ═══ -->
+      @if (resolveCatalogMeta(activeTab()); as catalogMeta) {
+        @defer (when resolveCatalogMeta(activeTab())) {
+          <lw-domain-catalog-host
+            [components]="catalogMeta.catalog"
+            [selectedComponent]="catalogMeta.selected()"
+            [domain]="catalogMeta.domain"
+            [themeMode]="overviewThemeMode()"
+            (componentSelect)="catalogMeta.onSelect($event)"
+            (resetSelection)="catalogMeta.onReset()"
+            (openNav)="navPanelOpen.set(true)" />
+        }
+      }
+
+      <!-- ═══ Direct Route: Showcase & Demo Windows (Lazy Loaded via WindowTabHost) ═══ -->
+      @else if (windowTabRegistry.has(activeTab())) {
+        @defer (on idle) {
+          <lw-window-tab-host
+            [loadComponent]="windowTabRegistry.getLoadComponent(activeTab())"
+            [component]="windowTabRegistry.getComponent(activeTab())"
+            [inputs]="getDirectTabInputs(activeTab())"
+            [frameDefaults]="windowTabRegistry.get(activeTab())?.frame"
+            (loginRequested)="overviewMemberLoginOpen()"
+            (logoutRequested)="overviewMemberLogout()"
+            (accountRequested)="overviewMemberAccountOpen()"
+            (openNav)="navPanelOpen.set(true)"
+            (toggleTheme)="toggleOverviewTheme()"
+            (navigateTo)="navigateToDirectTab($event)" />
+        } @placeholder {
+          <ng-container *ngTemplateOutlet="loadingSkeleton" />
+        }
+      }
+      }
+
+    </main>
+  </div>
+
+  @if (navPanelOpen() && overviewIsAuthenticated()) {
+    <div class="nav-backdrop" (click)="navPanelOpen.set(false)"></div>
+  }
+
+  <!-- Nav Panel -->
+  @if (overviewIsAuthenticated()) {
+    <aside class="nav-panel" [class.open]="navPanelOpen()" role="navigation" aria-label="Showcase navigation">
+    <div class="nav-panel-header">
+      <span class="nav-panel-title">Showcase</span>
+      <lw-button class="nav-panel-close" (click)="navPanelOpen.set(false)" aria-label="Close navigation">
+        <span style="font-size: 18px; line-height: 1;">✕</span>
+      </lw-button>
+    </div>
+    <nav class="nav-panel-body">
+      <a class="nav-item"
+         [class.active]="activeTab() === 'overview'"
+         routerLink="/overview"
+         (click)="navPanelOpen.set(false)">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Overview</span>
+      </a>
+
+      @for (section of overviewNavSections(); track section.id) {
+        <span class="nav-section-label">{{ section.folder?.title ?? section.title }}</span>
+        @for (item of section.items; track item.appId) {
+          <a class="nav-item"
+             [class.active]="activeTab() === item.tab"
+             [routerLink]="'/' + item.tab"
+             (click)="navPanelOpen.set(false)">
+            <span class="nav-icon"><lw-os-icon [icon]="item.icon" [size]="16" /></span>
+            <span class="nav-label">{{ item.label }}</span>
+          </a>
+        }
+      }
+
+      <a class="nav-item"
+         [class.active]="activeTab() === 'layout-demo'"
+         routerLink="/layout-demo"
+         (click)="navPanelOpen.set(false)">
+        <span class="nav-icon">🪟</span>
+        <span class="nav-label">Layout Demo</span>
+      </a>
+    </nav>
+  </aside>
+  }
+</div>
+
+@if (showDirectRouteFloatingClose()) {
+  <lw-showcase-direct-route-floating-close (closeRequested)="closeDirectRouteDemo()" />
+}
+
+@defer (when isLoginDialogOpen()) {
+  <!-- 모바일 로그인 시트는 모바일 OS 화면 안에 있으므로, 잠금 상태에서는 모바일도 이 다이얼로그를 쓴다. -->
+  @if ((!overviewIsMobile() || !overviewIsAuthenticated()) && isLoginDialogOpen()) {
+    <lw-os-login-dialog-host
+      [data]="loginDialogData()"
+      [isOpen]="isLoginDialogOpen()"
+      [windowControls]="loginDialogData().windowControls ?? true"
+      [windowStyle]="loginDialogData().windowStyle ?? 'os-desktop'"
+      [draggable]="loginDialogData().draggable ?? true"
+      (closeRequested)="closeLoginDialog()"
+    />
+  }
+}
+
+<ng-template #loadingSkeleton>
+  <div class="lw-showcase-skeleton">
+    <div class="sk-header">
+      <div class="sk-profile-circle sk-shimmer"></div>
+      <div class="sk-title sk-shimmer"></div>
+      <div class="sk-actions">
+        <div class="sk-btn sk-shimmer"></div>
+        <div class="sk-btn sk-shimmer"></div>
+      </div>
+    </div>
+    <div class="sk-body">
+      <div class="sk-sidebar">
+        <div class="sk-sidebar-item sk-shimmer"></div>
+        <div class="sk-sidebar-item sk-shimmer"></div>
+        <div class="sk-sidebar-item sk-shimmer"></div>
+        <div class="sk-sidebar-item sk-shimmer"></div>
+      </div>
+      <div class="sk-content">
+        <lw-card class="sk-card" variant="outlined">
+          <div class="sk-card-line w-half sk-shimmer"></div>
+          <div class="sk-card-line w-full sk-shimmer"></div>
+          <div class="sk-card-line w-3q sk-shimmer"></div>
+        </lw-card>
+        <lw-card class="sk-card" variant="outlined">
+          <div class="sk-card-line w-half sk-shimmer"></div>
+          <div class="sk-card-line w-full sk-shimmer"></div>
+          <div class="sk-card-line w-3q sk-shimmer"></div>
+        </lw-card>
+        <lw-card class="sk-card" variant="outlined">
+          <div class="sk-card-line w-half sk-shimmer"></div>
+          <div class="sk-card-line w-full sk-shimmer"></div>
+          <div class="sk-card-line w-3q sk-shimmer"></div>
+        </lw-card>
+      </div>
+    </div>
+  </div>
+</ng-template>

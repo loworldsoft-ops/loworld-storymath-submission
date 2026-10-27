@@ -1,0 +1,119 @@
+@switch (comp().id) {
+
+  <!-- ══════ hw-badge ══════ -->
+  @case ('lw-badge') {
+    <div class="demo-grid-row" style="gap:12px; flex-wrap:wrap; padding:16px">
+      @for (status of roomStatusSamples; track status) {
+        <div class="demo-chip-wrap">
+          <div class="demo-variant-label">{{ status }}</div>
+          <lw-badge
+            variant="subtle"
+            size="sm"
+            [label]="studyRoomStatusBadge(status).label"
+            [customBg]="studyRoomStatusBadge(status).customBg"
+            [customText]="studyRoomStatusBadge(status).customText"
+            [customBorder]="studyRoomStatusBadge(status).customBorder"
+          />
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ══════ hw-progress-bar ══════ -->
+  @case ('lw-step-progress') {
+    <div class="demo-grid-col" style="gap:12px; padding:16px">
+      <div class="demo-variant-label">0/16 완료</div>
+      <lw-step-progress [stages]="stages0" />
+
+      <div class="demo-variant-label" style="margin-top:8px">8/16 완료</div>
+      <lw-step-progress [stages]="stages8" />
+
+      <div class="demo-variant-label" style="margin-top:8px">16/16 완료</div>
+      <lw-step-progress [stages]="stages16" />
+    </div>
+  }
+
+  <!-- ══════ hw-stage-list ══════ -->
+  @case ('lw-stage-progress-list') {
+    <div class="demo-controls">
+      <lw-button class="demo-toggle-btn" (click)="canApprove.set(!canApprove())">
+        {{ canApprove() ? '승인 가능 ✓' : '승인 불가' }}
+      </lw-button>
+    </div>
+    <div class="demo-frame" style="height:520px; overflow:hidden">
+      <lw-stage-progress-list
+        [stages]="stages8"
+        [canCheck]="canApprove()"
+        (approveStage)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ hw-room-card ══════ -->
+  @case ('lw-classroom-card') {
+    <div class="demo-controls">
+      <lw-button class="demo-toggle-btn" (click)="roomCardSel.set(!roomCardSel())">
+        {{ roomCardSel() ? '선택됨 ✓' : '선택 안됨' }}
+      </lw-button>
+    </div>
+    <div class="demo-frame demo-frame-sm" style="max-width:400px">
+      <lw-classroom-card
+        [room]="activeRoom()"
+        [selected]="roomCardSel()"
+        (select)="roomCardSel.set(true)"
+      />
+    </div>
+  }
+
+  <!-- ══════ hw-certification-panel ══════ -->
+  @case ('lw-certification-panel') {
+    <div class="demo-controls">
+      <lw-button class="demo-toggle-btn" (click)="certState.set(certState() === 'none' ? 'issued' : 'none')">
+        {{ certState() === 'issued' ? '수료증 발급됨' : '미발급 상태' }}
+      </lw-button>
+    </div>
+    <div class="demo-frame" style="min-height:320px; overflow:hidden">
+      <lw-certification-panel
+        [room]="completedRoom()"
+        [certification]="mockCert()"
+        (requestCert)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ hw-stage-world-map ══════ -->
+  @case ('lw-stage-world-map') {
+    <div class="demo-frame" style="height:520px; overflow:hidden">
+      <lw-stage-world-map
+        [markers]="hwMarkers"
+        (roomSelected)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ lw-titlebar-frame ══════ -->
+  @case ('lw-titlebar-frame') {
+    <div class="demo-frame demo-frame-sm" style="padding:16px;">
+      <lw-titlebar-frame height="md" [showMenuButton]="true" />
+    </div>
+  }
+
+  <!-- ══════ lw-unified-list-item ══════ -->
+  @case ('lw-unified-list-item') {
+    <div class="demo-frame demo-frame-xs" style="padding:16px;">
+      <lw-unified-list-item
+        [item]="{ id: 'item-1', title: '김멘토 학생 상담', subTitle: '과제 8단계 승인 대기', metaText: '10분 전', badge: '신규' }"
+        (selectRow)="noop()"
+      />
+    </div>
+  }
+
+  <!-- ══════ 기본 fallback ══════ -->
+  @default {
+    <div class="demo-unavailable">
+      <span>🧩</span>
+      <p>이 컴포넌트의 독립 데모는 준비 중입니다.</p>
+    </div>
+  }
+
+}

@@ -1,0 +1,91 @@
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lw-textarea-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lw-textarea-native {
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--lw-text-primary);
+  background-color: var(--lw-surface);
+  border: 1px solid var(--lw-border-neutral);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+
+  &::placeholder {
+    color: var(--lw-text-secondary);
+  }
+
+  &:hover:not(:disabled):not(:read-only) {
+    border-color: var(--lw-border-hover);
+  }
+
+  &:focus {
+    border-color: var(--lw-color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--lw-color-primary) 18%, transparent);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background-color: var(--lw-surface-ground);
+  }
+
+  &:read-only {
+    background-color: var(--lw-surface-ground);
+  }
+}
+
+.lw-textarea-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 11px;
+  color: var(--lw-text-secondary);
+  margin-top: 3px;
+  font-feature-settings: 'tnum';
+}
+
+// ── Variants ──
+:host(.lw-textarea--variant-filled) .lw-textarea-native {
+  background-color: var(--lw-surface-ground);
+  border-color: transparent;
+
+  &:hover:not(:disabled):not(:read-only) {
+    background-color: color-mix(in srgb, var(--lw-surface-ground) 90%, black);
+  }
+
+  &:focus {
+    background-color: var(--lw-surface);
+    border-color: var(--lw-color-primary);
+  }
+}
+
+:host(.lw-textarea--variant-outline) .lw-textarea-native {
+  background-color: transparent;
+  border-width: 1.5px;
+}
+
+// ── Sizes ──
+:host(.lw-textarea--sm) .lw-textarea-native {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+:host(.lw-textarea--lg) .lw-textarea-native {
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 8px;
+}

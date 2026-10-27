@@ -1,0 +1,229 @@
+:host {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.os-desktop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.os-desktop__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// ── 메뉴 막대 ──
+
+.os-menubar {
+  position: relative;
+  z-index: var(--lw-z-sticky);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lw-space-4);
+  height: var(--os-menu-bar-height);
+  padding: 0 var(--lw-space-2);
+  box-sizing: border-box;
+  background: var(--os-bar-bg);
+  color: var(--os-bar-fg);
+  border-bottom: 1px solid var(--os-bar-border);
+  backdrop-filter: var(--lw-effect-backdrop);
+}
+
+.os-menubar__side {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.os-menubar__anchor {
+  position: relative;
+  display: flex;
+}
+
+.os-menubar__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lw-space-2);
+  height: 24px;
+  padding: 0 var(--lw-space-2);
+  border: 0;
+  border-radius: var(--lw-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--lw-text-md);
+  font-weight: var(--lw-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--lw-duration-fast) var(--lw-ease);
+
+  &:hover {
+    background: var(--os-hover);
+  }
+
+  &[data-pressed] {
+    background: var(--os-active);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--lw-focus-ring);
+    outline-offset: 1px;
+  }
+}
+
+.os-menubar__item--brand {
+  font-weight: var(--lw-weight-semibold);
+}
+
+.os-menubar__item--icon {
+  justify-content: center;
+  width: 28px;
+  padding: 0;
+}
+
+.os-menubar__logo {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--lw-radius-sm);
+}
+
+.os-menubar__online {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--lw-radius-full);
+  background: var(--lw-color-success);
+  box-shadow: 0 0 0 1.5px var(--lw-surface);
+}
+
+.os-menubar__clock {
+  margin-left: var(--lw-space-2);
+  padding-right: var(--lw-space-1);
+  font-size: var(--lw-text-sm);
+  color: var(--os-bar-fg-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+// ── 메뉴 안쪽: 검색, 계정 ──
+
+.os-search {
+  display: flex;
+  align-items: center;
+  gap: var(--lw-space-2);
+  height: var(--lw-control-sm);
+  margin-bottom: var(--lw-space-1);
+  padding: 0 var(--lw-space-2);
+  border: 1px solid var(--os-panel-border);
+  border-radius: var(--lw-radius-sm);
+  color: var(--os-panel-fg-muted);
+
+  &:focus-within {
+    border-color: var(--lw-focus-ring);
+  }
+}
+
+.os-search__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--os-panel-fg);
+  font: inherit;
+  font-size: var(--lw-text-md);
+}
+
+.os-account {
+  display: flex;
+  align-items: center;
+  gap: var(--lw-space-3);
+  padding: var(--lw-space-2);
+}
+
+.os-account__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.os-account__name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--lw-space-2);
+}
+
+.os-account__name {
+  font-size: var(--lw-text-md);
+  font-weight: var(--lw-weight-semibold);
+  color: var(--os-panel-fg);
+}
+
+.os-account__email {
+  font-size: var(--lw-text-sm);
+  color: var(--os-panel-fg-muted);
+}
+
+// ── 앱 격자가 놓이는 자리 ──
+
+.os-desktop__canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  // 아래에 독이 겹쳐 놓인다. 그만큼 비워 둔다.
+  padding-bottom: calc(var(--os-dock-height) + var(--lw-space-5));
+  box-sizing: border-box;
+}
+
+.os-menubar__item--mode {
+  .mode-action-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    .mode-status-dot {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--lw-hue-slate-900) 85%, transparent);
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    &.is-local .mode-status-dot {
+      background-color: var(--lw-color-warning);
+      box-shadow: 0 0 4px color-mix(in srgb, var(--lw-color-warning) 70%, transparent);
+    }
+
+    &.is-remote .mode-status-dot {
+      background-color: var(--lw-color-success);
+      box-shadow: 0 0 4px color-mix(in srgb, var(--lw-color-success) 70%, transparent);
+    }
+  }
+}
+

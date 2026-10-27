@@ -1,0 +1,18 @@
+<!-- lw-card primitive template root -->
+<div class="card"
+     role="region"
+     [attr.role]="interactive() ? 'button' : 'region'"
+     [attr.tabindex]="interactive() && !disabled() ? 0 : null"
+     [attr.data-variant]="variant()"
+     [attr.data-size]="size()"
+     [attr.data-layout]="layout()"
+     [attr.data-elevation]="elevation()"
+     [class.no-padding]="noPadding()"
+     [class.selected]="selected()"
+     [class.interactive]="interactive()"
+     [class.disabled]="disabled()"
+     [class.loading]="loading()"
+     (click)="onCardClick($event)"
+     (keydown.enter)="interactive() && onCardClick($event)">
+  <ng-content />
+</div>

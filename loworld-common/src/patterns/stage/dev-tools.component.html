@@ -1,0 +1,5 @@
+<lw-event-log>
+  <lw-button class="dev-btn" (click)="log.clear()" [tooltip]="hints() ? '이벤트 로그 지우기' : ''">🧹 로그 지우기</lw-button>
+  <lw-button class="dev-btn dev-btn--danger" (click)="resetData.emit()" [tooltip]="hints() ? 'IndexedDB 전체 삭제' : ''">{{ resetLabel() }}</lw-button>
+  <lw-button class="dev-btn" (click)="clearStorage.emit()" [tooltip]="hints() ? 'localStorage 전체 삭제' : ''">🧹 LS 초기화</lw-button>
+</lw-event-log>

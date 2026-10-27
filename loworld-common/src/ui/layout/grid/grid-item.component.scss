@@ -1,0 +1,15 @@
+    :host {
+      display: block;
+      min-width: 0 !important;
+      max-width: 100%;
+      box-sizing: border-box;
+      grid-column: var(--lw-item-col-span, auto);
+      grid-row: var(--lw-item-row-span, auto);
+      order: var(--lw-item-order, auto);
+    }
+
+    @container (max-width: 640px) {
+      :host {
+        grid-column: var(--lw-item-col-span-sm, var(--lw-item-col-span, auto)) !important;
+      }
+    }

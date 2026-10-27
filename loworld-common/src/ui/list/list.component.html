@@ -1,0 +1,20 @@
+    <div
+      class="lw-list-container"
+      [class.lw-list--compact]="density() === 'compact'"
+      [class.lw-list--standard]="density() === 'standard'"
+      [class.lw-list--spacious]="density() === 'spacious'"
+      [class.lw-list--bordered]="variant() === 'bordered' || variant() === 'card' || variant() === 'cards'"
+      [class.lw-list--card]="variant() === 'card' || variant() === 'cards'"
+      [class.lw-list--flat]="variant() === 'flat'"
+      [class.lw-list--ghost]="variant() === 'ghost'"
+      [class.lw-list--divided]="divided()"
+      [class.lw-list--hoverable]="hoverable()"
+      [class.lw-list--rounded]="rounded()"
+      role="list"
+    >
+      <ng-content select="lw-list-header, [lwListHeader]"></ng-content>
+      <div class="lw-list__items">
+        <ng-content></ng-content>
+      </div>
+      <ng-content select="[lwListEmpty]"></ng-content>
+    </div>

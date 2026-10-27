@@ -1,0 +1,342 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  font-family: inherit;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* ── 1. 캐릭터 선택(미선택/게스트) 버튼: 솔리드 & 단정함 ── */
+.char-guest-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  gap: 7px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid var(--lw-titlebar-border, var(--lw-border-color));
+  background: var(--lw-titlebar-btn-bg, var(--lw-surface-alt));
+  color: var(--lw-titlebar-text, var(--lw-text-primary, inherit));
+  font-size: var(--lw-font-size-xs, 0.75rem);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  box-sizing: border-box;
+
+  &:focus-visible {
+    border-color: var(--lw-accent-primary, var(--lw-accent));
+    background: var(--lw-titlebar-hover);
+    color: var(--lw-accent-primary, var(--lw-accent));
+    .guest-hero-svg {
+      color: var(--lw-accent-primary, var(--lw-accent));
+    }
+  }
+  @include lw.lw-hover-only {
+    &:hover {
+      border-color: var(--lw-accent-primary, var(--lw-accent));
+      background: var(--lw-titlebar-hover);
+      color: var(--lw-accent-primary, var(--lw-accent));
+      .guest-hero-svg {
+        color: var(--lw-accent-primary, var(--lw-accent));
+      }
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &--compact {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    border-radius: 6px;
+  }
+}
+
+.guest-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guest-hero-svg {
+  width: 16px;
+  height: 16px;
+  color: var(--lw-titlebar-muted, var(--lw-text-secondary));
+  transition: color 0.15s ease;
+}
+
+.guest-badge {
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--lw-accent-primary, var(--lw-accent)) 16%, transparent);
+  color: var(--lw-accent-primary, var(--lw-accent));
+  letter-spacing: -0.2px;
+}
+
+.guest-chevron {
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  color: var(--lw-titlebar-muted, var(--lw-text-secondary));
+  transition: transform 0.2s ease;
+  &.is-open {
+    transform: rotate(180deg);
+  }
+}
+
+/* ── 2. 캐릭터 활성 세션 컨테이너: 솔리드 & 단정함 ── */
+.char-session-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 6px 0 3px;
+  border-radius: 6px;
+  border: 1px solid var(--lw-titlebar-border, var(--lw-border-color));
+  background: var(--lw-surface-alt, var(--lw-bg-panel-alt));
+  color: var(--lw-titlebar-text, var(--lw-text-primary, inherit));
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
+
+  @include lw.lw-hover {
+    border-color: var(--lw-accent-primary);
+    background: var(--lw-titlebar-hover);
+  }
+
+  &--compact {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    border-radius: 6px;
+    justify-content: center;
+
+    .char-avatar-btn {
+      width: 30px !important;
+      height: 30px;
+      min-width: 30px;
+      padding: 0 !important;
+      justify-content: center;
+
+      ::ng-deep .lw-btn__content {
+        justify-content: center !important;
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+/* ── 3. 아바타 버튼 ── */
+.char-avatar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0;
+  cursor: pointer;
+  color: inherit;
+  font-family: inherit;
+  border-radius: 6px;
+  transition: transform 0.15s ease;
+  height: 100%;
+  width: auto !important;
+  min-width: 0;
+  box-shadow: none !important;
+
+  ::ng-deep .lw-btn__content {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    height: 100% !important;
+    padding: 0 !important;
+    gap: 6px;
+  }
+
+  @include lw.lw-hover {
+    .avatar-wrapper {
+      border-color: var(--lw-accent-primary);
+      transform: scale(1.04);
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 50%;
+  background: var(--lw-accent-primary);
+  color: var(--lw-surface);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: circle(50% at 50% 50%);
+
+  .char-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    border-radius: 50%;
+  }
+
+  lw-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img, svg, span, .dynamic-raster-icon, .dynamic-svg-inline, .dynamic-svg-mask, .dynamic-raster-fallback {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+  }
+}
+
+.char-lvl-badge {
+  position: absolute;
+  bottom: -3px;
+  right: -4px;
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 800;
+  line-height: 1;
+  padding: 1px 3px;
+  background: var(--lw-surface);
+  color: var(--lw-color-warning);
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--lw-color-warning) 50%, transparent);
+  letter-spacing: -0.02em;
+}
+
+.char-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+  text-align: left;
+  padding: 0 4px;
+}
+
+.char-name {
+  font-size: var(--lw-font-size-xs, 0.75rem);
+  font-weight: 700;
+  color: var(--lw-titlebar-text, var(--lw-text-primary, inherit));
+  white-space: nowrap;
+  max-width: 85px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-class {
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  font-weight: 500;
+  color: var(--lw-titlebar-muted, var(--lw-text-secondary));
+  white-space: nowrap;
+}
+
+/* ── 4. 드롭다운 토글 버튼 ── */
+.char-menu-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--lw-titlebar-muted, var(--lw-text-secondary, currentColor));
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+
+  &.active {
+    background: var(--lw-titlebar-hover);
+    color: var(--lw-accent-primary);
+  }
+  @include lw.lw-hover-only {
+    &:hover {
+      background: var(--lw-titlebar-hover);
+      color: var(--lw-accent-primary, var(--lw-hue-indigo-500));
+    }
+  }
+
+  &.active .chevron-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.chevron-icon {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── 5. 드롭다운 팝오버 메뉴 ── */
+.char-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1000;
+  width: 270px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--lw-card-bg, var(--lw-bg-panel));
+  border: 1px solid var(--lw-border-color);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--lw-color-black) 25%, transparent);
+  animation: sessionDropdownFadeIn 0.15s ease-out forwards;
+  box-sizing: border-box;
+}
+
+@keyframes sessionDropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

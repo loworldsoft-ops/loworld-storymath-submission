@@ -1,0 +1,38 @@
+{
+  "name": "story-math-submission",
+  "private": true,
+  "description": "현대자동차그룹 차량용 앱 개발 공모전 제출본 (스토리매스)",
+  "workspaces": [
+    "loworld-common",
+    "loworld-app-story-math"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/patch-angular.mjs",
+    "build": "node scripts/package-native.mjs story-math",
+    "apk": "node scripts/apk.mjs story-math --flavor pleos --release",
+    "test": "vitest run --config vitest.config.mts"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.8.0",
+    "@angular/build": "22.0.7",
+    "@angular/cli": "22.0.7",
+    "@angular/common": "22.0.7",
+    "@angular/compiler": "22.0.7",
+    "@angular/compiler-cli": "22.0.7",
+    "@angular/core": "22.0.7",
+    "@angular/forms": "22.0.7",
+    "@angular/platform-browser": "22.0.7",
+    "@angular/router": "22.0.7",
+    "firebase": "^11.7.1",
+    "gh-pages": "^6.3.0",
+    "jsdom": "^28",
+    "lucide-angular": "^1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "typescript": "~6.0.3",
+    "vitest": "^4.0.8",
+    "leaflet": "^1.9.4",
+    "@types/leaflet": "^1.9.21",
+    "@angular/elements": "22.0.7"
+  }
+}

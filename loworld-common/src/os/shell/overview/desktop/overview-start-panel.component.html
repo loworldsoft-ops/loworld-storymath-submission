@@ -1,0 +1,34 @@
+<div class="os-start__scrim" aria-hidden="true" (click)="closeRequested.emit()"></div>
+
+<div id="overview-start-panel" class="os-start" role="dialog" aria-modal="true" aria-label="탐색기">
+  <div class="os-start__body">
+    @for (section of sections(); track section.id) {
+      <section class="os-start__section" [attr.aria-label]="section.title">
+        <h3 class="os-start__section-title">{{ section.title }}</h3>
+        <ul class="os-start__list">
+          @for (item of section.items; track item.label + (item.tab ?? item.externalHref ?? '')) {
+            <li>
+              @if (item.externalHref) {
+                <a class="os-start__row" [href]="item.externalHref" target="_blank" rel="noopener noreferrer" (click)="closeRequested.emit()">
+                  <span class="os-start__glyph" aria-hidden="true"><lw-os-icon [icon]="item.icon" [size]="16" /></span>
+                  <span class="os-start__label">{{ item.label }}</span>
+                  <span class="os-start__meta">{{ variantOf(item) }}</span>
+                </a>
+              } @else {
+                <button lwPressable class="os-start__row" (press)="launchRequested.emit(item)">
+                  <span class="os-start__glyph" aria-hidden="true"><lw-os-icon [icon]="item.icon" [size]="16" /></span>
+                  <span class="os-start__label">{{ item.label }}</span>
+                  @if (isItemDisabled(item)) {
+                    <span class="os-start__meta"><lw-icon name="lock" [size]="12" label="로그인 필요" [decorative]="false" /></span>
+                  } @else if (variantOf(item)) {
+                    <span class="os-start__meta">{{ variantOf(item) }}</span>
+                  }
+                </button>
+              }
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+</div>

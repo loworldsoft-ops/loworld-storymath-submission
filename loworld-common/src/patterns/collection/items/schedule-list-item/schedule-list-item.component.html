@@ -1,0 +1,31 @@
+@if (isRenaming()) {
+  <div class="rename-row" >
+    <span class="color-dot" [style.backgroundColor]="calendar().color"></span>
+    <lw-input class="rename-input" [value]="draftName()"
+           (valueChange)="draftName.set(''+$event)" (keydown.enter)="commitRename()"
+           (keydown.escape)="cancelRename()" (blur)="commitRename()" />
+  </div>
+} @else {
+  <div class="item-row" >
+    <label class="item-label">
+      <lw-checkbox class="cb" [checked]="checked()" (checkedChange)="toggle.emit()" />
+      <span class="color-dot" [style.backgroundColor]="calendar().color"></span>
+      <span class="name" >{{ calendar().name }}</span>
+    </label>
+    <lw-button class="more-btn" (click)="toggleMenu($event)">
+      <span class="icon-glyph icon-dots" aria-hidden="true">⋯</span>
+    </lw-button>
+    @if (isMenuOpen()) {
+      <lw-schedule-item-menu [showRename]="!calendar().isSubscribed"
+                             [showCopy]="!!(calendar().isSubscribed && calendar().iCalUrl)"
+                             [isCopied]="copiedUrl()"
+                             [deleteLabel]="calendar().isSubscribed ? '\\uAD6C\\uB3C5 \\uD574\\uC81C' : '\\uC0AD\\uC81C'"
+                             [currentColor]="calendar().color"
+                             [palette]="colorPalette"
+                             (rename)="startRename()"
+                             (copyUrl)="copySubscriptionUrl()"
+                             (changeColor)="onColorChange($event)"
+                             (deleteItem)="onDelete()" />
+    }
+  </div>
+}

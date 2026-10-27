@@ -1,0 +1,82 @@
+@use 'index' as lw;
+:host {
+  display: grid;
+  width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: var(--lw-grid-cols-final, var(--lw-grid-cols-base, 1fr));
+  gap: var(--lw-grid-row-gap, var(--lw-grid-gap, 16px)) var(--lw-grid-col-gap, var(--lw-grid-gap, 16px));
+  align-items: var(--lw-grid-align, stretch);
+  justify-content: var(--lw-grid-justify, stretch);
+  grid-auto-flow: var(--lw-grid-flow, row);
+
+  // 모바일/그리드 자식 폭 파괴(Minmax blowout) 원천 차단
+  > * {
+    min-width: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+// ── 컨테이너 쿼리 활성화 시 (부모 컨테이너 기준 자동 적응) ──
+:host-context([container]),
+:host(.lw-grid--container) {
+  container-type: inline-size;
+}
+
+// ── 반응형 브레이크포인트: 컨테이너 쿼리 우선 ──
+@container (max-width: 640px) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-sm, 1fr) !important;
+    gap: var(--lw-grid-gap-sm, var(--lw-grid-gap, 12px)) !important;
+  }
+}
+
+@container (min-width: 641px) and (max-width: 960px) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-md, var(--lw-grid-cols-base, 1fr)) !important;
+  }
+}
+
+@container (min-width: 961px) and (max-width: 1280px) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-lg, var(--lw-grid-cols-base, 1fr)) !important;
+  }
+}
+
+@container (min-width: 1281px) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-xl, var(--lw-grid-cols-lg, var(--lw-grid-cols-base, 1fr))) !important;
+  }
+}
+
+// ── 뷰포트 미디어 쿼리 & 모바일 모드 폴백 (전역 뷰포트 기준 반응형) ──
+:host(.is-mobile),
+:host-context(.is-mobile) {
+  grid-template-columns: var(--lw-grid-cols-sm, 1fr) !important;
+  gap: var(--lw-grid-gap-sm, var(--lw-grid-gap, 12px)) !important;
+}
+
+// 넓은 쪽(1281px 이상)을 기본으로 두고 폭이 좁아질수록 아래 규칙이 덮어쓴다.
+:host {
+  grid-template-columns: var(--lw-grid-cols-xl, var(--lw-grid-cols-lg, var(--lw-grid-cols-base, 1fr)));
+}
+
+@include lw.lw-below(wide) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-lg, var(--lw-grid-cols-base, 1fr));
+  }
+}
+
+@include lw.lw-below(desktop) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-md, var(--lw-grid-cols-base, 1fr));
+  }
+}
+
+@include lw.lw-below(mobile) {
+  :host {
+    grid-template-columns: var(--lw-grid-cols-sm, 1fr) !important;
+    gap: var(--lw-grid-gap-sm, var(--lw-grid-gap, 12px)) !important;
+  }
+}
+

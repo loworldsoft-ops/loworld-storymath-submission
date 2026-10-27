@@ -1,0 +1,86 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+  min-height: 0;
+}
+
+.wbs-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.wbs-tree__search {
+  flex-shrink: 0;
+}
+
+.wbs-tree__empty {
+  margin: 0;
+  font-size: 12px;
+  color: var(--lw-plan-shell-muted, #{lw.$lw-plan-shell-muted});
+}
+
+.wbs-tree__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: auto;
+  min-height: 0;
+}
+
+.wbs-tree__row {
+  --lw-card-bg: var(--lw-surface);
+  margin-left: calc(var(--wbs-depth, 0) * 14px);
+}
+
+.wbs-tree__row-inner {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.wbs-tree__expand {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--lw-plan-shell-muted, #{lw.$lw-plan-shell-muted});
+  font-size: 11px;
+  cursor: pointer;
+  line-height: 22px;
+  text-align: center;
+}
+
+.wbs-tree__expand--spacer {
+  display: inline-block;
+  cursor: default;
+}
+
+.wbs-tree__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wbs-tree__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.wbs-tree__title {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.wbs-tree__brief {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--lw-plan-shell-muted, #{lw.$lw-plan-shell-muted});
+}

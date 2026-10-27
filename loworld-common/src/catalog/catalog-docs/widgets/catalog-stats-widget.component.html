@@ -1,0 +1,45 @@
+<div class="catalog-stats__kpis">
+  @for (kpi of kpis; track kpi.label) {
+    <lw-card variant="outlined">
+      <div class="catalog-stats__kpi">
+        <lw-icon class="catalog-stats__kpi-icon" [name]="kpi.icon" [size]="20" />
+        <div>
+          <p class="catalog-stats__kpi-label">{{ kpi.label }}</p>
+          <p class="catalog-stats__kpi-value">{{ kpi.value }}</p>
+          <p class="catalog-stats__kpi-sub">{{ kpi.sub }}</p>
+        </div>
+      </div>
+    </lw-card>
+  }
+</div>
+
+<div class="catalog-stats__cols">
+  <lw-card variant="outlined">
+    <h3 class="catalog-stats__title">계층별 분포</h3>
+    <div class="catalog-stats__layers">
+      @for (row of layers; track row.layer) {
+        <div>
+          <div class="catalog-stats__layer-head">
+            <span>{{ row.label }}</span>
+            <span>{{ row.count }}개</span>
+          </div>
+          <lw-progress-bar [value]="row.count" [max]="total" [showLabel]="false" />
+        </div>
+      }
+    </div>
+  </lw-card>
+
+  <lw-card variant="outlined">
+    <h3 class="catalog-stats__title">재사용 지수 상위</h3>
+    <ol class="catalog-stats__ranks">
+      @for (item of topRanked; track item.path) {
+        <li class="catalog-stats__rank">
+          <span class="catalog-stats__rank-num">{{ item.rank }}</span>
+          <lw-button variant="ghost" size="sm" (click)="store.open(item.path)">{{ item.name }}</lw-button>
+          <code class="catalog-stats__rank-selector">{{ item.selector }}</code>
+          <lw-badge variant="subtle" color="neutral" size="xs" [label]="item.category" />
+        </li>
+      }
+    </ol>
+  </lw-card>
+</div>

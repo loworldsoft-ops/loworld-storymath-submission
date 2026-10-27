@@ -1,0 +1,36 @@
+@use 'index' as lw;
+:host { display: block; height: 100%; }
+    .pomodoro { display: flex; align-items: center; justify-content: center; height: 100%; padding: 32px; background: var(--lw-cal-bg, #{lw.$lw-cal-bg}); }
+    .card { width: 100%; max-width: 400px; border-radius: 24px; padding: 40px; border: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border}); box-shadow: 0 2px 8px color-mix(in srgb, var(--lw-color-black) 3%, transparent); text-align: center; }
+    .title { font-size: 20px; font-weight: 700; margin-bottom: 32px; color: var(--lw-cal-text, #{lw.$lw-cal-text}); }
+    .mode-tabs { display: flex; gap: 8px; padding: 4px; border-radius: 12px; background: var(--lw-surface-subtle); margin-bottom: 40px; }
+    .mode-tab {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 8px; border-radius: 8px; border: none; font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all 0.15s; background: transparent; color: var(--lw-cal-muted, #{lw.$lw-cal-muted});
+    }
+    .mode-tab.active { background: var(--lw-surface); color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); box-shadow: 0 1px 2px color-mix(in srgb, var(--lw-color-black) 6%, transparent); }
+    .timer-ring { position: relative; width: 200px; height: 200px; margin: 0 auto 32px; }
+    .ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: var(--lw-surface-subtle); stroke-width: 6; }
+    .ring-progress { fill: none; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.5s; stroke: var(--lw-color-success); }
+    .ring-progress.work { stroke: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 40px; font-weight: 700; color: var(--lw-cal-text, #{lw.$lw-cal-text}); letter-spacing: 2px; }
+    .timer-mode { position: absolute; top: 50%; left: 50%; transform: translate(-50%, 60%); font-size: 12px; font-weight: 500; }
+    .timer-mode.work { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px; }
+    .small-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      background: transparent; cursor: pointer; color: var(--lw-cal-muted, #{lw.$lw-cal-muted});
+      display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+    }
+    .small-btn:hover { background: var(--lw-cal-cell-hover, #{lw.$lw-cal-cell-hover}); }
+    .play-btn {
+      width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: transform 0.15s;
+      background: var(--lw-color-success); color: var(--lw-surface);
+    }
+    .play-btn.work { background: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }
+    .play-btn:hover { transform: scale(1.06); }
+    .footer { font-size: 13px; color: var(--lw-cal-muted, #{lw.$lw-cal-muted}); }
+    .footer strong { color: var(--lw-cal-accent, #{lw.$lw-cal-accent}); }

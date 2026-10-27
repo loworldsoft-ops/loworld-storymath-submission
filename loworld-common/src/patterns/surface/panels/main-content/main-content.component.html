@@ -1,0 +1,86 @@
+@if (note(); as n) {
+  @if (passwordLocked()) {
+    <!-- Password locked screen -->
+    <div class="locked-screen">
+      <div class="lock-icon-wrap">
+        <span class="icon-lock" aria-hidden="true"></span>
+      </div>
+      <h2 class="locked-title">
+        @if (n.emoji) { <span class="mr-1">{{ n.emoji }}</span> }
+        {{ n.title || '잠긴 노트' }}
+      </h2>
+      <p class="locked-desc">이 노트는 암호로 보호되어 있습니다.</p>
+      <div class="locked-form">
+        <lw-form-field [error]="passwordWrong() ? '비밀번호가 일치하지 않습니다.' : ''">
+          <div class="password-input-wrap">
+            <lw-input [type]="showPassword() ? 'text' : 'password'"
+                   [value]="passwordInput()"
+                   (valueChange)="passwordInput.set(''+$event); passwordWrong.set(false)"
+                   (keydown.enter)="unlockNote()"
+                   placeholder="비밀번호를 입력하세요"
+                   class="password-input" [class.error]="passwordWrong()"/>
+            <lw-button class="eye-btn" (click)="showPassword.set(!showPassword())">
+              @if (showPassword()) {
+                <span class="icon-glyph icon-settings" aria-hidden="true">⚙️</span>
+              } @else {
+                <span class="icon-settings" aria-hidden="true"></span>
+              }
+            </lw-button>
+          </div>
+        </lw-form-field>
+        <lw-button class="unlock-btn" (click)="unlockNote()">잠금 해제</lw-button>
+      </div>
+    </div>
+  } @else if (isEditing()) {
+    <lw-document-editor [note]="n" [folders]="folders()"
+                    (cancel)="editingChange.emit(false)"
+                    (saveNote)="saveNote.emit($event); editingChange.emit(false)"
+                    (addAttachment)="addAttachment.emit($event)"
+                    (removeAttachment)="removeAttachment.emit($event)"
+                    (moveNote)="moveNote.emit($event)"/>
+  } @else {
+    <lw-document-viewer [note]="n" [folderName]="currentFolderName()"
+                    (back)="selectNote.emit(null)"
+                    (edit)="editingChange.emit(true)"
+                    (share)="shareNoteId.set(n.id)"
+                    (move)="moveNoteId.set(n.id)"
+                    (togglePin)="togglePin.emit($event)"
+                    (deleteNote)="deleteNote.emit($event)"
+                    (importFile)="importFile.emit()"
+                    (exportFile)="exportFile.emit($event)"/>
+  }
+} @else {
+  <!-- Empty state -->
+  <lw-empty-state
+    message="노트를 선택하거나 만드세요">
+    <p class="empty-desc">좌측 목록에서 노트를 선택하거나 새로운 노트를 작성할 수 있습니다.</p>
+    <div class="fab-area">
+      @if (fabOpen()) {
+        <div class="fab-menu">
+          <lw-button class="fab-item" (click)="createNote.emit(); fabOpen.set(false)">
+            <div class="fab-item-icon">
+              <span class="icon-plus" aria-hidden="true"></span>
+            </div>
+            <div class="fab-item-text">
+              <div class="fab-item-title">새 노트 작성</div>
+              <div class="fab-item-desc">빈 노트를 만듭니다</div>
+            </div>
+          </lw-button>
+        </div>
+      }
+      <lw-button class="fab-btn" [class.open]="fabOpen()" (click)="fabOpen.set(!fabOpen())">
+        <span class="icon-glyph icon-plus" aria-hidden="true">➕</span>
+      </lw-button>
+    </div>
+  </lw-empty-state>
+}
+@if (shareNoteId()) {
+  <lw-document-share-dialog [noteId]="shareNoteId()!" [shareUrl]="getShareUrl(shareNoteId()!)"
+                  (save)="shareNote.emit($event); shareNoteId.set(null)"
+                  (close)="shareNoteId.set(null)"/>
+}
+@if (moveNoteId()) {
+  <lw-document-move-dialog [noteId]="moveNoteId()!" [folders]="folders()" [currentFolderId]="note()?.folderId || ''"
+                 (folderSelected)="moveNote.emit($event); moveNoteId.set(null)"
+                 (close)="moveNoteId.set(null)"/>
+}

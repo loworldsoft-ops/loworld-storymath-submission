@@ -1,0 +1,34 @@
+<lw-card
+  layout="row"
+  variant="outlined"
+  [interactive]="true"
+  size="sm"
+  [selected]="selected()"
+  (click)="select.emit(note().id)"
+>
+  @if (note().isPinned) {
+    <span class="icon-glyph icon-pin" aria-hidden="true">📌</span>
+  }
+  <div class="content">
+    <h3 class="title">
+      @if (note().emoji) { <span class="emoji">{{ note().emoji }}</span> }
+      @if (note().notePassword) {
+        <span class="icon-glyph icon-lock" aria-hidden="true">🔒</span>
+      }
+      <span class="title-text">{{ note().title || '제목 없음' }}</span>
+    </h3>
+    <p class="preview">
+      {{ note().notePassword ? '🔒 암호로 보호된 노트' : (contentPreview() || '내용이 없습니다.') }}
+    </p>
+    <div class="meta">
+      <lw-chip variant="status" [clickable]="false">{{ note().type }}</lw-chip>
+      <span class="date">{{ dateText() }}</span>
+      @if (note().isPublic) {
+        <lw-chip variant="status" [clickable]="false">공개</lw-chip>
+      }
+      @if (note().tags.length > 0) {
+        <lw-chip variant="status" [clickable]="false">#{{ note().tags[0] }}</lw-chip>
+      }
+    </div>
+  </div>
+</lw-card>

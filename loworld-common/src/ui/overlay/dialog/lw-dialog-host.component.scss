@@ -1,0 +1,158 @@
+@use 'index' as lw;
+
+:host {
+  display: contents;
+}
+
+.lw-dialog-host__card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 24px;
+  gap: 14px;
+  background: var(--lw-modal-bg);
+  color: var(--lw-modal-color);
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lw-dialog-host__header {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.lw-dialog-host__title {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--lw-modal-title-color);
+}
+
+.lw-dialog-host__message {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--lw-modal-body-color);
+  font-weight: 400;
+}
+
+.lw-dialog-host__detail {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--lw-text-secondary);
+
+  &.is-danger {
+    color: var(--lw-hue-rose-600);
+    font-weight: 500;
+  }
+}
+
+.lw-dialog-host__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.lw-dialog-host__btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font: inherit;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.lw-dialog-host__btn--secondary {
+  background: var(--lw-surface-ground);
+  color: var(--lw-text-muted);
+  border-color: var(--lw-border-neutral);
+
+  &:hover {
+    background: var(--lw-border-subtle);
+    color: var(--lw-text-primary);
+  }
+}
+
+.lw-dialog-host__btn--primary {
+  background: var(--lw-color-accent-strong);
+  color: var(--lw-text-primary);
+
+  &:hover {
+    background: var(--lw-hue-indigo-700);
+  }
+}
+
+.lw-dialog-host__btn--danger {
+  background: var(--lw-color-danger-strong);
+  color: var(--lw-text-primary);
+
+  &:hover {
+    background: var(--lw-color-danger-dark);
+  }
+}
+
+/* ── Dark Mode Overrides ── */
+:host([data-lw-theme='dark']),
+:host(.is-dark),
+[data-lw-theme='dark'],
+.is-dark {
+  .lw-dialog-host__card {
+    background: var(--lw-surface) !important;
+    color: var(--lw-text-primary) !important;
+  }
+
+  .lw-dialog-host__title {
+    color: var(--lw-text-primary) !important;
+  }
+
+  .lw-dialog-host__message {
+    color: var(--lw-text-secondary) !important;
+  }
+
+  .lw-dialog-host__detail {
+    color: var(--lw-text-secondary) !important;
+
+    &.is-danger {
+      color: var(--lw-hue-rose-500) !important;
+    }
+  }
+
+  .lw-dialog-host__btn--secondary {
+    background: color-mix(in srgb, var(--lw-color-white) 8%, transparent) !important;
+    color: var(--lw-text-primary) !important;
+    border-color: color-mix(in srgb, var(--lw-color-white) 15%, transparent) !important;
+
+    &:hover {
+      background: color-mix(in srgb, var(--lw-color-white) 16%, transparent) !important;
+      border-color: color-mix(in srgb, var(--lw-color-white) 25%, transparent) !important;
+    }
+  }
+
+  .lw-dialog-host__btn--primary {
+    background: var(--lw-color-accent) !important;
+    color: var(--lw-text-primary) !important;
+
+    &:hover {
+      background: var(--lw-color-accent-strong) !important;
+    }
+  }
+
+  .lw-dialog-host__btn--danger {
+    background: var(--lw-hue-rose-600) !important;
+    color: var(--lw-text-primary) !important;
+
+    &:hover {
+      background: var(--lw-hue-rose-700) !important;
+    }
+  }
+}

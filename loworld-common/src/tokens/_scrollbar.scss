@@ -1,0 +1,49 @@
+// ════════════════════════════════════════════════════════════════════════════════
+// LoworldUI Design System — Standard Scrollbar Mixins & Classes
+// ════════════════════════════════════════════════════════════════════════════════
+
+/// 표준 커스텀 슬림 스크롤바 믹스인
+/// @param $width 스크롤바 너비/높이 (기본 4px)
+/// @param $thumb-color 썸 색상 (기본 var(--lw-game-border-brown, rgba(160, 120, 75, 0.45)))
+/// @param $track-color 트랙 색상 (기본 transparent)
+/// @param $border-radius 라운드 반경 (기본 999px)
+@mixin lw-scrollbar(
+  $width: 4px,
+  $thumb-color: var(--lw-game-border-brown, rgba(160, 120, 75, 0.45)),
+  $track-color: transparent,
+  $border-radius: 999px
+) {
+  scrollbar-width: thin;
+  scrollbar-color: #{$thumb-color} #{$track-color};
+
+  &::-webkit-scrollbar {
+    width: #{$width};
+    height: #{$width};
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #{$track-color};
+    border-radius: #{$border-radius};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #{$thumb-color};
+    border-radius: #{$border-radius};
+
+    &:hover {
+      filter: brightness(1.2);
+    }
+  }
+}
+
+/// 스크롤바 숨김 믹스인 (가로/세로 스크롤 가능하되 바는 노출하지 않음)
+@mixin lw-scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}

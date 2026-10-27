@@ -1,0 +1,46 @@
+@use './console-ui' as ui;
+
+// 사이드 패널 안에 들어가는 상세 본문 공용 스타일
+@mixin foundry-drawer-host {
+  display: contents;
+  --lw-side-panel-width: 460px;
+}
+@mixin console-drawer-host {
+  @include foundry-drawer-host;
+}
+
+@mixin foundry-drawer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: var(--lw-text-primary);
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  h3 {
+    @include ui.foundry-section-title;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  dl {
+    @include ui.foundry-kv;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: var(--lw-font-size-xs, 0.75rem);
+  }
+
+  pre {
+    @include ui.foundry-code;
+  }
+}
+@mixin console-drawer-body {
+  @include foundry-drawer-body;
+}

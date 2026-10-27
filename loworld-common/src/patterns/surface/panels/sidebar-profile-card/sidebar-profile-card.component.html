@@ -1,0 +1,31 @@
+<lw-card class="card" [interactive]="true" variant="outlined" (click)="login.emit()">
+  <div class="user-row">
+    <lw-avatar
+      class="avatar"
+      [src]="profileImageUrl()"
+      [initial]="profileInitial()"
+      alt="프로필"
+    />
+
+    <div class="user-info">
+      <span class="login-label" >{{ mainLabel() }}</span>
+      @if (statusLabel()) {
+        <span class="status-label" >{{ statusLabel() }}</span>
+      }
+    </div>
+
+    @if (showArrow()) {
+      <span class="icon-glyph icon-chevron-right" aria-hidden="true">›</span>
+    }
+  </div>
+
+  @if (showPoints()) {
+    <div class="points-row" >
+      <span class="points-label" >내 포인트</span>
+      <div class="points-val">
+        <span class="points-badge">P</span>
+        <span class="points-text" >{{ points() }}P</span>
+      </div>
+    </div>
+  }
+</lw-card>

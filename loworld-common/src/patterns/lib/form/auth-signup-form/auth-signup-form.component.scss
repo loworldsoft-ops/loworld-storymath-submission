@@ -1,0 +1,65 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.lw-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lw-auth-label);
+
+  :host-context([data-lw-theme='dark']) &,
+  :host-context(.is-dark) & {
+    color: var(--lw-surface);
+  }
+}
+
+.hint {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--lw-surface-overlay);
+
+  :host-context([data-lw-theme='dark']) &,
+  :host-context(.is-dark) & {
+    color: var(--lw-border-subtle);
+  }
+}
+
+.terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lw-text-primary);
+  cursor: pointer;
+
+  :host-context([data-lw-theme='dark']) &,
+  :host-context(.is-dark) & {
+    color: var(--lw-surface);
+  }
+}
+
+.terms input {
+  margin-top: 2px;
+}
+
+.error {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lw-auth-error, #{lw.$lw-auth-error});
+}
+

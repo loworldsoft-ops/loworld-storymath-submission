@@ -1,0 +1,167 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.appearance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lw-space-5);
+}
+
+.appearance__group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.appearance__legend {
+  padding: 0;
+  margin-bottom: var(--lw-space-2);
+  font-size: var(--lw-text-md);
+  font-weight: var(--lw-weight-semibold);
+  color: var(--lw-text-primary);
+}
+
+.appearance__hint,
+.appearance__note {
+  margin: 0 0 var(--lw-space-2);
+  font-size: var(--lw-text-sm);
+  color: var(--lw-text-secondary);
+}
+
+.appearance__note {
+  margin: var(--lw-space-2) 0 0;
+}
+
+// 숨긴 라디오. 키보드 초점과 화면 낭독기는 그대로 동작한다.
+.appearance__radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.appearance__segments {
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  border: 1px solid var(--lw-control-border);
+  border-radius: var(--lw-radius-md);
+  background: var(--lw-control-bg-subtle);
+}
+
+.appearance__segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  height: calc(var(--lw-control-sm) + 2px);
+  padding: 0 var(--lw-space-3);
+  border-radius: var(--lw-radius-sm);
+  font-size: var(--lw-text-md);
+  color: var(--lw-text-secondary);
+  cursor: pointer;
+  transition: background var(--lw-duration-fast) var(--lw-ease), color var(--lw-duration-fast) var(--lw-ease);
+
+  &:hover {
+    color: var(--lw-text-primary);
+  }
+
+  &.is-selected {
+    background: var(--lw-control-bg);
+    color: var(--lw-control-fg);
+    font-weight: var(--lw-weight-semibold);
+    box-shadow: var(--lw-shadow-1);
+  }
+
+  &:has(.appearance__radio:focus-visible) {
+    outline: 2px solid var(--lw-focus-ring);
+    outline-offset: 1px;
+  }
+}
+
+.appearance__skins {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--lw-space-2);
+}
+
+.appearance__skin {
+  display: flex;
+  align-items: center;
+  gap: var(--lw-space-3);
+  padding: var(--lw-space-3);
+  border: 1px solid var(--lw-control-border);
+  border-radius: var(--lw-radius-md);
+  background: var(--lw-control-bg);
+  cursor: pointer;
+  transition: border-color var(--lw-duration-fast) var(--lw-ease);
+
+  &:hover {
+    border-color: var(--lw-border-strong);
+  }
+
+  &.is-selected {
+    border-color: var(--lw-focus-ring);
+    box-shadow: 0 0 0 1px var(--lw-focus-ring);
+  }
+
+  &:has(.appearance__radio:focus-visible) {
+    outline: 2px solid var(--lw-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.appearance__swatch {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--lw-control-border);
+  border-radius: var(--lw-radius-sm);
+}
+
+.appearance__swatch-text {
+  font-size: var(--lw-text-lg);
+  font-weight: var(--lw-weight-semibold);
+}
+
+.appearance__swatch-dot {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--lw-radius-full);
+}
+
+.appearance__skin-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.appearance__skin-name {
+  font-size: var(--lw-text-md);
+  font-weight: var(--lw-weight-semibold);
+  color: var(--lw-text-primary);
+}
+
+.appearance__skin-desc {
+  font-size: var(--lw-text-sm);
+  color: var(--lw-text-secondary);
+}
+
+.appearance__footer {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,273 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+
+  /* ── 3-Tier CSS Token Bridge (Fallback to Global / Semantic Tokens) ── */
+  --lw-card-bg: var(--lw-surface, var(--lw-game-play-surface));
+  --lw-card-text: var(--lw-text-primary, var(--lw-game-play-text));
+  --lw-card-border-color: var(--lw-border, var(--lw-game-play-border, var(--lw-border-color)));
+  --lw-card-border-width: 1px;
+  --lw-card-accent: var(--lw-text-primary);
+
+  /* Radius 규격 */
+  --lw-card-radius-sm: 8px;
+  --lw-card-radius-md: 12px;
+  --lw-card-radius-lg: 16px;
+  --lw-card-radius: var(--lw-card-radius-md);
+
+  /* Hover / Active / Selected 토큰 */
+  --lw-card-hover-bg: rgba(255, 255, 255, 0.28);
+  --lw-card-hover-border: var(--lw-text-primary);
+  --lw-card-hover-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  --lw-card-selected-bg: color-mix(in srgb, var(--lw-card-bg) 75%, rgba(99, 102, 241, 0.22));
+  --lw-card-selected-border: var(--lw-text-primary);
+  --lw-card-selected-ring: 0 0 0 2px var(--lw-text-primary);
+}
+
+:host([data-fill]),
+:host(.is-fill) {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+
+  > .card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ── AllComponents Theme Skins Bridge ── */
+:host-context([data-lw-skin='glassmorphism']),
+:host-context([data-lw-play-theme='glassmorphism']),
+:host-context([lwThemeScope='glassmorphism']),
+:host([data-lw-play-theme='glassmorphism']),
+:host([data-lw-play-theme='global']) {
+  --lw-card-bg: var(--lw-surface);
+  --lw-card-border-color: var(--lw-border);
+  --lw-card-accent: var(--lw-color-accent);
+  --lw-card-hover-bg: rgba(255, 255, 255, 0.30);
+  --lw-card-selected-bg: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:host-context([data-lw-skin='newspaper']),
+:host-context([data-lw-play-theme='newspaper']),
+:host-context([lwThemeScope='newspaper']) {
+  --lw-card-bg: var(--lw-surface);
+  --lw-card-border-color: var(--lw-border);
+  --lw-card-accent: #991b1b;
+}
+
+:host-context([data-lw-skin='parchment']),
+:host-context([data-lw-play-theme='parchment']),
+:host-context([lwThemeScope='parchment']) {
+  --lw-card-bg: var(--lw-surface);
+  --lw-card-border-color: var(--lw-border);
+  --lw-card-accent: var(--lw-color-amber);
+}
+
+:host-context([data-lw-skin='cyberpunk']),
+:host-context([data-lw-play-theme='cyber-terminal']),
+:host-context([lwThemeScope='cyberpunk']) {
+  --lw-card-bg: #090d16;
+  --lw-card-border-color: rgba(34, 211, 238, 0.30);
+  --lw-card-accent: #06b6d4;
+  --lw-card-hover-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+}
+
+:host-context([data-lw-skin='night']),
+:host-context([data-lw-play-theme='night']),
+:host-context([lwThemeScope='night']) {
+  --lw-card-bg: #1F222B;
+  --lw-card-border-color: #3A3F4C;
+  --lw-card-accent: #F2B544;
+}
+
+:host-context([data-lw-skin='d2r']),
+:host-context([data-lw-play-theme='d2r-obsidian']),
+:host-context([lwThemeScope='d2r']) {
+  --lw-card-bg: #121214;
+  --lw-card-border-color: rgba(212, 175, 55, 0.35);
+  --lw-card-accent: var(--lw-color-gold, #d4af37);
+  --lw-card-hover-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+}
+
+:host-context([data-theme='dark']),
+:host-context([data-lw-theme='dark']),
+:host-context([data-lw-play-theme='dark']) {
+  --lw-card-bg: var(--lw-surface-overlay);
+  --lw-card-border-color: var(--lw-text-secondary);
+  --lw-card-hover-bg: #273549;
+  --lw-card-selected-bg: color-mix(in srgb, var(--lw-card-accent) 12%, #1e293b);
+  --lw-card-hover-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Base Card Surface ── */
+.card {
+  position: relative;
+  border-radius: var(--lw-card-radius);
+  background: var(--lw-card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--lw-card-text);
+  border: var(--lw-card-border-width) solid var(--lw-card-border-color);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 4%, transparent);
+  box-sizing: border-box;
+  text-shadow: none !important;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+/* ── Layout Modes ── */
+.card[data-layout='stack'] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card[data-layout='row'] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  > * {
+    min-width: 0;
+  }
+}
+
+.card[data-layout='tile'] {
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.card[data-layout='custom'] {
+  display: block;
+}
+
+/* ── Sizes & Padding ── */
+.card[data-size='xs'] {
+  padding: 6px 10px;
+  border-radius: var(--lw-card-radius-sm);
+}
+
+.card[data-size='sm'] {
+  padding: 10px 12px;
+  border-radius: var(--lw-card-radius-sm);
+}
+
+.card[data-size='md'] {
+  padding: 14px 16px;
+  border-radius: var(--lw-card-radius-md);
+}
+
+.card[data-size='lg'] {
+  padding: 18px 20px;
+  border-radius: var(--lw-card-radius-lg);
+}
+
+.card.no-padding {
+  padding: 0 !important;
+}
+
+/* ── Variant: flat ── */
+.card[data-variant='flat'] {
+  border: none;
+  box-shadow: none;
+}
+
+/* ── Variant: outlined ── */
+.card[data-variant='outlined'] {
+  border: var(--lw-card-border-width) solid var(--lw-card-border-color);
+}
+
+/* ── Variant: elevated ── */
+.card[data-variant='elevated'] {
+  border: var(--lw-card-border-width) solid var(--lw-card-border-color);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--lw-color-black) 8%, transparent), 0 1px 3px color-mix(in srgb, var(--lw-color-black) 4%, transparent);
+}
+
+/* ── Variant: glass ── */
+.card[data-variant='glass'] {
+  background: color-mix(in srgb, var(--lw-card-bg) 65%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: var(--lw-card-border-width) solid color-mix(in srgb, var(--lw-card-border-color) 80%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+}
+
+/* ── Variant: accent ── */
+.card[data-variant='accent'] {
+  border: 3px solid var(--lw-card-color, var(--lw-accent));
+  background: var(--lw-bg-panel-alt);
+  box-shadow: none;
+
+  &.selected {
+    background: color-mix(in srgb, var(--lw-bg-panel-alt) 84%, var(--lw-card-color, var(--lw-accent)) 16%) !important;
+    border-color: var(--lw-card-color, var(--lw-accent)) !important;
+    transform: scale(1.03);
+  }
+}
+
+/* ── Variant: filled ── */
+.card[data-variant='filled'] {
+  border: none;
+  background: var(--lw-card-color, var(--lw-accent));
+  color: var(--lw-accent-contrast, var(--lw-color-on-primary));
+  --lw-text-primary: var(--lw-accent-contrast, var(--lw-color-on-primary));
+  --lw-text-secondary: color-mix(in srgb, var(--lw-accent-contrast, var(--lw-color-on-primary)) 80%, transparent);
+
+  lw-text,
+  lw-icon {
+    --lw-text-primary: var(--lw-accent-contrast, var(--lw-color-on-primary));
+    --lw-text-secondary: color-mix(in srgb, var(--lw-accent-contrast, var(--lw-color-on-primary)) 80%, transparent);
+  }
+}
+
+/* ── Elevation Overrides ── */
+.card[data-elevation='none'] { box-shadow: none !important; }
+.card[data-elevation='sm'] { box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 4%, transparent); }
+.card[data-elevation='md'] { box-shadow: 0 6px 18px color-mix(in srgb, var(--lw-color-black) 8%, transparent); }
+.card[data-elevation='lg'] { box-shadow: 0 12px 32px color-mix(in srgb, var(--lw-color-black) 12%, transparent); }
+
+/* ── Interactive States (5-State Standard) ── */
+.card.interactive {
+  cursor: pointer;
+  user-select: none;
+}
+
+.card.interactive:hover:not(.disabled) {
+  transform: translateY(-2px);
+  border-color: var(--lw-card-hover-border);
+  box-shadow: var(--lw-card-hover-shadow);
+}
+
+.card.interactive:active:not(.disabled) {
+  transform: translateY(0) scale(0.99);
+}
+
+.card.selected {
+  border-color: var(--lw-card-selected-border) !important;
+  box-shadow: var(--lw-card-selected-ring) !important;
+  background: var(--lw-card-selected-bg) !important;
+}
+
+.card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.card.loading {
+  opacity: 0.7;
+  cursor: wait !important;
+}

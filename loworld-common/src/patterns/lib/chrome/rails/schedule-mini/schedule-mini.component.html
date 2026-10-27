@@ -1,0 +1,33 @@
+<div class="mini-cal" >
+  <div class="nav-row">
+    <lw-button class="nav-btn" (click)="prevMonth()">
+      <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+    </lw-button>
+    <span class="month-label" >{{ monthLabel() }}</span>
+    <lw-button class="nav-btn" (click)="nextMonth()">
+      <span class="icon-chevron-right" aria-hidden="true"></span>
+    </lw-button>
+  </div>
+  <div class="dow-row">
+    @for (d of dayHeaders; track (d + '-' + i); let i = $index) {
+      <span class="dow" [class.sunday]="i === 0" [class.saturday]="i === 6">{{ d }}</span>
+    }
+  </div>
+  <div class="day-grid">
+    @for (day of miniDays(); track day.getTime()) {
+      <lw-button
+        type="button"
+        variant="ghost"
+        class="day-btn"
+        [class.selected]="isSameDay(day, selectedDate())"
+        [class.today]="isToday(day) && !isSameDay(day, selectedDate())"
+        [class.other]="day.getMonth() !== displayMonth()"
+        [class.sunday]="day.getDay() === 0 && day.getMonth() === displayMonth()"
+        [class.saturday]="day.getDay() === 6 && day.getMonth() === displayMonth()"
+        (click)="onDayClick(day)">
+        {{ day.getDate() }}
+      </lw-button>
+    }
+
+  </div>
+</div>

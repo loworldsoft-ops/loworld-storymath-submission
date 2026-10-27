@@ -1,0 +1,67 @@
+<section
+  #windowFrame
+  class="overview-window-frame macos-window-frame"
+  [class.active]="active()"
+  [class.minimized]="minimized()"
+  [class.maximized]="maximized()"
+  [class.size-mobile]="size() === 'mobile'"
+  [class.size-wide]="size() === 'wide'"
+  [class.is-custom-positioned]="isWindowPositioned() && !maximized()"
+  [class.is-window-dragging]="isWindowDragging()"
+  [style.z-index]="zIndex()"
+  [style.--window-offset.px]="offset()"
+  [style.top.px]="isWindowPositioned() && !maximized() ? windowY() : null"
+  [style.left.px]="isWindowPositioned() && !maximized() ? windowX() : null"
+  (mousedown)="onFocus()">
+  @if (showTitlebar() && !maximized()) {
+    <header
+      class="overview-window-titlebar macos-window-titlebar"
+      [class.is-dragging]="isWindowDragging()"
+      (pointerdown)="onTitlebarPointerDown($event)"
+      (pointermove)="onTitlebarPointerMove($event)"
+      (pointerup)="onTitlebarPointerUp($event)"
+      (pointercancel)="onTitlebarPointerUp($event)"
+      (dblclick)="onTitlebarDblClick($event)">
+      <!-- 1. Window Title & Icon -->
+      <div class="overview-window-titlebar-info">
+        <span class="overview-window-icon" aria-hidden="true">
+          <lw-os-icon [icon]="icon()" [size]="15" />
+        </span>
+        <span class="overview-window-title">{{ title() }}</span>
+      </div>
+
+      <!-- 2. Right Window Controls: Session & Universal Close -->
+      <div class="overview-window-right-actions">
+        @if (showSessionControl()) {
+          <lw-os-window-session-button
+            [session]="memberSession()"
+            variant="titlebar"
+            (loginRequested)="onLogin()"
+            (accountRequested)="onAccount()" />
+        }
+        <lw-close-button
+          size="sm"
+          variant="default"
+          ariaLabel="창 닫기"
+          tooltip="창 닫기 (Esc)"
+          (closeClick)="onClose($event)" />
+      </div>
+    </header>
+  }
+
+  @if (maximized()) {
+    <lw-os-window-fullscreen-capsule
+      [title]="title()"
+      [icon]="icon()"
+      (minimizeRequested)="minimizeRequested.emit()"
+      [showSessionControl]="showSessionControl()"
+      [memberSession]="memberSession()"
+      (closeRequested)="onFloatingClose()"
+      (loginRequested)="onLogin()"
+      (accountRequested)="onAccount()" />
+  }
+
+  <div class="overview-window-body">
+    <ng-content />
+  </div>
+</section>

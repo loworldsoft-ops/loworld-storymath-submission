@@ -1,0 +1,35 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.lw-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lw-auth-label);
+
+  :host-context([data-lw-theme='dark']) &,
+  :host-context(.is-dark) & {
+    color: var(--lw-surface);
+  }
+}
+
+.error {
+  margin: 0;
+  font-size: 13px;
+  color: var(--lw-auth-error, #{lw.$lw-auth-error});
+}
+

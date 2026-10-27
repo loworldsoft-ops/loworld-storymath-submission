@@ -1,0 +1,14 @@
+<lw-modal [isOpen]="true" size="sm" variant="custom" title="폴더 이동" (closeClick)="close.emit()">
+  <lw-selectable-list
+    [items]="folders()"
+    [trackBy]="trackFolder"
+    [itemTemplate]="folderRow"
+  />
+  <ng-template #folderRow let-folder>
+    <lw-folder-list-item
+      [folder]="folder"
+      [current]="currentFolderId() === folder.id"
+      (select)="onFolderPick(folder.id)"
+    />
+  </ng-template>
+</lw-modal>

@@ -1,0 +1,180 @@
+<article
+  class="lw-codex-card"
+  [class.lw-codex-card--sm]="size() === 'sm'"
+  [class.lw-codex-card--lg]="size() === 'lg'"
+  [class.lw-codex-card--has-hero]="!!vm().heroImageUrl"
+  [class.is-selected]="selected() || !!vm().selected"
+  [class.is-interactive]="interactive() && !vm().disabled"
+  [class.is-disabled]="vm().disabled || false"
+  [class.is-owned]="vm().owned"
+  [class.is-equipped]="vm().equipped"
+  [class.is-discovered]="isDiscovered()"
+  [class.is-locked]="!isDiscovered()"
+  [class]="'rarity--' + (vm().rarity || vm().kind || 'common')"
+  [attr.data-tier]="tierMeta().tier"
+  [attr.data-card-id]="vm().id"
+  (click)="interactive() && !vm().disabled && onCardPressed($event)"
+  role="button"
+  [tabindex]="interactive() && !vm().disabled ? 0 : -1">
+
+  <!-- 1. 진짜 뽑기 카드 외곽 테두리 프레임 이미지 -->
+  <div class="lw-codex-card__frame-border" aria-hidden="true"></div>
+
+  <!-- 2. 단정한 도감 속성 본문 컨테이너 -->
+  <div class="lw-codex-card__inner">
+
+    <!-- ── 2-0. 영웅 / 배너 일러스트 프레임 (있는 경우) ── -->
+    @if (media() && vm().heroImageUrl; as heroImg) {
+      <div class="lw-codex-card__hero-frame">
+        <img
+          [src]="heroImg"
+          [alt]="vm().name"
+          class="lw-codex-card__hero-img"
+          draggable="false"
+          loading="lazy"
+          (error)="onImageError($event)" />
+        <div class="lw-codex-card__hero-overlay"></div>
+        @if (vm().categoryTag || vm().categoryLabel) {
+          <div class="lw-codex-card__hero-cat-tag">{{ vm().categoryTag || vm().categoryLabel }}</div>
+        }
+        @if (vm().slotTag) {
+          <div class="lw-codex-card__hero-slot-tag">{{ vm().slotTag }}</div>
+        }
+        @if (vm().activeBadge) {
+          <div class="lw-codex-card__hero-active-badge">{{ vm().activeBadge }}</div>
+        }
+      </div>
+    }
+
+    <!-- ── 헤더: 아이콘 + 타이틀 + 카테고리/서브 + 뱃지 ── -->
+    <header class="lw-codex-card__header">
+      @if (media()) {
+        <div class="lw-codex-card__icon-wrap">
+          @if (vm().previewUrl || vm().imageUrl) {
+            <img
+              [src]="vm().imageUrl || previewSrc()"
+              [alt]="vm().name"
+              class="lw-codex-card__icon-img"
+              loading="lazy"
+              (error)="onImageError($event)" />
+          } @else {
+            <span class="lw-codex-card__icon">{{ vm().icon || '📜' }}</span>
+          }
+          @if (!isDiscovered()) {
+            <span class="lw-codex-card__lock-indicator" title="미발견/미보유 항목">🔒</span>
+          }
+          @if (vm().equipped) {
+            <span class="lw-codex-card__equipped-badge" title="장착 중">E</span>
+          }
+        </div>
+      }
+
+      <div class="lw-codex-card__title-box">
+        <div class="lw-codex-card__name-row">
+          <h4 class="lw-codex-card__name" [class]="'name--' + (vm().rarity || vm().kind || 'common')" [class.is-locked-name]="!isDiscovered()">
+            {{ vm().name }}
+          </h4>
+          @if (vm().nameEn) {
+            <span class="lw-codex-card__name-en">({{ vm().nameEn }})</span>
+          }
+          <!-- 티어 및 희귀도 뱃지 -->
+          @if (tierMeta().shortLabel || vm().tierLabel || vm().rarity || kindBadge()) {
+            <span class="lw-codex-card__rarity-badge" [class]="tierMeta().badgeClass || ('rarity--' + (vm().rarity || vm().kind || 'common'))">
+              {{ (vm().tierLabel || tierMeta().shortLabel || kindBadge()?.label || vm().rarity)?.toUpperCase() }}
+            </span>
+          }
+        </div>
+
+        <div class="lw-codex-card__meta-row">
+          <span class="lw-codex-card__category">{{ vm().categoryLabel || '도감' }}</span>
+          @if (vm().subtitle) {
+            <span class="lw-codex-card__sub">· {{ vm().subtitle }}</span>
+          }
+          @if (vm().maxSockets != null && vm().maxSockets! > 0) {
+            <span class="lw-codex-card__socket-tag">{{ vm().maxSockets }}S</span>
+          }
+        </div>
+      </div>
+
+      <!-- 우측 상단 커스텀 액션 슬롯 -->
+      <div class="lw-codex-card__top-actions">
+        <ng-content select="[cardTopActions]" />
+      </div>
+    </header>
+
+    <!-- ── 단정한 1px dashed 구분선 ── -->
+    <div class="lw-codex-card__divider"></div>
+
+    <!-- ── ◈ 도감 무기 속성 라인 리스트 ── -->
+    @if (vm().props && vm().props!.length > 0) {
+      <div class="lw-codex-card__props">
+        @for (prop of vm().props; track prop.label + prop.value) {
+          <div class="lw-codex-card__prop-line" [class]="'prop-tone--' + (prop.tone || 'default')">
+            <span class="lw-codex-card__prop-bullet">{{ prop.bullet || '◈' }}</span>
+            <div class="lw-codex-card__prop-content">
+              @if (prop.label) {
+                <span class="lw-codex-card__prop-label">{{ prop.label }}</span>
+              }
+              <span class="lw-codex-card__prop-val">{{ prop.value }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- 요구치 칩 및 룬워드 메타 태그 (하위 호환성) -->
+    @if ((vm().requirementChips && vm().requirementChips!.length > 0) || vm().compatibleRunewordCount || (vm().metaTags && vm().metaTags!.length > 0)) {
+      <div class="lw-codex-card__chips-row">
+        @if (vm().compatibleRunewordCount && vm().compatibleRunewordCount! > 0) {
+          <span class="lw-codex-card__chip lw-codex-card__chip--runeword">⚡ 룬워드 {{ vm().compatibleRunewordCount }}종</span>
+        }
+        @for (req of vm().requirementChips; track req.label) {
+          <span class="lw-codex-card__chip" [class.lw-codex-card__chip--met]="req.met">
+            {{ req.label }}
+          </span>
+        }
+        @for (tag of vm().metaTags; track tag) {
+          <span class="lw-codex-card__chip lw-codex-card__chip--tag">{{ tag }}</span>
+        }
+      </div>
+    }
+
+    <!-- ── 스토리 로어 및 단락 서사 버튼 (클릭 시 바텀시트에서 상세 확인) ── -->
+    @if (vm().paragraphStory; as para) {
+      <button
+        lw-button
+        variant="ghost"
+        size="xs"
+        type="button"
+        class="lw-codex-card__paragraph-btn"
+        aria-label="장비 스토리 전체보기 (바텀시트)"
+        (click)="onOpenParagraphStory($event)">
+        <span class="lw-codex-card__paragraph-btn-left">
+          <span class="lw-codex-card__paragraph-btn-icon">📖</span>
+          <span class="lw-codex-card__paragraph-btn-title">장비 스토리</span>
+        </span>
+        <span class="lw-codex-card__paragraph-btn-badge">전체보기 ↗</span>
+      </button>
+    } @else if (vm().lore || vm().description) {
+      <div class="lw-codex-card__lore">
+        {{ vm().lore || vm().description }}
+      </div>
+    }
+
+    <!-- ── 하단 액션 슬롯 ── -->
+    <div class="lw-codex-card__bottom">
+      <ng-content select="[cardActions]" />
+      <ng-content select="[cardMeta]" />
+      @if (vm().actionLabel) {
+        <lw-button
+          variant="novel"
+          [label]="vm().actionLabel!"
+          [block]="true"
+          class="lw-codex-card__default-action-btn"
+          (click)="interactive() && !vm().disabled && onCardPressed($event)">
+        </lw-button>
+      }
+    </div>
+
+  </div>
+</article>

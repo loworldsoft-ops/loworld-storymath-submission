@@ -1,0 +1,21 @@
+:host {
+  pointer-events: stroke;
+  cursor: pointer;
+}
+.lw-wf-edge--animated {
+  stroke-dasharray: 6 4;
+  animation: edgeFlow 1s linear infinite;
+}
+@keyframes edgeFlow {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+
+.lw-wf-edge__label-bg {
+  fill: var(--lw-surface-card);
+  stroke: var(--lw-border-color);
+  stroke-width: 1;
+}
+.lw-wf-edge__label-text {
+  fill: var(--lw-text-muted);
+}

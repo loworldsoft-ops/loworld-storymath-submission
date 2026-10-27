@@ -1,0 +1,18 @@
+{
+  "path": "/detail/announcements/view-announcement",
+  "title": "공지사항 확인하기",
+  "desc": "",
+  "toc": [
+    {
+      "id": "공지-조회와-관리",
+      "depth": 2,
+      "text": "공지 조회와 관리"
+    },
+    {
+      "id": "공지-내용-확인하기",
+      "depth": 2,
+      "text": "공지 내용 확인하기"
+    }
+  ],
+  "html": "<p>공지사항에서 조직의 주요 안내를 확인할 수 있습니다.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공지-조회와-관리\"><a data-card=\"\" href=\"#공지-조회와-관리\" class=\"peer\">공지 조회와 관리</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>로그인한 그룹원, 그룹관리자, 조직관리자는 공지사항을 조회할 수 있습니다.\n이 가운데 공지 관리 권한이 있는 사용자는 공지사항을 생성, 수정, 삭제할 수 있습니다.</p>\n<p>공지를 만들거나 수정할 때 제목은 최대 <strong>80자</strong>, 내용은 최대 <strong>10,000자</strong>까지 입력할 수 있습니다.\n더 이상 필요하지 않은 공지는 삭제하세요.</p>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"공지-내용-확인하기\"><a data-card=\"\" href=\"#공지-내용-확인하기\" class=\"peer\">공지 내용 확인하기</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>목록에서 제목을 클릭하면 공지의 제목, 작성자, 등록일, 조회수와 내용을 확인할 수 있습니다.\n본문 아래의 <strong>이전 글</strong>과 <strong>다음 글</strong>을 선택하면 앞뒤 공지로 이동합니다.</p>"
+}

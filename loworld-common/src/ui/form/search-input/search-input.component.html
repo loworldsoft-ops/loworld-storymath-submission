@@ -1,0 +1,20 @@
+<div class="search" [attr.data-size]="size()" [class.focused]="_focused()">
+  <span class="search-icon" aria-hidden="true">
+    <span class="search-icon__glass"></span>
+    <span class="search-icon__handle"></span>
+  </span>
+
+  <input class="search-input"
+         type="text"
+         [placeholder]="placeholder()"
+         [value]="query()"
+         (input)="onInput($event)"
+         (focus)="_focused.set(true)"
+         (blur)="_focused.set(false)" />
+
+  @if (query() && showClear()) {
+    <lw-button class="clear-btn" (click)="clear()" aria-label="지우기">
+      <span class="clear-icon" aria-hidden="true">✕</span>
+    </lw-button>
+  }
+</div>

@@ -1,0 +1,69 @@
+@use 'index' as lw;
+:host { display: block; }
+
+    .card {
+      border-radius: 20px;
+      padding: 16px;
+      background: var(--lw-sidebar-card-bg, var(--lw-card-bg));
+      border: 1px solid var(--lw-sidebar-card-border, var(--lw-top-border-b));
+      box-shadow: 0 1px 4px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .card:active { opacity: 0.8; }
+
+    .user-row { display: flex; align-items: center; gap: 12px; }
+
+    .avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--lw-sidebar-avatar-bg, #{lw.$lw-sidebar-avatar-bg});
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--lw-hue-zinc-500); overflow: hidden;
+    }
+    .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-app-icon { width: 100%; height: 100%; border-radius: 10px; object-fit: contain; }
+    .avatar-initial {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--lw-hue-blue-400), var(--lw-color-accent));
+      color: var(--lw-surface); font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .user-info {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .login-label {
+      font-size: 15px; font-weight: 600;
+      color: var(--lw-sidebar-text, var(--lw-main-title-text));
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .status-label {
+      font-size: 11px;
+      color: var(--lw-sidebar-muted, var(--lw-main-meta-text));
+    }
+
+    .arrow { flex-shrink: 0; opacity: 0.4; color: currentColor; }
+
+    .points-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 14px; padding-top: 12px;
+      border-top: 1px solid var(--lw-sidebar-card-border, var(--lw-top-border-b));
+    }
+
+    .points-label {
+      font-size: 13px;
+      color: var(--lw-sidebar-muted, #{lw.$lw-sidebar-muted});
+    }
+
+    .points-val { display: flex; align-items: center; gap: 6px; }
+    .points-badge {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--lw-color-danger-hover), var(--lw-color-danger-hover));
+      color: var(--lw-surface); font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .points-text {
+      font-size: 15px; font-weight: 700;
+      color: var(--lw-sidebar-text, #{lw.$lw-sidebar-text});
+    }

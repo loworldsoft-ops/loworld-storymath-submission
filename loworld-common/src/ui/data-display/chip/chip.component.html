@@ -1,0 +1,30 @@
+<span class="chip"
+      role="status"
+      [attr.role]="clickable() ? 'button' : 'status'"
+      [attr.tabindex]="clickable() && !disabled() ? 0 : null"
+      [attr.data-size]="size()"
+      [attr.data-variant]="variant()"
+      [class.selected]="selected()"
+      [class.removable]="removable()"
+      [class.is-clickable]="clickable() && !disabled()"
+      [class.is-disabled]="disabled()"
+      [class.has-color-dot]="!!colorDot()"
+      (click)="onChipClick()"
+      (keydown.enter)="clickable() && onChipClick()">
+  @if (colorDot()) {
+    <span class="chip-color-dot" [style.backgroundColor]="colorDot()" aria-hidden="true"></span>
+  }
+  <ng-content select="[prefix], .color-dot" />
+  <ng-content />
+  @if (!hasProjectedContent()) {
+    {{ label() }}
+  }
+  @if (checked() || (variant() === 'filter' && selected())) {
+    <span class="chip-check-icon" aria-hidden="true">✓</span>
+  }
+  @if (removable()) {
+    <lw-button class="remove-btn" (click)="$event.stopPropagation(); remove.emit()" aria-label="삭제">
+      <span class="chip-remove-cross" aria-hidden="true">✕</span>
+    </lw-button>
+  }
+</span>

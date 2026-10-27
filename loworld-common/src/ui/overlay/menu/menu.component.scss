@@ -1,0 +1,8 @@
+@use 'index' as lw;
+:host { display: block; position: absolute; right: 0; top: 100%; margin-top: 4px; z-index: 50; }
+    .menu {
+      min-width: 138px; border-radius: 8px; padding: 4px 0;
+      background: var(--lw-surface); border: 1px solid var(--lw-cal-border, #{lw.$lw-cal-border});
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 10%, transparent);
+      display: flex; flex-direction: column;
+    }

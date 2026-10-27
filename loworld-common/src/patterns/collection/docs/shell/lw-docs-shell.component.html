@@ -1,0 +1,71 @@
+<ng-template #sidebar>
+  @if (filters(); as filterTemplate) {
+    <div class="lw-docs-shell__filters">
+      <ng-container [ngTemplateOutlet]="filterTemplate" />
+    </div>
+  }
+  <nav class="lw-docs-shell__tree" aria-label="문서 목차">
+    <lw-docs-nav-tree
+      [nodes]="tree()"
+      [activePath]="activePath()"
+      [openIds]="openIds()"
+      [chain]="treeChain()"
+      (selectDoc)="onSelectDoc($event)"
+      (toggleFolder)="toggleFolder.emit($event)" />
+  </nav>
+</ng-template>
+
+<ng-template #topbar>
+  <header class="lw-docs-shell__nav">
+    <div class="lw-docs-shell__nav-top">
+      <span class="lw-docs-shell__menu">
+        <lw-button variant="ghost" size="sm" [iconOnly]="true" ariaLabel="목차 열기" tooltip="목차 열기" (click)="drawerOpen.set(true)">
+          <lw-icon name="menu" [size]="16" />
+        </lw-button>
+      </span>
+      <lw-button variant="ghost" size="sm" tooltip="처음으로" (click)="home.emit()">
+        <lw-icon [name]="brandIcon()" [size]="18" />
+        <strong class="lw-docs-shell__brand">{{ brand() }}</strong>
+      </lw-button>
+      <lw-button class="lw-docs-shell__search-btn" variant="outline" size="sm" tooltip="문서 검색 (⌘K)" (click)="searchRequest.emit()">
+        <lw-icon name="search" [size]="14" />
+        <span>Search...</span>
+        <kbd class="lw-docs-shell__kbd">⌘K</kbd>
+      </lw-button>
+      <span class="lw-docs-shell__spacer"></span>
+      <ng-content select="[shellActions]" />
+      <lw-button variant="ghost" size="sm" [iconOnly]="true" [ariaLabel]="themeLabel()" [tooltip]="themeLabel()" (click)="themeToggle.emit()">
+        <lw-icon [name]="dark() ? 'sun' : 'moon'" [size]="16" />
+      </lw-button>
+    </div>
+    @if (sections().length > 1) {
+      <lw-tabs ariaLabel="문서 구획" [tabs]="sections()" [value]="section()" (tabChange)="sectionChange.emit($event)" />
+    }
+  </header>
+</ng-template>
+
+<ng-template #navSlot>
+  <aside class="lw-docs-shell__sidebar">
+    <ng-container [ngTemplateOutlet]="sidebar" />
+  </aside>
+</ng-template>
+
+<ng-template #main>
+    <main #scroller class="lw-docs-shell__main">
+      <div class="lw-docs-shell__page" [class.lw-docs-shell__page--wide]="wide()">
+        <ng-content />
+      </div>
+    </main>
+</ng-template>
+
+<ng-template #tocSlot>
+    <aside class="lw-docs-shell__toc">
+      <lw-on-this-page-toc [items]="toc()" [activeId]="activeAnchor()" (anchorSelect)="anchorSelect.emit($event)" />
+    </aside>
+</ng-template>
+
+<lw-app-frame [layout]="frameLayout" [slotTemplates]="{ topbar: topbar, sidebar: navSlot, detail: main, aside: tocSlot }" />
+
+  <lw-side-panel position="left" title="목차" [open]="drawerOpen()" (close)="drawerOpen.set(false)">
+    <ng-container [ngTemplateOutlet]="sidebar" />
+  </lw-side-panel>

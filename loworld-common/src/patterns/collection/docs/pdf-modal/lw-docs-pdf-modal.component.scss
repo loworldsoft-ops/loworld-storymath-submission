@@ -1,0 +1,39 @@
+:host {
+  display: contents;
+}
+
+.lw-docs-pdf {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lw-docs-pdf__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--lw-border-subtle);
+  border-radius: 8px;
+
+  legend {
+    padding: 0 4px;
+    color: var(--lw-text-muted);
+    font-size: 12px;
+  }
+}
+
+.lw-docs-pdf__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 16px;
+
+  span {
+    margin-right: auto;
+    color: var(--lw-text-muted);
+    font-size: 12.5px;
+  }
+}

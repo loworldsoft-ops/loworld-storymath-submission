@@ -1,0 +1,244 @@
+<div class="editor-shell">
+  <!-- Header -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <lw-button class="tool-btn" (click)="cancel.emit()">
+        <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+      </lw-button>
+      <span class="editing-badge">편집 중</span>
+      @if ((note().attachments || []).length > 0) {
+        <span class="attach-count">
+          <span class="icon-edit" aria-hidden="true"></span>
+          {{ note().attachments!.length }}
+        </span>
+      }
+    </div>
+    <div class="toolbar-right">
+      <lw-button class="cancel-text-btn" (click)="cancel.emit()">취소</lw-button>
+      <lw-button class="tool-btn" (click)="pinned.set(!pinned())" [tooltip]="pinned() ? '고정 해제' : '고정'">
+        <span class="icon-glyph icon-pin" aria-hidden="true">📌</span>
+      </lw-button>
+      <lw-button class="save-btn" (click)="save()">저장</lw-button>
+    </div>
+  </div>
+
+  <!-- Scrolling body -->
+  <div class="body-scroll">
+    <div class="body-inner">
+      <!-- Type selector -->
+      <div class="type-row">
+        <span class="field-label-sm">유형</span>
+        @for (tp of noteTypes; track tp) {
+          <lw-button class="type-chip" [class.active]="type() === tp"
+                  [style.backgroundColor]="type() === tp ? getBadge(tp).bg : ''"
+                  [style.color]="type() === tp ? getBadge(tp).text : ''"
+                  [style.borderColor]="type() === tp ? getBadge(tp).border : ''"
+                  (click)="type.set(tp)">{{ tp }}</lw-button>
+        }
+      </div>
+
+      <!-- Folder select -->
+      <div class="folder-row">
+        <span class="field-label-sm">폴더</span>
+        <lw-select class="folder-select" [value]="folderId()" (selectChange)="folderId.set($event)">
+          @for (f of folders(); track f.id) {
+            <option [value]="f.id">{{ f.name }}</option>
+          }
+        </lw-select>
+      </div>
+
+      <!-- Emoji + Title -->
+      <div class="title-row">
+        <div class="emoji-picker-root" #emojiPickerRoot>
+          <lw-button class="emoji-btn" (click)="showEmojiPicker.set(!showEmojiPicker())" [tooltip]="emoji() ? '이모지 변경' : '이모지 추가'">
+            @if (emoji()) {
+              <span class="emoji-display">{{ emoji() }}</span>
+            } @else {
+              <span class="icon-play" aria-hidden="true"></span>
+            }
+          </lw-button>
+          @if (showEmojiPicker()) {
+            <div class="emoji-panel">
+              <div class="emoji-panel-header">
+                <span class="emoji-panel-title">이모지 선택</span>
+                <div class="emoji-panel-actions">
+                  @if (emoji()) {
+                    <lw-button class="emoji-remove-btn" (click)="clearEmoji($event)">제거</lw-button>
+                  }
+                  <lw-button class="emoji-close-btn" (click)="closeEmojiPicker()">
+                    <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+                  </lw-button>
+                </div>
+              </div>
+              <div class="emoji-search-wrap">
+                <lw-input [value]="emojiSearch()" (valueChange)="emojiSearch.set(''+$event)" placeholder="이모지 검색..." class="emoji-search-input"/>
+              </div>
+              <div class="emoji-tabs">
+                @for (category of emojiCategories; track category.name; let i = $index) {
+                  <lw-button class="emoji-tab" [class.active]="activeEmojiCategory() === i" (click)="activeEmojiCategory.set(i)">{{ category.name }}</lw-button>
+                }
+              </div>
+              <div class="emoji-grid-wrap">
+                <div class="emoji-grid">
+                  @for (item of visibleEmojis(); track item + $index) {
+                    <lw-button class="emoji-item" (click)="selectEmoji(item)">{{ item }}</lw-button>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <lw-input [value]="title()" (valueChange)="title.set(''+$event)" placeholder="제목을 입력하세요" class="title-input"/>
+      </div>
+
+      <!-- Rich text toolbar -->
+      <div class="rich-toolbar">
+        <div class="rich-toolbar-inner">
+          <!-- Style menu -->
+          <div class="menu-root" #styleMenuRoot>
+            <lw-button class="toolbar-icon-btn style-btn" (mousedown)="toggleStyleMenu($event)">
+              <span class="icon-pen-tool" aria-hidden="true"></span>
+              <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+            </lw-button>
+            @if (styleMenuOpen()) {
+              <div class="style-dropdown">
+                <div class="dropdown-section-label">스타일</div>
+                @for (option of styleOptions; track option.tag) {
+                  <lw-button class="style-option" (mousedown)="applyStyleOption($event, option.tag)" [style.fontSize]="option.size" [style.fontWeight]="option.weight">{{ option.label }}</lw-button>
+                }
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-section-label">글씨 크기</div>
+                <div class="font-size-row">
+                  @for (option of fontSizeOptions; track option.size) {
+                    <lw-button class="font-size-btn" (mousedown)="applyFontSize($event, option.size)">{{ option.label }}</lw-button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="toolbar-divider"></div>
+          @for (button of commandButtons; track button.title) {
+            <lw-button class="toolbar-icon-btn" [class.active]="isActive(button.activeKey)" (mousedown)="handleToolbarCommand($event, button.cmd)" [tooltip]="button.title">
+              <span [innerHTML]="getToolbarIcon(button.path)"></span>
+            </lw-button>
+          }
+
+          <div class="toolbar-divider"></div>
+          <!-- Text color -->
+          <div class="menu-root" #textColorRoot>
+            <lw-button class="toolbar-icon-btn" (mousedown)="toggleTextColorMenu($event)" tooltip="글자 색상">
+              <span class="icon-lightbulb" aria-hidden="true"></span>
+            </lw-button>
+            @if (textColorMenuOpen()) {
+              <div class="color-panel">
+                <div class="color-label">글자 색상</div>
+                <div class="color-grid">
+                  @for (color of textColors; track color) {
+                    <lw-button class="color-dot" (mousedown)="applyTextColor($event, color)" [style.backgroundColor]="color"></lw-button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+          <!-- Highlight -->
+          <div class="menu-root" #highlightRoot>
+            <lw-button class="toolbar-icon-btn" (mousedown)="toggleHighlightMenu($event)" tooltip="형광펜">
+              <span class="icon-lightbulb" aria-hidden="true"></span>
+            </lw-button>
+            @if (highlightMenuOpen()) {
+              <div class="color-panel">
+                <div class="color-label">형광펜</div>
+                <div class="color-grid">
+                  @for (color of highlightColors; track color) {
+                    <lw-button class="color-dot highlight-dot" (mousedown)="applyHighlightColor($event, color)" [style.backgroundColor]="color"></lw-button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="toolbar-divider"></div>
+          @for (button of listButtons; track button.title) {
+            <lw-button class="toolbar-icon-btn" [class.active]="isActive(button.activeKey)" (mousedown)="handleToolbarCommand($event, button.cmd)" [tooltip]="button.title">
+              <span [innerHTML]="getToolbarIcon(button.path)"></span>
+            </lw-button>
+          }
+
+          <div class="toolbar-divider"></div>
+          @for (button of layoutButtons; track button.title) {
+            <lw-button class="toolbar-icon-btn" [class.active]="isActive(button.activeKey)" (mousedown)="handleToolbarCommand($event, button.cmd)" [tooltip]="button.title">
+              <span [innerHTML]="getToolbarIcon(button.path)"></span>
+            </lw-button>
+          }
+
+          <div class="toolbar-divider"></div>
+          <lw-button class="toolbar-icon-btn" (mousedown)="attachFile($event)" tooltip="파일 첨부">
+            <span class="icon-lightbulb" aria-hidden="true"></span>
+          </lw-button>
+          <lw-button class="toolbar-icon-btn" [class.active]="showDrawing()" (mousedown)="toggleDrawing($event)" tooltip="그리기">
+            <span class="icon-lightbulb" aria-hidden="true"></span>
+          </lw-button>
+          <lw-button class="toolbar-icon-btn" [class.active]="isRecording()" (mousedown)="toggleRecording($event)" [tooltip]="isRecording() ? '녹음 중' : '녹음'">
+            <span class="icon-lightbulb" aria-hidden="true"></span>
+          </lw-button>
+        </div>
+      </div>
+
+      @if (isRecording()) {
+        <lw-document-recording-bar (recorded)="onRecorded($event)" (close)="isRecording.set(false)" />
+      }
+
+      @if (showDrawing()) {
+        <lw-document-drawing-panel (insert)="onDrawingInserted($event)" (cancel)="showDrawing.set(false)" />
+      }
+
+      <!-- Content editable -->
+      <div class="editor-area">
+        <div #contentEditor contenteditable="true" (input)="onContentInput()" (keydown)="onEditorKeydown($event)" (paste)="onEditorPaste($event)" class="editor-content" data-placeholder="내용을 작성하세요..."></div>
+      </div>
+
+      <!-- Attachments -->
+      @if ((note().attachments || []).length > 0) {
+        <div class="attachment-list">
+          <div class="attachment-label">
+            <span class="icon-paperclip" aria-hidden="true"></span>
+            <span>첨부 ({{ note().attachments!.length }})</span>
+          </div>
+          @for (att of note().attachments; track att.id) {
+            <div class="attachment-item">
+              <span class="icon-close" aria-hidden="true"></span>
+              <span class="att-name">{{ att.fileName }}</span>
+              <lw-button class="att-remove" (click)="removeAttachment.emit(att.id)">
+                <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+              </lw-button>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Tags -->
+      <lw-form-field label="태그 (콤마로 구분)" class="tags-section">
+        <lw-input [value]="tags()" (valueChange)="tags.set(''+$event)" placeholder="업무, 기획, 중요" class="tag-input"/>
+      </lw-form-field>
+
+      <!-- Password & Reminder -->
+      <div class="extra-section">
+        <lw-button class="extra-btn" [class.active]="notePassword()" (click)="showPasswordModal.set(true)">
+          <span class="icon-settings" aria-hidden="true"></span>
+          <span>{{ notePassword() ? '암호 설정됨' : '암호 설정' }}</span>
+        </lw-button>
+        <lw-button class="extra-btn" [class.active]="reminder()" (click)="showReminderModal.set(true)">
+          <span class="icon-settings" aria-hidden="true"></span>
+          <span>{{ reminder() ? '알림 ' + formatReminder(reminder()!) : '알림 설정' }}</span>
+        </lw-button>
+      </div>
+    </div>
+  </div>
+@if (showPasswordModal()) {
+  <lw-document-password-dialog [currentPassword]="notePassword()" (save)="notePassword.set($event); showPasswordModal.set(false)" (close)="showPasswordModal.set(false)"/>
+}
+@if (showReminderModal()) {
+  <lw-document-reminder-dialog [value]="reminder()" (save)="reminder.set($event); showReminderModal.set(false)" (close)="showReminderModal.set(false)"/>
+}
+</div>

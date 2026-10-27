@@ -1,0 +1,38 @@
+<div class="overlay" role="presentation" (click)="cancel()"></div>
+<div class="panel">
+  <div class="panel-header">
+    <div>
+      <div class="eyebrow">녹음</div>
+      <h3>음성 메모 녹음</h3>
+      <p>{{ statusMessage() }}</p>
+    </div>
+    <lw-button class="icon-btn" (click)="cancel()">
+      <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+    </lw-button>
+  </div>
+
+  <div class="timer-row">
+    <div class="live-dot" [class.active]="status() === 'recording'"></div>
+    <strong>{{ formattedDuration() }}</strong>
+    <span>최대 05:00</span>
+  </div>
+
+  <div class="waveform">
+    @for (level of levels(); track $index) {
+      <span class="bar" [style.height.%]="level"></span>
+    }
+  </div>
+
+  @if (errorMessage()) {
+    <div class="error-box">{{ errorMessage() }}</div>
+  }
+
+  <div class="actions">
+    @if (status() === 'idle' || status() === 'error') {
+      <lw-button class="primary-btn" (click)="startRecording()">녹음 시작</lw-button>
+    } @else {
+      <lw-button class="secondary-btn" (click)="togglePause()">{{ status() === 'paused' ? '재개' : '일시정지' }}</lw-button>
+      <lw-button class="danger-btn" (click)="stopRecording()">저장</lw-button>
+    }
+  </div>
+</div>

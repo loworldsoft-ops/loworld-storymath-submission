@@ -1,0 +1,37 @@
+<aside class="os-factory" aria-label="Loworld Factory 통계">
+  <header class="os-factory__head">
+    <h2 class="os-factory__title">Loworld Factory</h2>
+    <button lwPressable class="os-factory__close" aria-label="닫기" (press)="closeRequested.emit()">
+      <lw-icon name="close" [size]="14" />
+    </button>
+  </header>
+
+  <div class="os-factory__score">
+    <span class="os-factory__score-label">건강 점수</span>
+    <span class="os-factory__score-value">{{ healthScore() }}<small>%</small></span>
+  </div>
+
+  <dl class="os-factory__grid">
+    @for (metric of metrics(); track metric.label) {
+      <div class="os-factory__cell">
+        <dt>{{ metric.label }}</dt>
+        <dd>{{ metric.value }}<small>{{ metric.unit }}</small></dd>
+      </div>
+    }
+  </dl>
+
+  <h3 class="os-factory__subtitle">계층별 개수</h3>
+  <dl class="os-factory__rows">
+    @for (layer of layers(); track layer.label) {
+      <div class="os-factory__row">
+        <dt>{{ layer.label }}</dt>
+        <dd>{{ layer.value }}</dd>
+      </div>
+    }
+  </dl>
+
+  <footer class="os-factory__foot">
+    <span>열린 창 {{ windowCount() }}개</span>
+    <span>폴더 {{ foldersCount() }}개</span>
+  </footer>
+</aside>

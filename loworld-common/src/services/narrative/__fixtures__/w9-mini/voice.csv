@@ -1,0 +1,5 @@
+who,alignment,card,emotion,stance,regard,speech
+protagonist,,p_pride,,,,mock
+member,,p_pride,,hostile;cold,down,mock
+,,p_compassion,,warm;trusting,,tease
+,,,,,,plain

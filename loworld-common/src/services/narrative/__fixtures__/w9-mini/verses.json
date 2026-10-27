@@ -1,0 +1,1 @@
+[{ "id": "verse.gana", "name": "가나", "beads": ["bead.ga", "bead.na"], "equip": ["weapon"], "tags": ["검"], "stats": { "might": 3 }, "grant": ["art.verse"], "flags": ["gana"] }]

@@ -1,0 +1,21 @@
+// 옮기는 도구가 만들지 않는, 손으로 내보내는 것.
+export { LW_OS_WINDOW_TABS, LW_OS_MOBILE_TAB_ALIASES, WindowTabRegistryService } from './platform/core/domain-registry/window-tab-registry.service';
+export { LW_OS_DOMAINS, DomainRegistryService } from './platform/core/domain-registry/domain-registry.service';
+export type { WindowTabRegistration, WindowTabContext } from './platform/core/domain-registry/window-tab-registry.types';
+export type { DomainDefinition } from './platform/core/domain-registry/domain-registry.types';
+export { OverviewExplorerWindowComponent } from './shell/overview/window-system/overview-explorer-window.component';
+export type { LwAppManifest } from './host/app-manifest';
+export { LwScreen } from './host/screen.directive';
+export { LW_OS_STANDALONE_TAB } from './host/standalone.token';
+export { bootstrapLwApp, provideLwApp } from '../host/provide-app';
+export { StandaloneAppComponent } from '../host/standalone-app.component';
+export { bootstrapLwOs, lwOsRoutes, provideLwOs, type LwEnvironment, type LwOsOptions } from './host/provide-os';
+export { EVENT_LOGGER } from '../services/tokens/event-logger.token';
+export { APP_LABELS, type OverviewThemeMode, type OverviewWindowTab, type ComponentMeta, type AppId, type PlatformSupportType, type AdaptivePlatformSpec, type DesignSystemFamily } from '../services/models/os.types';
+export type { LwOsHomePage } from './platform/core/domain-registry/app-look';
+export type { LwAppMobile } from './platform/core/domain-registry/domain-registry.types';
+export { OverviewSessionFacade } from './shell/overview/facade/overview-session.facade';
+export { OverviewRouteSyncService } from './shell/overview/route/overview-route-sync.service';
+export { AppModalCoordinatorService } from './shell/services/app-modal-coordinator.service';
+export { injectDocsUrlAdapter } from '../patterns/collection/docs/docs-url.adapter';
+export { provideShowcaseMemberLoginBridge } from '../host/provide-member-login-bridge';

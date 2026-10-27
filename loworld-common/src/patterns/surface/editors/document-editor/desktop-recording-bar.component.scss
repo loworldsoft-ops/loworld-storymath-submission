@@ -1,0 +1,28 @@
+@use 'index' as lw;
+:host { display: block; margin-bottom: 24px; }
+    .recording-bar { padding: 16px 20px 12px; border: 1px solid color-mix(in srgb, var(--lw-color-danger-hover) 15%, transparent); border-radius: 12px; background-color: color-mix(in srgb, var(--lw-color-danger-hover) 2%, transparent); }
+    .recording-bar.paused { border-color: color-mix(in srgb, var(--lw-color-black) 10%, transparent); background-color: transparent; }
+    .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .left-info { display: flex; align-items: center; gap: 10px; }
+    .mic-icon-wrapper { position: relative; }
+    .mic-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s; }
+    .pulse-dot { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; border-radius: 50%; background: var(--lw-color-danger); animation: rec-dot-pulse 1.5s infinite; border: 2px solid white; }
+    @keyframes rec-dot-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--lw-color-danger-hover) 40%, transparent); } 70% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--lw-color-danger-hover) 0%, transparent); } 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--lw-color-danger-hover) 0%, transparent); } }
+    .status-texts { display: flex; flex-direction: column; line-height: 1.3; }
+    .status-label { font-size: 13px; font-weight: 600; }
+    .status-time { font-size: 11px; margin-top: 2px; }
+    .size-text { margin-left: 6px; }
+    .right-actions { display: flex; align-items: center; gap: 8px; }
+    .action-btn { border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.15s, opacity 0.15s; }
+    .action-btn:hover { transform: scale(1.05); }
+    .circle-btn { width: 36px; height: 36px; border-radius: 50%; }
+    .cancel-btn { font-size: 10px; padding: 6px 10px; border-radius: 8px; border: none; cursor: pointer; transition: opacity 0.15s; height: 28px; font-weight: 500; }
+    .cancel-btn:hover { opacity: 0.8; }
+    .waveform-container { height: 48px; border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 2px; }
+    .wave-bar { flex: 1; border-radius: 999px; min-height: 4px; transition: height 80ms ease-out, background-color 80ms ease-out; }
+    .level-indicator { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .level-label { font-size: 9px; flex-shrink: 0; }
+    .level-track { flex: 1; height: 6px; border-radius: 999px; overflow: hidden; }
+    .level-fill { height: 100%; border-radius: 999px; transition: width 100ms ease-out; }
+    .level-percent { font-size: 9px; flex-shrink: 0; width: 28px; text-align: right; }
+    .error-toast { padding: 8px 20px; font-size: 10px; font-weight: 500; margin-top: 8px; border-radius: 8px; color: var(--lw-color-danger); background-color: color-mix(in srgb, var(--lw-color-danger) 6%, transparent); }

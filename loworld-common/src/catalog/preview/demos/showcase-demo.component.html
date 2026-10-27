@@ -1,0 +1,114 @@
+    <div class="showcase-demo-wrap">
+      <div class="demo-header">
+        <h3>{{ comp().name }} 미리보기 (쇼케이스 셸)</h3>
+        <p>{{ comp().description }}</p>
+      </div>
+
+      <div class="demo-content">
+        @switch (comp().id) {
+          @case ('lw-component-tile-grid') {
+            <div class="live-grid-demo">
+              <div class="demo-alert-bar">
+                💡 <strong>라이브 데모 모드:</strong> 타일 그리드 필터링 및 클릭 피드백을 직접 조작해 보세요.
+              </div>
+              @if (selectedEventMessage()) {
+                <div class="event-feedback">
+                  🟢 <strong>Event Emitted:</strong> {{ selectedEventMessage() }}
+                </div>
+              }
+              <div class="grid-sandbox">
+                <lw-component-tile-grid
+                  [components]="mockComponents"
+                  [themeMode]="themeMode()"
+                  (componentSelect)="onComponentSelect($event)" />
+              </div>
+            </div>
+          }
+          @case ('lw-os-taskbar') {
+            <div class="live-taskbar-demo" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="demo-alert-bar">🖥️ <strong>가상 OS 태스크바 시뮬레이션:</strong> 하단 고정 독 및 상태 표시줄</div>
+              <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; color: #fff;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <lw-button variant="primary" size="sm">
+                    🚀 시작 (Loworld)
+                  </lw-button>
+                  <span style="font-size: 12px; color: #94a3b8; display: flex; gap: 8px;">
+                    <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px;">📝 Note</span>
+                    <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px;">📅 Calendar</span>
+                    <span style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; color: #60a5fa;">🎨 All Components</span>
+                  </span>
+                </div>
+                <div style="font-size: 12px; color: #cbd5e1; font-family: monospace;">
+                  17:42:09 KST · 🔋 100%
+                </div>
+              </div>
+            </div>
+          }
+          @case ('lw-os-window-frame') {
+            <div class="live-window-demo" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="demo-alert-bar">🪟 <strong>가상 OS 창 프레임 (Window Frame):</strong> macOS 스타일의 윈도우 조작 바</div>
+              <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                <div style="background: #e2e8f0; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; gap: 8px;">
+                    <span style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+                    <span style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span>
+                    <span style="width: 12px; height: 12px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+                  </div>
+                  <strong style="font-size: 12px; color: #334155;">Overview Window Frame · macOS Chrome</strong>
+                  <span style="font-size: 11px; color: #64748b;">활성 창</span>
+                </div>
+                <div style="background: #ffffff; padding: 24px; min-height: 140px; color: #475569; font-size: 13px;">
+                  내부 애플리케이션 및 쇼케이스 도메인이 안전하게 렌더링되는 샌드박스 뷰포트 영역입니다.
+                </div>
+              </div>
+            </div>
+          }
+          @case ('lw-os-start-panel') {
+            <div class="live-start-demo" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="demo-alert-bar">🚀 <strong>가상 OS 시작 패널 (Start Panel):</strong> 시스템 허브 & 빠른 실행 메뉴</div>
+              <div style="width: 320px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 16px; color: #fff; box-shadow: 0 12px 30px rgba(0,0,0,0.3);">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                  <div style="width: 36px; height: 36px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; font-weight: bold;">LW</div>
+                  <div>
+                    <strong style="display:block; font-size: 13px;">Loworld OS v2.0</strong>
+                    <span style="font-size: 11px; color: #94a3b8;">엔지니어링 표준 포털</span>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+                  <div style="padding: 8px 10px; border-radius: 6px; background: rgba(255,255,255,0.06); cursor: pointer;">📚 전체 컴포넌트 도감 (All Components)</div>
+                  <div style="padding: 8px 10px; border-radius: 6px; background: rgba(255,255,255,0.03); cursor: pointer;">🎨 디자인 토큰 및 HSL 컬러 팔레트</div>
+                  <div style="padding: 8px 10px; border-radius: 6px; background: rgba(255,255,255,0.03); cursor: pointer;">🛡️ 크로스 플랫폼 적응형 설계 검증기</div>
+                </div>
+              </div>
+            </div>
+          }
+          @case ('lw-component-detail') {
+            <div class="live-detail-demo" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="demo-alert-bar">📋 <strong>컴포넌트 상세 카드 (Component Detail):</strong> 단일 소자 메타데이터 인스펙터</div>
+              <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                  <div>
+                    <h4 style="margin: 0 0 4px; font-size: 16px; color: #0f172a;">{{ comp().name }}</h4>
+                    <code style="font-size: 12px; color: #6366f1; background: #e0e7ff; padding: 2px 6px; border-radius: 4px;">&lt;{{ comp().selector }}&gt;</code>
+                  </div>
+                  <span style="background: #ecfdf5; color: #059669; font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 12px;">단일 소자 (L1 Primitive)</span>
+                </div>
+                <p style="margin: 0 0 16px; font-size: 13px; color: #64748b;">{{ comp().description }}</p>
+                <div style="display: flex; gap: 8px;">
+                  <lw-button variant="primary" size="sm">인스펙터 분석</lw-button>
+                  <lw-button variant="outline" size="sm">코드 복사</lw-button>
+                </div>
+              </div>
+            </div>
+          }
+          @default {
+            <div class="placeholder-demo">
+              <span class="icon">🖥️</span>
+              <h4>{{ comp().name }} 쇼케이스 샌드박스</h4>
+              <p>쇼케이스 가상 윈도우 환경 내에서 작동하는 서피스 컴포넌트입니다.</p>
+              <code>&lt;{{ comp().selector }}&gt;&lt;/{{ comp().selector }}&gt;</code>
+            </div>
+          }
+        }
+      </div>
+    </div>

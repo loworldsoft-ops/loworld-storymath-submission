@@ -1,0 +1,46 @@
+@if (play.question(); as question) {
+  <lw-stack [fill]="true" [scroll]="true" gap="lg" padding="xl" surface="ground">
+    <lw-stack direction="row" justify="between" align="center">
+      <lw-stack direction="row" gap="lg" align="center">
+        <lw-avatar [icon]="play.lastCorrect() ? 'check' : 'x'" [tone]="play.lastCorrect() ? 'success' : 'danger'" size="xl" />
+        <lw-text variant="display" [tone]="play.lastCorrect() ? 'success' : 'danger'">{{ play.lastCorrect() ? '맞았어요' : '아니에요' }}</lw-text>
+      </lw-stack>
+      @if (play.heard()) {
+        <lw-text variant="heading" tone="muted">들은 말 · "{{ play.heard() }}" → {{ play.answerLabel() }}</lw-text>
+      } @else {
+        <lw-text variant="heading" tone="muted">정답 · {{ play.answerLabel() }}</lw-text>
+      }
+    </lw-stack>
+    <lw-progress-bar look="dots" [value]="play.questionIndex() + 1" [max]="play.questionCount()" label="문제" />
+
+    <lw-card variant="flat" [fill]="true">
+      <lw-stack [fill]="true" justify="center" padding="lg">
+        @if (play.showText()) {
+          <lw-marked-text look="reading" [segments]="play.segmentsOf(question.explain)" />
+        } @else {
+          <lw-stack align="center" gap="md">
+            <lw-spinner kind="wave" size="lg" label="소리로 듣는 중" />
+            <lw-text tone="muted">풀이를 소리로 들려줘요</lw-text>
+          </lw-stack>
+        }
+      </lw-stack>
+    </lw-card>
+
+    <lw-stack direction="row" justify="between" align="center">
+      <lw-stack direction="row" gap="sm" align="center">
+        <lw-button variant="secondary" (click)="play.backToAct()">
+          <lw-icon name="chevron-left" />
+          {{ play.questAct()?.title }}
+        </lw-button>
+        @if (play.speaking()) {
+          <lw-spinner kind="wave" size="sm" label="읽는 중" />
+          <lw-text tone="accent">풀이를 읽는 중</lw-text>
+        }
+      </lw-stack>
+      <lw-stack direction="row" gap="md">
+        <lw-button variant="secondary" size="lg" (click)="play.replay()">다시 듣기</lw-button>
+        <lw-button variant="primary" size="lg" (click)="play.next()">{{ play.questionIndex() + 1 < play.questionCount() ? '다음 문제' : '마치기' }}</lw-button>
+      </lw-stack>
+    </lw-stack>
+  </lw-stack>
+}

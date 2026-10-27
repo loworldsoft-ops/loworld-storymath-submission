@@ -1,0 +1,19 @@
+<div class="lw-close-button-wrapper" [class.has-pulse]="pulse()">
+  @if (pulse()) {
+    <span class="lw-close-beacon-ring" aria-hidden="true"></span>
+    <span class="lw-close-beacon-ring lw-close-beacon-ring--second" aria-hidden="true"></span>
+  }
+
+  <button
+    type="button"
+    class="lw-close-btn"
+    [attr.data-size]="size()"
+    [attr.data-variant]="variant()"
+    [class.is-disabled]="disabled()"
+    [disabled]="disabled()"
+    [attr.aria-label]="ariaLabel()"
+    [lwTooltip]="tooltip() || ''"
+    (click)="handleClick($event)">
+    <lw-icon name="close" [size]="iconPixelSize()" class="lw-close-icon" />
+  </button>
+</div>

@@ -1,0 +1,28 @@
+<section class="lw-active-mission-card" aria-label="활성 미션">
+  @if (missions().length === 0) {
+    <p class="lw-active-mission-card__empty">{{ emptyMessage() }}</p>
+  } @else {
+    @for (mission of missions(); track mission.questId) {
+      <lw-card variant="outlined" [interactive]="true"
+        type="button"
+        class="lw-active-mission-card__item"
+        (click)="onMissionClick(mission.questId)">
+        <div class="lw-active-mission-card__header">
+          <span class="lw-active-mission-card__kind">{{ mission.kindLabel }}</span>
+          <span class="lw-active-mission-card__progress">{{ mission.progressPercent }}%</span>
+        </div>
+        <p class="lw-active-mission-card__title">{{ mission.title }}</p>
+        @if (mission.objectives.length > 0) {
+          <ul class="lw-active-mission-card__objectives">
+            @for (objective of mission.objectives; track objective.id) {
+              <li class="lw-active-mission-card__objective">
+                <span>{{ objective.label }}</span>
+                <span class="lw-active-mission-card__count">{{ objective.current }}/{{ objective.target }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </lw-card>
+    }
+  }
+</section>

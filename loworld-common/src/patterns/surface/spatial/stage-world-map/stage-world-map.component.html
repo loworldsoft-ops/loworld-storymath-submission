@@ -1,0 +1,105 @@
+<div class="map-wrap">
+  <!-- 지도 (전체 영역) -->
+  <div class="map-canvas" #mapEl></div>
+
+
+  <!-- 플로팅 패널 -->
+  <aside class="floating-panel" [class.visible]="panelOpen()">
+    <!-- 패널 헤더 -->
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="icon-filter" aria-hidden="true"></span>
+        <h3>학습자 현황 지도</h3>
+      </div>
+      <lw-select class="year-sel" (change)="onYearChange($event)" ariaLabel="연도 필터">
+        <option value="">전체 연도</option>
+        @for (y of availableYears(); track y) {
+          <option [value]="y" [selected]="selectedYear() === y">{{ y }}년</option>
+        }
+      </lw-select>
+    </div>
+
+    <!-- 학습자 요약 -->
+    <div class="side-section">
+      <p class="side-label">📊 학습자 현황</p>
+      <div class="stat-grid">
+        <lw-card class="stat-card purple" variant="outlined">
+          <span class="sv">{{ totalCount() }}</span>
+          <span class="sl">표시 인원</span>
+        </lw-card>
+        <lw-card class="stat-card blue" variant="outlined">
+          <span class="sv">{{ countryCount() }}</span>
+          <span class="sl">활동 국가</span>
+        </lw-card>
+      </div>
+    </div>
+
+    <!-- 국가별 순위 -->
+    <div class="side-section country-section">
+      <p class="side-label">🏆 국가별 학습자</p>
+      <div class="country-list">
+        @for (item of countryRanking(); track item.countryCode; let i = $index) {
+          <div class="country-row"
+               [class.sel]="selCountry() === item.countryCode"
+               (click)="focusCountry(item.countryCode)"
+               role="button"
+               [attr.aria-label]="item.countryNameKo + ' ' + item.count + '명'">
+            <span class="c-rank">{{ i + 1 }}</span>
+            <span class="c-flag">{{ flag(item.countryCode) }}</span>
+            <div class="c-info">
+              <span class="c-name">{{ item.countryNameKo }}</span>
+              @if (item.regionLabel) {
+                <span class="c-region">{{ item.regionLabel }}</span>
+              }
+            </div>
+            <span class="c-count">{{ item.count }}명</span>
+            <div class="bar-wrap">
+              <div class="bar" [style.width]="barPct(item.count) + '%'"></div>
+            </div>
+          </div>
+        }
+        @empty {
+          <p class="empty">표시할 학습자가 없습니다.</p>
+        }
+      </div>
+    </div>
+
+    <!-- 선택 마커 상세 -->
+    @if (selMarker()) {
+      <div class="side-section detail">
+        <p class="side-label">📌 선택된 학습자</p>
+        <div class="detail-rows">
+          <div class="dr">
+            <span class="dk">이름</span>
+            <span class="dv">{{ selMarker()!.menteeName }}</span>
+          </div>
+          <div class="dr">
+            <span class="dk">교육 상태</span>
+            <span class="dv">{{ roomStatusLabel(selMarker()!.status) }}</span>
+          </div>
+          <div class="dr">
+            <span class="dk">멘토</span>
+            <span class="dv">{{ selMarker()!.mentorName }}</span>
+          </div>
+          <div class="dr">
+            <span class="dk">위치</span>
+            <span class="dv">
+              {{ flag(selMarker()!.countryCode) }} {{ selMarker()!.countryNameKo }}
+              @if (selMarker()!.city) { · {{ selMarker()!.city }} }
+            </span>
+          </div>
+          @if (selMarker()!.certificateNumber) {
+            <div class="dr">
+              <span class="dk">수료증</span>
+              <span class="dv mono">{{ selMarker()!.certificateNumber }}</span>
+            </div>
+          }
+          <div class="dr">
+            <span class="dk">기준일</span>
+            <span class="dv">{{ fmtDate(selMarker()!.issuedAt) }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </aside>
+</div>

@@ -1,0 +1,7 @@
+{
+  "path": "/detail/workspace",
+  "title": "워크스페이스",
+  "desc": "워크플로우를 만들고 함께 쓰는 작업 공간",
+  "toc": [],
+  "html": "<p>워크스페이스는 워크플로우·테이블·지식베이스가 담기는 <strong>작업 공간이자 권한의 단위</strong>입니다.\n누구를 초대했는지에 따라 그 안의 자원에 닿을 수 있는 범위가 달라집니다.</p>\n<div class=\"grid grid-cols-2 gap-3 @container\"><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/workspace/spaces\"><h3 class=\"not-prose mb-1 text-sm font-medium\">스페이스</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>스페이스 만들기·찾기·수정·삭제, 멤버 초대와 역할 관리</p></div></a><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/workspace/roles-and-permissions\"><h3 class=\"not-prose mb-1 text-sm font-medium\">워크스페이스 내 역할 및 권한 이해하기</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>Owner·Editor·Viewer 가 각각 무엇을 할 수 있는지</p></div></a><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/workspace/audit-log\"><h3 class=\"not-prose mb-1 text-sm font-medium\">변경이력</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>스페이스에서 일어난 변경을 시간순으로 확인하기</p></div></a></div>"
+}

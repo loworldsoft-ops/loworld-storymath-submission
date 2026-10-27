@@ -1,0 +1,134 @@
+<div class="tile-grid-container" [attr.data-mobile-layout]="mobileLayout() || null">
+
+  <!-- ── 상단 툴바 및 필터 ── -->
+  <div class="tile-grid-toolbar">
+    <!-- Category Chips (YouTube style tags) -->
+    <div class="category-chips-scroll">
+      <lw-button 
+        class="category-chip" 
+        [class.active]="categoryFilter() === 'all'" 
+        (click)="categoryFilter.set('all')">
+        전체 보기 <span class="chip-count">{{ components().length }}</span>
+      </lw-button>
+
+      @for (cat of categories(); track cat.id) {
+        @if (getCategoryCount(cat.id) > 0) {
+          <lw-button 
+            class="category-chip" 
+            [class.active]="categoryFilter() === cat.id" 
+            (click)="categoryFilter.set(cat.id)">
+            {{ cat.label }} <span class="chip-count">{{ getCategoryCount(cat.id) }}</span>
+          </lw-button>
+        }
+      }
+    </div>
+
+    <!-- Search Input -->
+    <div class="tile-grid-search">
+      <span class="search-icon"><lw-icon name="system:search" [size]="14" /></span>
+      <lw-input
+        class="search-input"
+        [placeholder]="searchPlaceholder()"
+        [value]="searchQuery()"
+        (valueChange)="searchQuery.set($any($event))"
+      />
+    </div>
+  </div>
+
+  <!-- ── 타일 그리드 피드 ── -->
+  <!-- ── 타일 그리드 피드 (성격 도감 테마 적용) ── -->
+  @if (filteredComponents().length > 0) {
+    <div class="tile-grid">
+      @for (comp of filteredComponents(); track comp.id) {
+        <lw-card 
+          class="component-tile-card"
+          layout="tile"
+          variant="outlined"
+          [interactive]="true"
+          [attr.data-domain]="comp.domain"
+          [tooltip]="comp.name + ' <' + comp.selector + '> — ' + (comp.englishName ?? comp.description)"
+          tooltipPlacement="top"
+          (click)="selectComponent(comp.id)"
+          (keydown.enter)="selectComponent(comp.id)">
+          
+          <!-- Visual Thumbnail: 성격 도감 엠블럼 전면 채움 (그라데이션 및 도트 제거) -->
+          <div class="thumbnail-wrapper" [attr.data-domain]="comp.domain" [attr.data-component-id]="comp.id" [style.background]="getComponentBg(comp)">
+            @if (getComponentImageUrl(comp); as imgUrl) {
+              <img
+                [src]="imgUrl"
+                [alt]="comp.name"
+                class="thumbnail-emblem-full"
+                loading="lazy" />
+            } @else {
+              <div class="thumbnail-icon-full">
+                <lw-icon [name]="getComponentIconName(comp)" [size]="64" renderMode="rich" />
+              </div>
+            }
+
+            <!-- 플로팅 카테고리 및 디자인 시스템 배지 -->
+            <div class="thumbnail-badges">
+              <lw-badge size="xs" [label]="getDsFamilyLabel(getComponentDsFamily(comp))" />
+              <lw-badge size="xs" [label]="comp.category" />
+            </div>
+
+            <!-- 호버 시 인터랙티브 오버레이 -->
+            <div class="thumbnail-overlay">
+              <span class="view-details-text">{{ getHoverText(comp) }}</span>
+            </div>
+          </div>
+
+          <!-- Component Details Info -->
+          <div class="card-meta">
+            <!-- Text Meta -->
+            <div class="card-text">
+              <div class="card-header-row">
+                <h4 class="card-title">{{ comp.name }}</h4>
+                <code class="card-selector">&lt;{{ comp.selector }}&gt;</code>
+              </div>
+
+              <p class="card-desc" [class.card-desc--english]="!!comp.englishName">
+                {{ comp.englishName ?? comp.description }}
+              </p>
+
+              <!-- 🎨 디자인 시스템 표준 소자 칩 -->
+              <div class="card-ds-tags">
+                <span class="card-ds-lead">L1 소자:</span>
+                @for (prim of getComponentDsPrimitives(comp); track prim) {
+                  <code class="card-ds-chip">&lt;{{ prim }}&gt;</code>
+                }
+              </div>
+              
+              <!-- Specs Stat Line (Micro Pills) -->
+              <div class="card-stats">
+                <span class="stat-pill stat-pill--first">
+                  <span class="stat-pill__dot">●</span>
+                  {{ comp.inputs.length }} {{ statLabels().first }}
+                </span>
+                <span class="stat-pill stat-pill--second">
+                  <span class="stat-pill__dot">●</span>
+                  {{ comp.outputs.length }} {{ statLabels().second }}
+                </span>
+              </div>
+
+              <!-- Usage badging -->
+              @if (comp.usedIn && comp.usedIn.length > 0) {
+                <div class="card-usage">
+                  <span class="usage-label">Used in:</span>
+                  @for (usage of comp.usedIn; track usage.app) {
+                    <lw-badge size="xs" [label]="APP_LABELS[usage.app]" />
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </lw-card>
+      }
+    </div>
+  } @else {
+    <div class="empty-feed">
+      <span class="empty-icon">📭</span>
+      <h3>일치하는 컴포넌트가 없습니다</h3>
+      <p>검색어나 카테고리 필터를 변경해 보세요.</p>
+    </div>
+  }
+</div>

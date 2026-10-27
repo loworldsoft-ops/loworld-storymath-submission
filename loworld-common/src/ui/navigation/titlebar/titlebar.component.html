@@ -1,0 +1,20 @@
+<div class="titlebar" [attr.data-size]="height()">
+  <div class="titlebar__start">
+    @if (showMenuButton()) {
+      <lw-button class="menu-btn" (click)="actionEvent.emit({ actionId: 'TOGGLE_SIDEBAR', payload: undefined, source: 'lw-titlebar' })" aria-label="사이드바 토글">
+        <span class="titlebar-burger-icon" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </lw-button>
+    }
+    <ng-content select="[lwTitlebarStart]" />
+  </div>
+
+  <div class="titlebar__center">
+    <ng-content select="[lwTitlebarCenter]" />
+  </div>
+
+  <div class="titlebar__end">
+    <ng-content select="[lwTitlebarEnd]" />
+  </div>
+</div>

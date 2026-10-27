@@ -1,0 +1,18 @@
+// ═══════════════════════════════════════════════════════════════
+// 🏛️ Showcase Root App Master Stylesheet
+// Modular Architecture (Single Responsibility & Decoupled Scopes)
+// ═══════════════════════════════════════════════════════════════
+
+@use 'scrollbar' as *;
+
+// 1. Shell Framework & Navigation (Host, Shell, Sidebar, Nav Panel)
+@use '../shell/styles/shell-layout';
+
+// 2. Overview Desktop Surface & Windows 11 Fluent Theme
+@use '../shell/styles/overview-surface';
+
+// 3. Pure Mobile Stage & Smartphone Mockup Stage
+@use '../shell/styles/mobile-stage';
+
+// 4. Floating Window Layer, Detail Views & Terminal Log
+@use '../shell/styles/window-layer';

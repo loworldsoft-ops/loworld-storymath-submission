@@ -1,0 +1,140 @@
+:host {
+  display: block;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.lw-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+
+  &.align-center {
+    justify-content: center;
+    text-align: center;
+
+    .lw-section-header__title-row {
+      justify-content: center;
+    }
+  }
+
+  &.align-between {
+    justify-content: space-between;
+  }
+
+  &__text-group {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__subtitle {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--lw-section-subtitle-color);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__icon {
+    font-size: 20px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 1.125rem; // 18px
+    font-weight: 700;
+    color: var(--all-text-primary, var(--all-text-main, var(--lw-hue-slate-900)));
+    margin: 0;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--lw-color-accent) 10%, transparent);
+    color: var(--lw-color-purple);
+  }
+
+  &__desc {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--all-text-secondary, var(--all-text-sub, var(--lw-hue-slate-500)));
+    margin: 2px 0 0 0;
+    word-break: keep-all;
+
+    code {
+      font-size: 11.5px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--all-bg-subtle, color-mix(in srgb, var(--lw-color-black) 4%, transparent));
+      color: var(--lw-color-purple);
+      font-family: monospace;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+// ── Dark Theme Overrides ──
+:host-context([data-lw-theme='dark']),
+:host-context([data-lw-skin='dark-novel']),
+:host-context([data-lw-play-theme='dark']),
+[data-lw-theme='dark'] :host,
+[data-lw-skin='dark-novel'] :host,
+[data-lw-play-theme='dark'] :host {
+  .lw-section-header {
+    &__subtitle {
+      color: var(--lw-hue-purple-500);
+    }
+
+    &__title {
+      color: var(--lw-surface-subtle);
+    }
+
+    &__desc {
+      color: var(--lw-text-muted-light);
+
+      code {
+        background: color-mix(in srgb, var(--lw-color-white) 8%, transparent);
+        color: var(--lw-hue-purple-400);
+      }
+    }
+
+    &__badge {
+      background: color-mix(in srgb, var(--lw-hue-purple-500) 15%, transparent);
+      color: var(--lw-hue-purple-400);
+    }
+  }
+}

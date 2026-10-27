@@ -1,0 +1,62 @@
+<lw-modal variant="custom" size="lg" title="Settings" [open]="open()" (close)="close.emit()">
+  <div class="lw-profile">
+    <lw-tabs ariaLabel="설정 메뉴" [tabs]="tabs" [value]="tab()" (tabChange)="setTab($event)" />
+
+    @switch (tab()) {
+      @case ('profile') {
+        <div class="lw-profile__me">
+          <lw-avatar size="lg" [initial]="user().name[0]" [alt]="user().name" />
+          <div>
+            <h3>{{ user().name }}</h3>
+            <p>{{ user().email }}</p>
+            <lw-badge variant="subtle" tone="primary" size="xs">{{ user().roleLabel }}</lw-badge>
+          </div>
+        </div>
+        <h4>소속 그룹</h4>
+        <div class="lw-profile__groups">
+          @for (group of groups(); track group.id) {
+            <div class="lw-profile__group">
+              <div>
+                <strong>{{ group.name }}</strong>
+                <span>{{ group.path }}</span>
+              </div>
+              <lw-badge variant="subtle" size="xs" [tone]="group.role === 'admin' ? 'warning' : 'neutral'">{{ roleLabels[group.role] }}</lw-badge>
+            </div>
+          }
+        </div>
+      }
+
+      @case ('security') {
+        <div class="lw-profile__form">
+          <lw-form-field label="현재 비밀번호" [required]="true">
+            <lw-input type="password" ariaLabel="현재 비밀번호" [value]="currentPassword()" (valueChange)="currentPassword.set('' + $event)" />
+          </lw-form-field>
+          <lw-form-field label="새 비밀번호" [required]="true" hint="8자 이상, 영문과 숫자 포함">
+            <lw-input type="password" ariaLabel="새 비밀번호" [value]="nextPassword()" (valueChange)="nextPassword.set('' + $event)" />
+          </lw-form-field>
+          <lw-form-field label="새 비밀번호 확인" [required]="true" [error]="confirmPassword() && passwordError() ? passwordError() : null">
+            <lw-input type="password" ariaLabel="새 비밀번호 확인" [value]="confirmPassword()" (valueChange)="confirmPassword.set('' + $event)" (enterPressed)="submitPassword()" />
+          </lw-form-field>
+          <lw-button variant="primary" [disabled]="!!passwordError()" (click)="submitPassword()">비밀번호 변경</lw-button>
+        </div>
+      }
+
+      @case ('prefs') {
+        <div class="lw-profile__prefs">
+          <div class="lw-profile__pref">
+            <span>테마</span>
+            <lw-tabs variant="segment" size="sm" ariaLabel="테마" [tabs]="themeTabs" [value]="theme()" (tabChange)="onTheme($event)" />
+          </div>
+          <div class="lw-profile__pref">
+            <span>사이드바 기본 접힘</span>
+            <lw-slide-switch [checked]="sidebarCollapsed()" (toggle)="toggleSidebar.emit()" />
+          </div>
+          <div class="lw-profile__pref">
+            <span>언어</span>
+            <span class="lw-profile__muted">한국어</span>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</lw-modal>

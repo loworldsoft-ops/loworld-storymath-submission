@@ -1,0 +1,88 @@
+<lw-stack [fill]="true" [scroll]="true" gap="lg" padding="xl" surface="ground">
+  <lw-stack direction="row" gap="md" align="center">
+    <lw-button variant="secondary" (click)="play.closeSettings()">
+      <lw-icon name="chevron-left" />
+      돌아가기
+    </lw-button>
+    <lw-text variant="title">설정</lw-text>
+  </lw-stack>
+
+  <lw-grid [cols]="2" gap="lg">
+    @for (section of sections; track section.title) {
+      <lw-card variant="flat">
+        <lw-stack gap="lg">
+          <lw-text variant="label" tone="muted">{{ section.title }}</lw-text>
+          @for (item of section.items; track item.key) {
+            @if (item.kind === 'toggle') {
+              <lw-stack direction="row" justify="between" align="center" gap="md">
+                <lw-stack gap="xs" [fill]="true">
+                  <lw-text variant="heading">{{ item.title }}</lw-text>
+                  <lw-text variant="caption" tone="muted">{{ captionOf(item) }}</lw-text>
+                </lw-stack>
+                <lw-slide-switch [checked]="isOn(item.key)" (toggle)="play.toggle(item.key)" />
+              </lw-stack>
+            } @else {
+              <lw-stack gap="sm">
+                <lw-stack gap="xs">
+                  <lw-text variant="heading">{{ item.title }}</lw-text>
+                  <lw-text variant="caption" tone="muted">{{ captionOf(item) }}</lw-text>
+                </lw-stack>
+                <lw-stack direction="row" gap="sm" [wrap]="true">
+                  @for (option of item.options; track option.value) {
+                    <lw-button [variant]="isPicked(item.key, option.value) ? 'primary' : 'secondary'" (click)="pick(item.key, option.value)">{{ option.label }}</lw-button>
+                  }
+                </lw-stack>
+              </lw-stack>
+            }
+          }
+        </lw-stack>
+      </lw-card>
+    }
+
+    <lw-card variant="flat">
+      <lw-stack gap="lg">
+        <lw-text variant="label" tone="muted">소리 엔진</lw-text>
+        @if (engines.choosable) {
+          @for (section of engineSections; track section.kind) {
+            @if (section.choice(); as choice) {
+              <lw-stack gap="sm">
+                <lw-text variant="heading">{{ section.title }}</lw-text>
+                <lw-text variant="caption" tone="accent">{{ engineNow(choice) }}</lw-text>
+                <lw-button [block]="true" [variant]="choice.selected === auto ? 'primary' : 'secondary'" (click)="engines.choose(section.kind, auto)">
+                  자동 (가장 좋은 것)
+                </lw-button>
+                @for (option of choice.options; track option.id) {
+                  <lw-button [block]="true" [variant]="choice.selected === option.id ? 'primary' : 'secondary'" (click)="engines.choose(section.kind, option.id)">
+                    {{ option.label }}
+                  </lw-button>
+                }
+              </lw-stack>
+            }
+          }
+        } @else {
+          <lw-text tone="muted">소리 엔진은 안드로이드 앱에서 고를 수 있어요</lw-text>
+        }
+      </lw-stack>
+    </lw-card>
+
+    <lw-card variant="flat">
+      <lw-stack gap="lg">
+        <lw-text variant="label" tone="muted">기록</lw-text>
+        <lw-stack gap="sm">
+          <lw-text variant="heading">들은 기록 지우기</lw-text>
+          <lw-text variant="caption" tone="muted">마친 단원, 맞힌 수, 들은 횟수를 지우고 1막 처음부터 해요. 설정은 그대로예요</lw-text>
+          <lw-button [variant]="play.armed() === 'results' ? 'danger' : 'secondary'" (click)="play.clearResults()">
+            {{ play.armed() === 'results' ? '한 번 더 누르면 모두 지워요' : '기록 지우기' }}
+          </lw-button>
+        </lw-stack>
+        <lw-stack gap="sm">
+          <lw-text variant="heading">설정 처음대로</lw-text>
+          <lw-text variant="caption" tone="muted">이 화면의 설정을 처음 값으로 돌려요. 기록과 소리 엔진은 그대로예요</lw-text>
+          <lw-button [variant]="play.armed() === 'settings' ? 'danger' : 'secondary'" (click)="play.resetSettings()">
+            {{ play.armed() === 'settings' ? '한 번 더 누르면 처음대로 돌려요' : '처음대로' }}
+          </lw-button>
+        </lw-stack>
+      </lw-stack>
+    </lw-card>
+  </lw-grid>
+</lw-stack>

@@ -1,0 +1,21 @@
+    @if (log.open()) {
+      <div class="event-log">
+        <div class="event-log-header">
+          <h3>Event Log</h3>
+          <div class="dev-toolbar">
+            <ng-content />
+          </div>
+        </div>
+        <div class="event-list">
+          @for (e of log.entries(); track $index) {
+            <div class="event-item">
+              <span class="event-time">{{ e.time }}</span>
+              <span class="event-name">{{ e.event }}</span>
+            </div>
+          }
+          @empty {
+            <div class="event-empty">No events yet. Interact with the demo above.</div>
+          }
+        </div>
+      </div>
+    }

@@ -1,0 +1,32 @@
+<div class="progress-wrap">
+  <div class="header-row">
+    <span class="label">진행 단계</span>
+    <span class="counter"><strong>{{ completedCount() }}</strong> / {{ maxSteps() }}</span>
+  </div>
+
+  <div class="track">
+    @for (n of resolvedStageNumbers(); track n) {
+      <lw-button
+        class="step"
+        [class.done]="isCompleted(n)"
+        [class.current]="isCurrent(n)"
+        [tooltip]="getTitle(n)"
+        (click)="stageClick.emit(n)"
+        [attr.aria-label]="getTitle(n) + (isCompleted(n) ? ' - 완료' : '')">
+        @if (isCompleted(n)) {
+          <span class="icon-glyph icon-check" aria-hidden="true">✓</span>
+        } @else {
+          <span class="step-num">{{ n }}</span>
+        }
+      </lw-button>
+    }
+  </div>
+
+  <lw-progress-bar
+    class="summary-bar"
+    [value]="completedCount()"
+    [max]="maxSteps()"
+    [showLabel]="false"
+    customColor="var(--lw-accent, #3b82f6)"
+  />
+</div>

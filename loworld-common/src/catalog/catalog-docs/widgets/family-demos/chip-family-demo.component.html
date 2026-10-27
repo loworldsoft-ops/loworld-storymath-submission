@@ -1,0 +1,8 @@
+<section class="family-demo__group">
+  <h4 class="family-demo__title">프리셋</h4>
+  <div class="family-demo__row">
+    @for (preset of presets; track preset.id) {
+      <lw-chip [variant]="preset.variant" [tooltip]="preset.tip">{{ preset.label }}</lw-chip>
+    }
+  </div>
+</section>

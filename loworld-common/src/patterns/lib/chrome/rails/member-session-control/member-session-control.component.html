@@ -1,0 +1,50 @@
+@if (session(); as s) {
+  <div class="session-container" [class.session-panel]="layout() === 'panel'">
+    <lw-button
+      type="button"
+      variant="ghost"
+      size="sm"
+      shape="circle"
+      class="session-trigger-btn"
+      [class.active]="isMenuOpen()"
+      (click)="toggleMenu($event)"
+      [attr.aria-expanded]="isMenuOpen()"
+      aria-haspopup="menu"
+      [attr.aria-label]="'회원 프로필 및 메뉴 (' + s.displayName + ')'"
+      [tooltip]="s.displayName + (s.email ? ' (' + s.email + ')' : '')"
+    >
+      <lw-avatar class="avatar-icon-wrapper avatar-inner" [initial]="(s.displayName || 'U').charAt(0)" size="sm" />
+      @if (s.directoryRole) {
+        <span class="role-indicator-dot" [attr.data-role]="s.directoryRole" [title]="s.directoryRole"></span>
+      }
+    </lw-button>
+
+    <!-- 💻 데스크톱: 기존 플로팅 드롭다운 메뉴 (모바일은 상위 뷰포트 바텀시트로 위임) -->
+    @if (!isMobile() && isMenuOpen()) {
+      <div class="session-dropdown" role="menu">
+        <lw-member-session-menu
+          [session]="s"
+          [iconName]="iconName()"
+          [guestIconName]="guestIconName()"
+          (accountClick)="onAccountAction()"
+          (logoutClick)="onLogoutAction()"
+        />
+      </div>
+    }
+  </div>
+} @else {
+  <lw-button
+    type="button"
+    variant="ghost"
+    size="xs"
+    class="guest-btn"
+    [class.guest-panel]="layout() === 'panel'"
+    (click)="onGuestLoginClick()"
+    [attr.aria-label]="guestLoginLabel()"
+    [tooltip]="guestLoginLabel()"
+  >
+    <div class="guest-icon-wrapper">
+      <lw-icon [name]="effectiveIconName()" [size]="20" renderMode="rich" />
+    </div>
+  </lw-button>
+}

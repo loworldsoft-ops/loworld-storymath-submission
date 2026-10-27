@@ -1,0 +1,22 @@
+<p class="catalog-index__count">{{ cards().length }}개</p>
+<div class="catalog-index__grid">
+  @for (card of cards(); track card.id) {
+    <lw-card variant="outlined">
+      <div class="catalog-index__card">
+        <lw-button variant="ghost" size="sm" [tooltip]="card.name + ' 문서 열기'" (click)="store.open(card.path)">
+          <strong>{{ card.name }}</strong>
+          <lw-icon name="chevron-right" [size]="14" />
+        </lw-button>
+        <code class="catalog-index__selector">{{ card.selector }}</code>
+        <p class="catalog-index__desc">{{ card.description }}</p>
+        <div class="catalog-index__badges">
+          <lw-badge variant="subtle" color="primary" size="xs" [label]="card.layer" />
+          <lw-badge variant="subtle" color="info" size="xs" [label]="card.domain" />
+          <lw-badge variant="outlined" color="neutral" size="xs" [label]="'사용처 ' + card.usage" />
+        </div>
+      </div>
+    </lw-card>
+  } @empty {
+    <lw-empty-state class="catalog-index__empty" message="필터에 맞는 컴포넌트가 없습니다." />
+  }
+</div>

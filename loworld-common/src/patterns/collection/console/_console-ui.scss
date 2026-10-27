@@ -1,0 +1,122 @@
+@use 'index' as lw;
+// LLMOps Foundry 공용 스타일 믹스인. 색상은 --lw-* 토큰만 참조한다.
+
+@mixin foundry-host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  color: var(--lw-text-primary);
+}
+
+@mixin foundry-scroll {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--lw-border-color) transparent;
+}
+
+@mixin foundry-card {
+  border: 1px solid var(--lw-border-subtle);
+  border-radius: 10px;
+  background: var(--lw-surface-card);
+}
+
+@mixin foundry-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@mixin foundry-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--lw-border-subtle);
+    background: var(--lw-surface-alt);
+    color: var(--lw-text-muted);
+    font-size: var(--lw-font-size-2xs, 0.6875rem);
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--lw-border-subtle);
+    color: var(--lw-text-secondary);
+    vertical-align: middle;
+  }
+
+  @include lw.lw-hover-only {
+    tbody tr:hover {
+      background: var(--lw-surface-hover);
+    }
+  }
+
+  .is-num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@mixin foundry-kv {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0;
+  font-size: 12.5px;
+
+  dt {
+    color: var(--lw-text-muted);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--lw-text-primary);
+    word-break: break-all;
+  }
+}
+
+@mixin foundry-section-title {
+  margin: 0;
+  color: var(--lw-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@mixin foundry-code {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--lw-border-subtle);
+  border-radius: 8px;
+  background: var(--lw-surface-alt);
+  color: var(--lw-text-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--lw-font-size-xs, 0.75rem);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@mixin foundry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@mixin foundry-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 16px;
+}

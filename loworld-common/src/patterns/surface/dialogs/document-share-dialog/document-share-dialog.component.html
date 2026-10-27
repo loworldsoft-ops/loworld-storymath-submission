@@ -1,0 +1,35 @@
+<lw-modal [isOpen]="true" size="md" variant="custom" title="노트 공유" (closeClick)="close.emit()">
+  <div class="field-row">
+    <div>
+      <div class="field-title">공개 설정</div>
+      <div class="field-desc">링크를 통해 누구나 열람 가능</div>
+    </div>
+    <lw-button class="toggle" [class.active]="isPublic()" (click)="isPublic.set(!isPublic())">
+      <div class="toggle-thumb" [class.on]="isPublic()"></div>
+    </lw-button>
+  </div>
+  @if (isPublic()) {
+    <lw-form-field label="공유 링크">
+      <div class="link-row">
+        <lw-input [readonly]="true" [value]="shareUrl()" class="field-input flex-1"/>
+        <lw-button class="copy-btn" (click)="copyLink()">
+          @if (copied()) {
+            <span class="icon-copy" aria-hidden="true"></span>
+            복사됨
+          } @else {
+            <span class="icon-copy" aria-hidden="true"></span>
+            복사
+          }
+        </lw-button>
+      </div>
+    </lw-form-field>
+    <lw-form-field label="비밀번호 (선택)">
+      <lw-input type="password" [value]="sharePassword()" (valueChange)="sharePassword.set(''+$event)"
+             placeholder="비밀번호를 설정하세요" class="field-input"/>
+    </lw-form-field>
+  }
+  <div lwModalFooter class="modal-footer">
+    <lw-button class="cancel-btn" (click)="close.emit()">취소</lw-button>
+    <lw-button class="save-btn" (click)="saveShare()">저장</lw-button>
+  </div>
+</lw-modal>

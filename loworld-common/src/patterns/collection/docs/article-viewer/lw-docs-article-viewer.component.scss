@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+// 본문 스타일은 사용하는 쪽의 `.lw-docs-prose` 범위 CSS가 맡는다.
+.lw-docs-prose {
+  min-width: 0;
+  font-size: 1rem;
+  line-height: 1.75;
+}

@@ -1,0 +1,89 @@
+@if (open()) {
+  <div
+    class="lw-bottom-sheet-backdrop"
+    role="presentation"
+    [class.lw-bottom-sheet-backdrop--blur]="backdropBlur()"
+    [class.lw-bottom-sheet-backdrop--dock-above]="dockAboveBottomBar()"
+    (click)="onBackdropClick()"
+    aria-hidden="true"
+  ></div>
+
+  <section
+    #drawer
+    class="lw-bottom-sheet-drawer"
+    [class.lw-bottom-sheet-drawer--opening]="isOpening()"
+    [class.lw-bottom-sheet-drawer--fullscreen]="snapState() === 'fullscreen'"
+    [class.lw-bottom-sheet-drawer--standard]="snapState() === 'standard'"
+    [class.lw-bottom-sheet-drawer--compact]="snapState() === 'compact'"
+    [class.lw-bottom-sheet-drawer--dragging]="isDragging()"
+    [class.lw-bottom-sheet-drawer--full-width]="fullWidth()"
+    [class.lw-bottom-sheet-drawer--edge-to-edge]="edgeToEdge()"
+    [class.lw-bottom-sheet-drawer--dock-above]="dockAboveBottomBar()"
+    [style.max-width]="customMaxWidthStyle()"
+    [style.height]="drawerHeightStyle()"
+    [style.max-height]="drawerMaxHeightStyle()"
+    [style.transform]="drawerTransform()"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="title() || '바텀시트 다이얼로그'"
+    (click)="$event.stopPropagation()"
+  >
+    <div
+      #handleZone
+      class="lw-bottom-sheet-handle-zone"
+      (touchstart)="onHandleTouchStart($event)"
+      (mousedown)="onHandleMouseDown($event)"
+      (click)="onHandleClick()"
+      role="button"
+      tabindex="0"
+      [attr.aria-expanded]="snapState() === 'fullscreen'"
+      aria-label="바텀시트 높이 조절 및 닫기 제스처 핸들"
+    >
+      <div class="lw-bottom-sheet-handle" aria-hidden="true"></div>
+    </div>
+
+    <header #headerZone class="lw-bottom-sheet-header">
+      <div class="lw-bottom-sheet-header__left">
+        @if (showBack()) {
+          <button lw-button
+            type="button"
+            class="lw-bottom-sheet-back"
+            (click)="onBackClick()"
+            aria-label="뒤로가기"
+          >
+            <span class="lw-chevron-left" aria-hidden="true">‹</span>
+            @if (backLabel()) {
+              <span class="lw-bottom-sheet-back__text">{{ backLabel() }}</span>
+            }
+          </button>
+        }
+        <ng-content select="[lwSheetBack]" />
+      </div>
+
+      <div class="lw-bottom-sheet-title">
+        <ng-content select="[lwSheetTitle]" />
+        @if (kicker()) {
+          <p class="lw-bottom-sheet-kicker">{{ kicker() }}</p>
+        }
+        @if (title()) {
+          <h3>{{ title() }}</h3>
+        }
+      </div>
+
+      <div class="lw-bottom-sheet-header__right">
+        @if (showClose()) {
+          <lw-close-button
+            size="sm"
+            variant="default"
+            ariaLabel="닫기"
+            tooltip="닫기"
+            (closeClick)="close.emit()" />
+        }
+      </div>
+    </header>
+
+    <div #bodyZone class="lw-bottom-sheet-body" [class.lw-bottom-sheet-body--no-scroll]="!scrollable()">
+      <ng-content />
+    </div>
+  </section>
+}

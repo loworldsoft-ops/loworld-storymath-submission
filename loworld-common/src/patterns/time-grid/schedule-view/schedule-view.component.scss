@@ -1,0 +1,13 @@
+@use 'index' as lw;
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+}
+.view-host {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+:host { --lw-host-surface: var(--lw-surface); }

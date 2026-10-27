@@ -1,0 +1,36 @@
+<div
+  class="row"
+  role="button"
+  tabindex="0"
+  [class.selected]="selected()"
+  (click)="select.emit(member().id)"
+  (keydown.enter)="select.emit(member().id)"
+  (keydown.space)="select.emit(member().id); $event.preventDefault()"
+  [attr.aria-current]="selected() ? 'true' : null"
+>
+  <div class="main">
+    <div class="headline">
+      <span class="name">{{ member().displayName }}</span>
+      @if (member().status === 'inactive') {
+        <span class="status-pill">비활성</span>
+      }
+    </div>
+    <div class="credentials">
+      <span class="credential">ID {{ member().loginId || '-' }}</span>
+      <span class="credential">PW {{ member().password || '-' }}</span>
+    </div>
+  </div>
+  <div class="meta">
+    <lw-account-role-badge [role]="member().role" />
+  </div>
+  @if (canEdit() || canDelete()) {
+    <div class="actions" role="toolbar" aria-label="회원 작업 메뉴" (click)="$event.stopPropagation()">
+      @if (canEdit()) {
+        <lw-button type="button" class="icon-btn" (click)="edit.emit(member())" [attr.aria-label]="'수정: ' + member().displayName">편집</lw-button>
+      }
+      @if (canDelete()) {
+        <lw-button type="button" class="icon-btn danger" (click)="delete.emit(member())" [attr.aria-label]="'삭제: ' + member().displayName">삭제</lw-button>
+      }
+    </div>
+  }
+</div>

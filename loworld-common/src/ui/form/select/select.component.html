@@ -1,0 +1,33 @@
+<div class="lw-select-wrapper">
+  <select
+    class="lw-select-native"
+    [value]="value()"
+    [disabled]="disabled()"
+    [attr.aria-label]="ariaLabel()"
+    (change)="onChangeSelect($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()">
+    @if (placeholder() && options().length > 0 && value() === null) {
+      <option [value]="null" disabled selected>{{ placeholder() }}</option>
+    }
+
+    @if (options().length > 0) {
+      @for (opt of options(); track opt.value) {
+        <option
+          [value]="opt.value"
+          [disabled]="opt.disabled ?? false"
+          [selected]="opt.value === value()">
+          {{ opt.label }}
+        </option>
+      }
+    } @else {
+      <!-- Projected native options -->
+      <ng-content></ng-content>
+    }
+  </select>
+
+  <!-- Custom styled dropdown chevron -->
+  <span class="lw-select-arrow" aria-hidden="true">
+    <span class="lw-select-arrow__chevron"></span>
+  </span>
+</div>

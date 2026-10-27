@@ -1,0 +1,21 @@
+<div class="lw-tabs__list" role="tablist" [attr.aria-label]="ariaLabel()" (keydown)="onKeydown($event)">
+  @for (tab of tabs(); track tab.key) {
+    <button
+      type="button"
+      role="tab"
+      class="lw-tabs__tab"
+      [class.lw-tabs__tab--active]="tab.key === value()"
+      [attr.aria-selected]="tab.key === value()"
+      [attr.tabindex]="tab.key === value() ? 0 : -1"
+      [disabled]="tab.disabled"
+      (click)="select(tab)">
+      @if (tab.icon) {
+        <lw-icon [name]="tab.icon" [size]="14" />
+      }
+      <span class="lw-tabs__label">{{ tab.label }}</span>
+      @if (tab.badge !== undefined) {
+        <span class="lw-tabs__badge">{{ tab.badge }}</span>
+      }
+    </button>
+  }
+</div>

@@ -1,0 +1,17 @@
+@if (shouldRender() && dialog.active(); as req) {
+  <lw-modal
+    [isOpen]="true"
+    [title]="req.title"
+    [message]="req.message"
+    [detail]="req.detail || ''"
+    variant="confirm"
+    size="sm"
+    [tone]="req.tone === 'danger' ? 'danger' : req.tone === 'warning' ? 'warning' : 'info'"
+    [confirmLabel]="req.confirmLabel || '확인'"
+    [cancelLabel]="req.cancelLabel || '취소'"
+    [showCancel]="req.kind === 'confirm'"
+    (confirm)="onConfirm()"
+    (cancel)="onCancel()"
+    (closeClick)="onCancel()"
+  />
+}

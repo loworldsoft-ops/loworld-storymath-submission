@@ -1,0 +1,45 @@
+<!-- Selection Glow Path -->
+@if (selected()) {
+  <path
+    [attr.d]="pathData()"
+    fill="none"
+    stroke="#6366f1"
+    stroke-width="7"
+    stroke-opacity="0.35"
+    stroke-linecap="round"
+  />
+}
+
+<!-- Main Path -->
+<path
+  [attr.d]="pathData()"
+  fill="none"
+  [style.stroke]="strokeColor()"
+  [attr.stroke-width]="strokeWidth()"
+  [attr.stroke-dasharray]="dashArray()"
+  [class.lw-wf-edge--animated]="animated()"
+/>
+
+<!-- Edge Center Label -->
+@if (label()) {
+  <g [attr.transform]="labelTransform()">
+    <rect
+      x="-24"
+      y="-10"
+      width="48"
+      height="20"
+      rx="4"
+      class="lw-wf-edge__label-bg"
+    />
+    <text
+      x="0"
+      y="4"
+      text-anchor="middle"
+      class="lw-wf-edge__label-text"
+      font-size="10"
+      font-weight="600"
+    >
+      {{ label() }}
+    </text>
+  </g>
+}

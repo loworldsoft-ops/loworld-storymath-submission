@@ -1,0 +1,109 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: #{lw.$lw-fab-overlay-scrim};
+}
+
+.menu {
+  position: absolute;
+  right: #{lw.$lw-fab-menu-right};
+  bottom: #{lw.$lw-fab-menu-bottom};
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: #{lw.$lw-fab-menu-gap};
+}
+
+.menu-item {
+  height: #{lw.$lw-fab-menu-item-height};
+  padding: 0 12px 0 20px;
+  border-radius: #{lw.$lw-progress-radius-pill};
+  border: none;
+  background: var(--lw-fab-menu-bg, #{lw.$lw-fab-menu-bg});
+  box-shadow: #{lw.$lw-fab-menu-shadow};
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  animation: lwFabItemIn 0.25s cubic-bezier(0, 0.8, 0.2, 1) both;
+}
+
+.menu-item:active {
+  transform: scale(0.97);
+}
+
+.menu-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lw-fab-menu-text, #{lw.$lw-fab-menu-text});
+  white-space: nowrap;
+}
+
+.menu-icon {
+  width: #{lw.$lw-fab-menu-icon-size};
+  height: #{lw.$lw-fab-menu-icon-size};
+  border-radius: #{lw.$lw-progress-radius-pill};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fab {
+  position: absolute;
+  right: #{lw.$lw-fab-anchor-right};
+  bottom: #{lw.$lw-fab-anchor-bottom};
+  z-index: 30;
+  width: var(--lw-fab-size, #{lw.$lw-fab-size-default});
+  height: var(--lw-fab-size, #{lw.$lw-fab-size-default});
+  border-radius: #{lw.$lw-progress-radius-pill};
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.fab:active {
+  transform: scale(0.95);
+}
+
+.fab-icon {
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-icon.open {
+  transform: rotate(45deg);
+}
+
+.fab-glyph {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--lw-color-white);
+  font-weight: 700;
+  display: inline-block;
+  user-select: none;
+}
+
+@keyframes lwFabItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

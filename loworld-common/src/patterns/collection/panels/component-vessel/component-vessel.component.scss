@@ -1,0 +1,288 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.lw-vessel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--lw-color-bg-base);
+  color: var(--lw-color-text-primary);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  border: 1px solid var(--lw-color-border-dark);
+  border-radius: 12px;
+
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  // 1. 헤더 컨트롤바
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, var(--lw-hue-zinc-900) 0%, var(--lw-hue-zinc-950) 100%);
+    border-bottom: 1px solid var(--lw-hue-zinc-800);
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--lw-hue-gray-200);
+    letter-spacing: -0.01em;
+  }
+
+  &__layout-controls {
+    display: flex;
+    background: var(--lw-hue-gray-900);
+    padding: 2px;
+    border-radius: 6px;
+    gap: 2px;
+  }
+
+  &__ctrl-btn {
+    border: none;
+    background: transparent;
+    color: var(--lw-hue-zinc-400);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    &:hover {
+      color: var(--lw-surface);
+    }
+
+    &--active {
+      background: var(--lw-color-primary-hover);
+      color: var(--lw-surface);
+      font-weight: 600;
+      box-shadow: 0 2px 4px color-mix(in srgb, var(--lw-color-black) 20%, transparent);
+    }
+  }
+
+  // 2. 바디 영역
+  &__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  // 왼쪽 배치 메뉴바
+  &--menu-left &__body {
+    flex-direction: row;
+  }
+
+  // 상단 배치 메뉴바
+  &--menu-top &__body {
+    flex-direction: column;
+  }
+
+  // 3. 네비게이션 메뉴바
+  &__navigation {
+    background: var(--lw-hue-zinc-900);
+    border-right: 1px solid var(--lw-hue-zinc-800);
+    padding: 12px 8px;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--menu-top &__navigation {
+    flex-direction: row;
+    min-width: unset;
+    border-right: none;
+    border-bottom: 1px solid var(--lw-hue-zinc-800);
+    padding: 8px 16px;
+  }
+
+  &__menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+
+    .lw-vessel--menu-top & {
+      flex-direction: row;
+      gap: 12px;
+      width: auto;
+    }
+  }
+
+  &__menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--lw-hue-stone-400);
+    transition: all 0.2s ease;
+    user-select: none;
+    border: 1px solid transparent;
+
+    &:hover:not(&--disabled) {
+      background: var(--lw-hue-gray-900);
+      color: var(--lw-surface);
+    }
+
+    &--active {
+      background: color-mix(in srgb, var(--lw-color-primary-hover) 15%, transparent);
+      border: 1px solid color-mix(in srgb, var(--lw-color-primary-hover) 30%, transparent);
+      color: var(--lw-color-primary-hover);
+      font-weight: 600;
+    }
+
+    &--disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  &__menu-badge {
+    margin-left: auto;
+    background: var(--lw-color-danger);
+    color: var(--lw-surface);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  // 4. 가변 레이아웃 그리드
+  &__content-grid {
+    flex: 1;
+    display: grid;
+    padding: 16px;
+    gap: 16px;
+    overflow: auto;
+    background: var(--lw-hue-zinc-950);
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    // 레이아웃 엔진 템플릿
+    &[data-layout="single"] {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+
+    &[data-layout="split"] {
+      grid-template-columns: 1.2fr 1fr; // 소설 영역이 약간 더 넓음
+      grid-template-rows: 1fr;
+    }
+
+    &[data-layout="grid"] {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    &[data-layout="overlay"] {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      position: relative;
+    }
+  }
+
+  // 개별 슬롯 상자
+  &__slot {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: auto;
+    background: var(--lw-hue-zinc-900);
+    border: 1px solid var(--lw-hue-gray-800);
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--lw-color-black) 15%, transparent);
+
+    &--hidden {
+      display: none !important;
+    }
+
+    &--fade {
+      filter: blur(2px) brightness(0.5);
+      pointer-events: none;
+    }
+  }
+
+  // 5. 오버레이 백드롭 및 모달 카드
+  &__overlay-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--lw-surface-scrim);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+
+  &__overlay-card {
+    background: var(--lw-hue-gray-900);
+    border: 1px solid var(--lw-hue-gray-700);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 12px 36px color-mix(in srgb, var(--lw-color-black) 50%, transparent);
+  }
+
+  &__overlay-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--lw-hue-stone-400);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    
+    &:hover {
+      color: var(--lw-surface);
+    }
+  }
+
+  &__overlay-content {
+    flex: 1;
+    overflow: auto;
+    padding: 20px;
+  }
+}
+
+// 간단한 애니메이션
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-up {
+  animation: slideUp 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}

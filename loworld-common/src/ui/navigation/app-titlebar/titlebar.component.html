@@ -1,0 +1,211 @@
+<div class="titlebar" [class.mobile]="isMobile()" [class.compact]="compactMode()" [class.title-only]="titleOnlyMode()">
+  <div class="left">
+    @if (showSidebarToggle()) {
+      <lw-button
+        type="button"
+        class="icon-btn"
+        variant="ghost"
+        [class.active]="sidebarActive()"
+        aria-label="사이드바 열기"
+        tooltipPlacement="bottom"
+        [tooltip]="showTooltips() ? '사이드바 열기 / 닫기' : ''"
+        (click)="onToggleSidebar($event)">
+        <span class="titlebar-burger-icon" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+      </lw-button>
+    }
+    @if (titleOnlyMode()) {
+      <div class="titlebar-clean-title">
+        <h2 class="titlebar-clean-title__text">{{ contextTitle() || appTitle() }}</h2>
+      </div>
+    } @else if (compactMode() && showContextToggle()) {
+      <lw-button
+        type="button"
+        class="context-btn"
+        variant="ghost"
+        [class.context-btn--active]="contextActive()"
+        aria-haspopup="dialog"
+        [attr.aria-expanded]="contextActive()"
+        (click)="onContextToggle($event)">
+        @if (contextEyebrow()) {
+          <span class="context-btn__eyebrow">{{ contextEyebrow() }}</span>
+        }
+        <span class="context-btn__title">{{ contextTitle() || appTitle() }}</span>
+      </lw-button>
+    } @else {
+      <div class="brand">
+        @if (appIconSrc() && !_imgError()) {
+          <img [src]="appIconSrc()" alt="" class="brand-icon" (error)="_imgError.set(true)" />
+        } @else {
+          <div class="brand-mark">eZ</div>
+        }
+        @if (appTitle()) {
+          <span class="brand-name">{{ appTitle() }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  @if (showMeta() && !isMobile() && !titleOnlyMode()) {
+    <lw-button type="button" class="meta" variant="ghost" (click)="onMetaClick($event)">
+      <div class="meta-copy">
+        @if (metaEyebrow()) {
+          <span class="meta-eyebrow">{{ metaEyebrow() }}</span>
+        }
+        @if (metaTitle()) {
+          <strong class="meta-title">{{ metaTitle() }}</strong>
+        }
+        @if (metaSubtitle()) {
+          <span class="meta-subtitle">{{ metaSubtitle() }}</span>
+        }
+      </div>
+      @if (metaBadge()) {
+        <span class="meta-badge">{{ metaBadge() }}</span>
+      }
+    </lw-button>
+  }
+
+  @if (!titleOnlyMode()) {
+  <div class="right">
+    @if (!(compactMode() && isMobile())) {
+    @if (showSettingsButton()) {
+      <lw-settings-button
+        [active]="settingsActive()"
+        [showLabel]="showButtonLabels()"
+        (toggle)="onSettingsClick()"
+      />
+    }
+
+    @if (secondaryActionLabel()) {
+      <lw-button
+        class="action-btn icon-only-btn"
+        variant="ghost"
+        [class.active]="secondaryActionActive()"
+        (click)="onSecondaryAction($event)"
+        tooltipPlacement="bottom"
+        [tooltip]="showTooltips() ? (secondaryActionLabel() + ' 열기/닫기') : ''"
+        [attr.aria-label]="secondaryActionLabel()">
+        @switch (actionIconKey(secondaryActionLabel())) {
+          @case ('progress') {
+            <span class="action-btn__icon action-btn__symbol" aria-hidden="true">📊</span>
+          }
+          @case ('panel') {
+            <span class="action-btn__icon action-btn__symbol" aria-hidden="true">📋</span>
+          }
+          @case ('menu') {
+            <span class="action-btn__icon action-btn__symbol" aria-hidden="true">☰</span>
+          }
+        }
+        @if (showButtonLabels()) {
+          <span class="action-btn__label">{{ secondaryActionLabel() }}</span>
+        }
+      </lw-button>
+    }
+
+    @if (primaryActionLabel()) {
+      <lw-button
+        class="action-btn icon-only-btn"
+        variant="ghost"
+        [class.active]="primaryActionActive()"
+        (click)="onPrimaryAction($event)"
+        tooltipPlacement="bottom"
+        [tooltip]="showTooltips() ? (primaryActionLabel() + ' 패널 열기/닫기') : ''"
+        [attr.aria-label]="primaryActionLabel()">
+        @switch (actionIconKey(primaryActionLabel())) {
+          @case ('progress') {
+            <span class="action-btn__icon action-btn__symbol" aria-hidden="true">📊</span>
+          }
+          @case ('panel') {
+            <span class="action-btn__icon action-btn__symbol" aria-hidden="true">📋</span>
+          }
+          @case ('menu') {
+            <span class="action-btn__icon action-btn__symbol" aria-hidden="true">☰</span>
+          }
+        }
+        @if (showButtonLabels()) {
+          <span class="action-btn__label">{{ primaryActionLabel() }}</span>
+        }
+      </lw-button>
+    }
+    }
+
+    @if (compactMode() && isMobile()) {
+      @if (showProgressShortcut()) {
+        <lw-button
+          type="button"
+          class="icon-btn icon-btn--action"
+          variant="ghost"
+          [class.active]="progressShortcutActive()"
+          aria-label="진행 현황"
+          [tooltip]="showTooltips() ? '진행 현황' : ''"
+          (click)="onProgressShortcut($event)">
+          <span class="action-btn__icon action-btn__symbol" aria-hidden="true">📊</span>
+        </lw-button>
+      }
+      @if (showOverflowMenu()) {
+        <lw-button
+          type="button"
+          class="icon-btn icon-btn--action"
+          variant="ghost"
+          [class.active]="overflowActive()"
+          aria-label="더보기 메뉴"
+          aria-haspopup="dialog"
+          [attr.aria-expanded]="overflowActive()"
+          [tooltip]="showTooltips() ? '더보기 메뉴' : ''"
+          (click)="onOverflowMenu($event)">
+          <span class="action-btn__icon action-btn__symbol" aria-hidden="true">•••</span>
+        </lw-button>
+      }
+    }
+
+    @if (showPoints()) {
+      <lw-button
+        class="points-btn icon-only-btn"
+        variant="ghost"
+        (click)="onPointsClick($event)"
+        tooltipPlacement="bottom"
+        [tooltip]="showTooltips() ? ('보유 포인트: ' + points() + 'P') : ''"
+        aria-label="보유 포인트">
+        @if (pointIconSrc()) {
+          <img [src]="pointIconSrc()" alt="" class="point-icon" />
+        } @else {
+          <div class="point-dot">P</div>
+        }
+      </lw-button>
+      <div class="divider" ></div>
+    }
+
+    @if (showSessionControl()) {
+      <ng-content select="[sessionControl]" />
+      @if (isMobile()) {
+        <lw-button
+          class="icon-btn profile-btn"
+          variant="ghost"
+          (click)="onLogin($event)"
+          tooltipPlacement="bottom"
+          [tooltip]="showTooltips() ? (sessionActive() ? '회원 프로필' : loginLabel()) : ''"
+          [attr.aria-label]="sessionActive() ? '회원 프로필' : loginLabel()">
+          @if (profileImageUrl() || profileInitial()) {
+            <lw-avatar
+              class="profile-img"
+              [src]="profileImageUrl()"
+              [initial]="profileInitial()"
+              alt="프로필"
+              size="sm"
+            />
+          } @else if (sessionActive()) {
+            <div class="profile-session-dot" title="로그인됨" aria-hidden="true"></div>
+          } @else {
+            <span class="profile-guest-icon" aria-hidden="true">👤</span>
+          }
+        </lw-button>
+      }
+    }
+  </div>
+  }
+
+  @if (titleOnlyMode() && showSidebarToggle()) {
+    <div class="titlebar-dummy-spacer" aria-hidden="true"></div>
+  }
+</div>

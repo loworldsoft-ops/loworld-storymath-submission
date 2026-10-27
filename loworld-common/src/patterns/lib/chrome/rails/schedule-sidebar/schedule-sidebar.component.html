@@ -1,0 +1,218 @@
+@if (isMobile()) {
+  <!-- ======== 모바일 "더보기" 패널 ======== -->
+  <div class="mp" >
+    <div class="mp-header" >
+      <div>
+        <p class="mp-title" >더보기</p>
+      </div>
+      <lw-button variant="ghost" shape="circle" size="xs" class="mp-close" (click)="close.emit()" ariaLabel="닫기">
+        <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+      </lw-button>
+    </div>
+    <div class="mp-body">
+      <lw-sidebar-profile-card
+        [profileHeadline]="profileHeadline()"
+        [loginLabel]="loginLabel()"
+        [profileImageUrl]="profileImageUrl()"
+        [profileInitial]="profileInitial()"
+        [appIconSrc]="appIconSrc()"
+        [points]="points()"
+        [showPoints]="showPoints()"
+        [showArrow]="true"
+        (login)="login.emit()"
+      />
+
+      <div class="mp-filter-row" >
+        @for (f of filterItems; track f.key) {
+          <label class="mp-filter-label">
+            <lw-checkbox class="filter-cb" [checked]="getFilterValue(f.key)" (checkedChange)="onFilterChange(f.key)" />
+            <span class="mp-filter-text" >{{ f.label }}</span>
+          </label>
+        }
+      </div>
+
+      <nav class="mp-nav">
+        @for (item of navItems(); track item.id) {
+          @if (item.id === 'calendar') {
+            <lw-button variant="ghost" [block]="true" class="mp-nav-item" [selected]="activeNav() === 'calendar'"
+                    (click)="navigate.emit('calendar'); close.emit()">
+              <lucide-icon [img]="item.icon" [size]="18" class="mp-nav-icon" />
+              <span class="mp-nav-label">{{ item.label }}</span>
+            </lw-button>
+            <div class="mp-cal-sec" >
+              <div class="mp-cal-sec-row">
+                <lw-button variant="ghost" class="mp-cal-toggle" (click)="myExpanded.set(!myExpanded())">
+                  <span class="icon-calendar" aria-hidden="true"></span>
+                  <span class="mp-nav-label" >내 캘린더</span>
+                  <span class="mp-count">&nbsp;{{ myCalendars().length }}</span>
+                </lw-button>
+                <lw-button variant="ghost" shape="circle" size="xs" class="mp-add-btn" (click)="addCalendar.emit()" ariaLabel="추가">
+                  <span class="icon-glyph icon-plus" aria-hidden="true">➕</span>
+                </lw-button>
+                <lw-button variant="ghost" shape="circle" size="xs" class="mp-expand-btn" (click)="myExpanded.set(!myExpanded())" ariaLabel="펼치기">
+                  <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+                </lw-button>
+              </div>
+              @if (myExpanded()) {
+                <lw-list-view
+                  class="mp-cal-items"
+                  [items]="myCalendars()"
+                  [trackBy]="trackCalendar"
+                  [itemTemplate]="calendarRow"
+                />
+              }
+            </div>
+            <div class="mp-cal-sec" >
+              <div class="mp-cal-sec-row">
+                <lw-button variant="ghost" class="mp-cal-toggle" (click)="subExpanded.set(!subExpanded())">
+                  <span class="icon-calendar" aria-hidden="true"></span>
+                  <span class="mp-nav-label" >다른 캘린더</span>
+                  <span class="mp-count">&nbsp;{{ subCalendars().length }}</span>
+                </lw-button>
+                <lw-button variant="ghost" shape="circle" size="xs" class="mp-add-btn" (click)="addSubscription.emit()" ariaLabel="추가">
+                  <span class="icon-glyph icon-plus" aria-hidden="true">➕</span>
+                </lw-button>
+                <lw-button variant="ghost" shape="circle" size="xs" class="mp-expand-btn" (click)="subExpanded.set(!subExpanded())" ariaLabel="펼치기">
+                  <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+                </lw-button>
+              </div>
+              @if (subExpanded()) {
+                <lw-list-view
+                  class="mp-cal-items"
+                  [items]="subCalendars()"
+                  [trackBy]="trackCalendar"
+                  [itemTemplate]="calendarRow"
+                />
+              }
+            </div>
+          } @else {
+            <lw-button variant="ghost" [block]="true" class="mp-nav-item" [selected]="activeNav() === item.id"
+                    (click)="navigate.emit(item.id); close.emit()">
+              <lucide-icon [img]="item.icon" [size]="18" class="mp-nav-icon" />
+              <span class="mp-nav-label">{{ item.label }}</span>
+            </lw-button>
+          }
+        }
+        <lw-button variant="ghost" [block]="true" class="mp-nav-item" (click)="openSettings.emit(); close.emit()">
+          <lucide-icon [img]="SettingsIcon" [size]="18" class="mp-nav-icon" />
+          <span class="mp-nav-label">설정</span>
+        </lw-button>
+      </nav>
+    </div>
+    <div class="mp-bottom" >
+      <lw-button variant="outline" size="sm" class="mp-bottom-btn">1:1 문의</lw-button>
+      <lw-button variant="outline" size="sm" class="mp-bottom-btn">자주 묻는 질문</lw-button>
+    </div>
+  </div>
+} @else {
+<!-- ======== 데스크톱 사이드바 ======== -->
+<aside class="sidebar" [class.collapsed]="!isOpen()">
+  @if (isOpen()) {
+    <lw-card class="top-card" variant="outlined">
+      <div class="mini-wrap">
+        <lw-schedule-mini-rail [selectedDate]="selectedDate()" (selectDate)="selectDate.emit($event)" />
+      </div>
+      <div class="filter-bar" >
+        <div class="filter-inner" >
+          @for (f of filterItems; track f.key) {
+            <label class="filter-label">
+              <lw-checkbox class="filter-cb" [checked]="getFilterValue(f.key)"
+                     (checkedChange)="onFilterChange(f.key)" />
+              <span class="filter-text" >{{ f.label }}</span>
+            </label>
+          }
+        </div>
+      </div>
+    </lw-card>
+    <div class="cal-lists">
+      <div class="cal-section" >
+        <div class="section-header">
+          <lw-button variant="ghost" class="toggle-btn" (click)="myExpanded.set(!myExpanded())">
+            <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+            <span class="section-title" >내 캘린더</span>
+            <span class="section-count">{{ myCalendars().length }}</span>
+          </lw-button>
+          <lw-button variant="ghost" shape="circle" size="xs" class="add-btn" (click)="addCalendar.emit()" ariaLabel="내 캘린더 추가">
+            <span class="icon-glyph icon-plus" aria-hidden="true">➕</span>
+          </lw-button>
+        </div>
+        @if (myExpanded()) {
+          <lw-list-view
+            class="cal-items"
+            [items]="myCalendars()"
+            [trackBy]="trackCalendar"
+            [itemTemplate]="calendarRow"
+          />
+        }
+      </div>
+      <div class="cal-section" >
+        <div class="section-header">
+          <lw-button variant="ghost" class="toggle-btn" (click)="subExpanded.set(!subExpanded())">
+            <span class="icon-glyph icon-chevron-down" aria-hidden="true">⌄</span>
+            <span class="section-title" >구독 캘린더</span>
+            <span class="section-count">{{ subCalendars().length }}</span>
+          </lw-button>
+          <lw-button variant="ghost" shape="circle" size="xs" class="add-btn" (click)="addSubscription.emit()" ariaLabel="구독 캘린더 추가">
+            <span class="icon-glyph icon-plus" aria-hidden="true">➕</span>
+          </lw-button>
+        </div>
+        @if (subExpanded()) {
+          <lw-list-view
+            class="cal-items"
+            [items]="subCalendars()"
+            [trackBy]="trackCalendar"
+            [itemTemplate]="calendarRow"
+          />
+        }
+      </div>
+    </div>
+    <div class="bottom-nav" >
+      @for (item of navItems(); track item.id) {
+        <lw-button class="nav-item" [class.active]="activeNav() === item.id"
+                (click)="navigate.emit(item.id)">
+          <lucide-icon [img]="item.icon" [size]="16" class="nav-icon" />
+          <span class="nav-label">{{ item.label }}</span>
+        </lw-button>
+      }
+      <lw-button class="nav-item" (click)="openSettings.emit()">
+        <lucide-icon [img]="SettingsIcon" [size]="16" class="nav-icon" />
+        <span class="nav-label">설정</span>
+      </lw-button>
+    </div>
+  } @else {
+    <div class="rail">
+      @for (item of navItems(); track item.id) {
+        <lw-button class="rail-btn" [class.active]="activeNav() === item.id"
+                [tooltip]="item.label" (click)="navigate.emit(item.id)">
+          <lucide-icon [img]="item.icon" [size]="18" />
+        </lw-button>
+      }
+    </div>
+    <div class="rail-divider" ></div>
+    <div class="rail-dots">
+      @for (c of calendars(); track c.id) {
+        <lw-button class="dot-btn" [class.hidden-cal]="!c.isVisible" [tooltip]="c.name"
+                (click)="toggleCalendar.emit(c.id)">
+          <span class="dot" [style.backgroundColor]="c.color"></span>
+        </lw-button>
+      }
+    </div>
+    <div class="rail-bottom" >
+      <lw-button class="rail-btn" tooltip="환경설정" (click)="openSettings.emit()">
+        <lucide-icon [img]="SettingsIcon" [size]="18" />
+      </lw-button>
+    </div>
+  }
+</aside>
+} <!-- end @else desktop -->
+
+<ng-template #calendarRow let-c>
+  <lw-schedule-action-row
+    [calendar]="c"
+    [checked]="c.isVisible"
+    (toggle)="toggleCalendar.emit(c.id)"
+    (rename)="renameCalendar.emit({ id: c.id, name: $event })"
+    (changeColor)="changeCalendarColor.emit({ id: c.id, color: $event })"
+    (deleteCalendar)="deleteCalendar.emit(c.id)"
+  />
+</ng-template>

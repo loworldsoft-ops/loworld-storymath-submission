@@ -1,0 +1,55 @@
+    <div class="simulator-container">
+      <!-- 시뮬레이터 조작 헤더 -->
+      <div class="shop-sim__controls">
+        <div class="shop-sim__control-row" style="flex-wrap: wrap; gap: 8px;">
+          <label class="shop-sim__label">
+            응답 시나리오 프리셋
+            <lw-select
+              class="shop-sim__select"
+              [value]="chatbotPresetId()"
+              (selectChange)="onChatbotPresetChange($event)">
+              <option value="developer">💻 AI 개발 도우미</option>
+              <option value="customer_support">🛍️ CS 상담 지원</option>
+              <option value="glitch_ai">⚠️ 괴팍한 시스템 경고</option>
+            </lw-select>
+          </label>
+
+          <span class="shop-sim__stat" style="display: flex; align-items: center; gap: 6px;">
+            🤖 봇 상태:
+            <strong style="color: #06b6d4;">{{ chatbotState().isOnline ? 'ONLINE' : 'OFFLINE' }}</strong>
+          </span>
+
+          <!-- 통합 재화 연동 디버거 -->
+          <span class="shop-sim__stat" style="display: flex; align-items: center; gap: 6px; color: #d4af37;">
+            🪙 보유 골드: <strong>{{ playerGold() }}G</strong>
+          </span>
+
+          <lw-button class="shop-sim__reset-btn" type="button" (click)="resetChatbotState()">
+            🔄 대화 리셋
+          </lw-button>
+        </div>
+      </div>
+
+      <!-- 실물 챗봇 컴포넌트 마운트 -->
+      <div class="chatbot-sim-frame" style="max-width: 480px; margin: 0 auto; width: 100%;">
+        <lw-chatbot
+          [data]="chatbotState()"
+          (actionEvent)="onChatbotActionEvent($event)" />
+      </div>
+
+      <!-- 이벤트 로그 -->
+      @if (chatbotEventLog().length > 0) {
+        <details class="shop-sim__log-details" open>
+          <summary class="shop-sim__log-summary">챗봇 통신 피드 로그 ({{ chatbotEventLog().length }})</summary>
+          <div class="shop-sim__log">
+            @for (entry of chatbotEventLog(); track $index) {
+              <div class="shop-sim__log-entry"
+                   [class.shop-sim__log-entry--success]="entry.includes('발송') || entry.includes('수신') || entry.includes('성공')"
+                   [class.shop-sim__log-entry--fail]="entry.includes('에러') || entry.includes('리셋') || entry.includes('Action')">
+                {{ entry }}
+              </div>
+            }
+          </div>
+        </details>
+      }
+    </div>

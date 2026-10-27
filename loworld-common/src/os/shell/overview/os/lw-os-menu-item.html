@@ -1,0 +1,6 @@
+    <button lwPressable role="menuitem" class="os-menu-item" [class.is-danger]="danger()" [disabled]="disabled()" (press)="select.emit()">
+      <span class="os-menu-item__label"><ng-content /></span>
+      @if (hint()) {
+        <span class="os-menu-item__hint">{{ hint() }}</span>
+      }
+    </button>

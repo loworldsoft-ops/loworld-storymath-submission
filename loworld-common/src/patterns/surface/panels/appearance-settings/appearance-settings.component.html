@@ -1,0 +1,92 @@
+<div class="appearance">
+  <fieldset class="appearance__group">
+    <legend class="appearance__legend">화면 모드</legend>
+    <div class="appearance__segments" role="radiogroup" aria-label="화면 모드">
+      @for (choice of schemes; track choice.value) {
+        <label class="appearance__segment" [class.is-selected]="appearance().scheme === choice.value">
+          <input
+            type="radio"
+            class="appearance__radio"
+            [name]="uid + '-scheme'"
+            [value]="choice.value"
+            [checked]="appearance().scheme === choice.value"
+            (change)="setScheme(choice.value)" />
+          <span>{{ choice.label }}</span>
+        </label>
+      }
+    </div>
+    @if (schemeNote(); as note) {
+      <p class="appearance__note">{{ note }}</p>
+    }
+  </fieldset>
+
+  <fieldset class="appearance__group">
+    <legend class="appearance__legend">스킨</legend>
+    <p class="appearance__hint">기본은 꾸밈이 없습니다. 다른 스킨은 고를 때만 적용됩니다.</p>
+    <div class="appearance__skins" role="radiogroup" aria-label="스킨">
+      @for (skin of skins; track skin.id) {
+        <label class="appearance__skin" [class.is-selected]="appearance().skin === skin.id">
+          <input
+            type="radio"
+            class="appearance__radio"
+            [name]="uid + '-skin'"
+            [value]="skin.id"
+            [checked]="appearance().skin === skin.id"
+            (change)="setSkin(skin.id)" />
+          <span
+            class="appearance__swatch"
+            aria-hidden="true"
+            [style.background]="skin.preview.bg"
+            [style.color]="skin.preview.fg">
+            <span class="appearance__swatch-text">가</span>
+            <span class="appearance__swatch-dot" [style.background]="skin.preview.accent"></span>
+          </span>
+          <span class="appearance__skin-text">
+            <span class="appearance__skin-name">{{ skin.name }}</span>
+            <span class="appearance__skin-desc">{{ skin.description }}</span>
+          </span>
+        </label>
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="appearance__group">
+    <legend class="appearance__legend">밀도</legend>
+    <div class="appearance__segments" role="radiogroup" aria-label="밀도">
+      @for (choice of densities; track choice.value) {
+        <label class="appearance__segment" [class.is-selected]="appearance().density === choice.value">
+          <input
+            type="radio"
+            class="appearance__radio"
+            [name]="uid + '-density'"
+            [value]="choice.value"
+            [checked]="appearance().density === choice.value"
+            (change)="setDensity(choice.value)" />
+          <span>{{ choice.label }}</span>
+        </label>
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="appearance__group">
+    <legend class="appearance__legend">움직임</legend>
+    <div class="appearance__segments" role="radiogroup" aria-label="움직임">
+      @for (choice of motions; track choice.value) {
+        <label class="appearance__segment" [class.is-selected]="appearance().motion === choice.value">
+          <input
+            type="radio"
+            class="appearance__radio"
+            [name]="uid + '-motion'"
+            [value]="choice.value"
+            [checked]="appearance().motion === choice.value"
+            (change)="setMotion(choice.value)" />
+          <span>{{ choice.label }}</span>
+        </label>
+      }
+    </div>
+  </fieldset>
+
+  <div class="appearance__footer">
+    <lw-button variant="secondary" size="sm" [disabled]="isDefault()" (click)="reset()">기본값으로 되돌리기</lw-button>
+  </div>
+</div>

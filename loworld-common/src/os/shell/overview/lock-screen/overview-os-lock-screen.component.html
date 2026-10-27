@@ -1,0 +1,35 @@
+<div class="lock" [class.is-mobile]="isMobile()">
+  <main class="lock__main">
+    <header class="lock__clock">
+      <time class="lock__time">{{ currentTime() }}</time>
+      <p class="lock__date">{{ currentDate() }}</p>
+    </header>
+
+    <section class="lock__card" aria-labelledby="lock-title">
+      <span class="lock__badge" aria-hidden="true"><lw-icon name="lock" [size]="18" /></span>
+      <h1 id="lock-title" class="lock__title">로그인이 필요합니다</h1>
+      <p class="lock__desc">Loworld {{ isMobile() ? '모바일' : '데스크톱' }} OS를 쓰려면 로그인해 주세요.</p>
+      <lw-button
+        type="button"
+        variant="primary"
+        size="lg"
+        class="lock__submit"
+        [block]="true"
+        [disabled]="submitting()"
+        (click)="loginRequested.emit()">
+        {{ submitting() ? '로그인 중…' : '로그인' }}
+      </lw-button>
+    </section>
+  </main>
+
+  <footer class="lock__footer">
+    <lw-button type="button" variant="ghost" size="sm" (click)="deviceModeToggle.emit()">
+      <lw-icon [name]="isMobile() ? 'monitor' : 'mobile'" [size]="14" />
+      <span>{{ isMobile() ? '데스크톱 모드' : '스마트폰 모드' }}</span>
+    </lw-button>
+    <lw-button type="button" variant="ghost" size="sm" (click)="themeToggle.emit()">
+      <lw-icon [name]="themeMode() === 'dark' ? 'sun' : 'moon'" [size]="14" />
+      <span>{{ themeMode() === 'dark' ? '라이트 모드' : '다크 모드' }}</span>
+    </lw-button>
+  </footer>
+</div>

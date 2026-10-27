@@ -1,0 +1,5 @@
+[{ "id": "loot.a", "entries": [
+  { "id": "bead.ga", "weight": 5 },
+  { "id": "bead.da", "weight": 1 },
+  { "id": "bead.na", "weight": 50, "when": "alignment(cruel)" }
+] }]

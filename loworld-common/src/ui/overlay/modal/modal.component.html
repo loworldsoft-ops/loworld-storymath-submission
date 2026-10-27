@@ -1,0 +1,333 @@
+@if (effectiveOpen()) {
+  <div
+    class="lw-modal-overlay"
+    role="presentation"
+    [class.is-simulator-scoped]="isSimulatorScoped()"
+    [class.is-sheet]="isSheet()"
+    [class.is-mobile]="isSimulatorScoped() || effectiveWindowStyle() === 'standard'"
+    [class.blur]="backdropBlur()"
+    [attr.data-lw-theme]="effectiveTheme()"
+    [attr.data-lw-play-theme]="effectivePlayTheme()"
+    [class.is-dark]="isEffectiveDark()"
+    (click)="onOverlayClick()">
+    
+    <div
+      class="lw-modal-window"
+      [class.is-os-desktop]="effectiveWindowStyle() === 'os-desktop'"
+      [class.is-maximized]="isMaximized()"
+      [class.is-glass]="glassmorphism()"
+      [class.is-light-bg]="effectiveLightBackground()"
+      [class.is-dragging]="isDragging()"
+      [style.transform]="dragTransform()"
+      [attr.data-size]="size()"
+      [attr.data-variant]="variant()"
+      [attr.data-tone]="tone()"
+      [attr.data-window-style]="effectiveWindowStyle()"
+      [attr.data-lw-theme]="effectiveTheme()"
+      [attr.data-lw-play-theme]="effectivePlayTheme()"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()">
+
+      @if (isSheet()) {
+        <div class="lw-modal-sheet-handle" aria-hidden="true"></div>
+      }
+
+      <!-- 1. 헤더 영역 (Desktop OS 윈도우 타이틀바) -->
+      @if (showHeader()) {
+        <header
+          class="lw-modal-header"
+          [class.is-os-header]="effectiveWindowStyle() === 'os-desktop'"
+          [class.is-draggable]="draggable() && !isMaximized() && !isSheet()"
+          [class.title-center]="titleAlign() === 'center'"
+          (dblclick)="onTitleBarDblClick()"
+          (pointerdown)="onHeaderPointerDown($event)">
+
+          <!-- 중앙/제목: 타이틀 그룹 -->
+          <div class="lw-modal-title-group">
+            <ng-content select="[lwModalHeader]" />
+            <ng-content select="[lwModalIcon]" />
+            @if (title()) {
+              <h2 class="lw-modal-title">{{ title() }}</h2>
+            } @else {
+              <ng-content select="[lwModalTitle]" />
+            }
+            @if (effectiveSubtitle(); as sub) {
+              <p class="lw-modal-desc">{{ sub }}</p>
+            }
+          </div>
+
+          <!-- 우측 액션 및 통일된 닫기 버튼 -->
+          <div class="lw-modal-header-actions">
+            <ng-content select="[lwModalWindowActions], [lwModalExtraAction]" />
+
+            @if (showClose()) {
+              <lw-close-button
+                class="lw-modal-close-btn"
+                size="sm"
+                variant="default"
+                ariaLabel="닫기 (Esc)"
+                tooltip="닫기 (Esc)"
+                (closeClick)="handleClose()" />
+            }
+          </div>
+        </header>
+      }
+
+      <!-- 2. 바디 영역 -->
+      <main class="lw-modal-body" [class.is-paddingless]="paddingless() || size() === 'fullscreen'">
+        @switch (variant()) {
+          @case ('confirm') {
+            <div class="modal-confirm-view">
+              <div class="confirm-icon-box" [attr.data-tone]="tone()">
+                @switch (tone()) {
+                  @case ('danger') {
+                    <span class="confirm-symbol confirm-symbol--danger" aria-hidden="true">⚠️</span>
+                  }
+                  @case ('primary') {
+                    <span class="confirm-symbol confirm-symbol--info" aria-hidden="true">ℹ️</span>
+                  }
+                  @default {
+                    <span class="confirm-symbol confirm-symbol--question" aria-hidden="true">❓</span>
+                  }
+                }
+              </div>
+              <div class="confirm-text-box">
+                <p class="confirm-message">{{ message() || effectiveSubtitle() || title() }}</p>
+                @if (detail()) {
+                  <p class="confirm-detail">{{ detail() }}</p>
+                }
+                <ng-content />
+              </div>
+            </div>
+          }
+
+          @case ('form') {
+            @if (fields().length > 0) {
+              <form class="modal-form-view" (submit)="$event.preventDefault(); handleFormSubmit()">
+                @for (field of fields(); track field.id) {
+                  <lw-form-field [label]="field.label" [required]="!!field.required">
+                    @if (field.type === 'select') {
+                      <lw-select
+                        class="form-control"
+                        [id]="field.id"
+                        [options]="field.options || []"
+                        [value]="formValues()[field.id] ?? field.value ?? ''"
+                        (valueChange)="onFieldChange(field.id, $event)">
+                      </lw-select>
+                    } @else if (field.type === 'textarea') {
+                      <lw-textarea
+                        class="form-control textarea"
+                        [id]="field.id"
+                        [placeholder]="field.placeholder || ''"
+                        [value]="formValues()[field.id] ?? field.value ?? ''"
+                        (valueChange)="onFieldChange(field.id, $event)">
+                      </lw-textarea>
+                    } @else {
+                      <lw-input
+                        class="form-control"
+                        [id]="field.id"
+                        [type]="field.type"
+                        [placeholder]="field.placeholder || ''"
+                        [value]="formValues()[field.id] ?? field.value ?? ''"
+                        (valueChange)="onFieldChange(field.id, ''+$event)" />
+                    }
+                  </lw-form-field>
+                }
+              </form>
+            } @else {
+              <ng-content />
+            }
+          }
+
+          @case ('selection') {
+            <div class="modal-selection-view">
+              <div class="selection-list">
+                @for (item of items(); track item.id) {
+                  <button
+                    type="button"
+                    class="selection-item lw-btn-unstyled"
+                    [class.selected]="selectedItemId() === item.id"
+                    [class.disabled]="item.disabled"
+                    [disabled]="item.disabled"
+                    (click)="!item.disabled && onSelectItem(item.id)">
+                    <div class="selection-radio-indicator">
+                      @if (selectedItemId() === item.id) {
+                        <div class="radio-dot"></div>
+                      }
+                    </div>
+                    <div class="selection-item-info">
+                      <span class="selection-item-title">{{ item.label }}</span>
+                      @if (item.description) {
+                        <span class="selection-item-desc">{{ item.description }}</span>
+                      }
+                    </div>
+                  </button>
+                } @empty {
+                  <p class="selection-empty">선택 가능한 항목이 없습니다.</p>
+                }
+              </div>
+            </div>
+          }
+
+          @case ('wizard') {
+            <div class="modal-wizard-view">
+              <div class="wizard-stepper">
+                @for (step of steps(); track step.id; let idx = $index) {
+                  <button
+                    type="button"
+                    class="step-node lw-btn-unstyled"
+                    [class.active]="currentStepIndex() === idx"
+                    [class.completed]="currentStepIndex() > idx || step.completed"
+                    (click)="onStepClick(idx)">
+                    <span class="step-num">{{ idx + 1 }}</span>
+                    <span class="step-title">{{ step.title }}</span>
+                  </button>
+                  @if (idx < steps().length - 1) {
+                    <div class="step-line" [class.completed]="currentStepIndex() > idx"></div>
+                  }
+                }
+              </div>
+              <div class="wizard-step-content">
+                @if (steps()[currentStepIndex()]; as activeStep) {
+                  <h3>{{ activeStep.title }}</h3>
+                  @if (activeStep.description) {
+                    <p class="step-desc">{{ activeStep.description }}</p>
+                  }
+                }
+                <ng-content />
+              </div>
+            </div>
+          }
+
+          @case ('settings') {
+            <div class="modal-settings-view">
+              <aside class="settings-sidebar">
+                @for (tab of tabs(); track tab.id) {
+                  <button lw-button
+                    type="button"
+                    class="settings-tab-btn"
+                    [class.active]="activeTabId() === tab.id"
+                    (click)="onTabClick(tab.id)">
+                    @if (tab.icon) {
+                      <span class="tab-icon">{{ tab.icon }}</span>
+                    }
+                    <span>{{ tab.label }}</span>
+                  </button>
+                }
+              </aside>
+              <section class="settings-main-panel">
+                @if (currentTabMeta(); as tabMeta) {
+                  <div class="settings-tab-header">
+                    <h3>{{ tabMeta.label }}</h3>
+                    @if (tabMeta.description) {
+                      <p>{{ tabMeta.description }}</p>
+                    }
+                  </div>
+                }
+                <div class="settings-tab-content">
+                  <ng-content />
+                </div>
+              </section>
+            </div>
+          }
+
+          @default {
+            <ng-content />
+          }
+        }
+      </main>
+
+      <!-- 3. 푸터 영역 -->
+      <footer class="lw-modal-footer">
+        @switch (variant()) {
+          @case ('confirm') {
+            <div class="footer-actions">
+              @if (showCancel()) {
+                <lw-button
+                  type="button"
+                  variant="secondary"
+                  (click)="handleCancel()">
+                  {{ cancelLabel() }}
+                </lw-button>
+              }
+              <lw-button
+                type="button"
+                [variant]="tone() === 'danger' ? 'danger' : 'primary'"
+                (click)="handleConfirm()">
+                {{ confirmLabel() }}
+              </lw-button>
+            </div>
+          }
+
+          @case ('form') {
+            <div class="footer-actions">
+              <lw-button
+                type="button"
+                variant="secondary"
+                (click)="handleClose()">
+                취소
+              </lw-button>
+              <lw-button
+                type="button"
+                variant="primary"
+                (click)="handleFormSubmit()">
+                {{ submitLabel() }}
+              </lw-button>
+            </div>
+          }
+
+          @case ('selection') {
+            <div class="footer-actions">
+              <lw-button
+                type="button"
+                variant="secondary"
+                (click)="handleClose()">
+                취소
+              </lw-button>
+              <lw-button
+                type="button"
+                variant="primary"
+                [disabled]="!selectedItemId()"
+                (click)="handleSelectionConfirm()">
+                선택 완료
+              </lw-button>
+            </div>
+          }
+
+          @case ('wizard') {
+            <div class="footer-actions wizard-actions">
+              <lw-button
+                type="button"
+                variant="secondary"
+                [disabled]="currentStepIndex() === 0"
+                (click)="prevStep()">
+                이전
+              </lw-button>
+              @if (currentStepIndex() < steps().length - 1) {
+                <lw-button
+                  type="button"
+                  variant="primary"
+                  (click)="nextStep()">
+                  다음
+                </lw-button>
+              } @else {
+                <lw-button
+                  type="button"
+                  variant="primary"
+                  (click)="completeWizard()">
+                  완료
+                </lw-button>
+              }
+            </div>
+          }
+
+          @default {
+            <ng-content select="[lwModalFooter], [modalFooter]" />
+          }
+        }
+      </footer>
+
+    </div>
+  </div>
+}

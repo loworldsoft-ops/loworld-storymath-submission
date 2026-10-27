@@ -1,0 +1,46 @@
+@if (session(); as s) {
+  <div class="member-session-menu">
+    <div class="dropdown-header">
+      <div class="header-avatar">
+        <lw-avatar class="avatar-inner" [initial]="(s.displayName || 'U').charAt(0)" size="md" />
+      </div>
+      <div class="header-info">
+        <strong class="user-name">{{ s.displayName }}</strong>
+        @if (s.email) {
+          <span class="user-email">{{ s.email }}</span>
+        }
+        @if (s.directoryRole) {
+          <div class="role-badge-wrap">
+            <lw-account-role-badge [role]="s.directoryRole" />
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="dropdown-divider"></div>
+
+    <div class="dropdown-actions">
+      <lw-button
+        type="button"
+        variant="ghost"
+        class="action-item"
+        (click)="onAccountAction($event)"
+        role="menuitem"
+      >
+        <span class="icon-glyph icon-user" aria-hidden="true">👤</span>
+        <span>계정 정보 / 프로필</span>
+      </lw-button>
+
+      <lw-button
+        type="button"
+        variant="ghost"
+        class="action-item action-item--logout"
+        (click)="onLogoutAction($event)"
+        role="menuitem"
+      >
+        <span class="icon-user" aria-hidden="true"></span>
+        <span>로그아웃</span>
+      </lw-button>
+    </div>
+  </div>
+}

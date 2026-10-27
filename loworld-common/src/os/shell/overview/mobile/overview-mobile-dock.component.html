@@ -1,0 +1,22 @@
+<nav class="overview-mobile-dock" aria-label="모바일 overview 도크">
+  @for (action of actions(); track action.id) {
+    <lw-button
+      type="button"
+      class="overview-mobile-dock__item"
+      [class.is-active]="selectedAction() === action.id"
+      [class.is-running]="action.id === 'running' && hasRunningWindows()"
+      [class.is-disabled]="action.id === 'running' && !hasRunningWindows()"
+      [disabled]="action.id === 'running' && !hasRunningWindows()"
+      [tooltip]="action.label"
+      (click)="onSelect(action.id)">
+      <span class="overview-mobile-dock__icon" aria-hidden="true">
+        <lw-os-icon [icon]="action.icon" [size]="16" />
+      </span>
+      <span class="overview-mobile-dock__indicator" aria-hidden="true"></span>
+      <span class="overview-mobile-dock__label">{{ action.label }}</span>
+      @if (action.id === 'running' && runningCount() > 0) {
+        <span class="overview-mobile-dock__badge">{{ runningCount() }}</span>
+      }
+    </lw-button>
+  }
+</nav>

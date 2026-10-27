@@ -1,0 +1,21 @@
+    <div class="overview-window-scroll overview-window-scroll--page">
+      @if (selectedComponent(); as comp) {
+        <div class="detail-view-container">
+          <div class="detail-view-header-bar">
+            <lw-button variant="ghost" size="sm" type="button" class="back-to-grid-btn" (click)="resetSelection.emit()">
+              ← 컴포넌트 목록
+            </lw-button>
+          </div>
+          <lw-component-detail
+            [comp]="comp"
+            [domain]="domain()"
+            [themeMode]="themeMode()"
+            (openNav)="openNav.emit()" />
+        </div>
+      } @else {
+        <lw-component-tile-grid
+          [components]="components()"
+          [themeMode]="themeMode()"
+          (componentSelect)="componentSelect.emit($event)" />
+      }
+    </div>

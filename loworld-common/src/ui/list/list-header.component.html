@@ -1,0 +1,18 @@
+    <div class="lw-list-header" role="row">
+      <div class="lw-list-header__leading">
+        <ng-content select="[lwLeading]"></ng-content>
+      </div>
+
+      <div class="lw-list-header__content">
+        <ng-content select="[lwContent]"></ng-content>
+        <ng-content></ng-content>
+      </div>
+
+      <div class="lw-list-header__meta">
+        <ng-content select="[lwMeta]"></ng-content>
+      </div>
+
+      <div class="lw-list-header__actions">
+        <ng-content select="[lwActions]"></ng-content>
+      </div>
+    </div>

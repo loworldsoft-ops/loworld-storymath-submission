@@ -1,0 +1,4 @@
+id,name,role,nature,might,guard,wit,spirit,bond,want,line,weakness,selfCall,call.hostile,call.cold,call.neutral,call.warm,call.trusting,habit,zone,lean
+friend,벗,ally,p_compassion,10,5,10,5,30,,,,나,너,너,너,너,너,,zone.a,
+other,남,ally,p_desire_freedom,10,5,10,5,0,,,,나,너,너,너,너,너,,zone.a,
+rival,맞수,rival,p_pride,20,2,8,5,-20,,,,나,놈,놈,놈,놈,놈,,zone.a,

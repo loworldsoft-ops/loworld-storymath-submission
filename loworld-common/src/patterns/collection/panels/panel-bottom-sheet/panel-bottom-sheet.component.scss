@@ -1,0 +1,88 @@
+@use 'scrollbar' as *;
+:host {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 2000 !important;
+  pointer-events: none;
+
+  // 바텀시트 내부 자식 컴포넌트(아이템, 카드, 퀘스트, 슬롯 등) 표면 스코핑
+  --lw-game-play-surface: var(--lw-surface);
+  --lw-bg-panel: var(--lw-surface);
+  --lw-card-bg: var(--lw-surface);
+  --lw-surface: #ffffff;
+  --lw-game-play-text: var(--lw-text-primary);
+  --lw-game-text-body: var(--lw-surface-overlay);
+  --lw-game-text-muted: var(--lw-text-muted);
+  --lw-text-primary: #0f172a;
+  --lw-border-color: rgba(226, 232, 240, 0.9);
+
+  :host-context([data-lw-theme="dark"]) & {
+    --lw-game-play-surface: var(--lw-surface-overlay);
+    --lw-bg-panel: var(--lw-surface-overlay);
+    --lw-card-bg: var(--lw-surface-overlay);
+    --lw-surface: var(--lw-surface-overlay);
+    --lw-game-play-text: var(--lw-surface-subtle);
+    --lw-game-text-body: var(--lw-border-subtle);
+    --lw-game-text-muted: var(--lw-text-muted-light);
+    --lw-text-primary: var(--lw-surface-subtle);
+    --lw-border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.lw-panel-bottom-sheet {
+  &__kicker {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lw-game-accent);
+  }
+
+  &__title {
+    margin: 2px 0 0 0;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--lw-bottom-sheet-title-color, var(--lw-game-text-title, var(--lw-text-primary)));
+
+    :host-context([data-lw-theme="dark"]) & {
+      color: var(--lw-bottom-sheet-title-color, var(--lw-game-text-title, var(--lw-text-primary)));
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 0px;
+    min-height: 0;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 16px 10px !important;
+    color: var(--lw-bottom-sheet-text-color, var(--lw-text-primary, inherit));
+
+    &--full-width {
+      width: 100% !important;
+      min-width: 0 !important;
+
+      > * {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+      }
+    }
+
+    @include lw-scrollbar;
+  }
+}
+

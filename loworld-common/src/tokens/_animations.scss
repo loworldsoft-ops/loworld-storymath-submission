@@ -1,0 +1,23 @@
+// ════════════════════════════════════════════════════════════════════════════════
+// LoworldUI Design System — Standard Animation Tokens & Keyframes (DRY / OCP)
+// ════════════════════════════════════════════════════════════════════════════════
+
+// 키프레임과 유틸 클래스는 `_global-utilities.scss`에 있고 전역 스타일시트가 한 번만 내보낸다.
+// 여기에는 믹스인만 둔다(이 파일은 `index`를 통해 모든 컴포넌트 스타일에 들어온다).
+
+// ── Animation Helper Mixins ──
+@mixin lw-animate-fade-in($duration: 0.2s, $easing: cubic-bezier(0.16, 1, 0.3, 1)) {
+  animation: lw-fade-in $duration $easing forwards;
+}
+
+@mixin lw-animate-pulse($duration: 1.8s, $easing: ease-in-out) {
+  animation: lw-pulse $duration $easing infinite;
+}
+
+@mixin lw-animate-spin($duration: 1s, $easing: linear) {
+  animation: lw-spin $duration $easing infinite;
+}
+
+@mixin lw-animate-shimmer($duration: 2s, $easing: linear) {
+  animation: lw-shimmer $duration $easing infinite;
+}

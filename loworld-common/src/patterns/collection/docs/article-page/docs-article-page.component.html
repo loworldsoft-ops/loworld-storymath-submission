@@ -1,0 +1,11 @@
+<lw-docs-page
+  [article]="article()"
+  [pager]="pager()"
+  [anchor]="anchor()"
+  [dark]="dark()"
+  [assetBase]="assetBase()"
+  (navigate)="navigate.emit($event)"
+  (anchorSelect)="anchorSelect.emit($event)"
+  (activeAnchorChange)="activeAnchorChange.emit($event)"
+  (copyPage)="copyPage.emit($event)"
+  (codeCopied)="codeCopied.emit($event)" />

@@ -1,0 +1,11 @@
+@use 'index' as lw;
+
+:host {
+  display: contents;
+}
+
+.inspector-detail-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}

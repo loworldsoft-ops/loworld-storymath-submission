@@ -1,0 +1,22 @@
+    :host {
+      display: contents;
+    }
+
+    .overview-wallpaper-backdrop {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    // 그림 배경 위의 글자와 아이콘이 읽히도록 옅은 막을 깐다. 단색 배경에는 깔지 않는다.
+    .overview-wallpaper-scrim {
+      position: absolute;
+      inset: 0;
+      background: color-mix(in srgb, var(--lw-color-black) 16%, transparent);
+      pointer-events: none;
+      z-index: 1;
+    }

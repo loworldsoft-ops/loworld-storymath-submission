@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "cli": {
+    "analytics": false
+  },
+  "newProjectRoot": ".",
+  "projects": {
+    "app": {
+      "projectType": "application",
+      "root": ".",
+      "sourceRoot": "src",
+      "prefix": "scr",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/app",
+            "browser": "standalone/main.ts",
+            "index": "standalone/index.html",
+            "tsConfig": "tsconfig.json",
+            "inlineStyleLanguage": "scss",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                ".common/src/tokens",
+                "node_modules", "../node_modules"
+              ]
+            },
+            "allowedCommonJsDependencies": [
+              "leaflet"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public",
+                "followSymlinks": true
+              }
+            ],
+            "styles": [
+              ".common/src/os/styles/global.scss"
+            ],
+            "preserveSymlinks": true
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": {
+                "scripts": true,
+                "styles": false,
+                "vendor": false
+              },
+              "assets": [
+                { "glob": "**/*", "input": "public", "followSymlinks": true },
+                { "glob": "**/*", "input": ".content", "output": "content", "followSymlinks": true }
+              ]
+            },
+            "bare": {
+              "assets": []
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "app:build:production"
+            },
+            "development": {
+              "buildTarget": "app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  }
+}

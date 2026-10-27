@@ -1,0 +1,9 @@
+    <div class="plan-preview-wrap">
+      <div class="plan-preview-caption">{{ comp().name }} 미리보기</div>
+      <div class="plan-preview-frame">
+        <lw-stack direction="row" gap="md" align="start" [wrap]="true">
+          <lw-wbs-tree [nodes]="wbs()" [selectedId]="selectedNodeId()" (nodeSelect)="selectedNodeId.set($event)" />
+          <lw-strategy-spec-panel [node]="selectedNode()" />
+        </lw-stack>
+      </div>
+    </div>

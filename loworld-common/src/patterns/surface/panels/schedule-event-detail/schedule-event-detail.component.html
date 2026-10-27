@@ -1,0 +1,162 @@
+<div class="panel" >
+  <!-- Header -->
+  <div class="panel-header" >
+    <div class="header-left">
+      @if (showBackButton()) {
+        <lw-button class="icon-btn" (click)="back()">
+          <span class="icon-glyph icon-chevron-left" aria-hidden="true">‹</span>
+        </lw-button>
+      }
+      <span class="panel-title" >{{ panelTitle() }}</span>
+    </div>
+    <lw-button class="icon-btn" (click)="close.emit()">
+      <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+    </lw-button>
+  </div>
+
+  @if (currentMode() === 'form') {
+    <!-- Form mode -->
+    <div class="form-body">
+      <lw-form-field label="일정 제목">
+        <lw-input class="field-input" [(ngModel)]="formTitle" placeholder="일정 제목을 입력하세요" />
+      </lw-form-field>
+      <lw-form-field label="날짜">
+        <lw-input class="field-input" type="date" [(ngModel)]="formDate" />
+      </lw-form-field>
+      <lw-form-field label="유형">
+        <div class="type-grid">
+          @for (opt of eventTypes; track opt.value) {
+            <lw-button class="type-btn" [class.active]="formType === opt.value" (click)="formType = opt.value">{{ opt.label }}</lw-button>
+          }
+        </div>
+      </lw-form-field>
+      <lw-form-field label="캘린더">
+        <lw-select class="field-input" [(ngModel)]="formCalendarId">
+          @for (cal of editableCalendars(); track cal.id) {
+            <option [value]="cal.id">{{ cal.name }}</option>
+          }
+        </lw-select>
+      </lw-form-field>
+      <lw-form-field label="시간">
+        <label class="checkbox-row">
+          <lw-checkbox class="cb" [(ngModel)]="formIsAllDay" />
+          <span class="checkbox-text">종일</span>
+        </label>
+        @if (!formIsAllDay && formType !== 'birthday') {
+          <div class="time-row">
+            <lw-input class="field-input time" type="time" [(ngModel)]="formStartTime" />
+            <span class="time-sep">—</span>
+            <lw-input class="field-input time" type="time" [(ngModel)]="formEndTime" />
+          </div>
+        }
+      </lw-form-field>
+      <lw-form-field label="위치">
+        <lw-input class="field-input" [(ngModel)]="formLocation" placeholder="위치 추가" />
+      </lw-form-field>
+      <lw-form-field label="화상회의 링크">
+        <lw-input class="field-input" type="url" [(ngModel)]="formVideoLink" placeholder="https://" />
+      </lw-form-field>
+      <lw-form-field label="설명">
+        <lw-textarea class="field-input textarea" [rows]="3" [(ngModel)]="formDescription" placeholder="상세 내용 입력" />
+      </lw-form-field>
+      <div class="form-row" style="display: flex; gap: 8px;">
+        <lw-form-field label="반복" style="flex:1">
+          <lw-select class="field-input" [(ngModel)]="recurrenceType">
+            @for (opt of recurrenceOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </lw-select>
+        </lw-form-field>
+        <lw-form-field label="간격" style="width:88px">
+          <lw-input class="field-input" type="number" [min]="1" [(ngModel)]="recurrenceInterval" />
+        </lw-form-field>
+      </div>
+      <lw-form-field label="공개 설정">
+        <div class="toggle-row">
+          <span class="toggle-text">{{ formIsPublic ? '공개' : '비공개' }}</span>
+          <lw-button class="toggle-switch" [class.on]="formIsPublic" (click)="formIsPublic = !formIsPublic">
+            <span class="toggle-knob" [class.on]="formIsPublic"></span>
+          </lw-button>
+        </div>
+      </lw-form-field>
+      <div class="form-actions" >
+        <lw-button variant="outline" size="md" class="btn-cancel" (click)="cancelForm()">\uCDE8\uC18C</lw-button>
+        <lw-button variant="primary" size="md" class="btn-save" [disabled]="!canSave()"
+                (click)="saveForm()">\uC800\uC7A5</lw-button>
+      </div>
+    </div>
+  } @else if (selectedEvent(); as ev) {
+    <!-- Detail mode -->
+    <div class="detail-body">
+      <div class="ev-header">
+        <span class="ev-dot" [style.backgroundColor]="getColor(ev)"></span>
+        <div class="ev-info">
+          <h3 class="ev-title" >{{ ev.title }}</h3>
+          @if (ev.description) {
+            <p class="ev-desc" >{{ ev.description }}</p>
+          }
+        </div>
+      </div>
+      <div class="detail-rows">
+        <div class="detail-row">
+          <span class="icon-glyph icon-clock" aria-hidden="true">🕒</span>
+          <span class="detail-text" >{{ formatSchedule(ev) }}</span>
+        </div>
+        @if (ev.location) {
+          <div class="detail-row">
+            <span class="icon-calendar" aria-hidden="true"></span>
+            <span class="detail-text" >{{ ev.location }}</span>
+          </div>
+        }
+        @if (ev.recurrence) {
+          <div class="detail-row">
+            <span class="icon-calendar" aria-hidden="true"></span>
+            <span class="detail-text" >{{ recurrenceLabel(ev.recurrence) }}</span>
+          </div>
+        }
+        @if (ev.attendees?.length) {
+          <div class="detail-row">
+            <span class="icon-glyph icon-user" aria-hidden="true">👤</span>
+            <span class="detail-text" >{{ ev.attendees!.length }}\uBA85 \uCC38\uC11D</span>
+          </div>
+        }
+        @if (ev.videoLink) {
+          <div class="detail-row">
+            <span class="icon-external-link" aria-hidden="true"></span>
+            <a class="detail-link" [href]="ev.videoLink" target="_blank" rel="noopener">{{ ev.videoLink }}</a>
+          </div>
+        }
+      </div>
+      <div class="detail-actions" >
+        <lw-button class="action-btn" (click)="startEdit()">
+          <span class="icon-edit" aria-hidden="true"></span>
+          \uC218\uC815
+        </lw-button>
+        <lw-button class="action-btn delete" (click)="deleteEvent.emit(ev.id)">
+          <span class="icon-glyph icon-trash" aria-hidden="true">🗑️</span>
+          \uC0AD\uC81C
+        </lw-button>
+      </div>
+    </div>
+  } @else {
+    <!-- List mode: events for selected date -->
+    <div class="list-body">
+      <div class="list-date" >{{ formatListDate() }}</div>
+      @if (dayEvents().length === 0) {
+        <div class="empty">\uC77C\uC815\uC774 \uC5C6\uC2B5\uB2C8\uB2E4</div>
+      } @else {
+        <div class="event-list">
+          @for (ev of dayEvents(); track ev.id) {
+            <lw-button class="event-item" (click)="onSelectEvent(ev)">
+              <span class="ev-dot-sm" [style.backgroundColor]="getColor(ev)"></span>
+              <div class="ev-item-info">
+                <div class="ev-item-title" >{{ ev.title }}</div>
+                <div class="ev-item-time">{{ formatSchedule(ev) }}</div>
+              </div>
+            </lw-button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

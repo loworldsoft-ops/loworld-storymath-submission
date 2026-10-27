@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  color: var(--lw-text-secondary);
+}
+.lw-stepper-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lw-stepper-item {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.lw-stepper-item:hover {
+  background: var(--lw-surface-hover);
+}
+.lw-stepper-item--active {
+  background: color-mix(in srgb, var(--lw-color-accent) 12%, transparent);
+}
+
+.lw-stepper-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 22px;
+}
+.lw-stepper-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--lw-border-color);
+  color: var(--lw-text-muted);
+  border: 1px solid var(--lw-border-subtle);
+  transition: all 0.2s ease;
+}
+.lw-stepper-item--running .lw-stepper-badge {
+  background: color-mix(in srgb, var(--lw-color-primary) 20%, transparent);
+  color: var(--lw-color-primary);
+  border-color: var(--lw-color-primary);
+}
+.lw-stepper-item--completed .lw-stepper-badge {
+  background: color-mix(in srgb, var(--lw-color-success) 20%, transparent);
+  color: var(--lw-color-success);
+  border-color: var(--lw-color-success);
+}
+.lw-stepper-item--failed .lw-stepper-badge {
+  background: color-mix(in srgb, var(--lw-color-danger) 20%, transparent);
+  color: var(--lw-color-danger);
+  border-color: var(--lw-color-danger);
+}
+
+.lw-stepper-spinner {
+  width: 10px;
+  height: 10px;
+  border: 2px solid color-mix(in srgb, var(--lw-color-primary) 30%, transparent);
+  border-top-color: var(--lw-color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.lw-stepper-track {
+  width: 2px;
+  flex: 1;
+  min-height: 16px;
+  background: var(--lw-border-color);
+  margin: 4px 0;
+}
+.lw-stepper-item--completed .lw-stepper-track {
+  background: var(--lw-color-success);
+}
+
+.lw-stepper-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 6px;
+}
+.lw-stepper-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lw-stepper-title {
+  font-weight: 600;
+  color: var(--lw-surface-alt);
+}
+.lw-stepper-duration {
+  font-size: 10px;
+  color: var(--lw-text-muted);
+}
+.lw-stepper-desc {
+  font-size: 11px;
+  color: var(--lw-text-muted);
+}
+.lw-stepper-progress-text {
+  font-size: 10px;
+  color: var(--lw-color-accent);
+  font-weight: 600;
+  margin-top: 2px;
+}

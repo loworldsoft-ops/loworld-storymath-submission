@@ -1,0 +1,38 @@
+<div class="lw-section-header" [class.align-center]="align() === 'center'" [class.align-between]="align() === 'between'">
+  <div class="lw-section-header__text-group">
+    @if (subtitle()) {
+      <span class="lw-section-header__subtitle">{{ subtitle() }}</span>
+    }
+
+    <div class="lw-section-header__title-row">
+      @if (icon()) {
+        <span class="lw-section-header__icon">{{ icon() }}</span>
+      }
+      <h3 class="lw-section-header__title">
+        @if (title()) {
+          {{ title() }}
+        } @else {
+          <ng-content select="[title]"></ng-content>
+        }
+      </h3>
+      @if (badge()) {
+        <span class="lw-section-header__badge">{{ badge() }}</span>
+      }
+    </div>
+
+    @if (description()) {
+      <p class="lw-section-header__desc">
+        {{ description() }}
+      </p>
+    } @else {
+      <p class="lw-section-header__desc">
+        <ng-content select="[description]"></ng-content>
+      </p>
+    }
+  </div>
+
+  <div class="lw-section-header__actions">
+    <ng-content select="[actions]"></ng-content>
+    <ng-content></ng-content>
+  </div>
+</div>

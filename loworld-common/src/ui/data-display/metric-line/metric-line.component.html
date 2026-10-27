@@ -1,0 +1,9 @@
+<div class="metric">
+  <span class="metric-label">{{ label() }}</span>
+  <span class="metric-value" [class.mono]="mono()">
+    <ng-content />
+    @if (!hasProjectedContent()) {
+      {{ value() }}
+    }
+  </span>
+</div>

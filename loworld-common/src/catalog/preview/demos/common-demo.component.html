@@ -1,0 +1,912 @@
+<div class="common-demo-wrap">
+  <div class="demo-header">
+    <h3>{{ comp().name }} 미리보기</h3>
+    <p>{{ comp().description }}</p>
+  </div>
+
+  <div class="demo-content">
+    @switch (comp().id) {
+      @case ('lw-modal') {
+        <div class="demo-modal-workbench">
+          <!-- Controller Panel -->
+          <div class="demo-controller-bar demo-controller-bar--column">
+            <div class="ctrl-row-between">
+              <div class="ctrl-group-inline">
+                <span class="ctrl-label">모달 변형 (Variant):</span>
+                @for (v of ['confirm', 'form', 'selection', 'wizard', 'settings', 'custom']; track v) {
+                  <lw-button
+                    type="button"
+                    class="ctrl-chip"
+                    [class.active]="demoModalVariant() === v"
+                    (click)="demoModalVariant.set($any(v))">
+                    {{ v | uppercase }}
+                  </lw-button>
+                }
+              </div>
+            </div>
+
+            <div class="ctrl-row-between">
+              <div class="ctrl-group-inline">
+                <span class="ctrl-label">크기 (Size):</span>
+                @for (s of ['sm', 'md', 'lg', 'full', 'fullscreen']; track s) {
+                  <lw-button
+                    type="button"
+                    class="ctrl-chip"
+                    [class.active]="demoModalSize() === s"
+                    (click)="demoModalSize.set($any(s))">
+                    {{ s }}
+                  </lw-button>
+                }
+              </div>
+
+              <div class="ctrl-group-inline">
+                <span class="ctrl-label">톤 (Tone):</span>
+                @for (t of ['default', 'danger', 'primary', 'info', 'success']; track t) {
+                  <lw-button
+                    type="button"
+                    class="ctrl-chip"
+                    [class.active]="demoModalTone() === t"
+                    (click)="demoModalTone.set($any(t))">
+                    {{ t }}
+                  </lw-button>
+                }
+              </div>
+            </div>
+
+            <div class="ctrl-row-bordered">
+              <div class="ctrl-group-inline">
+                <span class="ctrl-label">데스크탑 OS 모드:</span>
+                @for (ws of ['os-desktop', 'standard']; track ws) {
+                  <lw-button
+                    type="button"
+                    class="ctrl-chip"
+                    [class.active]="demoModalWindowStyle() === ws"
+                    (click)="demoModalWindowStyle.set($any(ws))">
+                    {{ ws === 'os-desktop' ? '🍎 Desktop OS (macOS)' : '🌐 Standard Web' }}
+                  </lw-button>
+                }
+              </div>
+
+              <div class="ctrl-checkboxes-row">
+                <label class="ctrl-checkbox-label">
+                  <lw-checkbox [checked]="demoModalDraggable()" (checkedChange)="demoModalDraggable.set($event)" />
+                  헤더 드래그 이동 (🖐️ Drag)
+                </label>
+                <label class="ctrl-checkbox-label">
+                  <lw-checkbox [checked]="demoModalGlassmorphism()" (checkedChange)="demoModalGlassmorphism.set($event)" />
+                  글래스모피즘 (✨ Glass)
+                </label>
+                <label class="ctrl-checkbox-label">
+                  <lw-checkbox [checked]="demoModalLightBackground()" (checkedChange)="demoModalLightBackground.set($event)" />
+                  라이트 배경 (☀️ Light Bg)
+                </label>
+                <label class="ctrl-checkbox-label">
+                  <lw-checkbox [checked]="demoModalWindowControls()" (checkedChange)="demoModalWindowControls.set($event)" />
+                  트래픽 라이트 (🔴🟡🟢)
+                </label>
+                <label class="ctrl-checkbox-label">
+                  <lw-checkbox [checked]="demoModalAllowMaximize()" (checkedChange)="demoModalAllowMaximize.set($event)" />
+                  최대화 허용
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action & Status -->
+          <div class="demo-actions demo-actions--modal">
+            <lw-button
+              type="button"
+              variant="primary"
+              size="lg"
+              (click)="demoModalOpen.set(true)">
+              🚀 선택한 [ {{ demoModalVariant() | uppercase }} / {{ demoModalSize() }} ] 모달 열기
+            </lw-button>
+
+            @if (lastResult()) {
+              <div class="demo-result-tag">
+                <span>마지막 결과:</span> <strong>{{ lastResult() }}</strong>
+              </div>
+            }
+          </div>
+
+          <!-- 단 1개의 lw-modal 인스턴스 (Single Source of Truth) -->
+          <lw-modal
+            [(open)]="demoModalOpen"
+            [variant]="demoModalVariant()"
+            [size]="demoModalSize()"
+            [tone]="demoModalTone()"
+            [windowStyle]="demoModalWindowStyle()"
+            [draggable]="demoModalDraggable()"
+            [glassmorphism]="demoModalGlassmorphism()"
+            [lightBackground]="demoModalLightBackground()"
+            [windowControls]="demoModalWindowControls()"
+            [allowMaximize]="demoModalAllowMaximize()"
+            [title]="resolvedDemoModalTitle()"
+            [description]="resolvedDemoModalDesc()"
+            [message]="demoModalMessage()"
+            [detail]="demoModalDetail()"
+            [fields]="demoModalFormFields"
+            [items]="demoModalSelectionItems"
+            [steps]="demoModalWizardSteps"
+            [tabs]="demoModalSettingsTabs"
+            (confirm)="onDemoModalConfirm()"
+            (cancel)="onDemoModalCancel()"
+            (formSubmit)="onDemoModalFormSubmit($event)"
+            (itemSelect)="onDemoModalItemSelect($event)"
+            (stepChange)="onDemoModalStepChange($event)"
+            (wizardComplete)="onDemoModalWizardComplete()"
+            (tabChange)="onDemoModalTabChange($event)"
+            (close)="onDemoModalClose()">
+            
+            @if (demoModalVariant() === 'custom') {
+              <div class="custom-slot-box">
+                <h4>🎨 커스텀 슬롯 프로젝션 영역</h4>
+                <p>
+                  <code>lw-modal</code>은 <code>variant="custom"</code> 모드에서 자유로운 <code>ng-content</code> 투영을 완벽히 지원합니다.
+                  D2R 캐릭터/장비 스탯, 게임 지도, 연대기 등 모든 복합 도메인 컴포넌트를 모달 바디에 담을 수 있습니다.
+                </p>
+                <div class="slot-banner">
+                  <p>✨ 단일 모달 아키텍처로 모노레포 내 모든 팝업이 100% 통합되었습니다.</p>
+                </div>
+              </div>
+            }
+            @if (demoModalVariant() === 'custom') {
+              <div lwModalFooter class="modal-footer-end">
+                <lw-button variant="secondary" (click)="demoModalOpen.set(false)">닫기</lw-button>
+                <lw-button variant="primary" (click)="demoModalOpen.set(false)">확인</lw-button>
+              </div>
+            }
+          </lw-modal>
+        </div>
+      }
+      @case ('lw-button') {
+        <div class="demo-button-showcase">
+          <!-- Controller Bar -->
+          <div class="demo-controller-bar">
+            <div class="controller-group">
+              <label>
+                <lw-checkbox [checked]="buttonLoading()" (checkedChange)="buttonLoading.set($event)" />
+                Loading 스피너 활성화
+              </label>
+              <label>
+                <lw-checkbox [checked]="buttonDisabled()" (checkedChange)="buttonDisabled.set($event)" />
+                Disabled 비활성화
+              </label>
+            </div>
+            <div class="controller-info">
+              <span>클릭 횟수: <strong>{{ buttonClickCount() }}</strong></span>
+              @if (buttonLastAction()) {
+                <span class="last-action">마지막 액션: <strong>{{ buttonLastAction() }}</strong></span>
+              }
+            </div>
+          </div>
+
+          <!-- 1. Variants Showcase -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">1. 시각적 변형 (6대 Variants)</h4>
+            <div class="btn-group-row">
+              <lw-button variant="primary" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Primary Clicked')">Primary</lw-button>
+              <lw-button variant="secondary" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Secondary Clicked')">Secondary</lw-button>
+              <lw-button variant="outline" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Outline Clicked')">Outline</lw-button>
+              <lw-button variant="ghost" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Ghost Clicked')">Ghost</lw-button>
+              <lw-button variant="danger" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Danger Clicked')">Danger</lw-button>
+              <lw-button variant="novel" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Novel RPG Clicked')">Novel RPG</lw-button>
+            </div>
+          </div>
+
+          <!-- 2. Sizes Showcase -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">2. 크기 체계 (4대 Sizes)</h4>
+            <div class="btn-group-row align-center">
+              <lw-button variant="primary" size="xs" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Size XS')">xs (24px)</lw-button>
+              <lw-button variant="primary" size="sm" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Size SM')">sm (30px)</lw-button>
+              <lw-button variant="primary" size="md" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Size MD')">md (38px - Default)</lw-button>
+              <lw-button variant="primary" size="lg" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Size LG')">lg (46px)</lw-button>
+            </div>
+          </div>
+
+          <!-- 3. Shapes & Icons Showcase -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">3. 형태(Shape) 및 아이콘 / Prefix / Suffix</h4>
+            <div class="btn-group-row align-center">
+              <lw-button variant="primary" shape="pill" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Pill Shape')">Pill Capsule</lw-button>
+              <lw-button variant="secondary" shape="circle" size="md" ariaLabel="설정" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Circle Icon')">
+                ⚙️
+              </lw-button>
+              <lw-button variant="ghost" shape="circle" size="sm" ariaLabel="닫기" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Close Icon')">
+                ✕
+              </lw-button>
+              <lw-button variant="outline" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Icon Prefix')">
+                <span style="font-size: 14px;">📁</span> 폴더 열기
+              </lw-button>
+              <lw-button variant="novel" [loading]="buttonLoading()" [disabled]="buttonDisabled()" (click)="onButtonClick('Novel Tower Battle')">
+                ⚔️ 던전 정복 <span style="font-size: 11px; opacity: 0.7;">→</span>
+              </lw-button>
+            </div>
+          </div>
+
+          <!-- 4. Block & ActionEvent Integration -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">4. 블록 너비 (Block 100%) & LwActionEvent 디스패치</h4>
+            <lw-button variant="primary" size="lg" [block]="true" actionId="GLOBAL_SUBMIT_ACTION" [actionPayload]="{ timestamp: 12345 }" (actionEvent)="onButtonActionEvent($event)" [loading]="buttonLoading()" [disabled]="buttonDisabled()">
+              🚀 전체 액션 이벤트 디스패치 (Block Button)
+            </lw-button>
+          </div>
+        </div>
+      }
+      @case ('lw-dialog-host') {
+        <div class="demo-dialog-box">
+          <div class="demo-actions">
+            <lw-button type="button" class="btn-demo btn-demo--danger" (click)="triggerDangerConfirm()">
+              🔴 Danger 삭제 Confirm 시뮬레이션
+            </lw-button>
+            <lw-button type="button" class="btn-demo btn-demo--primary" (click)="triggerPrimaryConfirm()">
+              🔵 Primary 일반 Confirm 시뮬레이션
+            </lw-button>
+            <lw-button type="button" class="btn-demo btn-demo--info" (click)="triggerAlert()">
+              🟢 Alert 알림 시뮬레이션
+            </lw-button>
+          </div>
+
+          @if (lastResult()) {
+            <div class="demo-result-tag">
+              <span>최종 수신 응답:</span> <strong>{{ lastResult() }}</strong>
+            </div>
+          }
+        </div>
+      }
+      @case ('lw-tooltip') {
+        <div class="demo-tooltip-showcase">
+          <!-- Controller Bar -->
+          <div class="demo-controller-bar">
+            <div class="controller-group">
+              <span class="ctrl-label">위치(Placement):</span>
+              @for (p of ['top', 'bottom', 'left', 'right']; track p) {
+                <lw-button
+                  type="button"
+                  class="ctrl-chip"
+                  [class.active]="demoTooltipPlacement() === p"
+                  (click)="demoTooltipPlacement.set($any(p))">
+                  {{ p }}
+                </lw-button>
+              }
+            </div>
+
+            <div class="controller-group">
+              <span class="ctrl-label">테마(Variant):</span>
+              @for (v of ['dark', 'glass', 'novel', 'light']; track v) {
+                <lw-button
+                  type="button"
+                  class="ctrl-chip"
+                  [class.active]="demoTooltipVariant() === v"
+                  (click)="demoTooltipVariant.set($any(v))">
+                  {{ v }}
+                </lw-button>
+              }
+            </div>
+
+            <div class="controller-group">
+              <span class="ctrl-label">크기(Size):</span>
+              @for (s of ['sm', 'md', 'lg']; track s) {
+                <lw-button
+                  type="button"
+                  class="ctrl-chip"
+                  [class.active]="demoTooltipSize() === s"
+                  (click)="demoTooltipSize.set($any(s))">
+                  {{ s }}
+                </lw-button>
+              }
+            </div>
+
+            <div class="controller-group">
+              <label>
+                <lw-checkbox [checked]="demoTooltipWithTitle()" (checkedChange)="demoTooltipWithTitle.set($event)" />
+                헤더 타이틀 포함
+              </label>
+            </div>
+          </div>
+
+          <!-- Section 1: Live Interactive Directive Demo -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">1. 호버 반응형 디렉티브 ([lwTooltip]) 테스트</h4>
+            <p style="margin: 0 0 12px; font-size: 13px; color: #64748b;">
+              마우스를 아래 버튼이나 카드에 올리면 설정된 위치(<code>{{ demoTooltipPlacement() }}</code>), 테마(<code>{{ demoTooltipVariant() }}</code>), 크기(<code>{{ demoTooltipSize() }}</code>)로 툴팁이 렌더링됩니다.
+            </p>
+
+            <div class="tooltip-interactive-stage">
+              <lw-button
+                variant="primary"
+                size="md"
+                [lwTooltip]="'통합 툴팁 디렉티브가 정상 동작 중입니다. 뷰포트 경계 감지 시 자동으로 플립됩니다.'"
+                [lwTooltipTitle]="demoTooltipWithTitle() ? '✨ LwTooltip Directive' : null"
+                [lwTooltipPlacement]="demoTooltipPlacement()"
+                [lwTooltipVariant]="demoTooltipVariant()"
+                [lwTooltipSize]="demoTooltipSize()">
+                🎯 컨트롤러 설정 연동 버튼 (Hover Me)
+              </lw-button>
+
+              <lw-card
+                variant="outlined"
+                [interactive]="true"
+                style="max-width: 280px;"
+                [lwTooltip]="'카드 프리미티브에도 [lwTooltip] 디렉티브를 즉시 부착할 수 있습니다.'"
+                [lwTooltipTitle]="demoTooltipWithTitle() ? '🎴 Card Tooltip' : null"
+                [lwTooltipPlacement]="demoTooltipPlacement()"
+                [lwTooltipVariant]="demoTooltipVariant()"
+                [lwTooltipSize]="demoTooltipSize()">
+                <h5 style="margin: 0 0 4px;">호버 카드 타깃</h5>
+                <p style="margin: 0; font-size: 12px; color: #64748b;">마우스를 올려 툴팁을 확인하세요.</p>
+              </lw-card>
+            </div>
+          </div>
+
+          <!-- Section 2: 4-Direction Placement Grid -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">2. 4방향 고정 Placement 실시간 비교</h4>
+            <div class="tooltip-compass-grid">
+              <div class="compass-cell compass-top">
+                <lw-button
+                  variant="secondary"
+                  size="sm"
+                  lwTooltip="상단에 표시되는 툴팁 (Top Placement)"
+                  lwTooltipPlacement="top"
+                  [lwTooltipVariant]="demoTooltipVariant()">
+                  ⬆️ Top
+                </lw-button>
+              </div>
+              <div class="compass-middle-row">
+                <lw-button
+                  variant="secondary"
+                  size="sm"
+                  lwTooltip="좌측에 표시되는 툴팁 (Left Placement)"
+                  lwTooltipPlacement="left"
+                  [lwTooltipVariant]="demoTooltipVariant()">
+                  ⬅️ Left
+                </lw-button>
+                <div class="compass-center-hub">🧭</div>
+                <lw-button
+                  variant="secondary"
+                  size="sm"
+                  lwTooltip="우측에 표시되는 툴팁 (Right Placement)"
+                  lwTooltipPlacement="right"
+                  [lwTooltipVariant]="demoTooltipVariant()">
+                  ➡️ Right
+                </lw-button>
+              </div>
+              <div class="compass-cell compass-bottom">
+                <lw-button
+                  variant="secondary"
+                  size="sm"
+                  lwTooltip="하단에 표시되는 툴팁 (Bottom Placement)"
+                  lwTooltipPlacement="bottom"
+                  [lwTooltipVariant]="demoTooltipVariant()">
+                  ⬇️ Bottom
+                </lw-button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Static 4-Variant Preview Gallery -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">3. 4대 테마 Variant 정적 컴포넌트 프리뷰 (&lt;lw-tooltip&gt;)</h4>
+            <div class="tooltip-static-gallery">
+              <!-- Dark Variant -->
+              <div class="gallery-card">
+                <span class="gallery-card-label">Dark Variant (Default)</span>
+                <div class="gallery-stage dark-bg">
+                  <lw-tooltip
+                    content="기본 다크 테마 툴팁입니다."
+                    title="Dark Theme"
+                    variant="dark"
+                    placement="top"
+                    [arrow]="true"
+                    [visible]="true"
+                    style="position: relative; opacity: 1; visibility: visible; transform: none; display: block;"
+                  />
+                </div>
+              </div>
+
+              <!-- Glass Variant -->
+              <div class="gallery-card">
+                <span class="gallery-card-label">Glassmorphism Variant</span>
+                <div class="gallery-stage glass-bg">
+                  <lw-tooltip
+                    content="블러 효과가 적용된 투명 글래스 툴팁입니다."
+                    title="Glassmorphism"
+                    variant="glass"
+                    placement="top"
+                    [arrow]="true"
+                    [visible]="true"
+                    style="position: relative; opacity: 1; visibility: visible; transform: none; display: block;"
+                  />
+                </div>
+              </div>
+
+              <!-- Novel RPG Variant -->
+              <div class="gallery-card">
+                <span class="gallery-card-label">Novel RPG Variant</span>
+                <div class="gallery-stage novel-bg">
+                  <lw-tooltip
+                    content="골드 테두리와 다크 골드 헤더가 적용된 RPG 테마 툴팁입니다."
+                    title="⚔️ 신화급 룬워드 힌트"
+                    variant="novel"
+                    placement="top"
+                    [arrow]="true"
+                    [visible]="true"
+                    style="position: relative; opacity: 1; visibility: visible; transform: none; display: block;"
+                  />
+                </div>
+              </div>
+
+              <!-- Light Variant -->
+              <div class="gallery-card">
+                <span class="gallery-card-label">Light Variant</span>
+                <div class="gallery-stage light-bg">
+                  <lw-tooltip
+                    content="화이트 배경의 깔끔한 라이트 테마 툴팁입니다."
+                    title="Light Theme"
+                    variant="light"
+                    placement="top"
+                    [arrow]="true"
+                    [visible]="true"
+                    style="position: relative; opacity: 1; visibility: visible; transform: none; display: block;"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Universal Inheritance Auto-Propagation Demo -->
+          <div class="demo-section">
+            <h4 class="demo-section-title">4. 상속 기반 유니버설 툴팁 자동 전파 (Universal Inheritance)</h4>
+            <p style="margin: 0 0 12px; font-size: 13px; color: #64748b;">
+              디렉티브(<code>[lwTooltip]</code>) 임포트 없이, 상속 베이스 클래스(<code>LwUIElement</code>, <code>LwContainerElement</code>)로부터 
+              전파된 <strong><code>[tooltip]</code> 프로퍼티 바인딩만으로 즉시 마우스 오버 툴팁이 작동</strong>합니다.
+            </p>
+
+            <div class="btn-group-row align-center" style="gap: 12px; flex-wrap: wrap;">
+              <lw-button
+                variant="primary"
+                tooltip="LwUIElement 상속으로 자동 활성화된 버튼 툴팁"
+                tooltipPlacement="top">
+                🚀 상속 버튼 [tooltip]
+              </lw-button>
+
+              <lw-button
+                variant="novel"
+                tooltip="노벨 RPG 스타일 툴팁도 상속 속성으로 즉시 적용"
+                tooltipVariant="novel"
+                tooltipPlacement="bottom">
+                ⚔️ 노벨 버튼 [tooltip]
+              </lw-button>
+
+              <lw-card
+                variant="outlined"
+                style="display: inline-block; padding: 8px 16px; cursor: pointer;"
+                tooltip="LwContainerElement 상속으로 자동 지원되는 카드 툴팁"
+                tooltipPlacement="right">
+                <span style="font-size: 13px; font-weight: 600;">📦 상속 카드 [tooltip]</span>
+              </lw-card>
+
+              <lw-badge
+                label="상속 뱃지"
+                color="warning"
+                tooltip="뱃지 소자 상속 툴팁 (Top Placement)"
+                tooltipPlacement="top"
+              />
+            </div>
+          </div>
+        </div>
+      }
+      @case ('lw-card') {
+        <div class="demo-card-grid">
+          <lw-card variant="flat" size="md" tooltip="플랫 스타일 카드 (Flat Variant)" tooltipPlacement="top">
+            <h4>Flat Variant</h4>
+            <p>테두리 없이 깔끔한 배경 플랫 카드</p>
+          </lw-card>
+          <lw-card variant="outlined" size="md" tooltip="선형 스타일 카드 (Outlined Variant)" tooltipPlacement="top">
+            <h4>Outlined Variant</h4>
+            <p>표준 테두리 선형 카드</p>
+          </lw-card>
+          <lw-card variant="elevated" size="md" tooltip="입체 부유 그림자 카드 (Elevated Variant)" tooltipPlacement="top">
+            <h4>Elevated Variant</h4>
+            <p>그림자 부유감이 강조된 카드</p>
+          </lw-card>
+          <lw-card variant="accent" color="primary" size="md" tooltip="호박색 강조 테두리 카드 (Accent Variant)" tooltipPlacement="top">
+            <h4>Accent Primary</h4>
+            <p>3px 강조 테두리 카드</p>
+          </lw-card>
+          <lw-card variant="accent" color="info" size="md" tooltip="파란색 강조 테두리 카드 (Accent Info Variant)" tooltipPlacement="top">
+            <h4>Accent Info</h4>
+            <p>3px 정보 파란 테두리 카드</p>
+          </lw-card>
+          <lw-card variant="filled" color="primary" size="md" tooltip="강조색 채움 카드 (Filled Variant)" tooltipPlacement="top">
+            <h4>Filled Variant</h4>
+            <p>강조색 바탕 채움 카드</p>
+          </lw-card>
+          <div style="display: flex; gap: 8px; width: 100%; height: 80px;">
+            <lw-card [fill]="true" variant="outlined">
+              <p>Fill Card 1</p>
+            </lw-card>
+            <lw-card [fill]="true" variant="accent" color="primary">
+              <p>Fill Card 2</p>
+            </lw-card>
+          </div>
+          <lw-card variant="outlined" [interactive]="true" size="md" [selected]="cardSelected()" (click)="cardSelected.update(v => !v)" tooltip="클릭 가능한 인터랙티브 카드" tooltipPlacement="bottom">
+            <h4>Interactive Variant</h4>
+            <p>클릭 가능 &amp; 선택 링 (클릭 테스트)</p>
+          </lw-card>
+          <lw-card variant="glass" size="md" tooltip="글래스모피즘 블러 카드 (Glass Variant)" tooltipPlacement="bottom" tooltipVariant="glass">
+            <h4>Glassmorphism</h4>
+            <p>블러 입체 투명 글래스 카드</p>
+          </lw-card>
+        </div>
+      }
+      @case ('lw-unified-card-item') {
+        <div class="demo-card-wrap">
+          <lw-unified-card-item
+            [item]="sampleCardItem"
+            (selectItem)="lastResult.set('선택된 카드 아이템 ID: ' + $event)"
+          />
+          @if (lastResult()) {
+            <div class="demo-result-tag demo-result-tag--spaced">
+              <span>선택 결과:</span> <strong>{{ lastResult() }}</strong>
+            </div>
+          }
+        </div>
+      }
+      @case ('lw-badge') {
+        <div class="demo-row">
+          <lw-badge color="primary">Primary</lw-badge>
+          <lw-badge color="success">Success</lw-badge>
+          <lw-badge color="warning">Warning</lw-badge>
+          <lw-badge color="danger">Danger</lw-badge>
+          <lw-badge color="primary" variant="outlined">Outlined</lw-badge>
+        </div>
+      }
+      @case ('lw-progress-bar') {
+        <div class="demo-row demo-row--fixed-300" style="display: flex; flex-direction: column; gap: 16px;">
+          <lw-progress-bar [value]="65" [showLabel]="true" label="진행률" />
+          <lw-progress-bar look="segments" [value]="3" [max]="7" [showLabel]="true" label="문단" />
+          <lw-progress-bar look="dots" [value]="2" [max]="5" [showLabel]="true" label="문제" />
+        </div>
+      }
+      @case ('lw-avatar') {
+        <div class="demo-row" style="display: flex; align-items: center; gap: 16px;">
+          <lw-avatar name="Antigravity" size="lg" />
+          <lw-avatar name="User" size="md" />
+          <lw-avatar icon="mic" tone="accent" [active]="true" size="md" />
+          <lw-avatar icon="check" tone="success" size="xl" />
+        </div>
+      }
+      @case ('lw-chip') {
+        <div class="demo-row">
+          <lw-chip label="Angular" [selected]="true" />
+          <lw-chip label="TypeScript" />
+          <lw-chip label="SCSS" [removable]="true" />
+        </div>
+      }
+      @case ('lw-search-input') {
+        <div class="demo-row demo-row--fixed-320">
+          <lw-search-input placeholder="공통 컴포넌트 실시간 검색 테스트..." />
+        </div>
+      }
+      @case ('lw-app-icon') {
+        <div class="demo-section">
+          <h4 class="demo-section-title">스마트폰 스프링보드 &amp; 독 바 아이콘 시뮬레이션</h4>
+          <div class="demo-row demo-row--wrap-gap20">
+            <lw-app-icon size="lg" label="Note" variant="springboard" />
+            <lw-app-icon size="lg" label="Novel" variant="dock" />
+            <lw-app-icon size="lg" label="Calendar" variant="tile" />
+            <lw-app-icon size="lg" label="Develop" variant="minimal" />
+          </div>
+        </div>
+      }
+      @case ('lw-grid') {
+        <div class="demo-section demo-section--w100">
+          <h4 class="demo-section-title">반응형 그리드 시스템 시뮬레이션 (12-Col Responsive Grid)</h4>
+          <lw-grid [cols]="3" gap="sm">
+            <lw-card variant="outlined" elevation="sm">
+              <div class="grid-demo-cell">
+                <strong>그리드 셀 A</strong>
+                <p>col-1 컨텐츠 영역</p>
+              </div>
+            </lw-card>
+            <lw-card variant="outlined" elevation="sm">
+              <div class="grid-demo-cell">
+                <strong>그리드 셀 B</strong>
+                <p>col-2 컨텐츠 영역</p>
+              </div>
+            </lw-card>
+            <lw-card variant="outlined" elevation="sm">
+              <div class="grid-demo-cell">
+                <strong>그리드 셀 C</strong>
+                <p>col-3 컨텐츠 영역</p>
+              </div>
+            </lw-card>
+          </lw-grid>
+        </div>
+      }
+      @case ('lw-list') {
+        <div class="demo-section demo-section--max600">
+          <h4 class="demo-section-title">통합 리스트 시스템 시뮬레이션</h4>
+          <lw-list density="compact" variant="bordered" [divided]="true">
+            <lw-list-header>
+              <div lwLeading class="list-header-leading">#</div>
+              <div lwContent>컴포넌트 항목</div>
+              <div lwActions class="list-header-actions">상태</div>
+            </lw-list-header>
+            <lw-list-item [clickable]="true">
+              <div lwLeading>1</div>
+              <div lwContent>L1 소자 단일 프리미티브</div>
+              <div lwActions><lw-badge tone="success" label="Active" /></div>
+            </lw-list-item>
+            <lw-list-item [clickable]="true">
+              <div lwLeading>2</div>
+              <div lwContent>L2 조립 셀 복합 컴포넌트</div>
+              <div lwActions><lw-badge tone="primary" label="Ready" /></div>
+            </lw-list-item>
+          </lw-list>
+        </div>
+      }
+      @case ('lw-list-item') {
+        <div class="demo-section demo-section--max600">
+          <h4 class="demo-section-title">인터랙티브 리스트 아이템 단일 시뮬레이션</h4>
+          <lw-list density="compact" variant="bordered">
+            <lw-list-item [clickable]="true" [active]="true">
+              <div lwLeading>👉</div>
+              <div lwContent>클릭 및 호버 상태 반응형 아이템</div>
+              <div lwActions><lw-button size="xs" variant="secondary">액션</lw-button></div>
+            </lw-list-item>
+          </lw-list>
+        </div>
+      }
+      @case ('lw-informational-badge') {
+        <div class="demo-section">
+          <h4 class="demo-section-title">정보형 뱃지 시뮬레이션 (Informational Badge)</h4>
+          <div class="demo-row demo-row--wrap-gap12">
+            <lw-informational-badge tone="neutral" label="버전 1.0.0" />
+            <lw-informational-badge tone="primary" label="진행 중 (Syncing)" />
+            <lw-informational-badge tone="success" label="정상 완료" />
+            <lw-informational-badge tone="danger" label="보안 주의" />
+          </div>
+        </div>
+      }
+      @case ('lw-unified-list-item') {
+        <div class="demo-section demo-section--max600">
+          <h4 class="demo-section-title">통합 리스트 아이템 (Unified ListItem)</h4>
+          <div class="vertical-stack-8">
+            <lw-unified-list-item [item]="{ id: '1', title: '노트 문서 A: 아키텍처 개요', subTitle: '마지막 수정: 1시간 전' }" />
+            <lw-unified-list-item [item]="{ id: '2', title: '노트 문서 B: 디자인 토큰 가이드', subTitle: '선택된 항목', active: true }" />
+            <lw-unified-list-item [item]="{ id: '3', title: '노트 문서 C: 배포 파이프라인 명세', subTitle: '마지막 수정: 어제' }" />
+          </div>
+        </div>
+      }
+      @case ('lw-empty-state') {
+        <div class="demo-section demo-section--max500">
+          <h4 class="demo-section-title">빈 상태 안내 (Empty State)</h4>
+          <lw-empty-state title="검색된 문서가 없습니다" message="다른 키워드로 검색하거나 새로운 문서를 생성해 보세요.">
+            <lw-button size="sm" variant="primary">새 문서 만들기</lw-button>
+          </lw-empty-state>
+        </div>
+      }
+      @case ('lw-fab') {
+        <div class="demo-section">
+          <h4 class="demo-section-title">플로팅 액션 버튼 (Floating Action Button)</h4>
+          <div class="demo-row demo-row--gap16">
+            <lw-fab icon="edit" ariaLabel="새 글 작성" (click)="onButtonClick('FAB 글쓰기')" />
+            <lw-fab icon="plus" ariaLabel="추가" (click)="onButtonClick('FAB 추가')" />
+          </div>
+        </div>
+      }
+      @case ('lw-titlebar-frame') {
+        <div class="demo-section demo-section--max650">
+          <h4 class="demo-section-title">타이틀바 프레임 (Titlebar Frame)</h4>
+          <lw-titlebar-frame>
+            <div lwTitlebarStart class="titlebar-start-box">
+              <strong>Loworld Platform</strong>
+            </div>
+            <div lwTitlebarCenter class="titlebar-center-box">
+              표준 애플리케이션 프레임
+            </div>
+            <div lwTitlebarEnd class="titlebar-end-box">
+              <lw-button size="xs" variant="ghost">설정</lw-button>
+            </div>
+          </lw-titlebar-frame>
+        </div>
+      }
+      @case ('lw-selectable-list') {
+        <div class="demo-section demo-section--max500">
+          <h4 class="demo-section-title">선택 가능 리스트 (Selectable List)</h4>
+          <lw-selectable-list
+            [items]="selectableDemoItems"
+            [selectedId]="selectedListId()"
+            [itemTemplate]="selectableRowTpl"
+            (actionEvent)="onSelectableListAction($event)" />
+
+          <ng-template #selectableRowTpl let-ctx>
+            <div class="selectable-custom-item" [class.is-selected]="ctx.selected">
+              <div>
+                <strong class="item-title">{{ ctx.$implicit.title }}</strong>
+                <span class="item-desc">{{ ctx.$implicit.desc }}</span>
+              </div>
+              @if (ctx.selected) {
+                <span class="item-selected-mark">선택됨 ✓</span>
+              }
+            </div>
+          </ng-template>
+        </div>
+      }
+      @case ('lw-section-header') {
+        <div style="max-width: 600px; padding: 16px;">
+          <lw-section-header
+            title="도감 및 분석 지표"
+            subtitle="Taxonomy & Breakdown"
+            description="시스템에 등록된 카테고리와 컴포넌트의 통계를 확인합니다."
+          />
+        </div>
+      }
+      @case ('lw-docs-article-page') {
+        <div style="max-width: 700px; padding: 16px;">
+          <lw-docs-article-page [article]="demoDocArticle" />
+        </div>
+      }
+      @case ('lw-docs-pdf-modal') {
+        <div style="padding: 16px;">
+          <lw-button (click)="demoPdfModalOpen.set(true)">PDF 내보내기 모달 열기</lw-button>
+          <lw-docs-pdf-modal
+            [open]="demoPdfModalOpen()"
+            [items]="demoPdfItems"
+            (close)="demoPdfModalOpen.set(false)"
+          />
+        </div>
+      }
+      @case ('lw-model-detail-drawer') {
+        <div style="padding: 16px; position: relative; min-height: 380px;">
+          <lw-model-detail-drawer [model]="demoConsoleModel" (closeDrawer)="noop()" />
+        </div>
+      }
+      @case ('lw-console-profile-modal') {
+        <div style="padding: 16px;">
+          <lw-button (click)="demoProfileModalOpen.set(true)">프로필 설정 모달 열기</lw-button>
+          <lw-console-profile-modal
+            [open]="demoProfileModalOpen()"
+            [user]="demoConsoleUser"
+            (close)="demoProfileModalOpen.set(false)"
+          />
+        </div>
+      }
+      @case ('lw-console-shell') {
+        <div style="height: 400px; position: relative; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+          <lw-console-shell
+            [activeTab]="'dashboard'"
+            [currentGroup]="demoConsoleGroup"
+            [user]="demoConsoleUser"
+          >
+            <div style="padding: 16px;">콘솔 본문 영역</div>
+          </lw-console-shell>
+        </div>
+      }
+      @case ('lw-pipeline-stepper') {
+        <div style="padding: 16px;">
+          <lw-pipeline-stepper [steps]="demoPipelineSteps" />
+        </div>
+      }
+      @case ('lw-prompt-diff-viewer') {
+        <div style="padding: 16px;">
+          <lw-prompt-diff-viewer [oldText]="demoPromptOld" [newText]="demoPromptNew" />
+        </div>
+      }
+      @case ('lw-rbac-permission-matrix') {
+        <div style="padding: 16px;">
+          <lw-rbac-permission-matrix [roles]="demoRbacRoles" [matrix]="demoRbacMatrix" />
+        </div>
+      }
+      @case ('lw-workflow-canvas') {
+        <div style="height: 400px; position: relative; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+          <lw-workflow-canvas [nodes]="demoWorkflowNodes" [edges]="demoWorkflowEdges" />
+        </div>
+      }
+      @case ('lw-dialog-host') {
+        <div style="padding: 16px;">
+          <lw-dialog-host />
+          <p style="color: #64748b;">다이얼로그 호스트 (전역 모달 다이얼로그 렌더러)</p>
+        </div>
+      }
+      @case ('lw-snackbar-host') {
+        <div style="padding: 16px;">
+          <lw-snackbar-host />
+          <p style="color: #64748b;">스낵바 호스트 (하단 토스트 알림 렌더러)</p>
+        </div>
+      }
+      @case ('lw-snackbar') {
+        <div style="padding: 16px;">
+          <lw-snackbar kind="saved" message="변경 사항이 안전하게 저장되었습니다." />
+        </div>
+      }
+      @case ('lw-docs-article-viewer') {
+        <div style="max-width: 700px; padding: 16px;">
+          <lw-docs-article-viewer [html]="demoDocArticle.html" />
+        </div>
+      }
+      @case ('lw-docs-nav-tree') {
+        <div style="max-width: 320px; padding: 16px;">
+          <lw-docs-nav-tree [nodes]="demoNavNodes" />
+        </div>
+      }
+      @case ('lw-on-this-page-toc') {
+        <div style="max-width: 280px; padding: 16px;">
+          <lw-on-this-page-toc [items]="demoDocArticle.toc" />
+        </div>
+      }
+      @case ('lw-console-sidebar') {
+        <div style="height: 480px; position: relative; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; display: flex;">
+          <lw-console-sidebar
+            activeTab="dashboard"
+            [currentGroup]="demoConsoleGroup"
+            [user]="demoConsoleUser"
+          />
+        </div>
+      }
+      @case ('lw-side-menu-section') {
+        <div style="max-width: 260px; padding: 16px; background: rgba(15, 23, 42, 0.95); border-radius: 8px;">
+          <lw-side-menu-section title="시스템 관리" />
+        </div>
+      }
+      @case ('lw-menu-item') {
+        <div style="max-width: 200px; padding: 16px;">
+          <lw-menu-item>항목 편집</lw-menu-item>
+        </div>
+      }
+      @case ('lw-color-picker') {
+        <div style="padding: 16px;">
+          <lw-color-picker [currentColor]="demoColor()" (colorSelect)="demoColor.set($event)" />
+        </div>
+      }
+      @case ('lw-sheet-title') {
+        <div style="padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+          <lw-sheet-title title="문서 상세 속성" [details]="['v1.2', '공개']" />
+        </div>
+      }
+      @case ('lw-filterable-list-shell') {
+        <div style="padding: 16px;">
+          <lw-filterable-list-shell title="문서 컬렉션" [count]="12" [showSearch]="true" />
+        </div>
+      }
+      @case ('lw-workflow-node') {
+        <div style="padding: 16px;">
+          <lw-workflow-node [node]="demoWorkflowNodes[0]" />
+        </div>
+      }
+      @case ('lw-component-vessel') {
+        <div style="height: 380px; position: relative;">
+          <lw-component-vessel [menuItems]="[{ id: 'main', label: '메인 뷰' }]" />
+        </div>
+      }
+      @case ('lw-event-log') {
+        <div style="max-height: 380px; overflow-y: auto; padding: 16px;">
+          <lw-event-log />
+        </div>
+      }
+      @case ('lw-spinner') {
+        <div class="demo-row" style="display: flex; align-items: center; gap: 24px; padding: 16px;">
+          <lw-spinner kind="ring" size="md" />
+          <lw-spinner kind="wave" size="md" />
+          <lw-spinner kind="wave" size="lg" />
+        </div>
+      }
+      @case ('lw-marked-text') {
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+          <lw-marked-text [segments]="sampleReadingSegments" look="reading" align="start" />
+          <lw-marked-text [segments]="sampleReadingSegments" look="reading" align="center" />
+        </div>
+      }
+      @default {
+        <div class="placeholder-demo">
+          <p>이 컴포넌트({{ comp().name }})의 전용 프리뷰는 준비 중입니다.</p>
+          <code>&lt;{{ comp().selector }}&gt;&lt;/{{ comp().selector }}&gt;</code>
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div
+  class="shell"
+  [class.shell--compact]="layout().density === 'compact'"
+  [class.shell--no-sidebar]="!hasSlot('sidebar')"
+  [class.shell--no-collection]="!hasSlot('collection')"
+  [class.shell--collection-closed]="hasSlot('collection') && !layout().collectionOpen"
+  [class.shell--resizing]="resizing()"
+  [style.--lw-workspace-sidebar-width.px]="sidebarWidth()"
+  [style.--lw-workspace-collection-width.px]="collectionWidth()"
+  lwHeightTarget
+  lwHeightGroup="desktopLayoutGroup"
+  lwHeightRole="container"
+  [lwUseWindowHeight]="true">
+  @if (hasSlot('topbar')) {
+    <header class="shell__topbar slot slot--topbar" [class.slot--selected]="isSelected('topbar')" (click)="selectSlot('topbar')" lwHeightTarget lwHeightGroup="desktopLayoutGroup" lwHeightRole="header">
+      <ng-container *ngTemplateOutlet="slotTemplate('topbar'); context: slotContext('topbar')" />
+    </header>
+  }
+
+  <div class="shell__content" lwHeightTarget lwHeightGroup="desktopLayoutGroup" lwHeightId="desktopWorkspaceBody" lwHeightRole="content" applyType="style">
+    @if (hasSlot('sidebar')) {
+      <aside class="shell__sidebar slot slot--sidebar" [class.slot--selected]="isSelected('sidebar')" (click)="selectSlot('sidebar')">
+        <ng-container *ngTemplateOutlet="slotTemplate('sidebar'); context: slotContext('sidebar')" />
+      </aside>
+    }
+
+    @if (hasSlot('collection')) {
+      <section class="shell__collection slot slot--collection" [class.slot--selected]="isSelected('collection')" (click)="selectSlot('collection')">
+        <ng-container *ngTemplateOutlet="slotTemplate('collection'); context: slotContext('collection')" />
+        @if (collectionResizable() && layout().collectionOpen) {
+          <lw-resize-handle
+            edge="end"
+            label="목록 패널 폭 조절"
+            [value]="collectionWidth()"
+            [min]="collectionMinWidth()"
+            [max]="collectionMaxWidth()"
+            (click)="$event.stopPropagation()"
+            (valueChange)="collectionWidthChange.emit($event)"
+            (reset)="collectionWidthReset.emit()"
+            (draggingChange)="resizing.set($event)" />
+        }
+      </section>
+    }
+
+    @if (hasSlot('detail')) {
+      <main class="shell__detail slot slot--detail" [class.slot--selected]="isSelected('detail')" (click)="selectSlot('detail')">
+        <ng-container *ngTemplateOutlet="slotTemplate('detail'); context: slotContext('detail')" />
+      </main>
+    }
+
+    @if (hasSlot('aside')) {
+      <aside class="shell__aside slot slot--aside" [class.slot--selected]="isSelected('aside')" (click)="selectSlot('aside')">
+        <ng-container *ngTemplateOutlet="slotTemplate('aside'); context: slotContext('aside')" />
+      </aside>
+    }
+  </div>
+
+  @if (hasSlot('overlay')) {
+    <section class="shell__overlay slot slot--overlay" [class.slot--selected]="isSelected('overlay')" (click)="selectSlot('overlay')">
+      <ng-container *ngTemplateOutlet="slotTemplate('overlay'); context: slotContext('overlay')" />
+    </section>
+  }
+</div>

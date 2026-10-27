@@ -1,0 +1,159 @@
+@use 'index' as lw;
+@use 'reader-shared' as reader;
+
+:host {
+  @include reader.reader-surface;
+  display: block;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+@keyframes reader-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.prelude {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 56px 24px 48px;
+}
+
+.prelude__head {
+  margin-bottom: 36px;
+}
+
+.prelude__kicker,
+.prelude__step {
+  @include reader.reader-label;
+  display: block;
+  margin: 0 0 8px;
+}
+
+.prelude__title {
+  margin: 0;
+  font-size: 1.625rem;
+  font-weight: 600;
+}
+
+.prelude__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+@keyframes reader-pick {
+  to { border-color: var(--reader-accent); background: var(--reader-raise); }
+}
+
+@keyframes reader-pass {
+  to { opacity: 0.38; }
+}
+
+// 카드는 차례로 떠오르고, 잠시 뒤 하나가 뽑힌다: 뽑힌 카드는 또렷해지고 나머지는 물러난다.
+.prelude__card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--reader-line);
+  border-radius: 6px;
+  opacity: 0;
+}
+
+.prelude__card--picked {
+  animation: reader-rise 0.4s ease forwards, reader-pick 0.5s ease forwards;
+}
+
+.prelude__card--passed {
+  animation: reader-rise 0.4s ease forwards, reader-pass 0.5s ease forwards;
+}
+
+.prelude__card-kind {
+  @include reader.reader-label;
+}
+
+.prelude__card-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.prelude__card-description {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--reader-ink-soft);
+}
+
+.prelude__card-hint {
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  color: var(--reader-accent);
+}
+
+.prelude__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.prelude__line {
+  opacity: 0;
+  animation: reader-rise 0.4s ease forwards;
+}
+
+.prelude__line .prelude__step {
+  margin-top: 14px;
+}
+
+.prelude__line-text {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.prelude__actions {
+  @include reader.reader-button;
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  opacity: 0;
+  animation: reader-rise 0.4s ease forwards;
+}
+
+// 화면을 눌렀거나 움직임을 줄이는 설정이면 기다리지 않고 끝난 모습을 보여 준다.
+@mixin prelude-settled {
+  .prelude__card,
+  .prelude__line,
+  .prelude__actions {
+    animation: none;
+    opacity: 1;
+  }
+
+  .prelude__card--picked {
+    border-color: var(--reader-accent);
+    background: var(--reader-raise);
+  }
+
+  .prelude__card--passed {
+    opacity: 0.38;
+  }
+}
+
+:host(.is-settled) {
+  @include prelude-settled;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @include prelude-settled;
+}
+
+@include lw.lw-mobile-mode {
+  .prelude {
+    padding: 40px 20px calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+}

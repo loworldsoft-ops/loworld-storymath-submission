@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  box-sizing: border-box;
+  gap: var(--_gap);
+  padding: var(--_pad);
+  --_gap: 16px;
+  // 사용자 정의 속성은 물려받는다. 기본값을 두지 않으면 안의 lw-stack이 바깥의 안쪽 여백을 물려받아 겹겹이 커진다(2026-10-27).
+  --_pad: 0;
+}
+
+:host([data-direction='row']) { flex-direction: row; }
+// 좁은 곳(세로로 든 폰)에서는 가로 줄을 세로로 쌓는다. 기준은 lw-grid와 같다(sm 640px, md 960px).
+// 화면 크기(@media)가 아니라 가장 가까운 스크롤 영역(보통 화면의 바탕)의 폭을 본다(C5). 그래서 [scroll]인 lw-stack이 재는 그릇이 된다.
+// 세로로 쌓이면 [fill]인 칸의 기준 크기(0)가 높이를 0으로 만든다. 그래서 쌓인 줄 안의 [fill]은 내용 크기를 기준으로 한다.
+@container (max-width: 640px) {
+  :host([data-direction='row'][data-collapse='sm']) { flex-direction: column; }
+  :host-context(lw-stack[data-direction='row'][data-collapse='sm'])[data-fill] { flex-basis: auto; }
+}
+@container (max-width: 960px) {
+  :host([data-direction='row'][data-collapse='md']) { flex-direction: column; }
+  :host-context(lw-stack[data-direction='row'][data-collapse='md'])[data-fill] { flex-basis: auto; }
+}
+:host([data-wrap]) { flex-wrap: wrap; }
+// 부모의 남은 자리를 차지한다. 폭과 높이를 100%로 못 박지 않는다. 가로 줄 안에서 형제를 밀어내기 때문이다.
+:host([data-fill]) { flex: 1 1 0; min-width: 0; min-height: 0; align-self: stretch; }
+:host([data-scroll]) { overflow: auto; container-type: inline-size; }
+
+:host([data-gap='none']) { --_gap: 0; }
+:host([data-gap='xs']) { --_gap: 4px; }
+:host([data-gap='sm']) { --_gap: 8px; }
+:host([data-gap='md']) { --_gap: 16px; }
+:host([data-gap='lg']) { --_gap: 24px; }
+:host([data-gap='xl']) { --_gap: 32px; }
+
+:host([data-padding='xs']) { --_pad: 4px; }
+:host([data-padding='sm']) { --_pad: 8px; }
+:host([data-padding='md']) { --_pad: 16px; }
+:host([data-padding='lg']) { --_pad: 24px; }
+:host([data-padding='xl']) { --_pad: 32px; }
+
+:host([data-align='start']) { align-items: flex-start; }
+:host([data-align='center']) { align-items: center; }
+:host([data-align='end']) { align-items: flex-end; }
+:host([data-align='baseline']) { align-items: baseline; }
+
+:host([data-justify='center']) { justify-content: center; }
+:host([data-justify='end']) { justify-content: flex-end; }
+:host([data-justify='between']) { justify-content: space-between; }
+
+:host([data-surface='ground']) { background: var(--lw-surface-ground); color: var(--lw-text-primary); }
+:host([data-surface='raised']) {
+  background: var(--lw-surface);
+  color: var(--lw-text-primary);
+  border: 1px solid var(--lw-border-color);
+  border-radius: var(--lw-radius-md, 12px);
+}

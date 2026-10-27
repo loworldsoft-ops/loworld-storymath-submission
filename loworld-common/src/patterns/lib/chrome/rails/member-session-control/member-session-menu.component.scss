@@ -1,0 +1,157 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 4px 0 16px;
+  box-sizing: border-box;
+}
+
+.member-session-menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+
+  .dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 2px 0;
+
+    .header-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--lw-accent-primary);
+      border: 1px solid color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+      color: var(--lw-surface);
+      flex-shrink: 0;
+
+      .avatar-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        clip-path: circle(50% at 50% 50%);
+
+        lw-icon {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          ::ng-deep {
+            img,
+            svg,
+            span,
+            .dynamic-raster-icon,
+            .dynamic-svg-inline,
+            .dynamic-svg-mask,
+            .dynamic-raster-fallback {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 50%;
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      .user-name {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--lw-text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-email {
+        font-size: 11.5px;
+        font-weight: 500;
+        color: var(--lw-text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+      }
+
+      .role-badge-wrap {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    margin: 10px 0;
+    background: var(--lw-border-color);
+  }
+
+  .dropdown-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .action-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--lw-text-primary);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.12s ease, color 0.12s ease;
+
+      svg {
+        color: var(--lw-accent-primary);
+        transition: color 0.12s ease;
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        background: var(--lw-card-hover-bg);
+        color: var(--lw-accent-primary);
+      }
+
+      &--logout {
+        color: var(--lw-color-danger);
+
+        svg {
+          color: var(--lw-color-danger);
+        }
+
+        &:hover {
+          background: color-mix(in srgb, var(--lw-color-danger) 12%, transparent);
+          color: var(--lw-color-danger-strong);
+
+          svg {
+            color: var(--lw-color-danger-strong);
+          }
+        }
+      }
+    }
+  }
+}

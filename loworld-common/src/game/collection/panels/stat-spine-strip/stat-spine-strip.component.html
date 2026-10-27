@@ -1,0 +1,33 @@
+<section class="lw-stat-spine-strip" aria-label="캐릭터 상태">
+  <div class="lw-stat-spine-strip__metrics">
+    @for (metric of data().metrics; track metric.id) {
+      <div
+        class="lw-stat-spine-strip__metric"
+        [class.lw-stat-spine-strip__metric--warning]="metric.tone === 'warning'"
+        [class.lw-stat-spine-strip__metric--positive]="metric.tone === 'positive'"
+        [class.lw-stat-spine-strip__metric--info]="metric.tone === 'info'">
+        <span class="lw-stat-spine-strip__icon" aria-hidden="true">{{ metric.icon }}</span>
+        <div class="lw-stat-spine-strip__metric-body">
+          <span class="lw-stat-spine-strip__value">{{ metric.value }}</span>
+          @if (metric.progress !== undefined) {
+            <span class="lw-stat-spine-strip__bar" role="presentation">
+              <span
+                class="lw-stat-spine-strip__bar-fill"
+                [style.width.%]="metric.progress"></span>
+            </span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+  @if (data().setSummary || data().resistSummary) {
+    <div class="lw-stat-spine-strip__secondary">
+      @if (data().setSummary) {
+        <span class="lw-stat-spine-strip__chip">{{ data().setSummary }}</span>
+      }
+      @if (data().resistSummary) {
+        <span class="lw-stat-spine-strip__chip lw-stat-spine-strip__chip--muted">{{ data().resistSummary }}</span>
+      }
+    </div>
+  }
+</section>

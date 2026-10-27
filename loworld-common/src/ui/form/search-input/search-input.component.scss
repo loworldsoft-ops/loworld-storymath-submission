@@ -1,0 +1,115 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--lw-search-gap, #{lw.$lw-search-gap});
+  border-radius: var(--lw-search-radius, #{lw.$lw-search-radius});
+  border: 1px solid var(--lw-search-border, #{lw.$lw-chip-border});
+  background: var(--lw-search-bg, #{lw.$lw-chip-bg});
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search.focused {
+  border-color: var(--lw-search-focus-border, #{lw.$lw-color-primary});
+  box-shadow: 0 0 0 2px var(--lw-search-focus-ring, #{lw.$lw-search-focus-ring});
+}
+
+/* ── Sizes ── */
+.search[data-size='sm'] {
+  padding: 4px 8px;
+}
+
+.search[data-size='md'] {
+  padding: 6px 10px;
+}
+
+.search[data-size='lg'] {
+  padding: 8px 12px;
+}
+
+.search-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  color: var(--lw-search-icon, #{lw.$lw-search-icon});
+
+  &__glass {
+    width: 9px;
+    height: 9px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+  }
+
+  &__handle {
+    width: 5px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 1px;
+    position: absolute;
+    bottom: 3px;
+    right: 2px;
+    transform: rotate(45deg);
+  }
+}
+
+.clear-icon {
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  color: var(--lw-search-text, #{lw.$lw-ink});
+}
+
+.search[data-size='sm'] .search-input {
+  font-size: #{lw.$lw-search-input-sm};
+}
+
+.search[data-size='md'] .search-input {
+  font-size: #{lw.$lw-search-input-md};
+}
+
+.search[data-size='lg'] .search-input {
+  font-size: #{lw.$lw-search-input-lg};
+}
+
+.search-input::placeholder {
+  color: var(--lw-search-placeholder, #{lw.$lw-search-icon});
+}
+
+.clear-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--lw-search-icon, #{lw.$lw-search-icon});
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+
+.clear-btn:hover {
+  opacity: 1;
+}

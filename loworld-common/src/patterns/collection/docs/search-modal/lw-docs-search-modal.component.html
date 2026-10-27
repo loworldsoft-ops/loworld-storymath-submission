@@ -1,0 +1,50 @@
+<lw-modal variant="custom" size="lg" title="문서 검색" [open]="open()" (close)="close.emit()">
+  <div #body class="lw-docs-search" (keydown)="onKeydown($event)">
+    <lw-search-input placeholder="검색어를 입력하세요 (예: RAG, API 키, 워크스페이스)" [query]="query()" (actionEvent)="queryChange.emit($event.payload)" />
+
+    <div class="lw-docs-search__results" role="listbox" aria-label="검색 결과">
+      @for (row of rows(); track row.result.id; let i = $index) {
+        <button
+          type="button"
+          role="option"
+          class="lw-docs-search__result"
+          [class.is-selected]="i === selectedIndex()"
+          [attr.aria-selected]="i === selectedIndex()"
+          (mouseenter)="selectedIndex.set(i)"
+          (click)="selectResult.emit(row.result)">
+          <lw-icon [name]="row.result.kind === 'heading' ? 'bookmark' : 'file-text'" [size]="14" />
+          <span class="lw-docs-search__text">
+            <span class="lw-docs-search__title">
+              @for (part of row.title; track $index) {
+                @if (part.hit) {
+                  <mark>{{ part.text }}</mark>
+                } @else {
+                  {{ part.text }}
+                }
+              }
+            </span>
+            <span class="lw-docs-search__sub">
+              @for (part of row.sub; track $index) {
+                @if (part.hit) {
+                  <mark>{{ part.text }}</mark>
+                } @else {
+                  {{ part.text }}
+                }
+              }
+            </span>
+          </span>
+        </button>
+      } @empty {
+        @if (loading()) {
+          <lw-empty-state message="검색 색인을 불러오는 중입니다." />
+        } @else if (query().trim().length >= minLength()) {
+          <lw-empty-state [message]="'\'' + query() + '\'에 대한 검색 결과가 없습니다.'" />
+        } @else {
+          <lw-empty-state [message]="'검색할 단어를 ' + minLength() + '글자 이상 입력해 주세요.'" />
+        }
+      }
+    </div>
+
+    <p class="lw-docs-search__hint">↑↓ 이동 · Enter 열기 · Esc 닫기</p>
+  </div>
+</lw-modal>

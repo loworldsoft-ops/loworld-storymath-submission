@@ -1,0 +1,88 @@
+@if (store.isModalOpen()) {
+  <lw-modal
+    [isOpen]="true"
+    variant="custom"
+    size="lg"
+    title="배경화면"
+    subtitle="고른 배경은 데스크톱 OS와 스마트폰 OS에 똑같이 적용됩니다."
+    [paddingless]="true"
+    (closeClick)="store.closeModal()">
+    <div class="wp">
+      <section class="wp__options" aria-label="배경화면 옵션">
+        <div class="wp__row">
+          <div class="wp__row-text">
+            <p class="wp__label">테마에 맞춰 자동</p>
+            <p class="wp__hint">테마를 바꾸면 어울리는 배경으로 함께 바뀝니다. 직접 고르면 꺼집니다.</p>
+          </div>
+          <lw-slide-switch
+            [checked]="store.isThemeAdaptive()"
+            (toggle)="store.toggleThemeAdaptive()"
+            ariaLabel="테마에 맞춰 배경 자동 전환" />
+        </div>
+
+        <div class="wp__row">
+          <div class="wp__row-text">
+            <p class="wp__label">흐림</p>
+            <p class="wp__hint">배경 그림을 흐리게 합니다.</p>
+          </div>
+          <div class="wp__blur">
+            <lw-slider
+              class="wp__slider"
+              [min]="0"
+              [max]="25"
+              [step]="0.5"
+              [value]="store.wallpaperBlur()"
+              (sliderInput)="onBlurSliderInput($event)"
+              ariaLabel="배경 흐림 정도" />
+            <span class="wp__blur-value">{{ store.wallpaperBlur() }}px</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="wp__categories" role="tablist" aria-label="배경 분류">
+        @for (cat of categories; track cat.id) {
+          <button
+            type="button"
+            role="tab"
+            class="wp__chip"
+            [class.is-active]="store.activeCategory() === cat.id"
+            [attr.aria-selected]="store.activeCategory() === cat.id"
+            (click)="store.setCategory(cat.id)">
+            {{ cat.label }}
+          </button>
+        }
+      </div>
+
+      <ul class="wp__grid">
+        @for (item of store.filteredItems(); track item.id) {
+          <li>
+            <button
+              type="button"
+              class="wp__card"
+              [class.is-active]="isApplied(item.id)"
+              [attr.aria-pressed]="isApplied(item.id)"
+              (click)="onSelectWallpaper(item.id)">
+              <span class="wp__thumb" [style.background-color]="item.solidColorHex ?? null">
+                @if (!item.isSolidColor) {
+                  <img class="wp__img" [src]="item.thumbnailUrl" alt="" loading="lazy" draggable="false" />
+                }
+                @if (isApplied(item.id)) {
+                  <span class="wp__check" aria-hidden="true"><lw-icon name="check" [size]="14" /></span>
+                }
+              </span>
+              <span class="wp__name">{{ item.name }}</span>
+              @if (store.themeResolvedWallpaperId() === item.id) {
+                <span class="wp__hint">지금 테마에 어울림</span>
+              }
+            </button>
+          </li>
+        }
+      </ul>
+
+      <footer class="wp__footer">
+        <p class="wp__current">적용 중 <strong>{{ store.currentWallpaper().name }}</strong></p>
+        <lw-button type="button" variant="primary" size="md" (click)="store.closeModal()">완료</lw-button>
+      </footer>
+    </div>
+  </lw-modal>
+}

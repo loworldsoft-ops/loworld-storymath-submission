@@ -1,0 +1,44 @@
+<div class="pomodoro" >
+  <lw-card class="card" variant="outlined">
+    <h2 class="title" >\uBD90\uBAA8\uB3C4\uB85C \uD0C0\uC774\uBA38</h2>
+
+    <div class="mode-tabs" >
+      <lw-button class="mode-tab" [class.active]="mode() === 'work'" (click)="setMode('work')">
+        <span class="icon-calendar" aria-hidden="true"></span>
+        \uC9D1\uC911
+      </lw-button>
+      <lw-button class="mode-tab" [class.active]="mode() === 'break'" (click)="setMode('break')">
+        <span class="icon-calendar" aria-hidden="true"></span>
+        \uD734\uC2DD
+      </lw-button>
+    </div>
+
+    <div class="timer-ring">
+      <span class="icon-play" aria-hidden="true"></span>
+      <div class="timer-text" >{{ display() }}</div>
+      <div class="timer-mode" [class.work]="mode() === 'work'">
+        {{ mode() === 'work' ? '\uC9D1\uC911 \uC2DC\uAC04' : '\uD734\uC2DD \uC2DC\uAC04' }}
+      </div>
+    </div>
+
+    <div class="controls">
+      <lw-button class="small-btn" (click)="reset()" [tooltip]="'\uCD08\uAE30\uD654'">
+        <span class="icon-play" aria-hidden="true"></span>
+      </lw-button>
+      <lw-button class="play-btn" [class.work]="mode() === 'work'" (click)="toggle()">
+        @if (running()) {
+          <span class="icon-glyph icon-pause" aria-hidden="true">⏸</span>
+        } @else {
+          <span class="icon-play" aria-hidden="true"></span>
+        }
+      </lw-button>
+      <lw-button class="small-btn" (click)="skip()" [tooltip]="'\uAC74\uB108\uB6F0\uAE30'">
+        <span class="icon-lightbulb" aria-hidden="true"></span>
+      </lw-button>
+    </div>
+
+    <div class="footer" >
+      <p>\uC624\uB298: <strong>{{ todaySessions() }}\uD68C</strong> \uC9D1\uC911</p>
+    </div>
+  </lw-card>
+</div>

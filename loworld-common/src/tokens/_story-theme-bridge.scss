@@ -1,0 +1,411 @@
+// Shared host bridges for novel play / D2 / D2R sub-components.
+@use 'palette' as palette;
+
+@mixin lw-game-play-host-bridge {
+  --lw-game-play-surface: var(--lw-game-bg-panel, var(--lw-bg-panel, #{palette.$lw-card-bg}));
+  --lw-game-play-text: var(--lw-game-text-body, var(--lw-text-primary, #{palette.$lw-ink}));
+  --lw-game-play-text-soft: var(--lw-game-text-muted, var(--lw-text-secondary, #{palette.$lw-muted}));
+  --lw-game-play-muted: var(--lw-game-text-muted-strong, var(--lw-text-muted, #{palette.$lw-muted}));
+  --lw-game-play-border: var(--lw-game-border, var(--lw-border-color, #{palette.$lw-card-border}));
+  --lw-game-play-accent: var(--lw-game-accent, var(--lw-color-primary, #{palette.$lw-color-primary}));
+  --lw-accent: var(--lw-game-accent, var(--lw-color-primary, #{palette.$lw-color-primary}));
+
+  // ── [Semantic Card & History Tokens] ──
+  --lw-game-play-card-bg: var(--lw-game-bg-panel-alt, var(--lw-bg-panel, #{palette.$lw-card-bg}));
+  --lw-game-play-card-border: var(--lw-game-border, var(--lw-border-color, #{palette.$lw-card-border}));
+  --lw-game-play-history-bg: var(--lw-game-bg-panel-alt, color-mix(in srgb, var(--lw-game-accent, #{palette.$lw-color-primary}) 8%, var(--lw-bg-panel, #{palette.$lw-card-bg})));
+  --lw-game-play-history-border: color-mix(in srgb, var(--lw-game-accent, #{palette.$lw-color-primary}) 28%, var(--lw-border-color, #{palette.$lw-card-border}));
+  --lw-game-play-history-badge-bg: var(--lw-game-bg-accent, color-mix(in srgb, var(--lw-game-accent, #{palette.$lw-color-primary}) 14%, transparent));
+  --lw-game-play-history-badge-fg: var(--lw-game-accent, #{palette.$lw-color-primary});
+
+  // ── [Unified Neutral/Black Border Tokens for Inspector & Panels] ──
+  --lw-game-border-brown: rgba(15, 23, 42, 0.15);
+  --lw-game-border-brown-strong: rgba(15, 23, 42, 0.35);
+  --lw-game-border-brown-soft: rgba(15, 23, 42, 0.08);
+}
+
+/// 노벨 플레이 테마의 기본 변수(테마 속성이 없을 때).
+@mixin lw-game-play-theme-base {
+  --lw-game-play-bg: var(--lw-bg-content, transparent);
+  --lw-game-play-surface: var(--lw-surface, var(--lw-bg-panel, rgba(255, 255, 255, 0.20)));
+  --lw-game-play-text: var(--lw-text-primary, #0f172a);
+  --lw-game-play-text-soft: var(--lw-text-secondary, #334155);
+  --lw-game-play-muted: var(--lw-text-muted, #64748b);
+  --lw-game-play-muted-strong: var(--lw-text-primary, #0f172a);
+  --lw-game-play-border: var(--lw-border, var(--lw-border-color, rgba(255, 255, 255, 0.25)));
+  --lw-game-play-accent: var(--lw-game-accent, var(--lw-color-primary, #6366f1));
+  --lw-game-play-card-bg: var(--lw-card-bg, var(--lw-surface, rgba(255, 255, 255, 0.20)));
+  --lw-game-play-history-bg: var(--lw-surface-alt, rgba(255, 255, 255, 0.15));
+  --lw-game-border-brown: rgba(99, 102, 241, 0.25);
+  --lw-game-border-brown-strong: rgba(99, 102, 241, 0.55);
+  --lw-game-border-brown-soft: rgba(99, 102, 241, 0.15);
+}
+
+/// 테마 하나의 변수 묶음. 정의되지 않은 이름이면 아무것도 내지 않는다.
+@mixin lw-game-play-theme-vars($theme) {
+  @if $theme == "global" {
+    --lw-game-play-bg: var(--lw-bg-content, transparent);
+    --lw-game-play-surface: rgba(255, 255, 255, 0.20);
+    --lw-game-play-text: var(--lw-text-primary, #0f172a);
+    --lw-game-play-text-soft: var(--lw-text-secondary, #334155);
+    --lw-game-play-muted: var(--lw-text-muted, #64748b);
+    --lw-game-play-muted-strong: var(--lw-text-primary, #0f172a);
+    --lw-game-play-border: var(--lw-border, var(--lw-border-color, rgba(255, 255, 255, 0.25)));
+    --lw-game-play-accent: var(--lw-game-accent, var(--lw-color-primary, #6366f1));
+    --lw-game-play-card-bg: rgba(255, 255, 255, 0.20);
+    --lw-card-bg: rgba(255, 255, 255, 0.20);
+    --lw-surface: rgba(255, 255, 255, 0.20);
+    --lw-game-play-history-bg: var(--lw-surface-alt, rgba(255, 255, 255, 0.15));
+    --lw-game-border-brown: rgba(99, 102, 241, 0.25);
+    --lw-game-border-brown-strong: rgba(99, 102, 241, 0.55);
+    --lw-game-border-brown-soft: rgba(99, 102, 241, 0.15);
+  } @else if $theme == "newspaper" {
+    --lw-game-play-bg: #fbf9f4;
+    --lw-game-play-surface: #f4f0e6;
+    --lw-game-play-text: #1c1917;
+    --lw-game-play-text-soft: #44403c;
+    --lw-game-play-muted: #78716c;
+    --lw-game-play-muted-strong: #57534e;
+    --lw-game-play-border: #d6d3d1;
+    --lw-game-play-accent: #991b1b;
+    --lw-game-play-history-bg: #eae4d8;
+    --lw-game-bg-panel: #f4f0e6;
+    --lw-game-bg-panel-alt: #eae4d8;
+    --lw-game-text-body: #1c1917;
+    --lw-game-text-muted: #78716c;
+    --lw-game-border: #d6d3d1;
+    --lw-game-accent: #991b1b;
+    --lw-bg-content: #fbf9f4;
+    --lw-bg-panel: #f4f0e6;
+    --lw-game-border-brown: rgba(139, 90, 43, 0.45);
+    --lw-game-border-brown-strong: rgba(139, 90, 43, 0.8);
+    --lw-game-border-brown-soft: rgba(139, 90, 43, 0.25);
+  } @else if $theme == "dark" {
+    --lw-game-play-bg: #0f172a;
+    --lw-game-play-surface: #1e293b;
+    --lw-game-play-text: #f8fafc;
+    --lw-game-play-text-soft: #cbd5e1;
+    --lw-game-play-muted: #94a3b8;
+    --lw-game-play-muted-strong: #e2e8f0;
+    --lw-game-play-border-color: var(--lw-border);
+    --lw-game-play-accent: #38bdf8;
+    --lw-game-play-history-bg: #1e293b;
+    --lw-game-bg-panel: #1e293b;
+    --lw-game-bg-panel-alt: #0f172a;
+    --lw-game-text-body: #f8fafc;
+    --lw-game-text-muted: #94a3b8;
+    --lw-game-border-color: var(--lw-border);
+    --lw-game-accent: #38bdf8;
+    --lw-bg-content: #0f172a;
+    --lw-bg-panel: #1e293b;
+    --lw-game-border-brown: rgba(180, 130, 80, 0.42);
+    --lw-game-border-brown-strong: rgba(205, 155, 100, 0.8);
+    --lw-game-border-brown-soft: rgba(180, 130, 80, 0.22);
+  } @else if $theme == "light" {
+    --lw-game-play-bg: #f8fafc;
+    --lw-game-play-surface: #ffffff;
+    --lw-game-play-text: #0f172a;
+    --lw-game-play-text-soft: #334155;
+    --lw-game-play-muted: #64748b;
+    --lw-game-play-muted-strong: #1e293b;
+    --lw-game-play-border: #e2e8f0;
+    --lw-game-play-accent: #0284c7;
+    --lw-game-play-history-bg: #ffffff;
+    --lw-game-bg-panel: #ffffff;
+    --lw-game-bg-panel-alt: #f1f5f9;
+    --lw-game-text-body: #0f172a;
+    --lw-game-text-muted: #64748b;
+    --lw-game-border: #e2e8f0;
+    --lw-game-accent: #0284c7;
+    --lw-bg-content: #f8fafc;
+    --lw-bg-panel: #ffffff;
+    --lw-game-border-brown: rgba(150, 100, 50, 0.38);
+    --lw-game-border-brown-strong: rgba(150, 100, 50, 0.75);
+    --lw-game-border-brown-soft: rgba(150, 100, 50, 0.2);
+  } @else if $theme == "parchment" {
+    --lw-game-play-bg: #fef3c7;
+    --lw-game-play-surface: #fde68a;
+    --lw-game-play-text: #451a03;
+    --lw-game-play-text-soft: #78350f;
+    --lw-game-play-muted: #92400e;
+    --lw-game-play-muted-strong: #78350f;
+    --lw-game-play-border: #f59e0b;
+    --lw-game-play-accent: #d97706;
+    --lw-game-play-history-bg: #fef9c3;
+    --lw-game-bg-panel: #fde68a;
+    --lw-game-bg-panel-alt: #fef3c7;
+    --lw-game-text-body: #451a03;
+    --lw-game-text-muted: #92400e;
+    --lw-game-border: #f59e0b;
+    --lw-game-accent: #d97706;
+    --lw-bg-content: #fef3c7;
+    --lw-bg-panel: #fde68a;
+    --lw-game-border-brown: rgba(160, 100, 30, 0.5);
+    --lw-game-border-brown-strong: rgba(160, 100, 30, 0.85);
+    --lw-game-border-brown-soft: rgba(160, 100, 30, 0.28);
+  } @else if $theme == "glassmorphism" {
+    --lw-game-play-bg: transparent;
+    --lw-game-play-surface: rgba(255, 255, 255, 0.20);
+    --lw-game-play-card-bg: rgba(255, 255, 255, 0.20);
+    --lw-card-bg: rgba(255, 255, 255, 0.20);
+    --lw-surface: rgba(255, 255, 255, 0.20);
+    --lw-game-play-text: #0f172a;
+    --lw-game-play-text-soft: #334155;
+    --lw-game-play-muted: #64748b;
+    --lw-game-play-muted-strong: #475569;
+    --lw-game-play-border: var(--lw-border, rgba(255, 255, 255, 0.25));
+    --lw-game-play-accent: #6366f1;
+    --lw-game-play-history-bg: rgba(255, 255, 255, 0.15);
+    --lw-game-bg-panel: rgba(255, 255, 255, 0.20);
+    --lw-game-bg-panel-alt: rgba(255, 255, 255, 0.12);
+    --lw-game-text-body: #0f172a;
+    --lw-game-text-muted: #64748b;
+    --lw-game-border: var(--lw-border, rgba(255, 255, 255, 0.25));
+    --lw-game-accent: #6366f1;
+    --lw-bg-content: transparent;
+    --lw-bg-panel: rgba(255, 255, 255, 0.20);
+    --lw-game-border-brown: rgba(99, 102, 241, 0.25);
+    --lw-game-border-brown-strong: rgba(99, 102, 241, 0.55);
+    --lw-game-border-brown-soft: rgba(99, 102, 241, 0.15);
+  }
+}
+
+$lw-game-play-themes: ("global", "newspaper", "dark", "light", "parchment", "glassmorphism");
+
+/// 컴포넌트 안의 요소에 테마 변수를 직접 줄 때 쓴다(요소 자신이나 조상에 `data-lw-play-theme`이 있을 때).
+/// 컴포넌트 호스트에는 이 믹스인 대신 `lw-game-play-themed` 클래스를 붙인다. 규칙은 전역 스타일시트에 한 번만 있다.
+@mixin lw-game-play-theme-rules {
+  @include lw-game-play-theme-base;
+
+  @each $theme in $lw-game-play-themes {
+    &[data-lw-play-theme="#{$theme}"],
+    :host-context([data-lw-play-theme="#{$theme}"]),
+    :host([data-lw-play-theme="#{$theme}"]) {
+      @include lw-game-play-theme-vars($theme);
+    }
+  }
+}
+
+@mixin lw-base-card-styles {
+  background: var(--lw-game-play-surface);
+  color: var(--lw-game-play-text);
+  border: 1px solid var(--lw-game-play-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: var(--lw-game-play-accent);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--lw-game-play-accent) 14%, transparent);
+  }
+}
+
+@mixin lw-novel-d2-host-bridge {
+  color: var(--lw-rpg-select-fg);
+}
+
+@mixin lw-d2r-host-bridge {
+  @include lw-novel-d2-host-bridge;
+  --lw-rpg-surface: var(--lw-rpg-select-panel-bg);
+  --lw-rpg-text: var(--lw-rpg-select-fg);
+  --lw-rpg-muted: var(--lw-rpg-select-muted);
+  --lw-rpg-accent: var(--lw-rpg-select-accent);
+  --lw-rpg-border: var(--lw-rpg-select-border);
+  --lw-rpg-slot: var(--lw-rpg-select-slot-bg);
+  --lw-rpg-input: var(--lw-rpg-select-input-bg);
+  --lw-rpg-on-accent: var(--lw-rpg-btn-primary-text);
+  --lw-rpg-gold: var(--lw-rpg-gold);
+  --lw-rpg-gold-strong: var(--lw-rpg-gold-strong);
+  --lw-rpg-gold-bright: var(--lw-rpg-gold-bright);
+  --lw-rpg-gold-muted: var(--lw-rpg-gold-muted);
+  --lw-rpg-gold-text: var(--lw-rpg-gold-text);
+  --lw-rpg-gold-pale: var(--lw-rpg-gold-pale);
+  --lw-rpg-magic: var(--lw-rpg-magic);
+  --lw-rpg-magic-bright: var(--lw-rpg-magic-bright);
+  --lw-rpg-set: var(--lw-rpg-set);
+  --lw-rpg-set-border: var(--lw-rpg-set-border);
+  --lw-rpg-unique: var(--lw-rpg-unique);
+  --lw-rpg-rare: var(--lw-rpg-rare);
+  --lw-rpg-ui-fg: var(--lw-rpg-ui-fg);
+  --lw-rpg-ui-muted: var(--lw-rpg-ui-muted);
+  --lw-rpg-ui-border: var(--lw-rpg-ui-border);
+  --lw-rpg-ui-surface: var(--lw-rpg-ui-surface);
+  --lw-rpg-ui-card: var(--lw-rpg-ui-card);
+  --lw-rpg-ui-scrim: var(--lw-rpg-ui-scrim);
+  --lw-rpg-accent-pressed: var(--lw-rpg-accent-pressed);
+  --lw-rpg-stat-str: var(--lw-rpg-stat-str);
+  --lw-rpg-border-deep: var(--lw-rpg-border-deep);
+  --lw-rpg-text-muted-stone: var(--lw-rpg-text-muted-stone);
+  --lw-rpg-text-body-alt: var(--lw-rpg-text-body-alt);
+}
+
+/**
+ * 🎴 [LoworldUI Theme System] 아케인 수집형 카드(Arcane Collectible Card) 4대 테마 토큰 브릿지
+ * 
+ * d2r-roster-card 및 d2r-class-card, 그리고 소설 운명/도감 카드가
+ * 일관된 라이트, 다크, 양피지, 신문 테마 비주얼을 공유하도록 표준화한 단일 진실 공급원(SSOT).
+ */
+@mixin lw-arcane-card-theme-rules {
+  /* ── 0. 기본 라이트 테마 (Light Novel & Global Default) ── */
+  --lw-card-bg: #faf8f2;
+  --lw-card-bg-image: url('/assets/novel/cards/codex-card-front-light.jpg');
+  --lw-card-inner-bg: rgba(255, 255, 255, 0.94);
+  --lw-card-inner-empty-bg: rgba(255, 255, 255, 0.88);
+  --lw-card-inner-border: 1px solid rgba(217, 119, 6, 0.25);
+  --lw-card-inner-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  --lw-card-text: #0f172a;
+  --lw-card-text-soft: #475569;
+  --lw-card-muted: #64748b;
+  --lw-card-border-color: rgba(217, 119, 6, 0.35);
+  --lw-card-frame-border: rgba(217, 119, 6, 0.7);
+  --lw-card-accent: #d97706;
+  --lw-card-accent-soft: rgba(217, 119, 6, 0.12);
+  --lw-card-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --lw-card-shadow-hover: 0 16px 36px -4px rgba(15, 23, 42, 0.2), 0 0 20px rgba(217, 119, 6, 0.35);
+  --lw-card-image-bg: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
+  --lw-card-image-border: 1px solid rgba(217, 119, 6, 0.3);
+  --lw-card-image-overlay: linear-gradient(to top, rgba(255, 255, 255, 0.92) 0%, transparent 100%);
+  --lw-card-pill-bg: rgba(255, 255, 255, 0.92);
+  --lw-card-pill-border: rgba(217, 119, 6, 0.35);
+  --lw-card-pill-text: #0f172a;
+  --lw-card-icon-bg: rgba(245, 158, 11, 0.12);
+  --lw-card-icon-border: rgba(217, 119, 6, 0.45);
+  --lw-card-divider: rgba(217, 119, 6, 0.22);
+  --lw-card-badge-hero-bg: rgba(234, 88, 12, 0.12);
+  --lw-card-badge-hero-border: rgba(234, 88, 12, 0.45);
+  --lw-card-badge-hero-text: #c2410c;
+  --lw-card-exp-track: rgba(15, 23, 42, 0.08);
+  --lw-card-exp-border: rgba(217, 119, 6, 0.25);
+  --lw-card-text-shadow: none;
+  --lw-card-positive: #059669;
+  --lw-card-danger: #dc2626;
+  --lw-card-enter-btn-bg: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --lw-card-enter-btn-hover-bg: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  --lw-card-enter-btn-text: #ffffff;
+
+  /* ── 1. 다크 테마 (Dark Novel / Classic Dark / D2R Dark) ── */
+  :host-context([data-lw-theme='dark']),
+  :host([data-lw-play-theme='dark']),
+  :host-context([data-lw-play-theme='dark']),
+  :host-context([data-lw-play-theme='classic-dark']),
+  :host-context([data-lw-play-theme='d2r-dark']),
+  :host-context(.is-dark),
+  :host(.is-dark) {
+    --lw-card-bg: #0b0f19;
+    --lw-card-bg-image: url('/assets/novel/cards/codex-card-front-dark.jpg');
+    --lw-card-inner-bg: #090d16;
+    --lw-card-inner-empty-bg: rgba(9, 13, 22, 0.88);
+    --lw-card-inner-border: 1px solid rgba(245, 158, 11, 0.2);
+    --lw-card-inner-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+    --lw-card-text: #f8fafc;
+    --lw-card-text-soft: #cbd5e1;
+    --lw-card-muted: #94a3b8;
+    --lw-card-border-color: rgba(245, 158, 11, 0.4);
+    --lw-card-frame-border: #f59e0b;
+    --lw-card-accent: #f59e0b;
+    --lw-card-accent-soft: rgba(245, 158, 11, 0.2);
+    --lw-card-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 2px 10px rgba(0, 0, 0, 0.4);
+    --lw-card-shadow-hover: 0 16px 36px -4px rgba(0, 0, 0, 0.75), 0 0 24px rgba(245, 158, 11, 0.45);
+    --lw-card-image-bg: #060910;
+    --lw-card-image-border: 1px solid rgba(245, 158, 11, 0.25);
+    --lw-card-image-overlay: linear-gradient(to top, rgba(9, 13, 22, 0.95) 0%, transparent 100%);
+    --lw-card-pill-bg: rgba(15, 23, 42, 0.85);
+    --lw-card-pill-border: rgba(148, 163, 184, 0.3);
+    --lw-card-pill-text: #cbd5e1;
+    --lw-card-icon-bg: rgba(15, 23, 42, 0.8);
+    --lw-card-icon-border: rgba(245, 158, 11, 0.5);
+    --lw-card-divider: rgba(245, 158, 11, 0.25);
+    --lw-card-badge-hero-bg: rgba(194, 65, 12, 0.4);
+    --lw-card-badge-hero-border: rgba(249, 115, 22, 0.7);
+    --lw-card-badge-hero-text: #fed7aa;
+    --lw-card-exp-track: rgba(255, 255, 255, 0.1);
+    --lw-card-exp-border: rgba(245, 158, 11, 0.2);
+    --lw-card-text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+    --lw-card-positive: #6ee7b7;
+    --lw-card-danger: #f87171;
+    --lw-card-enter-btn-bg: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    --lw-card-enter-btn-hover-bg: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --lw-card-enter-btn-text: #070a12;
+  }
+
+  /* ── 2. 고전 양피지 테마 (Parchment) ── */
+  :host([data-lw-play-theme='parchment']),
+  :host-context([data-lw-play-theme='parchment']) {
+    --lw-card-bg: #faf3e3;
+    --lw-card-bg-image: url('/assets/novel/cards/codex-card-front-parchment.jpg');
+    --lw-card-inner-bg: rgba(254, 243, 199, 0.92);
+    --lw-card-inner-empty-bg: rgba(254, 243, 199, 0.82);
+    --lw-card-inner-border: 1px solid rgba(180, 83, 9, 0.35);
+    --lw-card-inner-shadow: 0 4px 14px rgba(69, 26, 3, 0.12);
+    --lw-card-text: #451a03;
+    --lw-card-text-soft: #78350f;
+    --lw-card-muted: #92400e;
+    --lw-card-border-color: rgba(180, 83, 9, 0.4);
+    --lw-card-frame-border: #d97706;
+    --lw-card-accent: #b45309;
+    --lw-card-accent-soft: rgba(217, 119, 6, 0.15);
+    --lw-card-shadow: 0 12px 30px -4px rgba(69, 26, 3, 0.2), 0 2px 8px rgba(69, 26, 3, 0.1);
+    --lw-card-shadow-hover: 0 16px 36px -4px rgba(69, 26, 3, 0.28), 0 0 22px rgba(180, 83, 9, 0.35);
+    --lw-card-image-bg: radial-gradient(circle at center, #fef3c7 0%, #fde68a 100%);
+    --lw-card-image-border: 1px solid rgba(180, 83, 9, 0.35);
+    --lw-card-image-overlay: linear-gradient(to top, rgba(254, 243, 199, 0.92) 0%, transparent 100%);
+    --lw-card-pill-bg: rgba(253, 230, 138, 0.75);
+    --lw-card-pill-border: rgba(217, 119, 6, 0.4);
+    --lw-card-pill-text: #78350f;
+    --lw-card-icon-bg: rgba(245, 158, 11, 0.18);
+    --lw-card-icon-border: rgba(180, 83, 9, 0.5);
+    --lw-card-divider: rgba(180, 83, 9, 0.25);
+    --lw-card-badge-hero-bg: rgba(180, 83, 9, 0.18);
+    --lw-card-badge-hero-border: rgba(180, 83, 9, 0.6);
+    --lw-card-badge-hero-text: #9a3412;
+    --lw-card-exp-track: rgba(69, 26, 3, 0.12);
+    --lw-card-exp-border: rgba(180, 83, 9, 0.3);
+    --lw-card-text-shadow: none;
+    --lw-card-positive: #047857;
+    --lw-card-danger: #b91c1c;
+    --lw-card-enter-btn-bg: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    --lw-card-enter-btn-hover-bg: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --lw-card-enter-btn-text: #ffffff;
+  }
+
+  /* ── 3. 신문 양식 테마 (Newspaper) ── */
+  :host([data-lw-play-theme='newspaper']),
+  :host-context([data-lw-play-theme='newspaper']) {
+    --lw-card-bg: #fbf9f4;
+    --lw-card-bg-image: url('/assets/novel/cards/codex-card-front-newspaper.jpg');
+    --lw-card-inner-bg: rgba(251, 249, 244, 0.95);
+    --lw-card-inner-empty-bg: rgba(245, 242, 235, 0.88);
+    --lw-card-inner-border: 1px solid rgba(68, 64, 60, 0.3);
+    --lw-card-inner-shadow: 0 4px 14px rgba(28, 25, 23, 0.1);
+    --lw-card-text: #1c1917;
+    --lw-card-text-soft: #44403c;
+    --lw-card-muted: #78716c;
+    --lw-card-border-color: rgba(68, 64, 60, 0.35);
+    --lw-card-frame-border: #78716c;
+    --lw-card-accent: #991b1b;
+    --lw-card-accent-soft: rgba(153, 27, 27, 0.12);
+    --lw-card-shadow: 0 10px 26px -4px rgba(28, 25, 23, 0.15), 0 2px 8px rgba(28, 25, 23, 0.08);
+    --lw-card-shadow-hover: 0 16px 36px -4px rgba(28, 25, 23, 0.22), 0 0 20px rgba(153, 27, 27, 0.3);
+    --lw-card-image-bg: radial-gradient(circle at center, #f5f2eb 0%, #e7e5e4 100%);
+    --lw-card-image-border: 1px solid rgba(68, 64, 60, 0.3);
+    --lw-card-image-overlay: linear-gradient(to top, rgba(251, 249, 244, 0.95) 0%, transparent 100%);
+    --lw-card-pill-bg: rgba(231, 229, 228, 0.85);
+    --lw-card-pill-border: rgba(120, 113, 108, 0.45);
+    --lw-card-pill-text: #292524;
+    --lw-card-icon-bg: rgba(153, 27, 27, 0.08);
+    --lw-card-icon-border: rgba(153, 27, 27, 0.35);
+    --lw-card-divider: rgba(68, 64, 60, 0.22);
+    --lw-card-badge-hero-bg: rgba(153, 27, 27, 0.14);
+    --lw-card-badge-hero-border: rgba(153, 27, 27, 0.5);
+    --lw-card-badge-hero-text: #991b1b;
+    --lw-card-exp-track: rgba(28, 25, 23, 0.12);
+    --lw-card-exp-border: rgba(68, 64, 60, 0.25);
+    --lw-card-text-shadow: none;
+    --lw-card-positive: #15803d;
+    --lw-card-danger: #b91c1c;
+    --lw-card-enter-btn-bg: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+    --lw-card-enter-btn-hover-bg: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    --lw-card-enter-btn-text: #ffffff;
+  }
+}
+

@@ -1,0 +1,33 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: #{lw.$lw-metric-gap};
+  padding: var(--lw-metric-padding, #{lw.$lw-metric-padding-block} 0);
+  font-size: var(--lw-metric-font, #{lw.$lw-metric-font-size});
+}
+
+.metric-label {
+  color: var(--lw-metric-label-color, #{lw.$lw-metric-label-color});
+  flex-shrink: 0;
+}
+
+.metric-value {
+  color: var(--lw-metric-value-color, #{lw.$lw-metric-value-color});
+  font-weight: 500;
+  text-align: right;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metric-value.mono {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,407 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-09-03T08:22:02.304Z",
+  "state": {
+    "blocks": {
+      "c060fb3a-fe0b-4314-9aea-da7d31d56d4c": {
+        "id": "c060fb3a-fe0b-4314-9aea-da7d31d56d4c",
+        "type": "function",
+        "name": "접수일자",
+        "position": {
+          "x": 580,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 143,
+        "subBlocks": {
+          "code": {
+            "id": "code",
+            "type": "code",
+            "value": "return new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' })"
+          },
+          "language": {
+            "id": "language",
+            "type": "dropdown",
+            "value": "javascript"
+          }
+        },
+        "outputs": {
+          "result": {
+            "type": "json",
+            "description": "Return value from the executed JavaScript function"
+          },
+          "stdout": {
+            "type": "string",
+            "description": "Console log output and debug messages from function execution"
+          }
+        },
+        "data": {}
+      },
+      "cf8309a8-8fa8-4299-a72b-299279ce6325": {
+        "id": "cf8309a8-8fa8-4299-a72b-299279ce6325",
+        "type": "agent",
+        "name": "문의분석",
+        "position": {
+          "x": 1010,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 346,
+        "subBlocks": {
+          "topK": {
+            "id": "topK",
+            "type": "slider",
+            "value": null
+          },
+          "topP": {
+            "id": "topP",
+            "type": "slider",
+            "value": null
+          },
+          "files": {
+            "id": "files",
+            "type": "short-input",
+            "value": null
+          },
+          "model": {
+            "id": "model",
+            "type": "combobox",
+            "value": "gpt-5"
+          },
+          "tools": {
+            "id": "tools",
+            "type": "tool-input",
+            "value": []
+          },
+          "messages": {
+            "id": "messages",
+            "type": "messages-input",
+            "value": [
+              {
+                "role": "system",
+                "content": "  너는 고객 문의를 접수 대장에 기록하기 위해 정규화하는 담당자다.\n  사용자가 보낸 문의 원문에서 아래 값을 뽑아라.\n  \n  - 요청자: 문의자의 이름. 원문에 없으면 \"미상\".\n  - 분류: 계정 / 권한 / 버그 / 기능요청 / 기타 중 하나.\n  - 내용: 한 문장으로 요약. 40자 이내. 원문이 짧아도 반드시 채운다.\n  - 상태: 항상 \"접수\".\n  \n  원문에 없는 사실을 추측해 채우지 마라. 날짜는 다루지 마라."
+              },
+              {
+                "role": "user",
+                "content": "<문의원문.input>"
+              }
+            ]
+          },
+          "maxTokens": {
+            "id": "maxTokens",
+            "type": "short-input",
+            "value": null
+          },
+          "verbosity": {
+            "id": "verbosity",
+            "type": "dropdown",
+            "value": "medium"
+          },
+          "memoryType": {
+            "id": "memoryType",
+            "type": "dropdown",
+            "value": "none"
+          },
+          "temperature": {
+            "id": "temperature",
+            "type": "slider",
+            "value": 0.3
+          },
+          "azureEndpoint": {
+            "id": "azureEndpoint",
+            "type": "short-input",
+            "value": null
+          },
+          "thinkingLevel": {
+            "id": "thinkingLevel",
+            "type": "dropdown",
+            "value": ""
+          },
+          "vertexProject": {
+            "id": "vertexProject",
+            "type": "short-input",
+            "value": null
+          },
+          "conversationId": {
+            "id": "conversationId",
+            "type": "short-input",
+            "value": null
+          },
+          "responseFormat": {
+            "id": "responseFormat",
+            "type": "code",
+            "value": "{\n  \"name\": \"inquiry_triage\",\n  \"description\": \"문의 원문에서 접수 대장 컬럼 값을 추출한다\",\n  \"strict\": true,\n  \"schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"요청자\": { \"type\": \"string\", \"description\": \"문의자 이름, 없으면 미상\" },\n      \"분류\": { \"type\": \"string\", \"enum\": [\"계정\", \"권한\", \"버그\", \"기능요청\", \"기타\"] },\n      \"내용\": { \"type\": \"string\", \"description\": \"40자 이내 한 문장 요약\" },\n      \"상태\": { \"type\": \"string\", \"enum\": [\"접수\"] }\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"요청자\", \"분류\", \"내용\", \"상태\"]\n  }\n}"
+          },
+          "vertexLocation": {
+            "id": "vertexLocation",
+            "type": "short-input",
+            "value": null
+          },
+          "attachmentFiles": {
+            "id": "attachmentFiles",
+            "type": "file-upload",
+            "value": null
+          },
+          "azureApiVersion": {
+            "id": "azureApiVersion",
+            "type": "short-input",
+            "value": null
+          },
+          "reasoningEffort": {
+            "id": "reasoningEffort",
+            "type": "dropdown",
+            "value": "medium"
+          },
+          "vertexCredential": {
+            "id": "vertexCredential",
+            "type": "oauth-input",
+            "value": null
+          },
+          "slidingWindowSize": {
+            "id": "slidingWindowSize",
+            "type": "short-input",
+            "value": null
+          },
+          "slidingWindowTokens": {
+            "id": "slidingWindowTokens",
+            "type": "short-input",
+            "value": null
+          }
+        },
+        "outputs": {
+          "model": {
+            "type": "string",
+            "description": "Model used for generation"
+          },
+          "tokens": {
+            "type": "any",
+            "description": "Token usage statistics"
+          },
+          "content": {
+            "type": "string",
+            "description": "Generated response content"
+          },
+          "toolCalls": {
+            "type": "any",
+            "description": "Tool calls made"
+          }
+        },
+        "data": {}
+      },
+      "9ca013da-b6b6-40f1-81b6-886bfca04a2e": {
+        "id": "9ca013da-b6b6-40f1-81b6-886bfca04a2e",
+        "type": "start_trigger",
+        "name": "문의원문",
+        "position": {
+          "x": 150,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 100,
+        "subBlocks": {
+          "inputFormat": {
+            "id": "inputFormat",
+            "type": "input-format",
+            "value": [
+              {
+                "id": "reserved-input",
+                "name": "input",
+                "type": "string",
+                "value": "  영업본부 강태호입니다. 비밀번호를 세 번 틀렸더니 계정이 잠긴 것 같습니다.   로그인 시도하면 계속 같은 화면으로 되돌아옵니다. 잠금 해제 부탁드립니다.",
+                "collapsed": false
+              },
+              {
+                "id": "reserved-conversationId",
+                "name": "conversationId",
+                "type": "string",
+                "value": "",
+                "collapsed": false
+              },
+              {
+                "id": "reserved-files",
+                "name": "files",
+                "type": "files",
+                "value": "",
+                "collapsed": false
+              }
+            ]
+          }
+        },
+        "outputs": {
+          "files": {
+            "type": "files",
+            "description": "Field from input format"
+          },
+          "input": {
+            "type": "string",
+            "description": "Field from input format"
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "Field from input format"
+          }
+        },
+        "data": {}
+      },
+      "af92abc9-29d7-43d6-9dfc-45b55db3198e": {
+        "id": "af92abc9-29d7-43d6-9dfc-45b55db3198e",
+        "type": "table_v2",
+        "name": "대장기록",
+        "position": {
+          "x": 1440,
+          "y": 150
+        },
+        "enabled": true,
+        "horizontalHandles": true,
+        "advancedMode": false,
+        "triggerMode": false,
+        "height": 172,
+        "subBlocks": {
+          "data": {
+            "id": "data",
+            "type": "code",
+            "value": "{\n  \"문의일자\": \"<접수일자.result>\",\n  \"요청자\": \"<문의분석.요청자>\",\n  \"분류\": \"<문의분석.분류>\",\n  \"내용\": \"<문의분석.내용>\",\n  \"상태\": \"<문의분석.상태>\"\n}"
+          },
+          "rows": {
+            "id": "rows",
+            "type": "code",
+            "value": null
+          },
+          "limit": {
+            "id": "limit",
+            "type": "short-input",
+            "value": null
+          },
+          "order": {
+            "id": "order",
+            "type": "short-input",
+            "value": null
+          },
+          "rowId": {
+            "id": "rowId",
+            "type": "short-input",
+            "value": null
+          },
+          "filter": {
+            "id": "filter",
+            "type": "code",
+            "value": null
+          },
+          "eventType": {
+            "id": "eventType",
+            "type": "dropdown",
+            "value": "insert"
+          },
+          "operation": {
+            "id": "operation",
+            "type": "dropdown",
+            "value": "insert_row"
+          },
+          "sortBuilder": {
+            "id": "sortBuilder",
+            "type": "sort-builder",
+            "value": null
+          },
+          "watchColumns": {
+            "id": "watchColumns",
+            "type": "dropdown",
+            "value": null
+          },
+          "filterBuilder": {
+            "id": "filterBuilder",
+            "type": "filter-builder",
+            "value": null
+          },
+          "manualTableId": {
+            "id": "manualTableId",
+            "type": "short-input",
+            "value": null
+          },
+          "tableSelector": {
+            "id": "tableSelector",
+            "type": "table-selector",
+            "value": "tbl_ca469739d2fc4d1ca2bee5726469381f"
+          },
+          "includeHeaders": {
+            "id": "includeHeaders",
+            "type": "switch",
+            "value": true
+          },
+          "triggerInstructions": {
+            "id": "triggerInstructions",
+            "type": "text",
+            "value": "<div class=\"mb-3\"><strong>1.</strong> Select the table to monitor</div><div class=\"mb-3\"><strong>2.</strong> Choose whether to trigger on row inserts or updates</div><div class=\"mb-3\"><strong>3.</strong> For updates, optionally select specific columns to watch</div><div class=\"mb-3\"><strong>4.</strong> The workflow will trigger automatically when the event occurs</div>"
+          },
+          "manualConflictColumn": {
+            "id": "manualConflictColumn",
+            "type": "short-input",
+            "value": null
+          },
+          "conflictColumnSelector": {
+            "id": "conflictColumnSelector",
+            "type": "column-selector",
+            "value": ""
+          }
+        },
+        "outputs": {
+          "rows": {
+            "type": "array",
+            "description": "Array of rows"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Operation success status"
+          }
+        },
+        "data": {}
+      }
+    },
+    "edges": [
+      {
+        "id": "e2249e91-2204-44f3-940f-e4547d98c962",
+        "source": "9ca013da-b6b6-40f1-81b6-886bfca04a2e",
+        "target": "c060fb3a-fe0b-4314-9aea-da7d31d56d4c",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "81d84fe5-72e3-4f24-b5fd-56ff415ba8c2",
+        "source": "c060fb3a-fe0b-4314-9aea-da7d31d56d4c",
+        "target": "cf8309a8-8fa8-4299-a72b-299279ce6325",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      },
+      {
+        "id": "b711b4ed-65c4-41ce-abff-beb86aa6c2d5",
+        "source": "cf8309a8-8fa8-4299-a72b-299279ce6325",
+        "target": "af92abc9-29d7-43d6-9dfc-45b55db3198e",
+        "sourceHandle": "source",
+        "targetHandle": "target",
+        "type": "default",
+        "data": {}
+      }
+    ],
+    "loops": {},
+    "parallels": {},
+    "metadata": {
+      "name": "문의 접수",
+      "description": "New workflow",
+      "color": "#d61c7a",
+      "exportedAt": "2026-09-03T08:22:02.302Z"
+    },
+    "variables": {}
+  }
+}

@@ -1,0 +1,1071 @@
+@use 'index' as lw;
+:host {
+  display: contents;
+}
+
+/* ── 전역 백드롭 오버레이 ── */
+.lw-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--lw-color-black) 8%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.2s ease;
+  animation: lw-fade-in 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.blur {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--lw-color-black) 12%, transparent);
+  }
+
+  &.is-dark {
+    background: color-mix(in srgb, var(--lw-color-black) 16%, transparent);
+
+    &.blur {
+      background: color-mix(in srgb, var(--lw-color-black) 22%, transparent);
+    }
+  }
+}
+
+/* ── 모달 윈도우 프레임 ── */
+.lw-modal-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: min(calc(100% - 32px), calc(100vh - 48px));
+  max-height: min(calc(100% - 32px), calc(100dvh - 48px));
+  border-radius: 20px;
+  background: var(--lw-modal-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  contain: paint layout;
+  transform: translateZ(0);
+  will-change: transform;
+  color: var(--lw-text-primary);
+  border: 1px solid color-mix(in srgb, var(--lw-color-white) 75%, transparent);
+  box-shadow: 0 24px 60px -12px color-mix(in srgb, var(--lw-color-black) 18%, transparent), 0 0 0 1px color-mix(in srgb, var(--lw-color-white) 45%, transparent);
+  overflow: hidden;
+  animation: lw-modal-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center center;
+  transition: max-width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              max-height 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+              border-radius 0.26s ease;
+
+  /* ── Scoped Glass Tokens for Projected Child Views ── */
+  --lw-auth-dialog-surface: rgba(255, 255, 255, 0.90);
+  --lw-auth-dialog-bg: rgba(248, 250, 252, 0.85);
+  --lw-auth-dialog-elevated: rgba(255, 255, 255, 0.95);
+  --lw-auth-shell-bg: rgba(248, 250, 252, 0.90);
+  --lw-auth-input-bg: var(--lw-surface);
+  --lw-auth-border: rgba(226, 232, 240, 0.8);
+  --lw-modal-field-bg: rgba(248, 250, 252, 0.90);
+  --lw-modal-field-border: rgba(226, 232, 240, 0.8);
+  --lw-mld-bg: rgba(255, 255, 255, 0.90);
+  --lw-container-bg: rgba(255, 255, 255, 0.90);
+  --lw-bg-panel: rgba(248, 250, 252, 0.85);
+  --lw-sidebar-bg: rgba(248, 250, 252, 0.90);
+  --overview-glass-card-bg: rgba(255, 255, 255, 0.88);
+
+  /* 글자색은 전역 테마 토큰을 그대로 따른다. 창 안에서 다시 정하지 않는다. */
+  --lw-auth-dialog-title: var(--lw-text-primary);
+  --lw-auth-dialog-muted: var(--lw-text-secondary);
+  --lw-auth-dialog-body: var(--lw-text-primary);
+  --lw-auth-fg: var(--lw-text-primary);
+  --lw-auth-label: var(--lw-text-primary);
+  --lw-mld-fg: var(--lw-text-primary);
+  --lw-mld-muted: var(--lw-text-secondary);
+
+  /* 다크 테마 적응 (선명한 화이트 고대비) */
+  .is-dark &:not(.is-light-bg) {
+    background: color-mix(in srgb, var(--lw-hue-slate-900) 96%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: var(--lw-text-primary);
+    border-color: color-mix(in srgb, var(--lw-color-white) 14%, transparent);
+    box-shadow: 0 30px 70px -12px color-mix(in srgb, var(--lw-color-black) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--lw-color-white) 8%, transparent);
+
+    --lw-auth-dialog-surface: transparent;
+    --lw-auth-dialog-bg: transparent;
+    --lw-auth-dialog-elevated: rgba(255, 255, 255, 0.06);
+    --lw-auth-shell-bg: rgba(255, 255, 255, 0.04);
+    --lw-auth-input-bg: rgba(255, 255, 255, 0.06);
+    --lw-auth-border: rgba(255, 255, 255, 0.12);
+    --lw-modal-field-bg: rgba(255, 255, 255, 0.06);
+    --lw-modal-field-border: rgba(255, 255, 255, 0.12);
+    --lw-mld-bg: transparent;
+    --lw-container-bg: transparent;
+    --lw-bg-panel: transparent;
+    --lw-sidebar-bg: rgba(255, 255, 255, 0.05);
+    --overview-glass-card-bg: rgba(255, 255, 255, 0.05);
+
+    // 글자색은 전역 다크 토큰을 그대로 따른다. 여기서 바탕 토큰을 글자색으로 다시 정하지 않는다.
+    --lw-auth-dialog-title: var(--lw-text-primary);
+    --lw-auth-dialog-muted: var(--lw-text-secondary);
+    --lw-auth-dialog-body: var(--lw-text-primary);
+    --lw-auth-fg: var(--lw-text-primary);
+    --lw-auth-label: var(--lw-text-primary);
+    --lw-mld-fg: var(--lw-text-primary);
+    --lw-mld-muted: var(--lw-text-secondary);
+  }
+
+  /* ── Desktop OS 윈도우 스타일 (macOS / Fluent Glassmorphism) ── */
+  &.is-os-desktop {
+    border-radius: 14px;
+    background: var(--lw-modal-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 75%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 4%, transparent),
+                0 20px 48px -8px color-mix(in srgb, var(--lw-color-black) 18%, transparent),
+                0 36px 80px -16px color-mix(in srgb, var(--lw-color-black) 14%, transparent),
+                inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 95%, transparent);
+
+    .is-dark &:not(.is-light-bg) {
+      background: color-mix(in srgb, var(--lw-hue-slate-900) 96%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid color-mix(in srgb, var(--lw-color-white) 14%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 40%, transparent),
+                  0 28px 64px -10px color-mix(in srgb, var(--lw-color-black) 65%, transparent),
+                  0 48px 96px -18px color-mix(in srgb, var(--lw-color-black) 55%, transparent),
+                  inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 16%, transparent);
+    }
+  }
+
+  /* ── 하이엔드 글래스모피즘 (Glassmorphism Acrylic/Vibrancy: 라이트 테마 배경 유지) ── */
+  &.is-glass {
+    background: var(--lw-modal-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 75%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 4%, transparent),
+                0 24px 56px -10px color-mix(in srgb, var(--lw-color-black) 18%, transparent),
+                0 42px 90px -18px color-mix(in srgb, var(--lw-color-black) 14%, transparent),
+                inset 0 1px 1.5px 0 color-mix(in srgb, var(--lw-color-white) 95%, transparent);
+
+    .is-dark &:not(.is-light-bg) {
+      background: color-mix(in srgb, var(--lw-hue-slate-900) 55%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid color-mix(in srgb, var(--lw-color-white) 14%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 50%, transparent),
+                  0 30px 70px -12px color-mix(in srgb, var(--lw-color-black) 70%, transparent),
+                  0 52px 104px -20px color-mix(in srgb, var(--lw-color-black) 60%, transparent),
+                  inset 0 1px 1.5px 0 color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+    }
+  }
+
+  /* ── 라이트 배경 유지/강제 모드 (is-light-bg) ── */
+  &.is-light-bg {
+    background: var(--lw-modal-bg) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    color: var(--lw-text-primary) !important;
+    border: 1px solid color-mix(in srgb, var(--lw-color-white) 85%, transparent) !important;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 5%, transparent),
+                0 24px 60px -12px color-mix(in srgb, var(--lw-color-black) 18%, transparent),
+                0 40px 88px -18px color-mix(in srgb, var(--lw-color-black) 14%, transparent),
+                inset 0 1px 1.5px 0 var(--lw-color-white) !important;
+
+    /* Scoped tokens: 내부 콘텐츠도 라이트 테마로 유지 */
+    --lw-text-primary: #0f172a !important;
+    --lw-text-secondary: var(--lw-surface-overlay) !important;
+    --lw-text-muted: var(--lw-text-secondary) !important;
+    --lw-auth-dialog-title: var(--lw-text-primary) !important;
+    --lw-auth-dialog-muted: var(--lw-surface-overlay) !important;
+    --lw-auth-dialog-body: var(--lw-text-primary) !important;
+    --lw-auth-fg: var(--lw-text-primary) !important;
+    --lw-auth-label: var(--lw-text-primary) !important;
+    --lw-mld-fg: var(--lw-text-primary) !important;
+    --lw-mld-muted: var(--lw-surface-overlay) !important;
+    --lw-bg-panel: rgba(248, 250, 252, 0.92) !important;
+    --lw-container-bg: var(--lw-surface) !important;
+    --lw-surface: #ffffff !important;
+    --lw-surface-alt: var(--lw-surface-ground) !important;
+    --lw-modal-field-bg: var(--lw-surface-subtle) !important;
+    --lw-modal-field-border: var(--lw-border-subtle) !important;
+    --lw-border: var(--lw-border-subtle) !important;
+    --lw-border-subtle: var(--lw-surface-ground) !important;
+  }
+
+  /* ── 헤더 드래그 중인 활성 상태 ── */
+  &.is-dragging {
+    transition: none !important;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grabbing !important;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-black) 8%, transparent),
+                0 32px 76px -12px color-mix(in srgb, var(--lw-color-black) 38%, transparent),
+                0 56px 110px -18px color-mix(in srgb, var(--lw-color-black) 28%, transparent),
+                inset 0 1px 1.5px 0 color-mix(in srgb, var(--lw-color-white) 95%, transparent) !important;
+
+    .is-dark & {
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--lw-color-white) 18%, transparent),
+                  0 38px 88px -12px color-mix(in srgb, var(--lw-color-black) 92%, transparent),
+                  0 68px 130px -18px color-mix(in srgb, var(--lw-color-black) 82%, transparent),
+                  inset 0 1px 1.5px 0 color-mix(in srgb, var(--lw-color-white) 28%, transparent) !important;
+    }
+  }
+
+  /* ── 윈도우 최대화 상태 (is-maximized) ── */
+  &.is-maximized {
+    max-width: min(calc(100% - 32px), calc(100vw - 32px)) !important;
+    width: min(calc(100% - 32px), calc(100vw - 32px)) !important;
+    max-height: min(calc(100% - 32px), calc(100vh - 32px), calc(100dvh - 32px)) !important;
+    height: min(calc(100% - 32px), calc(100vh - 32px), calc(100dvh - 32px)) !important;
+    border-radius: 12px;
+  }
+
+  /* 5대 규격 사이즈 */
+  &[data-size='sm'] {
+    max-width: 420px;
+  }
+  &[data-size='md'] {
+    max-width: 560px;
+  }
+  &[data-size='lg'] {
+    max-width: 760px;
+  }
+  &[data-size='xl'] {
+    max-width: 960px;
+  }
+  &[data-size='full'] {
+    max-width: min(92vw, 1180px);
+    height: min(88vh, 880px);
+  }
+  &[data-size='fullscreen'] {
+    max-width: 100%;
+    width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+
+  /* 톤 스타일 */
+  &[data-tone='danger'] {
+    border-top: 3px solid var(--lw-color-danger);
+  }
+  &[data-tone='primary'] {
+    border-top: 3px solid var(--lw-color-primary);
+  }
+  &[data-tone='info'] {
+    border-top: 3px solid var(--lw-hue-cyan-500);
+  }
+  &[data-tone='success'] {
+    border-top: 3px solid var(--lw-color-success);
+  }
+}
+
+/* ── 1. 헤더 (Desktop OS 타이틀바) ── */
+.lw-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--lw-border-subtle);
+  flex-shrink: 0;
+
+  /* 헤더 드래그 가능 모드 */
+  &.is-draggable {
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  /* OS 스타일 타이틀바 */
+  &.is-os-header {
+    min-height: 42px;
+    padding: 10px 16px;
+    background: color-mix(in srgb, var(--lw-hue-slate-50) 70%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+    user-select: none;
+
+    .is-dark &:not(.is-light-bg) {
+      background: color-mix(in srgb, var(--lw-color-white) 2%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--lw-color-white) 6%, transparent);
+    }
+  }
+
+  /* 글래스모피즘 모드 하위 헤더 */
+  .is-glass & {
+    background: color-mix(in srgb, var(--lw-hue-slate-50) 65%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+
+    .is-dark &:not(.is-light-bg) {
+      background: color-mix(in srgb, var(--lw-color-white) 2%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--lw-color-white) 5%, transparent);
+    }
+  }
+
+  .is-light-bg & {
+    background: color-mix(in srgb, var(--lw-hue-slate-50) 85%, transparent) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent) !important;
+  }
+
+  /* 윈도우가 드래깅되는 동안 헤더 커서 고정 */
+  .is-dragging & {
+    cursor: grabbing !important;
+  }
+
+  /* 대화형 요소 커서 복원 */
+  button,
+  a,
+  input,
+  select,
+  textarea,
+  .traffic-btn,
+  [data-no-drag] {
+    cursor: pointer;
+  }
+
+  /* ── 트래픽 라이트 컨트롤 (macOS 3색 버튼) ── */
+  .traffic-lights {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    min-width: 60px;
+
+    .traffic-btn {
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border-radius: 50%;
+      border: 0.5px solid color-mix(in srgb, var(--lw-color-black) 18%, transparent);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      position: relative;
+      transition: transform 0.12s ease, filter 0.12s ease;
+
+      &:focus-visible {
+        outline: 2px solid var(--lw-color-primary);
+        outline-offset: 1px;
+      }
+
+      &:active {
+        transform: scale(0.92);
+      }
+
+      &--close {
+        background: var(--lw-color-danger);
+        border-color: var(--lw-color-danger);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+      }
+
+      &--minimize {
+        background: var(--lw-color-warning);
+        border-color: var(--lw-color-warning);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+      }
+
+      &--maximize {
+        background: var(--lw-hue-green-500);
+        border-color: var(--lw-hue-green-600);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--lw-color-white) 35%, transparent);
+      }
+
+      .traffic-glyph {
+        opacity: 0;
+        font-size: 8px;
+        font-weight: 800;
+        line-height: 1;
+        color: color-mix(in srgb, var(--lw-color-black) 65%, transparent);
+        transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+      }
+    }
+
+    /* 그룹에 마우스 진입 시 모든 심볼이 은은하게 표시 */
+    &:hover .traffic-glyph {
+      opacity: 0.85;
+    }
+  }
+
+  /* ── 중앙 정렬 타이틀 ── */
+  .lw-modal-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    .lw-modal-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      color: inherit;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lw-modal-desc {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--lw-text-secondary);
+      font-weight: 600;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .is-dark & {
+        color: var(--lw-text-dark, var(--lw-hue-slate-50));
+      }
+    }
+  }
+
+  &.title-center .lw-modal-title-group {
+    flex: 1;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    .lw-modal-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--lw-text-primary);
+
+      .is-dark & {
+        color: var(--lw-text-dark, var(--lw-color-white));
+      }
+    }
+
+    .lw-modal-desc {
+      font-size: 0.74rem;
+      color: var(--lw-text-muted);
+      font-weight: 600;
+
+      .is-dark & {
+        color: var(--lw-text-dark, var(--lw-hue-slate-100));
+      }
+    }
+  }
+
+  /* ── 우측 액션 슬롯 ── */
+  .lw-modal-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+    min-width: 60px;
+  }
+
+  .lw-modal-close-btn {
+    flex-shrink: 0;
+    margin-top: -2px;
+    margin-right: -4px;
+    color: var(--lw-text-primary);
+    transition: color 0.15s, transform 0.15s;
+
+    .is-dark & {
+      color: var(--lw-text-dark, var(--lw-color-white));
+    }
+
+    &:hover {
+      color: var(--lw-color-primary);
+      transform: rotate(90deg);
+    }
+  }
+}
+
+/* ── 2. 바디 ── */
+.lw-modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  -webkit-overflow-scrolling: touch;
+
+  &.is-paddingless {
+    padding: 0;
+  }
+
+  /* ── Confirm Variant ── */
+  .modal-confirm-view {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 8px 0;
+
+    .confirm-icon-box {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--lw-hue-blue-500) 10%, transparent);
+      color: var(--lw-color-primary);
+      flex-shrink: 0;
+
+      &[data-tone='danger'] {
+        background: color-mix(in srgb, var(--lw-color-danger) 12%, transparent);
+        color: var(--lw-color-danger);
+      }
+      &[data-tone='success'] {
+        background: color-mix(in srgb, var(--lw-color-success) 12%, transparent);
+        color: var(--lw-color-success);
+      }
+    }
+
+    .confirm-text-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .confirm-message {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      .confirm-detail {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--lw-text-secondary);
+        font-weight: 500;
+        line-height: 1.5;
+        white-space: pre-wrap;
+
+        .is-dark & {
+          color: var(--lw-text-dark, var(--lw-hue-slate-50));
+        }
+      }
+    }
+  }
+
+  /* ── Form Variant ── */
+  .modal-form-view {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .form-label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--lw-text-primary);
+
+        .is-dark & {
+          color: var(--lw-text-dark, var(--lw-color-white));
+        }
+
+        .required-star {
+          color: var(--lw-color-danger);
+          margin-left: 2px;
+        }
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        border: 1px solid var(--lw-border);
+        background: var(--lw-input-bg);
+        color: inherit;
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+
+        &:focus {
+          border-color: var(--lw-color-primary);
+          box-shadow: 0 0 0 3px color-mix(in srgb, var(--lw-hue-blue-500) 18%, transparent);
+        }
+
+        &.textarea {
+          min-height: 84px;
+          resize: vertical;
+        }
+      }
+    }
+  }
+
+  /* ── Selection Variant ── */
+  .modal-selection-view {
+    .selection-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .selection-item {
+        width: 100%;
+        text-align: left;
+        font: inherit;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--lw-border);
+        background: var(--lw-surface-card);
+        cursor: pointer;
+        transition: all 0.15s ease;
+
+        &:hover:not(.disabled) {
+          border-color: var(--lw-hue-blue-300);
+          background: color-mix(in srgb, var(--lw-hue-blue-500) 4%, transparent);
+        }
+
+        &.selected {
+          border-color: var(--lw-color-primary);
+          background: color-mix(in srgb, var(--lw-hue-blue-500) 8%, transparent);
+        }
+
+        &.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .selection-radio-indicator {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          border: 2px solid var(--lw-text-muted-light);
+          display: grid;
+          place-items: center;
+          flex-shrink: 0;
+
+          .radio-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--lw-color-primary);
+          }
+        }
+
+        &.selected .selection-radio-indicator {
+          border-color: var(--lw-color-primary);
+        }
+
+        .selection-item-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .selection-item-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--lw-text-primary);
+
+            .is-dark & {
+              color: var(--lw-text-dark, var(--lw-color-white));
+            }
+          }
+          .selection-item-desc {
+            font-size: 0.82rem;
+            color: var(--lw-text-secondary);
+            font-weight: 600;
+
+            .is-dark & {
+              color: var(--lw-text-dark, var(--lw-hue-slate-50));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* ── Wizard Variant ── */
+  .modal-wizard-view {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .wizard-stepper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--lw-border-subtle);
+
+      .step-node {
+        background: transparent;
+        border: none;
+        padding: 0;
+        font: inherit;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        opacity: 0.55;
+        transition: opacity 0.15s;
+
+        &.active {
+          opacity: 1;
+          .step-num {
+            background: var(--lw-color-primary);
+            color: var(--lw-surface);
+            font-weight: 700;
+          }
+          .step-title {
+            font-weight: 700;
+            color: var(--lw-text-primary);
+
+            .is-dark & {
+              color: var(--lw-text-dark, var(--lw-color-white));
+            }
+          }
+        }
+
+        &.completed {
+          opacity: 0.85;
+          .step-num {
+            background: var(--lw-color-success);
+            color: var(--lw-surface);
+          }
+        }
+
+        .step-num {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--lw-border-subtle);
+          display: grid;
+          place-items: center;
+          font-size: 0.78rem;
+          font-weight: 600;
+        }
+
+        .step-title {
+          font-size: 0.88rem;
+          white-space: nowrap;
+        }
+      }
+
+      .step-line {
+        flex: 1 1 20px;
+        height: 2px;
+        background: var(--lw-border-subtle);
+
+        &.completed {
+          background: var(--lw-color-success);
+        }
+      }
+    }
+
+    .wizard-step-content {
+      min-height: 120px;
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--lw-text-primary);
+
+        .is-dark & {
+          color: var(--lw-text-dark, var(--lw-color-white));
+        }
+      }
+      .step-desc {
+        margin: 0 0 16px;
+        font-size: 0.88rem;
+        color: var(--lw-text-secondary);
+        font-weight: 600;
+
+        .is-dark & {
+          color: var(--lw-text-dark, var(--lw-hue-slate-50));
+        }
+      }
+    }
+  }
+
+  /* ── Settings Variant ── */
+  .modal-settings-view {
+    display: flex;
+    min-height: 380px;
+
+    .settings-sidebar {
+      width: 190px;
+      border-right: 1px solid var(--lw-border-subtle);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+
+      .settings-tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: none;
+        background: transparent;
+        color: var(--lw-text-secondary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.15s ease;
+
+        .is-dark & {
+          color: var(--lw-text-dark, var(--lw-hue-slate-50));
+        }
+
+        &:hover {
+          background: color-mix(in srgb, var(--lw-color-black) 4%, transparent);
+          color: var(--lw-text-primary);
+
+          .is-dark & {
+            color: var(--lw-surface);
+          }
+        }
+
+        &.active {
+          background: color-mix(in srgb, var(--lw-hue-blue-500) 10%, transparent);
+          color: var(--lw-color-primary);
+          font-weight: 700;
+        }
+      }
+    }
+
+    .settings-main-panel {
+      flex: 1 1 auto;
+      padding: 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .settings-tab-header {
+        h3 {
+          margin: 0;
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: var(--lw-text-primary);
+
+          .is-dark & {
+            color: var(--lw-text-dark, var(--lw-color-white));
+          }
+        }
+        p {
+          margin: 4px 0 0;
+          font-size: 0.85rem;
+          color: var(--lw-text-secondary);
+          font-weight: 600;
+
+          .is-dark & {
+            color: var(--lw-text-dark, var(--lw-hue-slate-50));
+          }
+        }
+      }
+
+      .settings-tab-content {
+        flex: 1;
+      }
+    }
+  }
+}
+
+/* ── 3. 푸터 ── */
+.lw-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid color-mix(in srgb, var(--lw-color-white) 25%, transparent);
+  flex-shrink: 0;
+
+  .is-glass & {
+    background: color-mix(in srgb, var(--lw-hue-slate-50) 65%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+
+    .is-dark &:not(.is-light-bg) {
+      background: color-mix(in srgb, var(--lw-color-white) 3%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--lw-color-white) 6%, transparent);
+    }
+  }
+
+  .is-light-bg & {
+    background: color-mix(in srgb, var(--lw-hue-slate-50) 85%, transparent) !important;
+    border-top: 1px solid color-mix(in srgb, var(--lw-hue-slate-200) 80%, transparent) !important;
+  }
+
+  &:empty {
+    display: none !important;
+  }
+
+  .footer-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+
+    &.wizard-actions {
+      justify-content: space-between;
+    }
+  }
+}
+
+/* ── 애니메이션 ── */
+@keyframes lw-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lw-modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── 모바일 반응형 ── */
+@mixin modal-mobile-layout {
+  .lw-modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .lw-modal-window {
+    max-height: 92vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &.is-os-desktop {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    &.is-maximized {
+      max-width: 100% !important;
+      width: 100% !important;
+      max-height: 100% !important;
+      height: 100% !important;
+      border-radius: 0;
+    }
+
+    .modal-settings-view {
+      flex-direction: column;
+      .settings-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--lw-border-subtle);
+        flex-direction: row;
+        overflow-x: auto;
+      }
+    }
+  }
+}
+
+@include lw.lw-below(mobile) {
+  @include modal-mobile-layout;
+}
+
+.lw-modal-overlay.is-mobile,
+:host-context(.is-mobile) {
+  @include modal-mobile-layout;
+}
+
+/* ── 바텀시트 모양: 창 폭은 그대로 두고 화면 아래에 붙여 아래에서 올라온다 ── */
+.lw-modal-overlay.is-sheet {
+  padding: 0;
+  place-items: end center;
+
+  .lw-modal-window {
+    max-height: min(92%, 92dvh);
+    border-bottom: 0;
+    border-radius: 20px 20px 0 0;
+    transform-origin: center bottom;
+    animation: lw-sheet-slide-up 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+// 시트 위쪽 손잡이 표시
+.lw-modal-sheet-handle {
+  flex: none;
+  width: 36px;
+  height: 4px;
+  margin: 8px auto 2px;
+  border-radius: 2px;
+  background: var(--lw-text-secondary);
+  opacity: 0.35;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lw-modal-overlay.is-sheet .lw-modal-window {
+    animation: none;
+  }
+}
+
+/* ── 📱 디바이스 시뮬레이터 내부 완전 격리 스타일 (Simulator Scoped Containment) ── */
+.lw-modal-overlay.is-simulator-scoped,
+.lw-local-modal-host .lw-modal-overlay,
+:host-context([data-lw-mobile-surface]) .lw-modal-overlay,
+:host-context([data-lw-simulator="true"]) .lw-modal-overlay,
+:host-context([data-lw-simulator-stage]) .lw-modal-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1000 !important;
+  border-radius: inherit;
+  contain: paint layout;
+  overflow: hidden;
+  @include modal-mobile-layout;
+
+  .lw-modal-window {
+    max-height: 90% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    margin: 0 !important;
+    box-shadow: 0 -16px 40px color-mix(in srgb, var(--lw-color-black) 35%, transparent) !important;
+    animation: lw-sheet-slide-up 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+}
+
+.lw-local-modal-host {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1000 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  border-radius: inherit;
+
+  > * {
+    pointer-events: auto !important;
+  }
+}
+
+@keyframes lw-sheet-slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

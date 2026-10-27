@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+.os-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lw-space-4);
+  width: 100%;
+  height: var(--lw-control-sm);
+  padding: 0 var(--lw-space-2);
+  border: 0;
+  border-radius: var(--lw-radius-sm);
+  background: transparent;
+  color: var(--os-panel-fg);
+  font: inherit;
+  font-size: var(--lw-text-md);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(:disabled),
+  &:focus-visible {
+    background: var(--os-active);
+    outline: none;
+  }
+
+  &:disabled {
+    color: var(--os-panel-fg-muted);
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &.is-danger {
+    color: var(--os-danger);
+  }
+}
+
+.os-menu-item__hint {
+  font-size: var(--lw-text-sm);
+  color: var(--os-panel-fg-muted);
+}

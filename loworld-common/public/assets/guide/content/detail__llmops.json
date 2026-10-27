@@ -1,0 +1,7 @@
+{
+  "path": "/detail/llmops",
+  "title": "LLMOps",
+  "desc": "조직이 쓸 AI 모델과 서빙 어댑터를 관리하는 곳",
+  "toc": [],
+  "html": "<p>LLMOps 는 <strong>모델을 조직 차원에서 다루는</strong> 메뉴입니다.\n어떤 모델을 쓸 수 있게 할지 정하는 일(모델 거버넌스)과, 클러스터에 모델을 띄우고 문서 파싱\n어댑터를 붙이는 일(모델서빙)로 나뉩니다.</p>\n<div class=\"grid grid-cols-2 gap-3 @container\"><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/llmops/governance\"><h3 class=\"not-prose mb-1 text-sm font-medium\">모델 거버넌스</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>모델 등록과 조회, 공급사·모델 단위 차단과 허용, 인증키 등록과 사용 범위 지정</p></div></a><a data-card=\"true\" class=\"block rounded-xl border bg-fd-card p-4 text-fd-card-foreground transition-colors @max-lg:col-span-full hover:bg-fd-accent/80\" href=\"#/detail/llmops/model-serving\"><h3 class=\"not-prose mb-1 text-sm font-medium\">모델서빙</h3><div class=\"text-sm text-fd-muted-foreground prose-no-margin empty:hidden\"><p>모델 배포·등록과 모니터링, 문서 파싱 어댑터, 크리덴셜과 API 키 관리</p></div></a></div>"
+}

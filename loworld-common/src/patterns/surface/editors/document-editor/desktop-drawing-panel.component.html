@@ -1,0 +1,77 @@
+<div class="drawing-panel-wrapper">
+  <div class="drawing-panel-header">
+    <span class="drawing-title">드로잉</span>
+    <div class="drawing-header-actions">
+      <lw-button class="action-btn cancel-btn" (click)="onCancel()" tooltip="취소">
+        <span class="icon-glyph icon-close" aria-hidden="true">✕</span>
+      </lw-button>
+      <lw-button class="action-btn insert-btn" (click)="onInsert()" tooltip="삽입">
+        <span class="icon-close" aria-hidden="true"></span>
+        삽입
+      </lw-button>
+    </div>
+  </div>
+
+  <div class="drawing-canvas-container" #containerRef>
+    <canvas #canvasRef
+            class="drawing-canvas"
+            (pointerdown)="onPointerDown($event)"
+            (pointermove)="onPointerMove($event)"
+            (pointerup)="onPointerUp()"
+            (pointerleave)="onPointerUp()">
+    </canvas>
+  </div>
+
+  <div class="drawing-panel-footer">
+    <div class="footer-tools">
+      <div class="color-picker">
+        @for (c of colors; track c) {
+          <lw-button 
+                class="color-btn" 
+                [style.background-color]="c"
+                [class.active]="color() === c && !isEraser()"
+                (click)="setColor(c)"></lw-button>
+        }
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="size-picker">
+        @for (s of sizes; track s) {
+          <lw-button 
+                class="size-btn"
+                [class.active]="size() === s && !isEraser()"
+                (click)="setSize(s)">
+          <div class="size-dot" 
+               [style.width.px]="s + 3" 
+               [style.height.px]="s + 3"
+               [style.background-color]="(size() === s && !isEraser()) ? '#fb3220' : 'currentColor'"></div>
+        </lw-button>
+        }
+      </div>
+
+      <div class="divider"></div>
+
+      <lw-button class="tool-btn" 
+              [class.active]="isEraser()" 
+              (click)="toggleEraser()" 
+              tooltip="지우개">
+        <span class="icon-lightbulb" aria-hidden="true"></span>
+      </lw-button>
+
+      <lw-button class="tool-btn" 
+              [disabled]="history().length === 0" 
+              (click)="undo()" 
+              tooltip="되돌리기">
+        <span class="icon-lightbulb" aria-hidden="true"></span>
+      </lw-button>
+
+      <lw-button class="tool-btn clear-btn" 
+              [disabled]="history().length === 0" 
+              (click)="clear()" 
+              tooltip="전체 지우기">
+        <span class="icon-glyph icon-trash" aria-hidden="true">🗑️</span>
+      </lw-button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<lw-button
+  type="button"
+  role="switch"
+  class="lw-slide-switch-btn"
+  [class.is-on]="checked()"
+  [attr.aria-checked]="checked()"
+  [attr.aria-label]="ariaLabel()"
+  (click)="onToggle($event)">
+  <span class="lw-slide-switch-track">
+    <span class="lw-slide-switch-thumb"></span>
+  </span>
+</lw-button>

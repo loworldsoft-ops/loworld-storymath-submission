@@ -1,0 +1,30 @@
+    <div
+      class="unified-list-row"
+      [class.active]="item().active"
+      [class.disabled]="item().disabled"
+      (click)="!item().disabled && selectRow.emit(item().id)"
+    >
+      <div class="row-leading">
+        @if (item().avatarUrl) {
+          <lw-avatar [src]="item().avatarUrl" [alt]="item().title" [initial]="(item().title || '?').charAt(0)" size="sm" class="avatar" />
+        }
+        <ng-content select="[rowLeading]"></ng-content>
+      </div>
+
+      <div class="row-content">
+        <span class="row-title">{{ item().title }}</span>
+        @if (item().subTitle) {
+          <span class="row-subtitle">{{ item().subTitle }}</span>
+        }
+      </div>
+
+      <div class="row-trailing">
+        @if (item().metaText) {
+          <span class="row-meta">{{ item().metaText }}</span>
+        }
+        @if (item().badge) {
+          <span class="row-badge">{{ item().badge }}</span>
+        }
+        <ng-content select="[rowActions]"></ng-content>
+      </div>
+    </div>

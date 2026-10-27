@@ -1,0 +1,171 @@
+@use 'index' as lw;
+:host { display: block; }
+    .stage-list-empty {
+      padding: 20px 12px; font-size: 13px; line-height: 1.55;
+      color: var(--lw-text-primary-muted, #{lw.$hw-text-muted}); text-align: center;
+    }
+    .stage-list { display: flex; flex-direction: column; gap: 2px; }
+
+    .stage-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 8px;
+      transition: background 0.12s, transform 0.1s ease;
+    }
+    .stage-row:hover { background: var(--lw-card-hover-bg, #{lw.$hw-row-hover}); }
+    .stage-row.is-clickable { cursor: pointer; }
+    .stage-row.is-clickable:hover { background: color-mix(in srgb, var(--lw-accent) 12%, var(--lw-card-hover-bg, #{lw.$hw-row-hover})); }
+    .stage-row.is-clickable:active { transform: scale(0.995); }
+    .stage-row.completed .stage-title { color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary}); }
+
+    .drag-handle {
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; padding: 0;
+      border: none; border-radius: 6px;
+      background: transparent;
+      color: var(--lw-text-muted, #{lw.$hw-icon-muted});
+      cursor: grab;
+    }
+    .drag-handle:active { cursor: grabbing; }
+    .drag-handle:focus-visible {
+      outline: 2px solid var(--lw-accent, #{lw.$hw-accent}); outline-offset: 2px;
+    }
+
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+      font-size: 10px; font-weight: 700;
+      background: var(--lw-bg-input, #{lw.$hw-step-bg});
+      border: 1.5px solid var(--lw-border-color, #{lw.$hw-step-border});
+      color: var(--lw-text-muted, #{lw.$hw-step-text});
+    }
+    .step-num.done {
+      background: var(--lw-accent, #{lw.$hw-accent});
+      border-color: var(--lw-accent, #{lw.$hw-accent});
+      color: var(--lw-surface);
+    }
+
+    .stage-info {
+      flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px;
+    }
+    .stage-title {
+      font-size: 13px; font-weight: 500;
+      color: var(--lw-text-primary-primary, #{lw.$hw-text-primary});
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .completed-date {
+      font-size: 10px; color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary});
+    }
+    .completed-memo {
+      font-size: 11px; line-height: 1.4; margin-top: 2px;
+      color: var(--lw-text-primary-muted, #{lw.$hw-text-muted});
+      white-space: normal; word-break: break-word;
+    }
+
+    .actions {
+      display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+    }
+    .action-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 6px;
+      border: 1px solid transparent;
+      color: var(--lw-text-muted, #{lw.$hw-icon}); background: transparent;
+      cursor: pointer; transition: all 0.12s; text-decoration: none;
+    }
+    .action-btn:hover {
+      background: var(--lw-card-hover-bg, #{lw.$hw-row-hover});
+      color: var(--lw-accent, #{lw.$hw-accent});
+    }
+    .action-btn.has-memo { color: var(--lw-accent, #{lw.$hw-accent}); }
+    .action-btn.check-btn.checked { color: var(--lw-accent, #{lw.$hw-accent}); }
+
+    /* CDK drag */
+    .cdk-drag-preview.stage-row {
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--lw-hue-slate-900) 12%, transparent);
+      background: var(--lw-card-bg, #{lw.$hw-card-bg});
+      border-radius: 8px;
+    }
+    .cdk-drag-placeholder {
+      opacity: 0.35;
+      min-height: 44px;
+      border: 1px dashed var(--lw-border-color, #{lw.$hw-border});
+      border-radius: 8px;
+      background: var(--lw-card-hover-bg, #{lw.$hw-row-hover});
+    }
+    .cdk-drop-list-dragging .stage-row:not(.cdk-drag-placeholder) {
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    /* ── 완료 체크 확인 모달 (백드롭은 lw-modal 이 제공) ── */
+    .stage-confirm-modal {
+      width: 100%; max-width: 340px;
+      display: flex; flex-direction: column;
+      background: var(--lw-card-bg, #{lw.$hw-card-bg}); border-radius: 16px;
+      box-shadow: 0 18px 50px color-mix(in srgb, var(--lw-color-black) 28%, transparent);
+      padding: 18px;
+    }
+    .stage-confirm-head {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+    }
+    .stage-confirm-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 11px;
+    }
+    .stage-confirm-icon.done { background: color-mix(in srgb, var(--lw-color-success) 12%, transparent); color: var(--lw-color-success); }
+    .stage-confirm-icon.undo { background: color-mix(in srgb, var(--lw-color-warning) 14%, transparent); color: var(--lw-color-amber); }
+    .stage-confirm-title {
+      margin: 0; font-size: 15px; font-weight: 800;
+      color: var(--lw-text-primary-primary, #{lw.$hw-text-primary});
+    }
+    .stage-confirm-sub {
+      margin: 8px 0 0; font-size: 13px; font-weight: 600;
+      color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary});
+    }
+    .stage-confirm-hint {
+      margin: 10px 0 0; font-size: 12px; line-height: 1.5;
+      color: var(--lw-text-primary-muted, #{lw.$hw-text-muted});
+    }
+    .stage-confirm-body {
+      display: flex; flex-direction: column; gap: 12px; margin-top: 14px;
+    }
+    .stage-confirm-field { display: flex; flex-direction: column; gap: 5px; }
+    .stage-confirm-field .scf-label {
+      font-size: 12px; font-weight: 700;
+      color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary});
+    }
+    .stage-confirm-field .scf-optional {
+      font-weight: 500; color: var(--lw-text-primary-muted, #{lw.$hw-text-muted});
+    }
+    .scf-input, .scf-textarea {
+      width: 100%; box-sizing: border-box;
+      padding: 9px 11px; border-radius: 9px;
+      border: 1px solid var(--lw-border-color, #{lw.$hw-border});
+      background: var(--lw-bg-input, #{lw.$hw-input-bg});
+      font-size: 13px; color: var(--lw-text-primary-primary, #{lw.$hw-text-primary});
+      font-family: inherit;
+    }
+    .scf-input:focus, .scf-textarea:focus {
+      outline: none; border-color: var(--lw-accent, #{lw.$hw-accent}); background: var(--lw-surface);
+    }
+    .scf-textarea { resize: vertical; min-height: 60px; }
+    .stage-confirm-footer {
+      display: flex; gap: 8px; margin-top: 18px;
+    }
+    .stage-confirm-cancel {
+      flex: 1; padding: 11px 0; border-radius: 10px;
+      border: 1px solid var(--lw-border-color, #{lw.$hw-border});
+      background: var(--lw-card-bg, #{lw.$hw-card-bg});
+      color: var(--lw-text-primary-secondary, #{lw.$hw-text-secondary});
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.12s;
+    }
+    .stage-confirm-cancel:hover { background: var(--lw-card-hover-bg, #{lw.$hw-row-hover}); }
+    .stage-confirm-ok {
+      flex: 1.5; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 11px 0; border-radius: 10px; border: none;
+      background: var(--lw-color-success); color: var(--lw-surface);
+      font-size: 13px; font-weight: 800; cursor: pointer; transition: background 0.12s, box-shadow 0.12s;
+    }
+    .stage-confirm-ok:hover { background: var(--lw-color-success-strong); box-shadow: 0 2px 10px color-mix(in srgb, var(--lw-color-success) 40%, transparent); }
+    .stage-confirm-ok.danger { background: var(--lw-color-danger); }
+    .stage-confirm-ok.danger:hover { background: var(--lw-color-danger-strong); box-shadow: 0 2px 10px color-mix(in srgb, var(--lw-color-danger) 40%, transparent); }

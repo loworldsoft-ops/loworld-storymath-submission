@@ -1,0 +1,189 @@
+<div class="overview-mobile-mode-stage">
+  <div
+    class="overview-mobile-stage-backdrop"
+    [style.backgroundImage]="backdropImage()"
+    [style.filter]="backdropFilter()"
+    aria-hidden="true"></div>
+
+  <!-- 우측 하단 제어 바: 모드 전환과 기종 선택 -->
+  @if (device.isMenuCollapsed()) {
+    <lw-button
+      type="button"
+      class="overview-mode-floating-fab"
+      (click)="device.toggleMenu()"
+      [lwTooltip]="'모바일 OS 메뉴 펼치기'"
+      aria-label="모바일 OS 메뉴 펼치기">
+      <span class="fab-icon">📱</span>
+    </lw-button>
+  } @else {
+    <aside class="overview-mode-floating-bar overview-mode-floating-bar--bottom" aria-label="스마트폰 제어 바">
+      <!-- 행 1: 홈, 모드 전환, 상태, 배경화면, 설정, 동기화, 프레임, 접기 -->
+      <div class="floating-bar-row">
+        <lw-button
+          type="button"
+          class="floating-home-btn"
+          [lwTooltip]="'스마트폰 홈 화면으로 이동'"
+          aria-label="스마트폰 홈 화면으로 이동"
+          (click)="homeRequested.emit()">
+          <span class="floating-btn-glyph">🏠</span>
+        </lw-button>
+
+        <div class="macos-device-toggle" role="radiogroup" aria-label="디바이스 모드 전환">
+          <lw-button
+            type="button"
+            class="macos-device-btn"
+            [class.is-active]="device.mode() === 'desktop'"
+            (click)="deviceModeChange.emit('desktop')"
+            [lwTooltip]="'데스크톱 모드로 전환'"
+            aria-label="데스크톱 모드">
+            <span class="toggle-glyph">🖥️</span>
+          </lw-button>
+          <lw-button
+            type="button"
+            class="macos-device-btn"
+            [class.is-active]="device.mode() === 'mobile'"
+            (click)="deviceModeChange.emit('mobile')"
+            [lwTooltip]="'스마트폰 모드'"
+            aria-label="스마트폰 모드">
+            <span class="toggle-glyph">📱</span>
+          </lw-button>
+        </div>
+
+        <div
+          class="macos-status-pill"
+          [class.is-idle]="idle()"
+          [lwTooltip]="'시스템 상태: ' + statusLabel()"
+          role="status"
+          aria-label="시스템 상태">
+          <span class="macos-dot" aria-hidden="true"></span>
+        </div>
+
+        <lw-button
+          type="button"
+          class="macos-icon-btn"
+          (click)="wallpaperRequested.emit()"
+          [lwTooltip]="'스마트폰 / 데스크톱 배경화면 변경'"
+          aria-label="배경화면 변경">
+          <span class="menu-glyph">🖼️</span>
+        </lw-button>
+
+        <lw-button
+          type="button"
+          class="macos-icon-btn"
+          (click)="settingsRequested.emit()"
+          [lwTooltip]="'시스템 설정 및 제어 센터'"
+          aria-label="제어 센터">
+          <span class="menu-glyph">🎛️</span>
+        </lw-button>
+
+        <lw-button
+          type="button"
+          class="macos-icon-btn"
+          [lwTooltip]="'클라우드 동기화 완료'"
+          aria-label="클라우드 상태">
+          <span class="menu-glyph">☁️</span>
+        </lw-button>
+
+        <!-- 기종 프레임을 끄고 화면만 보기 -->
+        <lw-button
+          type="button"
+          class="macos-icon-btn frameless-toggle-btn"
+          [class.is-active]="device.isFrameless()"
+          (click)="device.toggleFrameless()"
+          [lwTooltip]="device.isFrameless() ? '스마트폰 시뮬레이터 목업 프레임 표시' : '시뮬레이터 레이아웃 제거 (모바일 화면만 보기)'"
+          [attr.aria-label]="device.isFrameless() ? '시뮬레이터 목업 표시' : '시뮬레이터 프레임 제거'">
+          <span class="menu-glyph">
+            @if (device.isFrameless()) { 📱 } @else { 🔲 }
+          </span>
+        </lw-button>
+
+        <lw-button
+          type="button"
+          class="macos-icon-btn collapse-toggle-btn"
+          (click)="device.toggleMenu()"
+          [lwTooltip]="'모바일 OS 메뉴 접기'"
+          aria-label="모바일 OS 메뉴 접기">
+          <span class="menu-glyph">⌄</span>
+        </lw-button>
+      </div>
+
+      <!-- 행 2: 기종 선택 -->
+      <div class="floating-bar-row floating-bar-row--presets">
+        <div class="macos-device-toggle macos-device-toggle--presets" role="radiogroup" aria-label="기종 너비 규격 선택">
+          <span class="preset-icon-indicator" [lwTooltip]="'디바이스 너비 규격'" aria-hidden="true">
+            <span class="preset-icon-glyph">↔</span>
+          </span>
+          @for (item of presetButtons; track item.preset.id) {
+            @if (item.dividerBefore) {
+              <span class="preset-cluster-divider" aria-hidden="true"></span>
+            }
+            <lw-button
+              type="button"
+              class="macos-device-btn macos-device-btn--preset"
+              [class.is-active]="device.selectedPresetId() === item.preset.id"
+              [class.is-tablet]="item.preset.category === 'tablet'"
+              [class.is-full]="item.preset.category === 'full'"
+              (click)="device.setPreset(item.preset.id)"
+              [lwTooltip]="item.preset.tooltip"
+              [attr.aria-label]="item.preset.label">
+              <lw-badge [label]="item.preset.badge" variant="subtle" color="primary" class="preset-badge" />
+            </lw-button>
+          }
+        </div>
+      </div>
+    </aside>
+  }
+
+  <!-- 기종 프레임. 화면 안에 띄우는 UI(모달 등)는 속성으로 이 영역을 찾는다. -->
+  <div
+    class="overview-iphone-stage"
+    data-lw-mobile-surface
+    data-lw-simulator-stage="true"
+    [class.is-frameless]="device.isFrameless()">
+    <div class="overview-iphone-chassis" [class]="presetClass()" [class.is-frameless]="device.isFrameless()">
+      @if (!device.isFrameless()) {
+        @switch (cutout()) {
+          @case ('island') {
+            <div class="overview-iphone-island" aria-hidden="true">
+              <span class="island-camera"></span>
+              <span class="island-sensor"></span>
+            </div>
+          }
+          @case ('island-max') {
+            <div class="overview-iphone-island is-max" aria-hidden="true">
+              <span class="island-camera"></span>
+              <span class="island-sensor"></span>
+            </div>
+          }
+          @case ('punch-hole') {
+            <div class="overview-galaxy-camera" aria-hidden="true">
+              <span class="punchhole-lens"></span>
+            </div>
+          }
+          @case ('punch-hole-slim') {
+            <div class="overview-galaxy-camera is-slim" aria-hidden="true">
+              <span class="punchhole-lens"></span>
+            </div>
+          }
+          @case ('compact') {
+            <div class="overview-compact-speaker" aria-hidden="true">
+              <span class="speaker-grill"></span>
+            </div>
+          }
+          @case ('tablet-cam') {
+            <div class="overview-tablet-camera" aria-hidden="true">
+              <span class="tablet-cam-lens"></span>
+            </div>
+          }
+        }
+
+        <div class="overview-iphone-btn btn-action" aria-hidden="true"></div>
+        <div class="overview-iphone-btn btn-vol-up" aria-hidden="true"></div>
+        <div class="overview-iphone-btn btn-vol-down" aria-hidden="true"></div>
+        <div class="overview-iphone-btn btn-power" aria-hidden="true"></div>
+      }
+
+      <ng-content />
+    </div>
+  </div>
+</div>

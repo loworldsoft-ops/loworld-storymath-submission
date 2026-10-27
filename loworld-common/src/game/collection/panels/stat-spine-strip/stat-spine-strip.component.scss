@@ -1,0 +1,99 @@
+@use 'index' as lw;
+
+:host {
+  display: block;
+}
+
+.lw-stat-spine-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--lw-border-color);
+  background: var(--lw-bg-content);
+  color: var(--lw-text-secondary);
+}
+
+.lw-stat-spine-strip__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.lw-stat-spine-strip__metric {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  padding: 4px 6px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--lw-color-white) 4%, transparent);
+}
+
+.lw-stat-spine-strip__metric--warning .lw-stat-spine-strip__value {
+  color: var(--lw-color-danger-light);
+}
+
+.lw-stat-spine-strip__metric--positive .lw-stat-spine-strip__value {
+  color: var(--lw-hue-green-300);
+}
+
+.lw-stat-spine-strip__metric--info .lw-stat-spine-strip__value {
+  color: var(--lw-hue-blue-300);
+}
+
+.lw-stat-spine-strip__icon {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.lw-stat-spine-strip__metric-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.lw-stat-spine-strip__value {
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lw-stat-spine-strip__bar {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--lw-color-white) 12%, transparent);
+  overflow: hidden;
+}
+
+.lw-stat-spine-strip__bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--lw-color-danger), var(--lw-hue-orange-500));
+}
+
+.lw-stat-spine-strip__secondary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.lw-stat-spine-strip__chip {
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--lw-color-white) 8%, transparent);
+  color: color-mix(in srgb, var(--lw-color-white) 88%, transparent);
+}
+
+.lw-stat-spine-strip__chip--muted {
+  opacity: 0.75;
+}

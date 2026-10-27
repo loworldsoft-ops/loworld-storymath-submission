@@ -1,0 +1,43 @@
+<div class="lw-stepper-container">
+  @for (step of steps(); track step.id; let idx = $index; let last = $last) {
+    <button
+      type="button"
+      class="lw-stepper-item"
+      [class.lw-stepper-item--active]="selectedStepId() === step.id"
+      [class.lw-stepper-item--running]="step.status === 'running'"
+      [class.lw-stepper-item--completed]="step.status === 'completed'"
+      [class.lw-stepper-item--failed]="step.status === 'failed'"
+      [attr.aria-current]="selectedStepId() === step.id ? 'step' : null"
+      (click)="stepSelect.emit(step)">
+      <span class="lw-stepper-node">
+        <span class="lw-stepper-badge">
+          @if (step.status === 'running') {
+            <span class="lw-stepper-spinner"></span>
+          } @else if (step.status === 'completed') {
+            <lw-icon name="check" [size]="12" />
+          } @else if (step.status === 'failed') {
+            <lw-icon name="x" [size]="12" />
+          } @else {
+            <span>{{ idx + 1 }}</span>
+          }
+        </span>
+        @if (!last) {
+          <span class="lw-stepper-track"></span>
+        }
+      </span>
+
+      <span class="lw-stepper-content">
+        <span class="lw-stepper-title-row">
+          <span class="lw-stepper-title">{{ step.title }}</span>
+          @if (step.durationMs) {
+            <span class="lw-stepper-duration">{{ step.durationMs }}ms</span>
+          }
+        </span>
+        <span class="lw-stepper-desc">{{ step.description }}</span>
+        @if (step.totalCount) {
+          <span class="lw-stepper-progress-text">{{ step.processedCount ?? 0 }} / {{ step.totalCount }}</span>
+        }
+      </span>
+    </button>
+  }
+</div>

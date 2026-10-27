@@ -1,0 +1,160 @@
+@if (!node()) {
+  <lw-empty-state
+    [message]="showWbsLink() ? '기능정의서 목록에서 항목을 선택하세요.' : 'WBS에서 항목을 선택하세요.'"
+    icon="📋"
+    size="md" />
+} @else if (node(); as n) {
+  @if (showWbsLink() && n.spec) {
+    <lw-button type="button" class="strategy-spec-panel__wbs-link" (click)="onOpenInWbs()">WBS에서 위치 보기</lw-button>
+  }
+  <lw-card class="strategy-spec-panel__head" variant="flat" size="md">
+    <div class="strategy-spec-panel__badges">
+      @if (n.status) {
+        <lw-badge [label]="statusLabel(n.status)" [color]="statusColor(n.status)" variant="subtle" size="sm" />
+      }
+      @if (n.dueLabel) {
+        <lw-badge [label]="n.dueLabel" color="neutral" variant="outlined" size="sm" />
+      }
+    </div>
+    <h3 class="strategy-spec-panel__title">{{ n.title }}</h3>
+    @if (n.epicBrief) {
+      <p class="strategy-spec-panel__epic-brief">{{ n.epicBrief }}</p>
+    }
+  </lw-card>
+
+  @if (n.spec; as spec) {
+    <lw-card class="strategy-spec-panel__spec" variant="outlined" size="md">
+      <div class="strategy-spec-panel__spec-head">
+        <div>
+          <code class="strategy-spec-panel__spec-id">{{ spec.id }}</code>
+          <h4 class="strategy-spec-panel__spec-title">{{ spec.title }}</h4>
+        </div>
+        <div class="strategy-spec-panel__spec-meta">
+          @if (spec.specStatus) {
+            <lw-badge
+              [label]="specStatusLabel(spec.specStatus)"
+              [color]="specStatusColor(spec.specStatus)"
+              variant="subtle"
+              size="sm" />
+          }
+          @if (spec.priority) {
+            <lw-badge [label]="priorityLabel(spec.priority)" color="info" variant="outlined" size="sm" />
+          }
+          @if (spec.version) {
+            <lw-badge [label]="'v' + spec.version" color="neutral" variant="outlined" size="sm" />
+          }
+        </div>
+      </div>
+
+      <p class="strategy-spec-panel__summary">{{ spec.summary }}</p>
+
+      <section class="strategy-spec-panel__section">
+        <h5 class="strategy-spec-panel__heading">포함 범위</h5>
+        <ul class="strategy-spec-panel__list">
+          @for (line of spec.scopeIn; track line) {
+            <li>{{ line }}</li>
+          }
+        </ul>
+      </section>
+
+      @if (spec.scopeOut?.length) {
+        <section class="strategy-spec-panel__section">
+          <h5 class="strategy-spec-panel__heading">제외 범위</h5>
+          <ul class="strategy-spec-panel__list">
+            @for (line of spec.scopeOut; track line) {
+              <li>{{ line }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (spec.userStories?.length) {
+        <section class="strategy-spec-panel__section">
+          <h5 class="strategy-spec-panel__heading">사용자 스토리</h5>
+          <ul class="strategy-spec-panel__list">
+            @for (story of spec.userStories; track story) {
+              <li>{{ story }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      <section class="strategy-spec-panel__section">
+        <h5 class="strategy-spec-panel__heading">수용 기준</h5>
+        <ol class="strategy-spec-panel__list strategy-spec-panel__list--ordered">
+          @for (ac of spec.acceptanceCriteria; track ac) {
+            <li>{{ ac }}</li>
+          }
+        </ol>
+      </section>
+
+      @if (spec.dependencies?.length) {
+        <section class="strategy-spec-panel__section">
+          <h5 class="strategy-spec-panel__heading">의존성</h5>
+          <ul class="strategy-spec-panel__list strategy-spec-panel__list--mono">
+            @for (dep of spec.dependencies; track dep) {
+              <li>{{ dep }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (hasRefList(spec)) {
+        <section class="strategy-spec-panel__section">
+          <h5 class="strategy-spec-panel__heading">참조</h5>
+          @if (spec.uiRefs?.length) {
+            <p class="strategy-spec-panel__ref-label">UI</p>
+            <ul class="strategy-spec-panel__list strategy-spec-panel__list--mono">
+              @for (ref of spec.uiRefs; track ref) {
+                <li>{{ ref }}</li>
+              }
+            </ul>
+          }
+          @if (spec.apiRefs?.length) {
+            <p class="strategy-spec-panel__ref-label">API</p>
+            <ul class="strategy-spec-panel__list strategy-spec-panel__list--mono">
+              @for (ref of spec.apiRefs; track ref) {
+                <li>{{ ref }}</li>
+              }
+            </ul>
+          }
+          @if (spec.dataRefs?.length) {
+            <p class="strategy-spec-panel__ref-label">Data</p>
+            <ul class="strategy-spec-panel__list strategy-spec-panel__list--mono">
+              @for (ref of spec.dataRefs; track ref) {
+                <li>{{ ref }}</li>
+              }
+            </ul>
+          }
+          @if (spec.docRef) {
+            <p class="strategy-spec-panel__ref-label">문서</p>
+            <div class="strategy-spec-panel__doc-row">
+              <code class="strategy-spec-panel__doc-ref">{{ spec.docRef }}</code>
+              <lw-button type="button" class="strategy-spec-panel__copy" (click)="onCopyDocRef(spec.docRef!)">
+                경로 복사
+              </lw-button>
+              @if (copyHint()) {
+                <span class="strategy-spec-panel__copy-hint">{{ copyHint() }}</span>
+              }
+            </div>
+          }
+        </section>
+      }
+    </lw-card>
+  } @else {
+    <lw-card variant="outlined" size="sm">
+      <p class="strategy-spec-panel__no-spec">이 노드에는 기능명세가 없습니다. 하위 항목을 선택하거나 Epic 요약만 확인하세요.</p>
+    </lw-card>
+  }
+
+  @if (linkedPillarLabels().length > 0) {
+    <lw-card class="strategy-spec-panel__links" variant="flat" size="sm">
+      <h5 class="strategy-spec-panel__heading">연결 4축 항목</h5>
+      <ul class="strategy-spec-panel__list">
+        @for (link of linkedPillarLabels(); track link.pillarLabel + link.itemTitle) {
+          <li><span class="strategy-spec-panel__pillar">{{ link.pillarLabel }}</span> · {{ link.itemTitle }}</li>
+        }
+      </ul>
+    </lw-card>
+  }
+}

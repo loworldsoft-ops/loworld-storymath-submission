@@ -1,0 +1,21 @@
+:host {
+  position: absolute;
+  top: calc(100% + var(--lw-space-1));
+  left: 0;
+  z-index: var(--lw-z-dropdown);
+}
+
+:host([data-align='end']) {
+  left: auto;
+  right: 0;
+}
+
+.os-menu {
+  min-width: 220px;
+  padding: var(--lw-space-1);
+  border: 1px solid var(--os-panel-border);
+  border-radius: var(--lw-radius-lg);
+  background: var(--os-panel-bg);
+  color: var(--os-panel-fg);
+  box-shadow: var(--lw-shadow-2);
+}

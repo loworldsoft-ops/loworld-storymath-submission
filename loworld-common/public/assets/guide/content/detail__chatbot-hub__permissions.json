@@ -1,0 +1,28 @@
+{
+  "path": "/detail/chatbot-hub/permissions",
+  "title": "권한에 따라 보이는 메뉴",
+  "desc": "",
+  "toc": [
+    {
+      "id": "권한별로-무엇이-보이나",
+      "depth": 2,
+      "text": "권한별로 무엇이 보이나"
+    },
+    {
+      "id": "시스템-챗봇-배포-권한이-없으면",
+      "depth": 2,
+      "text": "시스템 챗봇 배포 권한이 없으면"
+    },
+    {
+      "id": "전사-챗봇-관리-권한이-없으면",
+      "depth": 2,
+      "text": "전사 챗봇 관리 권한이 없으면"
+    },
+    {
+      "id": "권한이-없어-막혔다면",
+      "depth": 2,
+      "text": "권한이 없어 막혔다면"
+    }
+  ],
+  "html": "<p>챗봇 허브는 <strong>권한에 따라 메뉴 자체가 나타나거나 사라집니다.</strong> 버튼이 회색으로 남는 것이 아니라 아예 보이지 않으므로,\n&quot;화면에 그 메뉴가 없다&quot;면 대개 권한 문제입니다.</p>\n<hr/>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"권한별로-무엇이-보이나\"><a data-card=\"\" href=\"#권한별로-무엇이-보이나\" class=\"peer\">권한별로 무엇이 보이나</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<div class=\"relative overflow-auto prose-no-margin my-6\"><table><thead><tr><th>권한</th><th>보이는 것</th></tr></thead><tbody><tr><td><strong>권한 없음</strong></td><td>챗봇 허브의 <strong>신규 채팅 · 챗봇 둘러보기 · 최근 채팅</strong>. 나에게 공개된 챗봇을 쓰는 데는 별도 권한이 필요 없습니다</td></tr><tr><td><strong>시스템 챗봇 배포 권한</strong></td><td>배포 창 <strong>Chat</strong> 탭의 <strong>시스템 챗봇</strong> 선택지, 챗봇 허브 사이드바의 <strong>시스템 챗봇 신청 현황</strong></td></tr><tr><td><strong>전사 챗봇 관리 권한</strong></td><td>플랫폼 관리의 <strong>시스템 챗봇 관리</strong> 메뉴(배포 현황 · 승인 요청 관리 · 통계)</td></tr></tbody></table></div>\n<div class=\"flex gap-2 my-4 rounded-xl border bg-fd-card p-3 ps-1 text-sm text-fd-card-foreground shadow-md\" style=\"--callout-color:var(--color-fd-info, var(--color-fd-muted))\"><div role=\"none\" class=\"w-0.5 bg-(--callout-color)/50 rounded-sm\"></div><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-5 -me-0.5 fill-(--callout-color) text-fd-card\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 16v-4\"></path><path d=\"M12 8h.01\"></path></svg><div class=\"flex flex-col gap-2 min-w-0 flex-1\"><div class=\"text-fd-muted-foreground prose-no-margin empty:hidden\"><p>시스템 관리자는 두 권한을 따로 받지 않아도 모두 사용할 수 있습니다.</p></div></div></div>\n<hr/>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"시스템-챗봇-배포-권한이-없으면\"><a data-card=\"\" href=\"#시스템-챗봇-배포-권한이-없으면\" class=\"peer\">시스템 챗봇 배포 권한이 없으면</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<ul>\n<li>배포 창의 <strong>배포 대상</strong>에서 <strong>시스템 챗봇</strong> 버튼이 눌리지 않고, 마우스를 올리면 &quot;권한이 필요합니다. 관리자에게 문의하세요.&quot;가 표시됩니다.</li>\n<li>챗봇 허브 사이드바에 <strong>시스템 챗봇 신청 현황</strong> 항목이 나타나지 않습니다.</li>\n<li><strong>개인 챗봇 배포는 그대로 할 수 있습니다.</strong> 이 권한은 조직에 공개하는 경로만 막습니다.</li>\n</ul>\n<p><strong>시스템 챗봇 신청 현황</strong>은 배포 권한자가 <strong>자기가 올린 신청만</strong> 보는 화면입니다. 남의 신청은 보이지 않습니다.</p>\n<hr/>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"전사-챗봇-관리-권한이-없으면\"><a data-card=\"\" href=\"#전사-챗봇-관리-권한이-없으면\" class=\"peer\">전사 챗봇 관리 권한이 없으면</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<ul>\n<li>왼쪽 사이드바 플랫폼 관리에 <strong>시스템 챗봇 관리</strong>가 나타나지 않습니다.</li>\n<li>주소를 직접 입력해도 화면이 열리지 않고 되돌려 보냅니다.</li>\n</ul>\n<hr/>\n<h2 class=\"flex scroll-m-28 flex-row items-center gap-2\" id=\"권한이-없어-막혔다면\"><a data-card=\"\" href=\"#권한이-없어-막혔다면\" class=\"peer\">권한이 없어 막혔다면</a><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide size-3.5 shrink-0 text-fd-muted-foreground opacity-0 transition-opacity peer-hover:opacity-100\" aria-hidden=\"true\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg></h2>\n<p>배포 대상이나 메뉴가 보이지 않는다면 조직 관리자에게 필요한 권한을 요청하세요.\n권한은 역할에 묶여 부여되므로, 커스텀 역할에 해당 권한을 담아 배정하는 방식으로도 열 수 있습니다.\n역할과 권한을 구성하는 방법은 <a href=\"#/detail/organization/role-permissions\">역할·권한 구성하기</a>를 참고하세요.</p>"
+}

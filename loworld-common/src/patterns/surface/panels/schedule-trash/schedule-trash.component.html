@@ -1,0 +1,50 @@
+<div class="trash-page" >
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon" >
+        <span class="icon-glyph icon-trash" aria-hidden="true">🗑️</span>
+      </div>
+      <div>
+        <h2 class="page-title" >\uD734\uC9C0\uD1B5</h2>
+        <p class="page-sub">\uC0AD\uC81C\uB41C \uD56D\uBAA9\uC740 30\uC77C \uD6C4 \uC790\uB3D9\uC73C\uB85C \uC601\uAD6C \uC0AD\uC81C\uB429\uB2C8\uB2E4</p>
+      </div>
+    </div>
+    @if (items().length > 0) {
+      <lw-button class="empty-btn" (click)="onEmptyClick()">
+        휴지통 비우기
+      </lw-button>
+    }
+  </div>
+
+  @if (items().length === 0) {
+    <lw-empty-state icon="🗑️" message="휴지통이 비어있습니다">
+      <p class="empty-sub">삭제된 일정이 여기에 표시됩니다</p>
+    </lw-empty-state>
+  } @else {
+    <div class="info-bar" >
+      <span class="icon-trash" aria-hidden="true"></span>
+      <span>{{ items().length }}\uAC1C \uD56D\uBAA9 \xB7 \uB9CC\uB8CC \uC784\uBC15: {{ expiringCount() }}\uAC1C</span>
+    </div>
+    <div class="item-list">
+      @for (item of items(); track item.event.id) {
+        <div class="trash-item" >
+          <div class="item-left">
+            <span class="item-dot" [style.backgroundColor]="getColor(item.event.calendarId)"></span>
+            <div class="item-info">
+              <div class="item-title" >{{ item.event.title }}</div>
+              <div class="item-meta">
+                <span>\uC0AD\uC81C: {{ formatDate(item.deletedAt) }}</span>
+                <span class="sep">\u00B7</span>
+                <span [class.expiring]="isExpiring(item)">\uB9CC\uB8CC: {{ daysUntilExpiry(item) }}\uC77C</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <lw-button class="restore-btn" (click)="restoreEvent.emit(item.event.id)">\uBCF5\uC6D0</lw-button>
+            <lw-button class="delete-btn" (click)="confirmPermanentDelete(item.event.id)">영구 삭제</lw-button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

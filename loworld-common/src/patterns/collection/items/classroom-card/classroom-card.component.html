@@ -1,0 +1,50 @@
+<lw-card
+  layout="row"
+  variant="outlined"
+  [interactive]="true"
+  size="md"
+  [selected]="selected()"
+  (click)="select.emit(room().id)"
+>
+  <div class="card-left">
+    <lw-avatar
+      class="avatar"
+      [initial]="initial()"
+      [alt]="room().menteeName"
+      size="md"
+    />
+  </div>
+
+  <div class="card-body">
+    <div class="top-row">
+      @if (room().groupId) {
+        <span class="mentee-flag" aria-hidden="true">{{ countryFlag() }}</span>
+      }
+      <span class="mentee-name">{{ room().menteeName }}</span>
+      <lw-badge
+        variant="subtle"
+        size="sm"
+        [label]="statusBadge().label"
+        [customBg]="statusBadge().customBg"
+        [customText]="statusBadge().customText"
+        [customBorder]="statusBadge().customBorder"
+      />
+    </div>
+    <div class="mentor-row">
+      <span class="icon-glyph icon-user" aria-hidden="true">👤</span>
+      <span class="mentor-name">멘토: {{ room().mentorName }}</span>
+      <span class="room-number">{{ room().roomNumber }}</span>
+    </div>
+    <div class="progress-row">
+      <div class="mini-track" role="progressbar"
+           [attr.aria-valuenow]="completedCount()"
+           [attr.aria-valuemin]="0"
+           [attr.aria-valuemax]="16">
+        @for (n of progressCells; track n) {
+          <div class="cell" [class.done]="n <= completedCount()"></div>
+        }
+      </div>
+      <span class="progress-text">{{ completedCount() }}/16</span>
+    </div>
+  </div>
+</lw-card>

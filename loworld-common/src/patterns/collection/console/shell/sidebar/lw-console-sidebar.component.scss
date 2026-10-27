@@ -1,0 +1,288 @@
+@use 'index' as lw;
+@use '../../console-ui' as ui;
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: var(--lw-console-sidebar-w);
+  height: 100%;
+  min-height: 0;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // 공통 사이드 메뉴 항목을 테마 토큰에 연결
+  --lw-side-menu-text-muted: var(--lw-text-secondary);
+  --lw-side-menu-sub-text: var(--lw-text-secondary);
+  --lw-side-menu-item-hover-bg: var(--lw-surface-hover);
+  --lw-side-menu-item-hover-color: var(--lw-text-primary);
+  --lw-side-menu-item-active-bg: var(--lw-surface-active);
+}
+
+:host(.is-collapsed) {
+  width: var(--lw-console-sidebar-collapsed-w);
+}
+
+.lw-console-sb {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-right: 1px solid var(--lw-border-subtle);
+  background: var(--lw-surface-raised);
+  color: var(--lw-text-primary);
+  user-select: none;
+}
+
+.lw-console-sb__head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 52px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--lw-border-subtle);
+
+  :host(.is-collapsed) & {
+    justify-content: center;
+  }
+}
+
+.lw-console-sb__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+
+  @include lw.lw-hover {
+    background: var(--lw-surface-hover);
+  }
+}
+
+.lw-console-sb__logo {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, var(--lw-color-primary), var(--lw-color-accent));
+}
+
+.lw-console-sb__brand-text {
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ── 그룹 전환 ──
+.lw-console-sb__group {
+  position: relative;
+  padding: 8px 10px;
+}
+
+.lw-console-sb__group-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  min-height: 36px;
+  padding: 4px 8px;
+  border: 1px solid var(--lw-border-subtle);
+  border-radius: 8px;
+  background: var(--lw-surface-card);
+  color: var(--lw-text-secondary);
+  font: inherit;
+  cursor: pointer;
+
+  @include lw.lw-hover {
+    background: var(--lw-surface-hover);
+  }
+
+  :host(.is-collapsed) & {
+    justify-content: center;
+    padding: 4px;
+    border-color: transparent;
+    background: transparent;
+  }
+}
+
+.lw-console-sb__group-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lw-console-sb__group-name {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--lw-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lw-console-sb__popover {
+  @include ui.foundry-card;
+  position: absolute;
+  top: calc(100% - 4px);
+  left: 10px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 280px;
+  padding: 8px;
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--lw-color-black) 18%, transparent);
+}
+
+.lw-console-sb__popover-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 8px;
+  border-bottom: 1px solid var(--lw-border-subtle);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.lw-console-sb__popover-list {
+  @include ui.foundry-scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 240px;
+}
+
+.lw-console-sb__popover-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--lw-text-secondary);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+
+  &.is-active {
+    background: var(--lw-surface-hover);
+    color: var(--lw-text-primary);
+  }
+  @include lw.lw-hover-only {
+    &:hover {
+      background: var(--lw-surface-hover);
+      color: var(--lw-text-primary);
+    }
+  }
+
+  &.is-depth-1 {
+    padding-left: 24px;
+  }
+
+  &.is-depth-2 {
+    padding-left: 40px;
+  }
+}
+
+.lw-console-sb__popover-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lw-console-sb__popover-empty {
+  margin: 0;
+  padding: 12px 8px;
+  color: var(--lw-text-muted);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+// ── 메뉴 ──
+.lw-console-sb__nav {
+  @include ui.foundry-scroll;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 4px 10px;
+
+  :host(.is-collapsed) & {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.lw-console-sb__foot {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  border-top: 1px solid var(--lw-border-subtle);
+
+  :host(.is-collapsed) & {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.lw-console-sb__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  @include lw.lw-hover {
+    background: var(--lw-surface-hover);
+  }
+
+  :host(.is-collapsed) & {
+    justify-content: center;
+  }
+}
+
+.lw-console-sb__user-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.lw-console-sb__user-name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lw-console-sb__user-email {
+  overflow: hidden;
+  color: var(--lw-text-muted);
+  font-size: var(--lw-font-size-2xs, 0.6875rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

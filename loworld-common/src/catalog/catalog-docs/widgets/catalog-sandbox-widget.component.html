@@ -1,0 +1,38 @@
+<ng-template #stage>
+  @if (loading()) {
+    <lw-empty-state message="미리보기를 불러오는 중입니다." />
+  } @else if (preview(); as type) {
+    <ng-container [ngComponentOutlet]="type" [ngComponentOutletInputs]="previewInputs()" />
+  } @else {
+    <lw-empty-state [message]="missingMessage()" />
+  }
+</ng-template>
+
+<section class="catalog-sandbox" aria-label="라이브 미리보기">
+  <header class="catalog-sandbox__bar">
+    <div class="catalog-sandbox__title">
+      <span class="catalog-sandbox__dot" aria-hidden="true"></span>
+      <span>미리보기</span>
+      <lw-badge variant="outlined" color="primary" size="xs" [label]="selectorLabel()" />
+    </div>
+    <div class="catalog-sandbox__actions">
+      <lw-tabs variant="segment" size="sm" ariaLabel="미리보기 화면 크기" [tabs]="viewportTabs" [value]="viewport()" (tabChange)="setViewport($event)" />
+      <lw-select class="catalog-sandbox__theme" size="sm" ariaLabel="미리보기 테마" [options]="themeOptions" [value]="theme()" (valueChange)="theme.set($event)" />
+    </div>
+  </header>
+
+  <div class="catalog-sandbox__stage" [attr.data-lw-theme]="theme()">
+    @if (isMobile()) {
+      <div class="catalog-sandbox__device">
+        <div class="catalog-sandbox__notch" aria-hidden="true"></div>
+        <div class="catalog-sandbox__screen">
+          <ng-container [ngTemplateOutlet]="stage" />
+        </div>
+      </div>
+    } @else {
+      <div class="catalog-sandbox__desktop">
+        <ng-container [ngTemplateOutlet]="stage" />
+      </div>
+    }
+  </div>
+</section>

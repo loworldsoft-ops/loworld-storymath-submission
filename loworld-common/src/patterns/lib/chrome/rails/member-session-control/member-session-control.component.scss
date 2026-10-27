@@ -1,0 +1,325 @@
+@use 'index' as lw;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.session-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── 1. 회원 프로필 트리거 버튼 (솔리드 & 단정함) ── */
+.session-trigger-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--lw-titlebar-border, var(--lw-border-color));
+  background: var(--lw-surface-alt, var(--lw-bg-panel-alt));
+  color: var(--lw-titlebar-text, var(--lw-text-primary, inherit));
+  cursor: pointer;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  padding: 0 !important;
+
+  ::ng-deep .lw-btn__content {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+  }
+
+  &:hover,
+  &.active {
+    border-color: var(--lw-accent-primary, var(--lw-accent));
+    background: var(--lw-titlebar-hover);
+    color: var(--lw-accent-primary, var(--lw-accent));
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  .avatar-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+}
+
+.avatar-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: circle(50% at 50% 50%);
+
+  lw-icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img, svg, span, .dynamic-raster-icon, .dynamic-svg-inline, .dynamic-svg-mask, .dynamic-raster-fallback {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+  }
+}
+
+.role-indicator-dot {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lw-surface);
+  background: var(--lw-hue-gray-400);
+
+  &[data-role="OWNER"] {
+    background: var(--lw-color-warning);
+  }
+
+  &[data-role="ADMIN"] {
+    background: var(--lw-color-primary);
+  }
+
+  &[data-role="MANAGER"] {
+    background: var(--lw-color-success);
+  }
+
+  &[data-role="VIEWER"] {
+    background: var(--lw-hue-gray-500);
+  }
+}
+
+/* ── 2. 드롭다운 팝오버 ── */
+.session-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1000;
+  width: 250px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--lw-card-bg, var(--lw-bg-panel));
+  border: 1px solid var(--lw-border-color);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--lw-color-black) 25%, transparent);
+  animation: sessionDropdownFadeIn 0.15s ease-out forwards;
+  box-sizing: border-box;
+
+  .dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .header-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--lw-accent-primary);
+      border: 1px solid color-mix(in srgb, var(--lw-color-white) 20%, transparent);
+      color: var(--lw-surface);
+      flex-shrink: 0;
+    }
+
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      .user-name {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--lw-text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-email {
+        font-size: 11.5px;
+        font-weight: 500;
+        color: var(--lw-text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+      }
+
+      .role-badge-wrap {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    margin: 10px 0;
+    background: var(--lw-border-color);
+  }
+
+  .dropdown-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .action-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--lw-text-primary);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.12s ease, color 0.12s ease;
+
+      svg {
+        color: var(--lw-accent-primary);
+        transition: color 0.12s ease;
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        background: var(--lw-card-hover-bg);
+        color: var(--lw-accent-primary);
+      }
+
+      &--logout {
+        color: var(--lw-color-danger);
+
+        svg {
+          color: var(--lw-color-danger);
+        }
+
+        &:hover {
+          background: color-mix(in srgb, var(--lw-color-danger) 12%, transparent);
+          color: var(--lw-color-danger-strong);
+
+          svg {
+            color: var(--lw-color-danger-strong);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ── 3. 게스트 로그인 버튼 ── */
+.guest-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--lw-titlebar-border, var(--lw-border-color));
+  background: var(--lw-titlebar-btn-bg, var(--lw-surface-alt));
+  cursor: pointer;
+  color: var(--lw-titlebar-muted, var(--lw-text-secondary, inherit));
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--lw-color-black) 6%, transparent);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+
+  &:hover {
+    border-color: var(--lw-accent-primary, var(--lw-accent));
+    background: var(--lw-titlebar-hover);
+    color: var(--lw-accent-primary, var(--lw-accent));
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  .guest-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+}
+
+@keyframes sessionDropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 4. 모바일 바텀시트 전용 스타일 ── */
+.session-sheet-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.session-sheet-user-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--lw-text-primary, inherit);
+}
+
+.session-sheet-body-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0 16px;
+  width: 100%;
+  box-sizing: border-box;
+
+  .dropdown-header {
+    padding: 12px 14px;
+    background: var(--lw-surface-alt);
+    border-radius: 10px;
+  }
+
+  .dropdown-actions {
+    gap: 8px;
+
+    .action-item {
+      height: 40px;
+      font-size: 13px;
+    }
+  }
+}

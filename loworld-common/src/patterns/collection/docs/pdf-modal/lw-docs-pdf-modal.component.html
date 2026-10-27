@@ -1,0 +1,30 @@
+<lw-modal
+  variant="custom"
+  size="md"
+  title="PDF 내보내기"
+  description="고른 항목 하나가 PDF 한 개입니다. 순서대로 인쇄(PDF로 저장) 창이 뜹니다."
+  [open]="open()"
+  (close)="close.emit()">
+  <div class="lw-docs-pdf">
+    <lw-checkbox label="전체 선택" [checked]="allSelected()" [indeterminate]="someSelected()" (checkedChange)="toggleAll()" />
+
+    @for (group of groups(); track group.name) {
+      <fieldset class="lw-docs-pdf__group">
+        @if (group.name) {
+          <legend>{{ group.name }}</legend>
+        }
+        @for (item of group.items; track item.key) {
+          <lw-checkbox [label]="item.label" [checked]="selected().includes(item.key)" (checkedChange)="toggle(item.key)" />
+        }
+      </fieldset>
+    }
+
+    <lw-checkbox label="한 파일로 묶기 (저장을 한 번만 합니다)" [checked]="merge()" (checkedChange)="merge.set($event)" />
+  </div>
+
+  <div lwModalFooter class="lw-docs-pdf__footer">
+    <span>PDF {{ fileCount() }}개</span>
+    <lw-button variant="ghost" (click)="close.emit()">취소</lw-button>
+    <lw-button variant="primary" [disabled]="selected().length === 0" [loading]="busy()" (click)="submit()">내보내기</lw-button>
+  </div>
+</lw-modal>
