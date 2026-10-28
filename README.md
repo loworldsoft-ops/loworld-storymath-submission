@@ -13,16 +13,16 @@
 - 📱 **완전한 오프라인 구동**: 차량이 터널이나 지하주차장 등 음영지역에 들어가도 네트워크 끊김 없이 모든 콘텐츠가 그대로 재생됩니다.
 
 ### 관련 링크
-- 🎬 **시연 영상**: https://youtu.be/DEMO_VIDEO_LINK (시연 영상 업로드 후 기재)
-- 📱 **숏폼 영상**: https://youtube.com/shorts/... (숏폼 업로드 후 기재)
-- 📦 **GitHub Releases**: https://github.com/loworldsoft-ops/loworld-storymath-submission/releases/tag/v1.2.0
+- 📱 **숏폼 영상 (YouTube Shorts)**: https://youtube.com/shorts/7VHlK50CPBg
+- 🎬 **시연 방식 안내**: 실제 빌드 동작 검증을 위해 정식 서명 Release APK 및 공개 GitHub 소스코드로 대체 제출 (별도 영상 미제출)
+- 📦 **GitHub Releases (최신 APK 다운로드)**: https://github.com/loworldsoft-ops/loworld-storymath-submission/releases/latest
 
 ---
 
 ## 2. APK 위치
 
 - 제출본 저장소 내 위치: `apk/안상현_스토리매스_release.apk`
-- 다운로드 릴리스 링크: [GitHub Releases](https://github.com/loworldsoft-ops/loworld-storymath-submission/releases/tag/v1.2.0)
+- 다운로드 릴리스 링크: [GitHub Releases](https://github.com/loworldsoft-ops/loworld-storymath-submission/releases/latest)
 
 ---
 
@@ -61,10 +61,11 @@
 
 ## 4. 테스트 환경과 설정
 
-- **권장 해상도**: 가로 고정 (1280×720 또는 1920×1080 차량 디스플레이 비율)
+- **권장 해상도**: 가로 화면(1280×720 또는 1920×1080 차량 디스플레이 비율 최적화) 및 스마트폰 세로/가로 모드 자동 반응형 지원
 - **지원 OS**: Android 8.0 (API 레벨 26) 이상, targetSdk 35
 - **네트워크 설정**: **인터넷 연결 불필요 (비행기 모드에서도 100% 동일하게 동작)**
 - **계정 및 로그인**: 별도 로그인 절차 없음 (차량 탑승 즉시 사용 가능)
+- **세부 사용자 설정 (v1.2.0)**: 읽기 빠르기(5단계), 이야기꾼 목소리, 낭독 위치 하이라이트 표시, 문단 사이 쉼 조절, 다음 단원 연속 이어듣기 등 커스텀 옵션 지원
 - **데이터 저장**: 학습 진행 상태(마친 단원, 정답률, 설정값)는 기기 내부 로컬 저장소에만 안전하게 보관됩니다.
 
 ---

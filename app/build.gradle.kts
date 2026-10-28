@@ -24,7 +24,8 @@ val appVersionCode = (appPackage["versionCode"] as? Number)?.toInt() ?: 1
 
 // release 서명. 키와 비밀번호는 저장소에 넣지 않는다. keystore.properties(.gitignore에 있다)가 있을 때만 서명한다.
 // 없으면 release APK는 서명되지 않은 채로 나온다(app-<변형>-release-unsigned.apk).
-val keystoreFile = rootProject.file("keystore.properties")
+// 셸 하나로 여러 앱을 묶으므로 앱마다 키를 나눌 수 있게, -Ploworld.keystore=<파일>로 다른 설정 파일을 줄 수 있다.
+val keystoreFile = (findProperty("loworld.keystore") as String?)?.let { file(it) } ?: rootProject.file("keystore.properties")
 val keystore = Properties().apply { if (keystoreFile.exists()) keystoreFile.inputStream().use { load(it) } }
 
 android {

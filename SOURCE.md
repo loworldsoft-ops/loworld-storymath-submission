@@ -1,7 +1,7 @@
 # 제출본 원본 소스 정보
 
-- 생성 시각: 2026-10-27T02:19:46.625Z
-- 원본 워크스페이스: `0a23724b13692f06c37d8de160859e44235b81f5`
-- loworld-common: `32a85bcb718bdc10f5f14b43af45f88979ca83db`
+- 생성 시각: 2026-10-28T23:15:08.543Z
+- 원본 워크스페이스: `bfe41bd505cdfcc2596c9ea5320beeb51827270d`
+- loworld-common: `324eb7de4c6b8867aeca20224be036c1cf0048ac`
 - loworld-app-story-math: `2c372cc1d5cff4fd87c15cbf4da0d14972aca93d`
-- LoworldUI-AOS: `711e683a77e63a2e142820984ea51791c67510a5`
+- LoworldUI-AOS: `f69e618333e22c4cf719ebb41b48164fa1909f81`
