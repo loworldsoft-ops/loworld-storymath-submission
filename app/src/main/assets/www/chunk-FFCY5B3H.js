@@ -1,0 +1,1 @@
+import{s as i}from"./chunk-WJILWVMD.js";import{N as o,Y as c}from"./chunk-35XXJBVA.js";function s(e,t){let l=o(i,{optional:!0}),n=()=>l?.consoleLogsEnabled()??!1;n()&&console.log(`%c\u{1F7E2} [LIFECYCLE:MOUNT] [${t}] ${e}`,"font-weight: bold"),o(c).onDestroy(()=>{n()&&console.log(`%c\u{1F534} [LIFECYCLE:DESTROY] [${t}] ${e}`,"font-weight: bold")})}export{s as a};
