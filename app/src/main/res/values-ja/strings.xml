@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 셸 문구의 일본어(설계 10의 3.5). 기본(values)은 한국어다. 앱 이름은 빌드가 app.native.json의 appNames로 넣는다 -->
+<resources>
+    <string name="mode_select_title">起動方法</string>
+    <string name="mode_remote_title">オンライン（Webに公開したもの）</string>
+    <string name="mode_local_title">内蔵（アプリに入れたもの）</string>
+    <string name="speech_android_tts">Android標準の音声</string>
+    <string name="speech_android_stt">Android標準の音声認識</string>
+    <string name="speech_android_stt_ondevice">端末内で認識（インターネット不要）</string>
+    <string name="speech_pleos_tts">Pleos 車両の音声</string>
+    <string name="speech_pleos_stt">Pleos 車両の音声認識</string>
+
+    <!-- 음성 모델을 처음 쓸 때 받는 동안·받기 전에 AI 목소리 칸에 붙인다(TtsModelStore.kt) -->
+    <string name="tts_downloading">ダウンロード中 %1$d%%</string>
+    <string name="tts_not_downloaded">未ダウンロード · タップでダウンロード(約130MB)</string>
+    <string name="tts_download_failed">ダウンロードできませんでした · タップで再試行</string>
+
+    <!-- 맨 처음 화면에서 뒤로를 한 번 눌렀을 때(MainActivity.leave) -->
+    <string name="back_again_to_exit">もう一度押すとアプリを終了します</string>
+
+    <!-- 화면을 끄거나 뒤로 보내도 읽는 동안 뜨는 알림(ReadingService) -->
+    <string name="reading_channel">読み上げ</string>
+    <string name="reading_now">読み上げ中</string>
+</resources>

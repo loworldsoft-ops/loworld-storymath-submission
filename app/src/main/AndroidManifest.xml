@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 안드로이드의 듣기(SpeechRecognizer)가 마이크를 쓴다. 처음 들을 때 묻는다. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- 화면을 끄거나 앱을 뒤로 보내도 낭독을 잇는다(ReadingService). 알림은 안드로이드 13부터 처음 읽을 때 묻는다. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- 안드로이드 11부터 다른 앱의 서비스는 여기 적은 것만 보인다. 깔린 TTS 엔진과 인식 서비스를 찾으려고. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LoworldShell"
+        android:usesCleartextTraffic="false">
+        <!-- 폴드를 펼치거나 접으면 화면 크기(smallestScreenSize, screenLayout)가 바뀐다. 적지 않으면 액티비티를 새로 만들어
+             웹을 다시 읽고 낭독과 읽던 자리가 끊겼다(2026-11-16). 웹뷰는 크기가 바뀌면 스스로 다시 그린다. -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden"
+            android:exported="true"
+            android:screenOrientation="${screenOrientation}"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".ReadingService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+    </application>
+
+</manifest>
