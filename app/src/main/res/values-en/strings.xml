@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 셸 문구의 영어(설계 10의 3.5). 기본(values)은 한국어다. 앱 이름은 빌드가 app.native.json의 appNames로 넣는다 -->
+<resources>
+    <string name="mode_select_title">Launch mode</string>
+    <string name="mode_remote_title">Online (published web)</string>
+    <string name="mode_local_title">Built-in (bundled in the app)</string>
+    <string name="speech_android_tts">Android default voice</string>
+    <string name="speech_android_stt">Android default recognition</string>
+    <string name="speech_android_stt_ondevice">On-device recognition (no internet)</string>
+    <string name="speech_pleos_tts">Pleos vehicle voice</string>
+    <string name="speech_pleos_stt">Pleos vehicle recognition</string>
+
+    <!-- 음성 모델을 처음 쓸 때 받는 동안·받기 전에 AI 목소리 칸에 붙인다(TtsModelStore.kt) -->
+    <string name="tts_downloading">Downloading %1$d%%</string>
+    <string name="tts_not_downloaded">Not downloaded · Tap to download (about 130 MB)</string>
+    <string name="tts_download_failed">Download failed · Tap to retry</string>
+
+    <!-- 맨 처음 화면에서 뒤로를 한 번 눌렀을 때(MainActivity.leave) -->
+    <string name="back_again_to_exit">Press back again to exit</string>
+
+    <!-- 화면을 끄거나 뒤로 보내도 읽는 동안 뜨는 알림(ReadingService) -->
+    <string name="reading_channel">Read-aloud</string>
+    <string name="reading_now">Reading aloud</string>
+</resources>
